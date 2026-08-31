@@ -21,10 +21,10 @@
 <link rel="apple-touch-icon"
       href="./icon-192.png">
 
+
 <style>
 
     :root {
-
         --bg: #0d1210;
         --surface: #151b18;
         --text: #f4f7f5;
@@ -34,32 +34,23 @@
         --yellow: #f4c84d;
         --danger: #ff6262;
         --border: rgba(255,255,255,.07);
-
     }
 
-
     * {
-
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
-
     }
-
 
     html,
     body {
-
         width: 100%;
         min-height: 100%;
         background: var(--bg);
-
     }
 
-
     body {
-
         font-family:
             -apple-system,
             BlinkMacSystemFont,
@@ -72,27 +63,20 @@
 
         color: var(--text);
         overflow: hidden;
-
     }
-
 
     button,
     textarea {
-
         font-family: inherit;
-
     }
 
-
     button {
-
         border: none;
         outline: none;
         cursor: pointer;
         -webkit-user-select: none;
         user-select: none;
         touch-action: manipulation;
-
     }
 
 
@@ -101,7 +85,6 @@
     ========================= */
 
     .app {
-
         width: 100%;
         max-width: 620px;
         height: 100dvh;
@@ -112,15 +95,12 @@
         position: relative;
 
         background:
-
             radial-gradient(
                 circle at 85% -10%,
                 rgba(25,197,139,.13),
                 transparent 30%
             ),
-
             var(--bg);
-
     }
 
 
@@ -129,28 +109,21 @@
     ========================= */
 
     .header {
-
         padding:
             28px
             20px
             15px;
 
         flex-shrink: 0;
-
     }
 
-
     .brand {
-
         display: flex;
         align-items: center;
         gap: 10px;
-
     }
 
-
     .brand-mark {
-
         width: 40px;
         height: 40px;
 
@@ -166,16 +139,12 @@
             var(--green);
 
         font-size: 20px;
-
     }
 
-
     .brand-name {
-
         font-size: 24px;
         font-weight: 800;
         letter-spacing: -.8px;
-
     }
 
 
@@ -184,28 +153,20 @@
     ========================= */
 
     .greeting {
-
         margin-top: 17px;
-
     }
 
-
     .greeting h1 {
-
         font-size: 27px;
         line-height: 1.25;
         font-weight: 800;
         letter-spacing: -.8px;
-
     }
 
-
     .greeting p {
-
         margin-top: 6px;
         color: var(--muted);
         font-size: 14px;
-
     }
 
 
@@ -214,18 +175,14 @@
     ========================= */
 
     .progress {
-
         margin-top: 18px;
 
         display: flex;
         align-items: center;
         gap: 10px;
-
     }
 
-
     .progress-bar {
-
         height: 5px;
         flex: 1;
 
@@ -234,12 +191,9 @@
 
         border-radius: 99px;
         overflow: hidden;
-
     }
 
-
     .progress-fill {
-
         height: 100%;
         width: 0%;
 
@@ -250,16 +204,12 @@
 
         transition:
             width .3s ease;
-
     }
 
-
     .progress-text {
-
         color: var(--muted);
         font-size: 12px;
         white-space: nowrap;
-
     }
 
 
@@ -268,7 +218,6 @@
     ========================= */
 
     .tasks {
-
         flex: 1;
         overflow-y: auto;
 
@@ -278,19 +227,13 @@
             160px;
 
         scrollbar-width: none;
-
     }
-
 
     .tasks::-webkit-scrollbar {
-
         display: none;
-
     }
 
-
     .task {
-
         min-height: 64px;
 
         display: flex;
@@ -306,23 +249,14 @@
         transition:
             opacity .2s ease,
             transform .15s ease;
-
     }
-
 
     .task:last-child {
-
-        border-bottom:
-            none;
-
+        border-bottom: none;
     }
 
-
     .task:active {
-
-        transform:
-            scale(.99);
-
+        transform: scale(.99);
     }
 
 
@@ -331,7 +265,6 @@
     ========================= */
 
     .check {
-
         width: 23px;
         height: 23px;
 
@@ -348,25 +281,18 @@
 
         transition:
             all .2s ease;
-
     }
 
-
     .task.completed .check {
-
         background:
             var(--green);
 
         border-color:
             var(--green);
-
     }
 
-
     .check::after {
-
-        content:
-            "✓";
+        content: "✓";
 
         color:
             #07120e;
@@ -381,17 +307,11 @@
 
         transition:
             all .2s ease;
-
     }
 
-
     .task.completed .check::after {
-
         opacity: 1;
-
-        transform:
-            scale(1);
-
+        transform: scale(1);
     }
 
 
@@ -400,15 +320,11 @@
     ========================= */
 
     .task-main {
-
         min-width: 0;
         flex: 1;
-
     }
 
-
     .task-title {
-
         font-size: 16px;
         line-height: 1.45;
 
@@ -420,18 +336,14 @@
 
         transition:
             all .2s ease;
-
     }
 
-
     .task.completed .task-title {
-
         color:
             var(--muted-dark);
 
         text-decoration:
             line-through;
-
     }
 
 
@@ -440,17 +352,13 @@
     ========================= */
 
     .task-actions {
-
         display: flex;
         align-items: center;
         gap: 2px;
         opacity: .65;
-
     }
 
-
     .icon-btn {
-
         width: 34px;
         height: 34px;
 
@@ -469,31 +377,21 @@
 
         transition:
             all .2s ease;
-
     }
-
 
     .icon-btn:active {
-
         background:
             rgba(255,255,255,.07);
-
     }
-
 
     .icon-btn.starred {
-
         color:
             var(--yellow);
-
     }
 
-
     .icon-btn.delete:active {
-
         color:
             var(--danger);
-
     }
 
 
@@ -502,15 +400,11 @@
     ========================= */
 
     .empty {
-
         text-align: center;
         padding: 80px 25px;
-
     }
 
-
     .empty-icon {
-
         width: 58px;
         height: 58px;
 
@@ -529,31 +423,23 @@
             var(--green);
 
         font-size: 25px;
-
     }
 
-
     .empty strong {
-
         display: block;
 
         color:
             #dfe7e3;
 
         font-size: 16px;
-
         margin-bottom: 5px;
-
     }
 
-
     .empty span {
-
         color:
             var(--muted);
 
         font-size: 13px;
-
     }
 
 
@@ -562,7 +448,6 @@
     ========================= */
 
     .composer-wrap {
-
         position: absolute;
 
         left: 0;
@@ -582,12 +467,9 @@
             );
 
         pointer-events: none;
-
     }
 
-
     .composer {
-
         pointer-events: auto;
 
         display: flex;
@@ -614,7 +496,6 @@
 
         backdrop-filter:
             blur(18px);
-
     }
 
 
@@ -623,7 +504,6 @@
     ========================= */
 
     textarea {
-
         flex: 1;
         min-width: 0;
 
@@ -648,24 +528,19 @@
 
         font-size:
             15px;
-
     }
 
-
     textarea::placeholder {
-
         color:
             #718078;
-
     }
 
 
     /* =========================
-       ADD / SEND
+       ADD
     ========================= */
 
     .submit {
-
         width: 42px;
         height: 42px;
 
@@ -689,12 +564,9 @@
 
         transition:
             all .2s ease;
-
     }
 
-
     .submit.active {
-
         background:
             var(--green);
 
@@ -704,33 +576,20 @@
         box-shadow:
             0 7px 20px
             rgba(25,197,139,.22);
-
     }
-
 
     .submit:active {
-
         transform:
             scale(.94);
-
     }
-
 
     .submit:disabled {
-
-        cursor:
-            default;
-
-        pointer-events:
-            none;
-
+        cursor: default;
+        pointer-events: none;
     }
 
-
     .hint {
-
-        text-align:
-            center;
+        text-align: center;
 
         color:
             #56635c;
@@ -740,7 +599,6 @@
 
         margin-top:
             7px;
-
     }
 
 
@@ -751,36 +609,23 @@
     @media (max-width:380px) {
 
         .header {
-
             padding:
                 22px
                 16px
                 12px;
-
         }
 
         .tasks {
-
-            padding-left:
-                16px;
-
-            padding-right:
-                16px;
-
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         .greeting h1 {
-
-            font-size:
-                24px;
-
+            font-size: 24px;
         }
 
         .task-title {
-
-            font-size:
-                15px;
-
+            font-size: 15px;
         }
 
     }
@@ -879,9 +724,7 @@
 
 
     <div class="hint">
-
         اضغط Enter لإضافة نية جديدة
-
     </div>
 
 </div>
@@ -937,10 +780,127 @@
 
 
     /*
-     * حماية من الضغط المتكرر جدًا
-     * على زر الإضافة.
+     * حماية من الضغط المتكرر
      */
     let isAddingTask = false;
+
+
+    /* =====================================================
+       SOFT UI SOUND
+       ===================================================== */
+
+    let audioContext = null;
+
+
+    function playAddSound() {
+
+        try {
+
+            /*
+             * إنشاء AudioContext فقط بعد
+             * تفاعل المستخدم.
+             */
+
+            if (!audioContext) {
+
+                const AudioContext =
+                    window.AudioContext ||
+                    window.webkitAudioContext;
+
+                if (!AudioContext) {
+                    return;
+                }
+
+                audioContext =
+                    new AudioContext();
+
+            }
+
+
+            if (
+                audioContext.state ===
+                "suspended"
+            ) {
+
+                audioContext.resume();
+
+            }
+
+
+            const now =
+                audioContext.currentTime;
+
+
+            /*
+             * نغمة قصيرة جدًا وناعمة.
+             */
+
+            const oscillator =
+                audioContext.createOscillator();
+
+            const gain =
+                audioContext.createGain();
+
+
+            oscillator.type =
+                "sine";
+
+
+            /*
+             * نغمة دافئة وخفيفة
+             */
+            oscillator.frequency.setValueAtTime(
+                620,
+                now
+            );
+
+            oscillator.frequency.exponentialRampToValueAtTime(
+                760,
+                now + 0.08
+            );
+
+
+            /*
+             * مستوى منخفض جدًا
+             */
+            gain.gain.setValueAtTime(
+                0.0001,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.045,
+                now + 0.008
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                now + 0.105
+            );
+
+
+            oscillator.connect(gain);
+            gain.connect(
+                audioContext.destination
+            );
+
+
+            oscillator.start(now);
+
+            oscillator.stop(
+                now + 0.11
+            );
+
+        } catch (error) {
+
+            console.log(
+                "Nawy sound:",
+                error
+            );
+
+        }
+
+    }
 
 
     /* =========================
@@ -980,8 +940,6 @@
 
             }
 
-
-            /* توافق مع النسخة القديمة */
 
             const old =
                 JSON.parse(
@@ -1032,7 +990,7 @@
 
 
     /*
-     * Enter = نفس أمر زر الإرسال
+     * Enter = addTask
      */
     taskInput.addEventListener(
         "keydown",
@@ -1045,7 +1003,7 @@
 
                 event.preventDefault();
 
-                sendTask();
+                addTask();
 
             }
 
@@ -1054,13 +1012,13 @@
 
 
     /*
-     * السهم الأخضر = نفس أمر Enter
+     * السهم = addTask
      */
     submitBtn.addEventListener(
         "click",
         () => {
 
-            sendTask();
+            addTask();
 
         }
     );
@@ -1101,13 +1059,13 @@
 
 
     /* =========================
-       SEND / ADD TASK
+       ADD TASK
     ========================= */
 
-    function sendTask() {
+    function addTask() {
 
         /*
-         * منع أي ضغطات متزامنة
+         * منع الضغط المتكرر جدًا
          */
         if (isAddingTask) {
 
@@ -1120,9 +1078,6 @@
             taskInput.value.trim();
 
 
-        /*
-         * لا ترسل نصًا فارغًا
-         */
         if (!text) {
 
             updateSubmitButton();
@@ -1167,8 +1122,11 @@
 
 
         /*
-         * تفريغ الإدخال بعد نجاح الإضافة
+         * تشغيل صوت الإضافة
          */
+        playAddSound();
+
+
         taskInput.value =
             "";
 
@@ -1177,17 +1135,13 @@
             "42px";
 
 
-        /*
-         * إعادة تفعيل الزر بعد الإضافة
-         */
         isAddingTask = false;
 
         updateSubmitButton();
 
 
         /*
-         * إعادة التركيز على الكتابة
-         * لتجربة أسرع على الهاتف
+         * إبقاء المؤشر داخل خانة الكتابة
          */
         taskInput.focus();
 
@@ -1253,7 +1207,7 @@
 
 
         tasks.sort(
-            (a,b) =>
+            (a, b) =>
                 Number(b.starred) -
                 Number(a.starred)
         );
@@ -1525,16 +1479,8 @@
                             );
 
 
-                    /*
-                     * افحص وجود نسخة جديدة
-                     */
-
                     await registration.update();
 
-
-                    /*
-                     * لو SW جديد بدأ يثبت
-                     */
 
                     registration.addEventListener(
                         "updatefound",
@@ -1545,9 +1491,7 @@
 
 
                             if (!newWorker) {
-
                                 return;
-
                             }
 
 
@@ -1579,11 +1523,6 @@
                     );
 
 
-                    /*
-                     * عند استلام الصفحة
-                     * بواسطة SW الجديد
-                     */
-
                     navigator
                         .serviceWorker
                         .addEventListener(
@@ -1593,9 +1532,7 @@
                                 if (
                                     window.__nawyReloaded
                                 ) {
-
                                     return;
-
                                 }
 
 
@@ -1621,11 +1558,6 @@
             }
         );
 
-
-        /*
-         * كل مرة التطبيق يرجع للواجهة
-         * نطلب من المتصفح فحص SW
-         */
 
         document.addEventListener(
             "visibilitychange",
