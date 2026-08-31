@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -10,66 +11,74 @@
     <meta name="theme-color" content="#0d1210">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
 
     <title>ناوي — على إيه النهارده؟</title>
 
     <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/png" href="./icon-192.png">
-    <link rel="apple-touch-icon" href="./icon-192.png">
+
+    <link rel="icon"
+          type="image/png"
+          href="./icon-192.png">
+
+    <link rel="apple-touch-icon"
+          href="./icon-192.png">
+
 
     <style>
 
-        /* =====================================================
-           NAWY — MODERN ARABIC TODO
-           ===================================================== */
-
         :root {
+
             --bg: #0d1210;
+
             --surface: #151b18;
-            --surface-light: #1b2420;
 
             --text: #f4f7f5;
-            --text-soft: #c5cfca;
 
             --muted: #87948d;
+
             --muted-dark: #65716b;
 
             --green: #19c58b;
-            --green-dark: #0f8f66;
 
             --yellow: #f4c84d;
+
             --danger: #ff6262;
 
-            --border: rgba(255, 255, 255, 0.07);
+            --border: rgba(255,255,255,.07);
 
-            --radius: 18px;
         }
 
 
-        /* =========================
-           RESET
-           ========================= */
-
         * {
+
             margin: 0;
+
             padding: 0;
+
             box-sizing: border-box;
 
             -webkit-tap-highlight-color: transparent;
+
         }
 
 
         html,
         body {
+
             width: 100%;
+
             min-height: 100%;
 
             background: var(--bg);
+
         }
 
 
         body {
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -83,53 +92,65 @@
             color: var(--text);
 
             overflow: hidden;
+
         }
 
 
         button,
         textarea {
+
             font-family: inherit;
+
         }
 
 
         button {
+
             border: none;
+
             outline: none;
+
             cursor: pointer;
+
         }
 
 
         /* =========================
            APP
-           ========================= */
+        ========================= */
 
         .app {
 
             width: 100%;
+
             max-width: 620px;
 
             height: 100dvh;
 
-            margin: 0 auto;
+            margin: auto;
 
             display: flex;
+
             flex-direction: column;
 
             position: relative;
 
             background:
+
                 radial-gradient(
                     circle at 85% -10%,
-                    rgba(25, 197, 139, 0.13),
+                    rgba(25,197,139,.13),
                     transparent 30%
                 ),
+
                 var(--bg);
+
         }
 
 
         /* =========================
            HEADER
-           ========================= */
+        ========================= */
 
         .header {
 
@@ -139,42 +160,41 @@
                 15px;
 
             flex-shrink: 0;
-        }
 
-
-        .brand-row {
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
 
 
         .brand {
 
             display: flex;
+
             align-items: center;
 
             gap: 10px;
+
         }
 
 
         .brand-mark {
 
             width: 40px;
+
             height: 40px;
 
             display: grid;
+
             place-items: center;
 
             border-radius: 13px;
 
             background:
-                rgba(25, 197, 139, 0.12);
+                rgba(25,197,139,.12);
 
-            color: var(--green);
+            color:
+                var(--green);
 
             font-size: 20px;
+
         }
 
 
@@ -184,17 +204,19 @@
 
             font-weight: 800;
 
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
+
         }
 
 
         /* =========================
            GREETING
-           ========================= */
+        ========================= */
 
         .greeting {
 
             margin-top: 17px;
+
         }
 
 
@@ -206,7 +228,8 @@
 
             font-weight: 800;
 
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
+
         }
 
 
@@ -214,26 +237,28 @@
 
             margin-top: 6px;
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             font-size: 14px;
 
-            font-weight: 400;
         }
 
 
         /* =========================
            PROGRESS
-           ========================= */
+        ========================= */
 
         .progress {
 
             margin-top: 18px;
 
             display: flex;
+
             align-items: center;
 
             gap: 10px;
+
         }
 
 
@@ -244,11 +269,12 @@
             flex: 1;
 
             background:
-                rgba(255,255,255,0.07);
+                rgba(255,255,255,.07);
 
             border-radius: 99px;
 
             overflow: hidden;
+
         }
 
 
@@ -258,28 +284,32 @@
 
             width: 0%;
 
-            background: var(--green);
+            background:
+                var(--green);
 
             border-radius: 99px;
 
             transition:
-                width 0.3s ease;
+                width .3s ease;
+
         }
 
 
         .progress-text {
 
-            color: var(--muted);
+            color:
+                var(--muted);
 
             font-size: 12px;
 
             white-space: nowrap;
+
         }
 
 
         /* =========================
            TASKS
-           ========================= */
+        ========================= */
 
         .tasks {
 
@@ -293,62 +323,68 @@
                 160px;
 
             scrollbar-width: none;
+
         }
 
 
         .tasks::-webkit-scrollbar {
+
             display: none;
+
         }
 
-
-        /* =========================
-           TASK
-           ========================= */
 
         .task {
 
             min-height: 64px;
 
             display: flex;
+
             align-items: center;
 
             gap: 13px;
 
             padding:
-                11px
-                3px;
+                11px 3px;
 
             border-bottom:
                 1px solid var(--border);
 
             transition:
-                opacity 0.2s ease,
-                transform 0.15s ease;
+                opacity .2s ease,
+                transform .15s ease;
+
         }
 
 
         .task:last-child {
-            border-bottom: none;
+
+            border-bottom:
+                none;
+
         }
 
 
         .task:active {
 
             transform:
-                scale(0.99);
+                scale(.99);
+
         }
 
 
         /* =========================
            CHECK
-           ========================= */
+        ========================= */
 
         .check {
 
             width: 23px;
+
             height: 23px;
 
-            flex: 0 0 23px;
+            flex:
+                0 0 23px;
 
             border:
                 1.8px solid #66736c;
@@ -356,10 +392,12 @@
             border-radius: 50%;
 
             display: grid;
+
             place-items: center;
 
             transition:
-                all 0.2s ease;
+                all .2s ease;
+
         }
 
 
@@ -370,14 +408,17 @@
 
             border-color:
                 var(--green);
+
         }
 
 
         .check::after {
 
-            content: "✓";
+            content:
+                "✓";
 
-            color: #07120e;
+            color:
+                #07120e;
 
             font-size: 14px;
 
@@ -386,10 +427,11 @@
             opacity: 0;
 
             transform:
-                scale(0.5);
+                scale(.5);
 
             transition:
-                all 0.2s ease;
+                all .2s ease;
+
         }
 
 
@@ -399,18 +441,20 @@
 
             transform:
                 scale(1);
+
         }
 
 
         /* =========================
-           TASK CONTENT
-           ========================= */
+           TASK TEXT
+        ========================= */
 
         .task-main {
 
             min-width: 0;
 
             flex: 1;
+
         }
 
 
@@ -418,4 +462,1238 @@
 
             font-size: 16px;
 
-            line-height: 
+            line-height: 1.45;
+
+            color:
+                #eef3f0;
+
+            overflow-wrap:
+                anywhere;
+
+            transition:
+                all .2s ease;
+
+        }
+
+
+        .task.completed .task-title {
+
+            color:
+                var(--muted-dark);
+
+            text-decoration:
+                line-through;
+
+        }
+
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .task-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 2px;
+
+            opacity: .65;
+
+        }
+
+
+        .icon-btn {
+
+            width: 34px;
+
+            height: 34px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 10px;
+
+            background:
+                transparent;
+
+            color:
+                #718078;
+
+            font-size: 19px;
+
+            transition:
+                all .2s ease;
+
+        }
+
+
+        .icon-btn:active {
+
+            background:
+                rgba(255,255,255,.07);
+
+        }
+
+
+        .icon-btn.starred {
+
+            color:
+                var(--yellow);
+
+        }
+
+
+        .icon-btn.delete:active {
+
+            color:
+                var(--danger);
+
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+
+            text-align: center;
+
+            padding:
+                80px 25px;
+
+        }
+
+
+        .empty-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            margin:
+                0 auto 15px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 18px;
+
+            background:
+                rgba(25,197,139,.09);
+
+            color:
+                var(--green);
+
+            font-size: 25px;
+
+        }
+
+
+        .empty strong {
+
+            display: block;
+
+            color:
+                #dfe7e3;
+
+            font-size: 16px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .empty span {
+
+            color:
+                var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* =========================
+           COMPOSER
+        ========================= */
+
+        .composer-wrap {
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            padding:
+                12px
+                16px
+                calc(12px + env(safe-area-inset-bottom));
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--bg) 70%,
+                    transparent
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        .composer {
+
+            pointer-events: auto;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 8px;
+
+            padding:
+                7px
+                8px
+                7px
+                7px;
+
+            background:
+                rgba(25,32,29,.96);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                20px;
+
+            box-shadow:
+                0 18px 45px rgba(0,0,0,.28);
+
+            backdrop-filter:
+                blur(18px);
+
+        }
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        textarea {
+
+            flex: 1;
+
+            min-width: 0;
+
+            min-height: 42px;
+
+            max-height: 110px;
+
+            resize: none;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color:
+                var(--text);
+
+            padding:
+                10px;
+
+            line-height:
+                1.45;
+
+            font-size:
+                15px;
+
+        }
+
+
+        textarea::placeholder {
+
+            color:
+                #718078;
+
+        }
+
+
+        /* =========================
+           ADD
+        ========================= */
+
+        .submit {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex:
+                0 0 42px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius:
+                14px;
+
+            background:
+                #29332e;
+
+            color:
+                #718078;
+
+            font-size:
+                20px;
+
+            transition:
+                all .2s ease;
+
+        }
+
+
+        .submit.active {
+
+            background:
+                var(--green);
+
+            color:
+                #06140f;
+
+            box-shadow:
+                0 7px 20px
+                rgba(25,197,139,.22);
+
+        }
+
+
+        .hint {
+
+            text-align:
+                center;
+
+            color:
+                #56635c;
+
+            font-size:
+                10px;
+
+            margin-top:
+                7px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width:380px) {
+
+            .header {
+
+                padding:
+                    22px
+                    16px
+                    12px;
+
+            }
+
+            .tasks {
+
+                padding-left:
+                    16px;
+
+                padding-right:
+                    16px;
+
+            }
+
+            .greeting h1 {
+
+                font-size:
+                    24px;
+
+            }
+
+            .task-title {
+
+                font-size:
+                    15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                🎯
+            </div>
+
+            <div class="brand-name">
+                ناوي
+            </div>
+
+        </div>
+
+
+        <div class="greeting">
+
+            <h1>
+                ناوي على إيه النهارده؟
+            </h1>
+
+            <p id="currentDate">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill">
+                </div>
+
+            </div>
+
+
+            <div
+                class="progress-text"
+                id="progressText">
+
+                ابدأ أول نية
+
+            </div>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- TASKS -->
+
+    <main
+        class="tasks"
+        id="tasksContainer">
+    </main>
+
+
+
+    <!-- ADD -->
+
+    <div class="composer-wrap">
+
+
+        <div class="composer">
+
+
+            <textarea
+                id="taskInput"
+                rows="1"
+                maxlength="500"
+                placeholder="اكتب اللي ناوي عليه..."
+                enterkeyhint="send">
+            </textarea>
+
+
+            <button
+                class="submit"
+                id="submitBtn"
+                aria-label="إضافة">
+
+                ↑
+
+            </button>
+
+
+        </div>
+
+
+        <div class="hint">
+
+            اضغط Enter لإضافة نية جديدة
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+    /* =====================================================
+       NAWY
+       ===================================================== */
+
+
+    const STORAGE_KEY =
+        "nawy_tasks_v4";
+
+
+    const taskInput =
+        document.getElementById(
+            "taskInput"
+        );
+
+
+    const submitBtn =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    const tasksContainer =
+        document.getElementById(
+            "tasksContainer"
+        );
+
+
+    const progressFill =
+        document.getElementById(
+            "progressFill"
+        );
+
+
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    const currentDate =
+        document.getElementById(
+            "currentDate"
+        );
+
+
+    let tasks =
+        loadTasks();
+
+
+
+    /* =========================
+       DATE
+    ========================= */
+
+    currentDate.textContent =
+        new Intl.DateTimeFormat(
+            "ar-EG",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }
+        ).format(new Date());
+
+
+
+    /* =========================
+       STORAGE
+    ========================= */
+
+    function loadTasks() {
+
+        try {
+
+            const saved =
+                JSON.parse(
+                    localStorage.getItem(
+                        STORAGE_KEY
+                    )
+                );
+
+
+            if (Array.isArray(saved)) {
+
+                return saved;
+
+            }
+
+
+            /* توافق مع النسخة القديمة */
+
+            const old =
+                JSON.parse(
+                    localStorage.getItem(
+                        "nawy_tasks_v3"
+                    )
+                );
+
+
+            return Array.isArray(old)
+                ? old
+                : [];
+
+
+        } catch {
+
+            return [];
+
+        }
+
+    }
+
+
+
+    function save() {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(tasks)
+        );
+
+    }
+
+
+
+    /* =========================
+       INPUT
+    ========================= */
+
+    taskInput.addEventListener(
+        "input",
+        () => {
+
+            autoResize();
+
+            updateSubmitButton();
+
+        }
+    );
+
+
+    taskInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                addTask();
+
+            }
+
+        }
+    );
+
+
+    function autoResize() {
+
+        taskInput.style.height =
+            "auto";
+
+
+        taskInput.style.height =
+            Math.min(
+                taskInput.scrollHeight,
+                110
+            ) + "px";
+
+    }
+
+
+    function updateSubmitButton() {
+
+        submitBtn.classList.toggle(
+            "active",
+            taskInput.value.trim().length > 0
+        );
+
+    }
+
+
+
+    /* =========================
+       ADD TASK
+    ========================= */
+
+    function addTask() {
+
+        const text =
+            taskInput.value.trim();
+
+
+        if (!text) {
+
+            return;
+
+        }
+
+
+        tasks.unshift({
+
+            id:
+                Date.now(),
+
+            text:
+                text,
+
+            completed:
+                false,
+
+            starred:
+                false,
+
+            createdAt:
+                Date.now()
+
+        });
+
+
+        save();
+
+        render();
+
+
+        taskInput.value =
+            "";
+
+
+        taskInput.style.height =
+            "42px";
+
+
+        updateSubmitButton();
+
+    }
+
+
+
+    /* =========================
+       COMPLETE
+    ========================= */
+
+    function toggleTask(id) {
+
+        const task =
+            tasks.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!task) {
+
+            return;
+
+        }
+
+
+        task.completed =
+            !task.completed;
+
+
+        save();
+
+        render();
+
+    }
+
+
+
+    /* =========================
+       STAR
+    ========================= */
+
+    function toggleStar(id, event) {
+
+        event.stopPropagation();
+
+
+        const task =
+            tasks.find(
+                item =>
+                    item.id === id
+            );
+
+
+        if (!task) {
+
+            return;
+
+        }
+
+
+        task.starred =
+            !task.starred;
+
+
+        tasks.sort(
+            (a,b) =>
+                Number(b.starred) -
+                Number(a.starred)
+        );
+
+
+        save();
+
+        render();
+
+    }
+
+
+
+    /* =========================
+       DELETE
+    ========================= */
+
+    function deleteTask(id, event) {
+
+        event.stopPropagation();
+
+
+        tasks =
+            tasks.filter(
+                task =>
+                    task.id !== id
+            );
+
+
+        save();
+
+        render();
+
+    }
+
+
+
+    /* =========================
+       RENDER
+    ========================= */
+
+    function render() {
+
+        updateProgress();
+
+
+        if (!tasks.length) {
+
+            tasksContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        ✨
+                    </div>
+
+                    <strong>
+                        لسه مفيش نوايا
+                    </strong>
+
+                    <span>
+                        اكتب أول حاجة ناوي تعملها النهارده
+                    </span>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        tasksContainer.innerHTML =
+            tasks.map(task => `
+
+                <article
+                    class="task ${
+                        task.completed
+                            ? "completed"
+                            : ""
+                    }"
+                    onclick="toggleTask(${task.id})"
+                >
+
+
+                    <div
+                        class="check"
+                        aria-hidden="true">
+                    </div>
+
+
+                    <div class="task-main">
+
+                        <div class="task-title">
+
+                            ${escapeHtml(
+                                task.text
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task-actions">
+
+
+                        <button
+                            class="icon-btn ${
+                                task.starred
+                                    ? "starred"
+                                    : ""
+                            }"
+                            aria-label="تمييز"
+                            onclick="toggleStar(
+                                ${task.id},
+                                event
+                            )"
+                        >
+
+                            ${
+                                task.starred
+                                    ? "★"
+                                    : "☆"
+                            }
+
+                        </button>
+
+
+                        <button
+                            class="icon-btn delete"
+                            aria-label="حذف"
+                            onclick="deleteTask(
+                                ${task.id},
+                                event
+                            )"
+                        >
+
+                            ×
+
+                        </button>
+
+
+                    </div>
+
+
+                </article>
+
+            `).join("");
+
+    }
+
+
+
+    /* =========================
+       PROGRESS
+    ========================= */
+
+    function updateProgress() {
+
+        const total =
+            tasks.length;
+
+
+        const completed =
+            tasks.filter(
+                task =>
+                    task.completed
+            ).length;
+
+
+        if (!total) {
+
+            progressFill.style.width =
+                "0%";
+
+            progressText.textContent =
+                "ابدأ أول نية";
+
+            return;
+
+        }
+
+
+        const percent =
+            Math.round(
+                completed /
+                total *
+                100
+            );
+
+
+        progressFill.style.width =
+            percent + "%";
+
+
+        if (
+            completed === total
+        ) {
+
+            progressText.textContent =
+                "خلصت كل نواياك 🎉";
+
+        }
+
+        else if (
+            completed === 0
+        ) {
+
+            progressText.textContent =
+                `${total} ${
+                    total === 1
+                        ? "نية"
+                        : "نوايا"
+                }`;
+
+        }
+
+        else {
+
+            progressText.textContent =
+                `${completed} من ${total} منجزة`;
+
+        }
+
+    }
+
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(text) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            text;
+
+
+        return div.innerHTML;
+
+    }
+
+
+
+    /* =====================================================
+       SERVICE WORKER — AUTO UPDATE
+       ===================================================== */
+
+    if (
+        "serviceWorker" in navigator
+    ) {
+
+
+        window.addEventListener(
+            "load",
+            async () => {
+
+                try {
+
+                    const registration =
+                        await navigator
+                            .serviceWorker
+                            .register(
+                                "./sw.js",
+                                {
+                                    updateViaCache:
+                                        "none"
+                                }
+                            );
+
+
+                    /*
+                     * افحص وجود نسخة جديدة
+                     */
+
+                    await registration.update();
+
+
+                    /*
+                     * لو SW جديد بدأ يثبت
+                     */
+
+                    registration.addEventListener(
+                        "updatefound",
+                        () => {
+
+                            const newWorker =
+                                registration.installing;
+
+
+                            if (!newWorker) {
+                                return;
+                            }
+
+
+                            newWorker.addEventListener(
+                                "statechange",
+                                () => {
+
+                                    if (
+                                        newWorker.state ===
+                                        "installed" &&
+                                        navigator
+                                            .serviceWorker
+                                            .controller
+                                    ) {
+
+                                        /*
+                                         * النسخة الجديدة
+                                         * هتستلم التحكم
+                                         * وتعمل Reload
+                                         */
+
+                                        newWorker.postMessage(
+                                            {
+                                                type:
+                                                    "SKIP_WAITING"
+                                            }
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                    /*
+                     * عند استلام الصفحة
+                     * بواسطة SW الجديد
+                     */
+
+                    navigator
+                        .serviceWorker
+                        .addEventListener(
+                            "controllerchange",
+                            () => {
+
+                                if (
+                                    window.__nawyReloaded
+                                ) {
+                                    return;
+                                }
+
+
+                                window.__nawyReloaded =
+                                    true;
+
+
+                                window.location.reload();
+
+                            }
+                        );
+
+
+                } catch (error) {
+
+                    console.log(
+                        "Nawy SW:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+        /*
+         * كل مرة التطبيق يرجع للواجهة
+         * نطلب من المتصفح فحص SW
+         */
+
+        document.addEventListener(
+            "visibilitychange",
+            async () => {
+
+                if (
+                    document.visibilityState ===
+                    "visible"
+                ) {
+
+                    try {
+
+                        const registrations =
+                            await navigator
+                                .serviceWorker
+                                .getRegistrations();
+
+
+                        for (
+                            const registration
+                            of registrations
+                        ) {
+
+                            await registration.update();
+
+                        }
+
+                    } catch {}
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* =========================
+       START
+    ========================= */
+
+    render();
+
+    updateSubmitButton();
+
+</script>
+
+
+</body>
+
+</html>
