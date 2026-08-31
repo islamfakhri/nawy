@@ -6,12 +6,35 @@
     <meta name="description" content="تطبيق بسيط لتدوين النوايا والأهداف">
     <meta name="theme-color" content="#10b981">
     
-    <!-- ربط ملفات PWA -->
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./icon-192.png">
     <link rel="apple-touch-icon" href="./icon-192.png">
     <title>ناوي | دوّن اللي ناوي عليه</title>
     <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #6b7280;
+            --item-bg: #f9fafb;
+            --item-border: #f3f4f6;
+            --stat-bg: #f0fdf4;
+            --input-border: #e5e7eb;
+            --footer-bg: #f9fafb;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --item-bg: #334155;
+            --item-border: #475569;
+            --stat-bg: #0f172a;
+            --input-border: #475569;
+            --footer-bg: #0f172a;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -21,44 +44,59 @@
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             padding: 15px;
-            color: #333;
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background 0.3s;
         }
 
         .container {
             width: 100%;
             max-width: 480px;
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s;
         }
 
         header {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 20px;
             text-align: center;
+            position: relative;
         }
 
         header h1 {
-            font-size: 2.2em;
-            margin-bottom: 5px;
+            font-size: 2em;
+            margin-bottom: 3px;
         }
 
         header p {
-            font-size: 0.95em;
+            font-size: 0.9em;
             opacity: 0.9;
         }
 
-        /* شريط التثبيت - مخفي افتراضياً حتى يجهز المتصفح */
+        .theme-toggle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
         .install-banner {
             display: none;
             background: #ecfdf5;
@@ -86,12 +124,7 @@
             font-weight: bold;
             font-size: 0.85em;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
             white-space: nowrap;
-        }
-
-        .btn-install:active {
-            background: #059669;
         }
 
         .content {
@@ -102,43 +135,65 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
-            background: #f0fdf4;
+            margin-bottom: 15px;
+            background: var(--stat-bg);
             padding: 12px;
             border-radius: 12px;
             text-align: center;
         }
 
         .stat-number {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
             color: #10b981;
         }
 
         .stat-label {
             font-size: 0.75em;
-            color: #6b7280;
+            color: var(--text-muted);
             margin-top: 3px;
         }
 
         .input-group {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
-        input {
+        .input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        textarea {
             flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
+            padding: 12px;
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 16px;
+            font-family: inherit;
+            background: var(--card-bg);
+            color: var(--text-main);
+            resize: vertical;
+            min-height: 55px;
+            max-height: 120px;
             transition: border-color 0.3s;
         }
 
-        input:focus {
+        textarea:focus, select:focus {
             outline: none;
             border-color: #10b981;
+        }
+
+        select {
+            padding: 10px;
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: inherit;
         }
 
         .btn-add {
@@ -150,42 +205,89 @@
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            white-space: nowrap;
         }
 
-        .btn-add:active {
-            background: #059669;
+        .filter-bar {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: var(--item-bg);
+            border: 1px solid var(--item-border);
+            color: var(--text-muted);
+            font-size: 0.8em;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filter-chip.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
         }
 
         .goals-list {
             list-style: none;
-            max-height: 45vh;
+            max-height: 40vh;
             overflow-y: auto;
         }
 
         .goal-item {
-            background: #f9fafb;
-            border: 1px solid #f3f4f6;
-            padding: 12px 15px;
+            background: var(--item-bg);
+            border: 1px solid var(--item-border);
+            padding: 12px;
             margin-bottom: 10px;
             border-radius: 10px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            word-break: break-word;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .goal-item.completed {
-            background: #d1fae5;
-            text-decoration: line-through;
-            opacity: 0.75;
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
         }
 
         .goal-text {
             flex: 1;
-            cursor: pointer;
             font-size: 0.95em;
+            white-space: pre-wrap;
+            word-break: break-word;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .goal-item.completed .goal-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .badge {
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        .goal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px dashed var(--item-border);
+            padding-top: 8px;
+            margin-top: 4px;
         }
 
         .goal-actions {
@@ -194,23 +296,29 @@
         }
 
         .btn-small {
-            padding: 6px 10px;
+            padding: 5px 10px;
             font-size: 0.8em;
-            background: #f59e0b;
             border: none;
             border-radius: 6px;
             color: white;
             cursor: pointer;
         }
 
-        .btn-delete {
-            background: #ef4444;
+        .btn-toggle {
+            background: #10b981;
         }
+
+        .goal-item.completed .btn-toggle {
+            background: #6b7280;
+        }
+
+        .btn-edit { background: #f59e0b; }
+        .btn-delete { background: #ef4444; }
 
         .empty-state {
             text-align: center;
             padding: 30px 10px;
-            color: #9ca3af;
+            color: var(--text-muted);
         }
 
         .empty-state span {
@@ -220,29 +328,23 @@
         }
 
         footer {
-            background: #f9fafb;
+            background: var(--footer-bg);
             padding: 15px;
             text-align: center;
-            color: #6b7280;
+            color: var(--text-muted);
             font-size: 0.85em;
-            border-top: 1px solid #e5e7eb;
-        }
-
-        @media (max-width: 360px) {
-            body { padding: 5px; }
-            .content { padding: 15px 10px; }
-            header h1 { font-size: 1.8em; }
+            border-top: 1px solid var(--item-border);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <button class="theme-toggle" id="themeToggle" title="تبديل المظهر">🌙</button>
             <h1>ناوي 🎯</h1>
             <p>دوّن اللي ناوي عليه وحقق أهدافك</p>
         </header>
 
-        <!-- بنر التثبيت على شاشة الجوال -->
         <div class="install-banner" id="installBanner">
             <span>📱 ثبّت التطبيق على جوالك</span>
             <button class="btn-install" id="installBtn">ثبّت الآن</button>
@@ -265,13 +367,26 @@
             </div>
 
             <div class="input-group">
-                <input 
-                    type="text" 
-                    id="goalInput" 
-                    placeholder="أكتب نيتك هنا..." 
-                    autocomplete="off"
-                >
-                <button class="btn-add" onclick="addGoal()">أضف</button>
+                <textarea id="goalInput" placeholder="أكتب نيتك هنا... (اضغط Enter للنزول لسطر جديد)"></textarea>
+                <div class="input-row">
+                    <select id="categorySelect">
+                        <option value="عام">📌 عام</option>
+                        <option value="ديني">🕌 ديني</option>
+                        <option value="شخصي">👤 شخصي</option>
+                        <option value="عمل">💼 عمل/دراسة</option>
+                        <option value="صحة">🌱 صحة</option>
+                    </select>
+                    <button class="btn-add" style="flex:1" onclick="addGoal()">أضف النية</button>
+                </div>
+            </div>
+
+            <div class="filter-bar" id="filterBar">
+                <button class="filter-chip active" onclick="setFilter('الكل')">الكل</button>
+                <button class="filter-chip" onclick="setFilter('عام')">📌 عام</button>
+                <button class="filter-chip" onclick="setFilter('ديني')">🕌 ديني</button>
+                <button class="filter-chip" onclick="setFilter('شخصي')">👤 شخصي</button>
+                <button class="filter-chip" onclick="setFilter('عمل')">💼 عمل</button>
+                <button class="filter-chip" onclick="setFilter('صحة')">🌱 صحة</button>
             </div>
 
             <ul class="goals-list" id="goalsList"></ul>
@@ -289,56 +404,52 @@
     </div>
 
     <script>
-        // --- 1. إدارة التثبيت المباشر عبر المتصفح ---
+        // --- 1. الوضع الداكن ---
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('nawyTheme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('nawyTheme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // --- 2. إدارة تثبيت PWA ---
         let deferredPrompt;
         const installBanner = document.getElementById('installBanner');
         const installBtn = document.getElementById('installBtn');
 
-        // يستمع المتصفح لاكتمال شروط PWA لفتح إمكانية التثبيت
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // إظهار البنر فقط عند تأكد المتصفح من جاهزية التطبيق للتثبيت
             installBanner.style.display = 'flex';
         });
 
         installBtn.addEventListener('click', async () => {
             if (!deferredPrompt) return;
-            
-            // فتح نافذة التثبيت المباشرة الخاصة بنظام أندرويد/كروم
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                installBanner.style.display = 'none';
-            }
+            if (outcome === 'accepted') installBanner.style.display = 'none';
             deferredPrompt = null;
         });
 
-        window.addEventListener('appinstalled', () => {
-            installBanner.style.display = 'none';
-            deferredPrompt = null;
-        });
-
-        // --- 2. تسجيل الـ Service Worker لضمان العمل بدون إنترنت ---
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Failed:', err));
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
         }
 
-        // --- 3. الوظائف التشغيلية للبرنامج ---
+        // --- 3. إدارة النوايا والتصنيفات ---
         let goals = JSON.parse(localStorage.getItem('nawyGoals')) || [];
+        let currentFilter = 'الكل';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGoals();
-            document.getElementById('goalInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addGoal();
-            });
-        });
+        document.addEventListener('DOMContentLoaded', renderGoals);
 
         function addGoal() {
             const input = document.getElementById('goalInput');
+            const category = document.getElementById('categorySelect').value;
             const goalText = input.value.trim();
 
             if (goalText === '') return;
@@ -346,6 +457,7 @@
             const newGoal = {
                 id: Date.now(),
                 text: goalText,
+                category: category,
                 completed: false
             };
 
@@ -355,12 +467,6 @@
             input.value = '';
         }
 
-        function deleteGoal(id) {
-            goals = goals.filter(goal => goal.id !== id);
-            saveGoals();
-            renderGoals();
-        }
-
         function toggleGoal(id) {
             const goal = goals.find(g => g.id === id);
             if (goal) {
@@ -368,6 +474,12 @@
                 saveGoals();
                 renderGoals();
             }
+        }
+
+        function deleteGoal(id) {
+            goals = goals.filter(goal => goal.id !== id);
+            saveGoals();
+            renderGoals();
         }
 
         function editGoal(id) {
@@ -382,6 +494,14 @@
             }
         }
 
+        function setFilter(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-chip').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(category));
+            });
+            renderGoals();
+        }
+
         function saveGoals() {
             localStorage.setItem('nawyGoals', JSON.stringify(goals));
         }
@@ -390,25 +510,35 @@
             const goalsList = document.getElementById('goalsList');
             const emptyState = document.getElementById('emptyState');
 
-            if (goals.length === 0) {
+            const filteredGoals = currentFilter === 'الكل' 
+                ? goals 
+                : goals.filter(g => g.category === currentFilter);
+
+            const completedCount = goals.filter(g => g.completed).length;
+            updateStats(goals.length, completedCount);
+
+            if (filteredGoals.length === 0) {
                 goalsList.innerHTML = '';
                 emptyState.style.display = 'block';
-                updateStats(0, 0);
                 return;
             }
 
             emptyState.style.display = 'none';
-            const completedCount = goals.filter(g => g.completed).length;
-            updateStats(goals.length, completedCount);
 
-            goalsList.innerHTML = goals.map(goal => `
+            goalsList.innerHTML = filteredGoals.map(goal => `
                 <li class="goal-item ${goal.completed ? 'completed' : ''}">
-                    <span class="goal-text" onclick="toggleGoal(${goal.id})">
-                        ${goal.completed ? '✓ ' : ''}${escapeHtml(goal.text)}
-                    </span>
-                    <div class="goal-actions">
-                        <button class="btn-small" onclick="editGoal(${goal.id})">تعديل</button>
-                        <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
+                    <div class="goal-header">
+                        <span class="goal-text" onclick="toggleGoal(${goal.id})">${escapeHtml(goal.text)}</span>
+                        <span class="badge">${goal.category || 'عام'}</span>
+                    </div>
+                    <div class="goal-footer">
+                        <button class="btn-small btn-toggle" onclick="toggleGoal(${goal.id})">
+                            ${goal.completed ? '✓ منجزة' : 'إنجاز (تم)'}
+                        </button>
+                        <div class="goal-actions">
+                            <button class="btn-small btn-edit" onclick="editGoal(${goal.id})">تعديل</button>
+                            <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
+                        </div>
                     </div>
                 </li>
             `).join('');
