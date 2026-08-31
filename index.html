@@ -135,7 +135,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             background: var(--stat-bg);
             padding: 12px;
             border-radius: 12px;
@@ -156,14 +156,9 @@
 
         .input-group {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .input-row {
-            display: flex;
             gap: 8px;
+            margin-bottom: 20px;
+            align-items: flex-start;
         }
 
         textarea {
@@ -176,24 +171,14 @@
             background: var(--card-bg);
             color: var(--text-main);
             resize: vertical;
-            min-height: 55px;
+            min-height: 50px;
             max-height: 120px;
             transition: border-color 0.3s;
         }
 
-        textarea:focus, select:focus {
+        textarea:focus {
             outline: none;
             border-color: #10b981;
-        }
-
-        select {
-            padding: 10px;
-            border: 2px solid var(--input-border);
-            border-radius: 10px;
-            font-size: 14px;
-            background: var(--card-bg);
-            color: var(--text-main);
-            font-family: inherit;
         }
 
         .btn-add {
@@ -206,36 +191,12 @@
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .filter-chip {
-            padding: 6px 12px;
-            border-radius: 20px;
-            background: var(--item-bg);
-            border: 1px solid var(--item-border);
-            color: var(--text-muted);
-            font-size: 0.8em;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .filter-chip.active {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
+            height: 50px;
         }
 
         .goals-list {
             list-style: none;
-            max-height: 40vh;
+            max-height: 45vh;
             overflow-y: auto;
         }
 
@@ -246,15 +207,9 @@
             margin-bottom: 10px;
             border-radius: 10px;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .goal-header {
-            display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
+            align-items: center;
+            gap: 10px;
         }
 
         .goal-text {
@@ -271,37 +226,20 @@
             opacity: 0.6;
         }
 
-        .badge {
-            font-size: 0.7em;
-            padding: 2px 8px;
-            border-radius: 12px;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            font-weight: 600;
-            align-self: flex-start;
-        }
-
-        .goal-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px dashed var(--item-border);
-            padding-top: 8px;
-            margin-top: 4px;
-        }
-
         .goal-actions {
             display: flex;
             gap: 6px;
+            align-items: center;
         }
 
         .btn-small {
-            padding: 5px 10px;
+            padding: 6px 10px;
             font-size: 0.8em;
             border: none;
             border-radius: 6px;
             color: white;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-toggle {
@@ -367,26 +305,8 @@
             </div>
 
             <div class="input-group">
-                <textarea id="goalInput" placeholder="أكتب نيتك هنا... (اضغط Enter للنزول لسطر جديد)"></textarea>
-                <div class="input-row">
-                    <select id="categorySelect">
-                        <option value="عام">📌 عام</option>
-                        <option value="ديني">🕌 ديني</option>
-                        <option value="شخصي">👤 شخصي</option>
-                        <option value="عمل">💼 عمل/دراسة</option>
-                        <option value="صحة">🌱 صحة</option>
-                    </select>
-                    <button class="btn-add" style="flex:1" onclick="addGoal()">أضف النية</button>
-                </div>
-            </div>
-
-            <div class="filter-bar" id="filterBar">
-                <button class="filter-chip active" onclick="setFilter('الكل')">الكل</button>
-                <button class="filter-chip" onclick="setFilter('عام')">📌 عام</button>
-                <button class="filter-chip" onclick="setFilter('ديني')">🕌 ديني</button>
-                <button class="filter-chip" onclick="setFilter('شخصي')">👤 شخصي</button>
-                <button class="filter-chip" onclick="setFilter('عمل')">💼 عمل</button>
-                <button class="filter-chip" onclick="setFilter('صحة')">🌱 صحة</button>
+                <textarea id="goalInput" placeholder="أكتب نيتك هنا..."></textarea>
+                <button class="btn-add" onclick="addGoal()">أضف</button>
             </div>
 
             <ul class="goals-list" id="goalsList"></ul>
@@ -437,7 +357,6 @@
             deferredPrompt = null;
         });
 
-        // تسجيل الـ Service Worker والتحديث التلقائي الفوري عند وجود ملفات جديدة
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(reg => {
                 reg.addEventListener('updatefound', () => {
@@ -450,7 +369,6 @@
                 });
             }).catch(err => console.log('SW Registration Error:', err));
 
-            // إعادة تحديث الشاشة عندما يستلم التطبيق إشارة التحكم الجديدة
             let refreshing = false;
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 if (!refreshing) {
@@ -460,15 +378,13 @@
             });
         }
 
-        // --- 3. إدارة النوايا والتصنيفات ---
+        // --- 3. إدارة النوايا ---
         let goals = JSON.parse(localStorage.getItem('nawyGoals')) || [];
-        let currentFilter = 'الكل';
 
         document.addEventListener('DOMContentLoaded', renderGoals);
 
         function addGoal() {
             const input = document.getElementById('goalInput');
-            const category = document.getElementById('categorySelect').value;
             const goalText = input.value.trim();
 
             if (goalText === '') return;
@@ -476,7 +392,6 @@
             const newGoal = {
                 id: Date.now(),
                 text: goalText,
-                category: category,
                 completed: false
             };
 
@@ -513,14 +428,6 @@
             }
         }
 
-        function setFilter(category) {
-            currentFilter = category;
-            document.querySelectorAll('.filter-chip').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.includes(category));
-            });
-            renderGoals();
-        }
-
         function saveGoals() {
             localStorage.setItem('nawyGoals', JSON.stringify(goals));
         }
@@ -529,14 +436,10 @@
             const goalsList = document.getElementById('goalsList');
             const emptyState = document.getElementById('emptyState');
 
-            const filteredGoals = currentFilter === 'الكل' 
-                ? goals 
-                : goals.filter(g => g.category === currentFilter);
-
             const completedCount = goals.filter(g => g.completed).length;
             updateStats(goals.length, completedCount);
 
-            if (filteredGoals.length === 0) {
+            if (goals.length === 0) {
                 goalsList.innerHTML = '';
                 emptyState.style.display = 'block';
                 return;
@@ -544,20 +447,15 @@
 
             emptyState.style.display = 'none';
 
-            goalsList.innerHTML = filteredGoals.map(goal => `
+            goalsList.innerHTML = goals.map(goal => `
                 <li class="goal-item ${goal.completed ? 'completed' : ''}">
-                    <div class="goal-header">
-                        <span class="goal-text" onclick="toggleGoal(${goal.id})">${escapeHtml(goal.text)}</span>
-                        <span class="badge">${goal.category || 'عام'}</span>
-                    </div>
-                    <div class="goal-footer">
+                    <span class="goal-text" onclick="toggleGoal(${goal.id})">${escapeHtml(goal.text)}</span>
+                    <div class="goal-actions">
                         <button class="btn-small btn-toggle" onclick="toggleGoal(${goal.id})">
-                            ${goal.completed ? '✓ منجزة' : 'إنجاز (تم)'}
+                            ${goal.completed ? '✓ تم' : 'تم'}
                         </button>
-                        <div class="goal-actions">
-                            <button class="btn-small btn-edit" onclick="editGoal(${goal.id})">تعديل</button>
-                            <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
-                        </div>
+                        <button class="btn-small btn-edit" onclick="editGoal(${goal.id})">تعديل</button>
+                        <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
                     </div>
                 </li>
             `).join('');
