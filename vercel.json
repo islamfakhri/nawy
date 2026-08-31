@@ -1,6 +1,0 @@
-{
-  "buildCommand": "",
-  "devCommand": "python -m http.server 3000",
-  "installCommand": "",
-  "outputDirectory": "."
-}
