@@ -25,6 +25,7 @@
 <style>
 
     :root {
+
         --bg: #0d1210;
         --surface: #151b18;
         --text: #f4f7f5;
@@ -34,23 +35,35 @@
         --yellow: #f4c84d;
         --danger: #ff6262;
         --border: rgba(255,255,255,.07);
+
     }
 
+
     * {
+
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+
         -webkit-tap-highlight-color: transparent;
+
     }
+
 
     html,
     body {
+
         width: 100%;
         min-height: 100%;
-        background: var(--bg);
+
+        background:
+            var(--bg);
+
     }
 
+
     body {
+
         font-family:
             -apple-system,
             BlinkMacSystemFont,
@@ -61,22 +74,44 @@
             Arial,
             sans-serif;
 
-        color: var(--text);
-        overflow: hidden;
+        color:
+            var(--text);
+
+        overflow:
+            hidden;
+
     }
+
 
     button,
     textarea {
-        font-family: inherit;
+
+        font-family:
+            inherit;
+
     }
 
+
     button {
-        border: none;
-        outline: none;
-        cursor: pointer;
-        -webkit-user-select: none;
-        user-select: none;
-        touch-action: manipulation;
+
+        border:
+            none;
+
+        outline:
+            none;
+
+        cursor:
+            pointer;
+
+        -webkit-user-select:
+            none;
+
+        user-select:
+            none;
+
+        touch-action:
+            manipulation;
+
     }
 
 
@@ -85,22 +120,38 @@
     ========================= */
 
     .app {
-        width: 100%;
-        max-width: 620px;
-        height: 100dvh;
-        margin: auto;
 
-        display: flex;
-        flex-direction: column;
-        position: relative;
+        width:
+            100%;
+
+        max-width:
+            620px;
+
+        height:
+            100dvh;
+
+        margin:
+            auto;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        position:
+            relative;
 
         background:
+
             radial-gradient(
                 circle at 85% -10%,
                 rgba(25,197,139,.13),
                 transparent 30%
             ),
+
             var(--bg);
+
     }
 
 
@@ -109,28 +160,48 @@
     ========================= */
 
     .header {
+
         padding:
             28px
             20px
             15px;
 
-        flex-shrink: 0;
+        flex-shrink:
+            0;
+
     }
+
 
     .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            10px;
+
     }
 
+
     .brand-mark {
-        width: 40px;
-        height: 40px;
 
-        display: grid;
-        place-items: center;
+        width:
+            40px;
 
-        border-radius: 13px;
+        height:
+            40px;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        border-radius:
+            13px;
 
         background:
             rgba(25,197,139,.12);
@@ -138,13 +209,23 @@
         color:
             var(--green);
 
-        font-size: 20px;
+        font-size:
+            20px;
+
     }
 
+
     .brand-name {
-        font-size: 24px;
-        font-weight: 800;
-        letter-spacing: -.8px;
+
+        font-size:
+            24px;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            -.8px;
+
     }
 
 
@@ -153,20 +234,41 @@
     ========================= */
 
     .greeting {
-        margin-top: 17px;
+
+        margin-top:
+            17px;
+
     }
+
 
     .greeting h1 {
-        font-size: 27px;
-        line-height: 1.25;
-        font-weight: 800;
-        letter-spacing: -.8px;
+
+        font-size:
+            27px;
+
+        line-height:
+            1.25;
+
+        font-weight:
+            800;
+
+        letter-spacing:
+            -.8px;
+
     }
 
+
     .greeting p {
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 14px;
+
+        margin-top:
+            6px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            14px;
+
     }
 
 
@@ -175,41 +277,73 @@
     ========================= */
 
     .progress {
-        margin-top: 18px;
 
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        margin-top:
+            18px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            10px;
+
     }
 
+
     .progress-bar {
-        height: 5px;
-        flex: 1;
+
+        height:
+            5px;
+
+        flex:
+            1;
 
         background:
             rgba(255,255,255,.07);
 
-        border-radius: 99px;
-        overflow: hidden;
+        border-radius:
+            99px;
+
+        overflow:
+            hidden;
+
     }
 
+
     .progress-fill {
-        height: 100%;
-        width: 0%;
+
+        height:
+            100%;
+
+        width:
+            0%;
 
         background:
             var(--green);
 
-        border-radius: 99px;
+        border-radius:
+            99px;
 
         transition:
             width .3s ease;
+
     }
 
+
     .progress-text {
-        color: var(--muted);
-        font-size: 12px;
-        white-space: nowrap;
+
+        color:
+            var(--muted);
+
+        font-size:
+            12px;
+
+        white-space:
+            nowrap;
+
     }
 
 
@@ -218,27 +352,45 @@
     ========================= */
 
     .tasks {
-        flex: 1;
-        overflow-y: auto;
+
+        flex:
+            1;
+
+        overflow-y:
+            auto;
 
         padding:
             8px
             20px
             160px;
 
-        scrollbar-width: none;
+        scrollbar-width:
+            none;
+
     }
+
 
     .tasks::-webkit-scrollbar {
-        display: none;
+
+        display:
+            none;
+
     }
 
-    .task {
-        min-height: 64px;
 
-        display: flex;
-        align-items: center;
-        gap: 13px;
+    .task {
+
+        min-height:
+            64px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            13px;
 
         padding:
             11px 3px;
@@ -249,14 +401,23 @@
         transition:
             opacity .2s ease,
             transform .15s ease;
+
     }
+
 
     .task:last-child {
-        border-bottom: none;
+
+        border-bottom:
+            none;
+
     }
 
+
     .task:active {
-        transform: scale(.99);
+
+        transform:
+            scale(.99);
+
     }
 
 
@@ -265,8 +426,12 @@
     ========================= */
 
     .check {
-        width: 23px;
-        height: 23px;
+
+        width:
+            23px;
+
+        height:
+            23px;
 
         flex:
             0 0 23px;
@@ -274,44 +439,66 @@
         border:
             1.8px solid #66736c;
 
-        border-radius: 50%;
+        border-radius:
+            50%;
 
-        display: grid;
-        place-items: center;
+        display:
+            grid;
+
+        place-items:
+            center;
 
         transition:
             all .2s ease;
+
     }
 
+
     .task.completed .check {
+
         background:
             var(--green);
 
         border-color:
             var(--green);
+
     }
 
+
     .check::after {
-        content: "✓";
+
+        content:
+            "✓";
 
         color:
             #07120e;
 
-        font-size: 14px;
-        font-weight: 900;
+        font-size:
+            14px;
 
-        opacity: 0;
+        font-weight:
+            900;
+
+        opacity:
+            0;
 
         transform:
             scale(.5);
 
         transition:
             all .2s ease;
+
     }
 
+
     .task.completed .check::after {
-        opacity: 1;
-        transform: scale(1);
+
+        opacity:
+            1;
+
+        transform:
+            scale(1);
+
     }
 
 
@@ -320,13 +507,23 @@
     ========================= */
 
     .task-main {
-        min-width: 0;
-        flex: 1;
+
+        min-width:
+            0;
+
+        flex:
+            1;
+
     }
 
+
     .task-title {
-        font-size: 16px;
-        line-height: 1.45;
+
+        font-size:
+            16px;
+
+        line-height:
+            1.45;
 
         color:
             #eef3f0;
@@ -336,14 +533,18 @@
 
         transition:
             all .2s ease;
+
     }
 
+
     .task.completed .task-title {
+
         color:
             var(--muted-dark);
 
         text-decoration:
             line-through;
+
     }
 
 
@@ -352,20 +553,38 @@
     ========================= */
 
     .task-actions {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        opacity: .65;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            2px;
+
+        opacity:
+            .65;
+
     }
 
+
     .icon-btn {
-        width: 34px;
-        height: 34px;
 
-        display: grid;
-        place-items: center;
+        width:
+            34px;
 
-        border-radius: 10px;
+        height:
+            34px;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        border-radius:
+            10px;
 
         background:
             transparent;
@@ -373,25 +592,36 @@
         color:
             #718078;
 
-        font-size: 19px;
+        font-size:
+            19px;
 
         transition:
             all .2s ease;
+
     }
+
 
     .icon-btn:active {
+
         background:
             rgba(255,255,255,.07);
+
     }
+
 
     .icon-btn.starred {
+
         color:
             var(--yellow);
+
     }
 
+
     .icon-btn.delete:active {
+
         color:
             var(--danger);
+
     }
 
 
@@ -400,21 +630,35 @@
     ========================= */
 
     .empty {
-        text-align: center;
-        padding: 80px 25px;
+
+        text-align:
+            center;
+
+        padding:
+            80px 25px;
+
     }
 
+
     .empty-icon {
-        width: 58px;
-        height: 58px;
+
+        width:
+            58px;
+
+        height:
+            58px;
 
         margin:
             0 auto 15px;
 
-        display: grid;
-        place-items: center;
+        display:
+            grid;
 
-        border-radius: 18px;
+        place-items:
+            center;
+
+        border-radius:
+            18px;
 
         background:
             rgba(25,197,139,.09);
@@ -422,24 +666,232 @@
         color:
             var(--green);
 
-        font-size: 25px;
+        font-size:
+            25px;
+
     }
 
+
     .empty strong {
-        display: block;
+
+        display:
+            block;
 
         color:
             #dfe7e3;
 
-        font-size: 16px;
-        margin-bottom: 5px;
+        font-size:
+            16px;
+
+        margin-bottom:
+            5px;
+
     }
 
+
     .empty span {
+
         color:
             var(--muted);
 
-        font-size: 13px;
+        font-size:
+            13px;
+
+    }
+
+
+    /* =========================
+       INSTALL CARD
+    ========================= */
+
+    .install-card {
+
+        display:
+            none;
+
+        margin:
+            0 16px 10px;
+
+        padding:
+            13px 14px;
+
+        align-items:
+            center;
+
+        gap:
+            12px;
+
+        background:
+            rgba(21,27,24,.97);
+
+        border:
+            1px solid var(--border);
+
+        border-radius:
+            17px;
+
+        box-shadow:
+            0 14px 35px rgba(0,0,0,.25);
+
+        backdrop-filter:
+            blur(16px);
+
+    }
+
+
+    .install-card.show {
+
+        display:
+            flex;
+
+        animation:
+            installIn .28s ease both;
+
+    }
+
+
+    @keyframes installIn {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(8px);
+
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    .install-icon {
+
+        width:
+            38px;
+
+        height:
+            38px;
+
+        flex:
+            0 0 38px;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        border-radius:
+            12px;
+
+        background:
+            rgba(25,197,139,.11);
+
+        font-size:
+            18px;
+
+    }
+
+
+    .install-copy {
+
+        min-width:
+            0;
+
+        flex:
+            1;
+
+    }
+
+
+    .install-title {
+
+        font-size:
+            14px;
+
+        font-weight:
+            800;
+
+        color:
+            var(--text);
+
+    }
+
+
+    .install-subtitle {
+
+        margin-top:
+            2px;
+
+        color:
+            var(--muted);
+
+        font-size:
+            11px;
+
+    }
+
+
+    .install-btn {
+
+        padding:
+            9px 12px;
+
+        border-radius:
+            11px;
+
+        background:
+            var(--green);
+
+        color:
+            #06140f;
+
+        font-size:
+            12px;
+
+        font-weight:
+            800;
+
+        white-space:
+            nowrap;
+
+    }
+
+
+    .install-close {
+
+        width:
+            28px;
+
+        height:
+            28px;
+
+        display:
+            grid;
+
+        place-items:
+            center;
+
+        background:
+            transparent;
+
+        color:
+            #64716b;
+
+        font-size:
+            18px;
+
     }
 
 
@@ -448,11 +900,18 @@
     ========================= */
 
     .composer-wrap {
-        position: absolute;
 
-        left: 0;
-        right: 0;
-        bottom: 0;
+        position:
+            absolute;
+
+        left:
+            0;
+
+        right:
+            0;
+
+        bottom:
+            0;
 
         padding:
             12px
@@ -466,15 +925,25 @@
                 transparent
             );
 
-        pointer-events: none;
+        pointer-events:
+            none;
+
     }
 
-    .composer {
-        pointer-events: auto;
 
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
+    .composer {
+
+        pointer-events:
+            auto;
+
+        display:
+            flex;
+
+        align-items:
+            flex-end;
+
+        gap:
+            8px;
 
         padding:
             7px
@@ -496,6 +965,7 @@
 
         backdrop-filter:
             blur(18px);
+
     }
 
 
@@ -504,18 +974,30 @@
     ========================= */
 
     textarea {
-        flex: 1;
-        min-width: 0;
 
-        min-height: 42px;
-        max-height: 110px;
+        flex:
+            1;
 
-        resize: none;
+        min-width:
+            0;
 
-        border: none;
-        outline: none;
+        min-height:
+            42px;
 
-        background: transparent;
+        max-height:
+            110px;
+
+        resize:
+            none;
+
+        border:
+            none;
+
+        outline:
+            none;
+
+        background:
+            transparent;
 
         color:
             var(--text);
@@ -528,11 +1010,15 @@
 
         font-size:
             15px;
+
     }
 
+
     textarea::placeholder {
+
         color:
             #718078;
+
     }
 
 
@@ -541,14 +1027,21 @@
     ========================= */
 
     .submit {
-        width: 42px;
-        height: 42px;
+
+        width:
+            42px;
+
+        height:
+            42px;
 
         flex:
             0 0 42px;
 
-        display: grid;
-        place-items: center;
+        display:
+            grid;
+
+        place-items:
+            center;
 
         border-radius:
             14px;
@@ -564,9 +1057,12 @@
 
         transition:
             all .2s ease;
+
     }
 
+
     .submit.active {
+
         background:
             var(--green);
 
@@ -576,20 +1072,33 @@
         box-shadow:
             0 7px 20px
             rgba(25,197,139,.22);
+
     }
+
 
     .submit:active {
+
         transform:
             scale(.94);
+
     }
+
 
     .submit:disabled {
-        cursor: default;
-        pointer-events: none;
+
+        cursor:
+            default;
+
+        pointer-events:
+            none;
+
     }
 
+
     .hint {
-        text-align: center;
+
+        text-align:
+            center;
 
         color:
             #56635c;
@@ -599,6 +1108,7 @@
 
         margin-top:
             7px;
+
     }
 
 
@@ -609,23 +1119,46 @@
     @media (max-width:380px) {
 
         .header {
+
             padding:
                 22px
                 16px
                 12px;
+
         }
 
         .tasks {
-            padding-left: 16px;
-            padding-right: 16px;
+
+            padding-left:
+                16px;
+
+            padding-right:
+                16px;
+
         }
 
         .greeting h1 {
-            font-size: 24px;
+
+            font-size:
+                24px;
+
         }
 
         .task-title {
-            font-size: 15px;
+
+            font-size:
+                15px;
+
+        }
+
+        .install-card {
+
+            margin-left:
+                12px;
+
+            margin-right:
+                12px;
+
         }
 
     }
@@ -695,7 +1228,54 @@
 </main>
 
 
-<!-- ADD -->
+<!-- INSTALL -->
+
+<div
+    class="install-card"
+    id="installCard">
+
+    <div class="install-icon">
+        📱
+    </div>
+
+
+    <div class="install-copy">
+
+        <div class="install-title">
+            ناوي؟ خليه معاك.
+        </div>
+
+        <div class="install-subtitle">
+            ثبّت التطبيق وابدأ يومك بنية.
+        </div>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="install-btn"
+        id="installBtn">
+
+        ثبّت ناوي
+
+    </button>
+
+
+    <button
+        type="button"
+        class="install-close"
+        id="installClose"
+        aria-label="إغلاق">
+
+        ×
+
+    </button>
+
+</div>
+
+
+<!-- COMPOSER -->
 
 <div class="composer-wrap">
 
@@ -775,41 +1355,57 @@
         );
 
 
+    const installCard =
+        document.getElementById(
+            "installCard"
+        );
+
+
+    const installBtn =
+        document.getElementById(
+            "installBtn"
+        );
+
+
+    const installClose =
+        document.getElementById(
+            "installClose"
+        );
+
+
     let tasks =
         loadTasks();
 
 
-    /*
-     * حماية من الضغط المتكرر
-     */
-    let isAddingTask = false;
+    let isAddingTask =
+        false;
 
 
     /* =====================================================
-       SOFT UI SOUND
+       SOFT TODO SOUND
        ===================================================== */
 
-    let audioContext = null;
+    let audioContext =
+        null;
 
 
     function playAddSound() {
 
         try {
 
-            /*
-             * إنشاء AudioContext فقط بعد
-             * تفاعل المستخدم.
-             */
+            const AudioContext =
+                window.AudioContext ||
+                window.webkitAudioContext;
+
+
+            if (!AudioContext) {
+
+                return;
+
+            }
+
 
             if (!audioContext) {
-
-                const AudioContext =
-                    window.AudioContext ||
-                    window.webkitAudioContext;
-
-                if (!AudioContext) {
-                    return;
-                }
 
                 audioContext =
                     new AudioContext();
@@ -832,11 +1428,14 @@
 
 
             /*
-             * نغمة قصيرة جدًا وناعمة.
+             * Pop قصير جدًا:
+             * نغمة ناعمة تبدأ منخفضة
+             * وتنتهي بسرعة.
              */
 
             const oscillator =
                 audioContext.createOscillator();
+
 
             const gain =
                 audioContext.createGain();
@@ -846,49 +1445,65 @@
                 "sine";
 
 
-            /*
-             * نغمة دافئة وخفيفة
-             */
             oscillator.frequency.setValueAtTime(
-                620,
+                430,
                 now
             );
 
+
             oscillator.frequency.exponentialRampToValueAtTime(
-                760,
-                now + 0.08
+                680,
+                now + 0.055
             );
 
 
-            /*
-             * مستوى منخفض جدًا
-             */
+            oscillator.frequency.exponentialRampToValueAtTime(
+                540,
+                now + 0.10
+            );
+
+
             gain.gain.setValueAtTime(
                 0.0001,
                 now
             );
 
+
             gain.gain.exponentialRampToValueAtTime(
-                0.045,
+                0.055,
                 now + 0.008
             );
 
+
             gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                now + 0.105
+                0.018,
+                now + 0.045
             );
 
 
-            oscillator.connect(gain);
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                now + 0.12
+            );
+
+
+            oscillator.connect(
+                gain
+            );
+
+
             gain.connect(
                 audioContext.destination
             );
 
 
-            oscillator.start(now);
+            oscillator.start(
+                now
+            );
+
 
             oscillator.stop(
-                now + 0.11
+                now + 0.125
             );
 
         } catch (error) {
@@ -911,11 +1526,18 @@
         new Intl.DateTimeFormat(
             "ar-EG",
             {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
+                weekday:
+                    "long",
+
+                day:
+                    "numeric",
+
+                month:
+                    "long"
             }
-        ).format(new Date());
+        ).format(
+            new Date()
+        );
 
 
     /* =========================
@@ -934,7 +1556,9 @@
                 );
 
 
-            if (Array.isArray(saved)) {
+            if (
+                Array.isArray(saved)
+            ) {
 
                 return saved;
 
@@ -967,7 +1591,9 @@
 
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify(tasks)
+            JSON.stringify(
+                tasks
+            )
         );
 
     }
@@ -1012,7 +1638,7 @@
 
 
     /*
-     * السهم = addTask
+     * Arrow = addTask
      */
     submitBtn.addEventListener(
         "click",
@@ -1042,7 +1668,9 @@
     function updateSubmitButton() {
 
         const hasText =
-            taskInput.value.trim().length > 0;
+            taskInput.value
+                .trim()
+                .length > 0;
 
 
         submitBtn.classList.toggle(
@@ -1064,10 +1692,9 @@
 
     function addTask() {
 
-        /*
-         * منع الضغط المتكرر جدًا
-         */
-        if (isAddingTask) {
+        if (
+            isAddingTask
+        ) {
 
             return;
 
@@ -1087,7 +1714,9 @@
         }
 
 
-        isAddingTask = true;
+        isAddingTask =
+            true;
+
 
         updateSubmitButton();
 
@@ -1122,7 +1751,7 @@
 
 
         /*
-         * تشغيل صوت الإضافة
+         * صوت الإضافة
          */
         playAddSound();
 
@@ -1135,13 +1764,15 @@
             "42px";
 
 
-        isAddingTask = false;
+        isAddingTask =
+            false;
+
 
         updateSubmitButton();
 
 
         /*
-         * إبقاء المؤشر داخل خانة الكتابة
+         * إبقاء المؤشر جاهزًا
          */
         taskInput.focus();
 
@@ -1183,7 +1814,10 @@
        STAR
     ========================= */
 
-    function toggleStar(id, event) {
+    function toggleStar(
+        id,
+        event
+    ) {
 
         event.stopPropagation();
 
@@ -1224,7 +1858,10 @@
        DELETE
     ========================= */
 
-    function deleteTask(id, event) {
+    function deleteTask(
+        id,
+        event
+    ) {
 
         event.stopPropagation();
 
@@ -1280,7 +1917,8 @@
 
 
         tasksContainer.innerHTML =
-            tasks.map(task => `
+            tasks.map(
+                task => `
 
                 <article
                     class="task ${
@@ -1353,7 +1991,8 @@
 
                 </article>
 
-            `).join("");
+            `
+            ).join("");
 
     }
 
@@ -1380,8 +2019,10 @@
             progressFill.style.width =
                 "0%";
 
+
             progressText.textContent =
                 "ابدأ أول نية";
+
 
             return;
 
@@ -1436,7 +2077,9 @@
        ESCAPE HTML
     ========================= */
 
-    function escapeHtml(text) {
+    function escapeHtml(
+        text
+    ) {
 
         const div =
             document.createElement(
@@ -1451,6 +2094,121 @@
         return div.innerHTML;
 
     }
+
+
+    /* =====================================================
+       PWA INSTALL
+       ===================================================== */
+
+    let deferredInstallPrompt =
+        null;
+
+
+    function showInstallCard() {
+
+        if (
+            window.matchMedia(
+                "(display-mode: standalone)"
+            ).matches
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            window.navigator.standalone ===
+            true
+        ) {
+
+            return;
+
+        }
+
+
+        installCard.classList.add(
+            "show"
+        );
+
+    }
+
+
+    window.addEventListener(
+        "beforeinstallprompt",
+        event => {
+
+            event.preventDefault();
+
+            deferredInstallPrompt =
+                event;
+
+            showInstallCard();
+
+        }
+    );
+
+
+    installBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !deferredInstallPrompt
+            ) {
+
+                return;
+
+            }
+
+
+            deferredInstallPrompt.prompt();
+
+
+            try {
+
+                await deferredInstallPrompt.userChoice;
+
+            } catch {}
+
+
+            deferredInstallPrompt =
+                null;
+
+
+            installCard.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+    installClose.addEventListener(
+        "click",
+        () => {
+
+            installCard.classList.remove(
+                "show"
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "appinstalled",
+        () => {
+
+            deferredInstallPrompt =
+                null;
+
+            installCard.classList.remove(
+                "show"
+            );
+
+        }
+    );
 
 
     /* =====================================================
@@ -1491,7 +2249,9 @@
 
 
                             if (!newWorker) {
+
                                 return;
+
                             }
 
 
@@ -1532,7 +2292,9 @@
                                 if (
                                     window.__nawyReloaded
                                 ) {
+
                                     return;
+
                                 }
 
 
