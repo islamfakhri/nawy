@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="تطبيق بسيط لتدوين النوايا والأهداف">
     <meta name="theme-color" content="#10b981">
     <link rel="manifest" href="./manifest.json">
@@ -14,35 +14,41 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            max-width: 500px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 480px;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2.2em;
+            margin-bottom: 5px;
         }
 
         header p {
@@ -50,14 +56,74 @@
             opacity: 0.9;
         }
 
+        /* شريط التثبيت على شاشة الجوال */
+        .install-banner {
+            display: none;
+            background: #ecfdf5;
+            border: 2px dashed #10b981;
+            padding: 12px 15px;
+            margin: 15px 15px 0 15px;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .install-banner span {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        .btn-install {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.85em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .btn-install:active {
+            background: #059669;
+        }
+
         .content {
-            padding: 30px 20px;
+            padding: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #f0fdf4;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: #6b7280;
+            margin-top: 3px;
         }
 
         .input-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
         input {
@@ -65,7 +131,7 @@
             padding: 12px 15px;
             border: 2px solid #e5e7eb;
             border-radius: 10px;
-            font-size: 1em;
+            font-size: 16px; /* منع التكبير التلقائي في الآيفون */
             transition: border-color 0.3s;
         }
 
@@ -74,8 +140,8 @@
             border-color: #10b981;
         }
 
-        button {
-            padding: 12px 25px;
+        .btn-add {
+            padding: 12px 20px;
             background: #10b981;
             color: white;
             border: none;
@@ -83,145 +149,88 @@
             font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.2s;
         }
 
-        button:hover {
+        .btn-add:active {
             background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
         }
 
         .goals-list {
             list-style: none;
+            max-height: 45vh;
+            overflow-y: auto;
         }
 
         .goal-item {
-            background: #f3f4f6;
-            padding: 15px;
-            margin-bottom: 12px;
+            background: #f9fafb;
+            border: 1px solid #f3f4f6;
+            padding: 12px 15px;
+            margin-bottom: 10px;
             border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            gap: 10px;
+            word-break: break-word;
         }
 
         .goal-item.completed {
             background: #d1fae5;
             text-decoration: line-through;
-            opacity: 0.7;
+            opacity: 0.75;
         }
 
         .goal-text {
             flex: 1;
             cursor: pointer;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background 0.2s;
-        }
-
-        .goal-text:hover {
-            background: rgba(16, 185, 129, 0.1);
+            font-size: 0.95em;
         }
 
         .goal-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-small {
-            padding: 6px 12px;
-            font-size: 0.85em;
+            padding: 6px 10px;
+            font-size: 0.8em;
             background: #f59e0b;
             border: none;
             border-radius: 6px;
             color: white;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-small:hover {
-            background: #d97706;
         }
 
         .btn-delete {
             background: #ef4444;
         }
 
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 10px;
             color: #9ca3af;
         }
 
-        .empty-state emoji {
-            font-size: 3em;
+        .empty-state span {
+            font-size: 2.5em;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         footer {
             background: #f9fafb;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             color: #6b7280;
-            font-size: 0.9em;
+            font-size: 0.85em;
             border-top: 1px solid #e5e7eb;
         }
 
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            background: #f0fdf4;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #10b981;
-        }
-
-        .stat-label {
-            font-size: 0.85em;
-            color: #6b7280;
-            margin-top: 5px;
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .container {
-                border-radius: 15px;
-            }
+        @media (max-width: 360px) {
+            body { padding: 5px; }
+            .content { padding: 15px 10px; }
+            header h1 { font-size: 1.8em; }
         }
     </style>
 </head>
@@ -231,6 +240,12 @@
             <h1>ناوي 🎯</h1>
             <p>دوّن اللي ناوي عليه وحقق أهدافك</p>
         </header>
+
+        <!-- بنر التثبيت على الجوال -->
+        <div class="install-banner" id="installBanner">
+            <span>📱 ثبّت التطبيق على جوالك</span>
+            <button class="btn-install" id="installBtn">ثبّت الآن</button>
+        </div>
 
         <div class="content">
             <div class="stats">
@@ -255,78 +270,92 @@
                     placeholder="أكتب نيتك هنا..." 
                     autocomplete="off"
                 >
-                <button onclick="addGoal()">أضف</button>
+                <button class="btn-add" onclick="addGoal()">أضف</button>
             </div>
 
             <ul class="goals-list" id="goalsList"></ul>
 
             <div class="empty-state" id="emptyState">
-                <span class="empty-state emoji">📝</span>
+                <span>📝</span>
                 <p>لا توجد نوايا حالياً<br>ابدأ بإضافة نيتك الأولى!</p>
             </div>
         </div>
 
         <footer>
             <p>✨ ناوي - حقق أحلامك خطوة بخطوة</p>
-            <p style="font-size: 0.8em; margin-top: 8px;">يعمل بدون إنترنت 📱</p>
+            <p style="font-size: 0.8em; margin-top: 4px;">يعمل بدون إنترنت 📱</p>
         </footer>
     </div>
 
     <script>
-        // تسجيل Service Worker
+        // --- 1. إعداد التثبيت التلقائي (PWA Prompt) ---
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.style.display = 'flex';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBanner.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBanner.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        // --- 2. تسجيل Service Worker ---
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('Service Worker registered'))
-                .catch(() => console.log('Service Worker registration failed'));
+                .then(() => console.log('Service Worker Registered Successfully'))
+                .catch(err => console.log('Service Worker Failed:', err));
         }
 
-        // تحميل النوايا من localStorage
+        // --- 3. إدارة وظائف التطبيق ---
         let goals = JSON.parse(localStorage.getItem('nawyGoals')) || [];
 
-        // عرض النوايا عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', () => {
             renderGoals();
             document.getElementById('goalInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    addGoal();
-                }
+                if (e.key === 'Enter') addGoal();
             });
         });
 
-        // إضافة نية جديدة
         function addGoal() {
             const input = document.getElementById('goalInput');
             const goalText = input.value.trim();
 
-            if (goalText === '') {
-                alert('الرجاء كتابة نية!');
-                return;
-            }
+            if (goalText === '') return;
 
             const newGoal = {
                 id: Date.now(),
                 text: goalText,
-                completed: false,
-                createdAt: new Date().toLocaleDateString('ar-EG')
+                completed: false
             };
 
             goals.push(newGoal);
             saveGoals();
             renderGoals();
             input.value = '';
-            input.focus();
         }
 
-        // حذف نية
         function deleteGoal(id) {
-            if (confirm('هل أنت متأكد من حذف هذه النية؟')) {
-                goals = goals.filter(goal => goal.id !== id);
-                saveGoals();
-                renderGoals();
-            }
+            goals = goals.filter(goal => goal.id !== id);
+            saveGoals();
+            renderGoals();
         }
 
-        // تحديث حالة النية
         function toggleGoal(id) {
             const goal = goals.find(g => g.id === id);
             if (goal) {
@@ -336,53 +365,6 @@
             }
         }
 
-        // حفظ النوايا في localStorage
-        function saveGoals() {
-            localStorage.setItem('nawyGoals', JSON.stringify(goals));
-        }
-
-        // عرض النوايا
-        function renderGoals() {
-            const goalsList = document.getElementById('goalsList');
-            const emptyState = document.getElementById('emptyState');
-
-            if (goals.length === 0) {
-                goalsList.innerHTML = '';
-                emptyState.style.display = 'block';
-                updateStats(0, 0);
-                return;
-            }
-
-            emptyState.style.display = 'none';
-
-            const completedCount = goals.filter(g => g.completed).length;
-            updateStats(goals.length, completedCount);
-
-            goalsList.innerHTML = goals.map(goal => `
-                <li class="goal-item ${goal.completed ? 'completed' : ''}">
-                    <span 
-                        class="goal-text" 
-                        onclick="toggleGoal(${goal.id})"
-                        title="اضغط للتحديث"
-                    >
-                        ${goal.completed ? '✓ ' : ''}${escapeHtml(goal.text)}
-                    </span>
-                    <div class="goal-actions">
-                        <button class="btn-small" onclick="editGoal(${goal.id})">تعديل</button>
-                        <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        // تحديث الإحصائيات
-        function updateStats(total, completed) {
-            document.getElementById('totalGoals').textContent = total;
-            document.getElementById('completedGoals').textContent = completed;
-            document.getElementById('remainingGoals').textContent = total - completed;
-        }
-
-        // تعديل نية
         function editGoal(id) {
             const goal = goals.find(g => g.id === id);
             if (!goal) return;
@@ -395,17 +377,49 @@
             }
         }
 
-        // حماية من XSS
+        function saveGoals() {
+            localStorage.setItem('nawyGoals', JSON.stringify(goals));
+        }
+
+        function renderGoals() {
+            const goalsList = document.getElementById('goalsList');
+            const emptyState = document.getElementById('emptyState');
+
+            if (goals.length === 0) {
+                goalsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                updateStats(0, 0);
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            const completedCount = goals.filter(g => g.completed).length;
+            updateStats(goals.length, completedCount);
+
+            goalsList.innerHTML = goals.map(goal => `
+                <li class="goal-item ${goal.completed ? 'completed' : ''}">
+                    <span class="goal-text" onclick="toggleGoal(${goal.id})">
+                        ${goal.completed ? '✓ ' : ''}${escapeHtml(goal.text)}
+                    </span>
+                    <div class="goal-actions">
+                        <button class="btn-small" onclick="editGoal(${goal.id})">تعديل</button>
+                        <button class="btn-small btn-delete" onclick="deleteGoal(${goal.id})">حذف</button>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        function updateStats(total, completed) {
+            document.getElementById('totalGoals').textContent = total;
+            document.getElementById('completedGoals').textContent = completed;
+            document.getElementById('remainingGoals').textContent = total - completed;
+        }
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-
-        // تحديث الإحصائيات كل ثانية
-        setInterval(() => {
-            renderGoals();
-        }, 60000);
     </script>
 </body>
 </html>
