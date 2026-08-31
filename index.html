@@ -25,7 +25,6 @@
 <style>
 
     :root {
-
         --bg: #0d1210;
         --surface: #151b18;
         --text: #f4f7f5;
@@ -35,35 +34,23 @@
         --yellow: #f4c84d;
         --danger: #ff6262;
         --border: rgba(255,255,255,.07);
-
     }
 
-
     * {
-
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-
         -webkit-tap-highlight-color: transparent;
-
     }
-
 
     html,
     body {
-
         width: 100%;
         min-height: 100%;
-
-        background:
-            var(--bg);
-
+        background: var(--bg);
     }
 
-
     body {
-
         font-family:
             -apple-system,
             BlinkMacSystemFont,
@@ -74,44 +61,22 @@
             Arial,
             sans-serif;
 
-        color:
-            var(--text);
-
-        overflow:
-            hidden;
-
+        color: var(--text);
+        overflow: hidden;
     }
-
 
     button,
     textarea {
-
-        font-family:
-            inherit;
-
+        font-family: inherit;
     }
 
-
     button {
-
-        border:
-            none;
-
-        outline:
-            none;
-
-        cursor:
-            pointer;
-
-        -webkit-user-select:
-            none;
-
-        user-select:
-            none;
-
-        touch-action:
-            manipulation;
-
+        border: none;
+        outline: none;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        touch-action: manipulation;
     }
 
 
@@ -120,38 +85,23 @@
     ========================= */
 
     .app {
+        width: 100%;
+        max-width: 620px;
+        height: 100dvh;
+        margin: auto;
 
-        width:
-            100%;
+        display: flex;
+        flex-direction: column;
 
-        max-width:
-            620px;
-
-        height:
-            100dvh;
-
-        margin:
-            auto;
-
-        display:
-            flex;
-
-        flex-direction:
-            column;
-
-        position:
-            relative;
+        position: relative;
 
         background:
-
             radial-gradient(
                 circle at 85% -10%,
                 rgba(25,197,139,.13),
                 transparent 30%
             ),
-
             var(--bg);
-
     }
 
 
@@ -160,48 +110,24 @@
     ========================= */
 
     .header {
-
-        padding:
-            28px
-            20px
-            15px;
-
-        flex-shrink:
-            0;
-
+        padding: 28px 20px 15px;
+        flex-shrink: 0;
     }
-
 
     .brand {
-
-        display:
-            flex;
-
-        align-items:
-            center;
-
-        gap:
-            10px;
-
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-
     .brand-mark {
+        width: 40px;
+        height: 40px;
 
-        width:
-            40px;
+        display: grid;
+        place-items: center;
 
-        height:
-            40px;
-
-        display:
-            grid;
-
-        place-items:
-            center;
-
-        border-radius:
-            13px;
+        border-radius: 13px;
 
         background:
             rgba(25,197,139,.12);
@@ -209,23 +135,13 @@
         color:
             var(--green);
 
-        font-size:
-            20px;
-
+        font-size: 20px;
     }
 
-
     .brand-name {
-
-        font-size:
-            24px;
-
-        font-weight:
-            800;
-
-        letter-spacing:
-            -.8px;
-
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -.8px;
     }
 
 
@@ -234,41 +150,20 @@
     ========================= */
 
     .greeting {
-
-        margin-top:
-            17px;
-
+        margin-top: 17px;
     }
-
 
     .greeting h1 {
-
-        font-size:
-            27px;
-
-        line-height:
-            1.25;
-
-        font-weight:
-            800;
-
-        letter-spacing:
-            -.8px;
-
+        font-size: 27px;
+        line-height: 1.25;
+        font-weight: 800;
+        letter-spacing: -.8px;
     }
 
-
     .greeting p {
-
-        margin-top:
-            6px;
-
-        color:
-            var(--muted);
-
-        font-size:
-            14px;
-
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 14px;
     }
 
 
@@ -277,73 +172,41 @@
     ========================= */
 
     .progress {
+        margin-top: 18px;
 
-        margin-top:
-            18px;
-
-        display:
-            flex;
-
-        align-items:
-            center;
-
-        gap:
-            10px;
-
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-
     .progress-bar {
-
-        height:
-            5px;
-
-        flex:
-            1;
+        height: 5px;
+        flex: 1;
 
         background:
             rgba(255,255,255,.07);
 
-        border-radius:
-            99px;
-
-        overflow:
-            hidden;
-
+        border-radius: 99px;
+        overflow: hidden;
     }
 
-
     .progress-fill {
-
-        height:
-            100%;
-
-        width:
-            0%;
+        height: 100%;
+        width: 0%;
 
         background:
             var(--green);
 
-        border-radius:
-            99px;
+        border-radius: 99px;
 
         transition:
             width .3s ease;
-
     }
 
-
     .progress-text {
-
-        color:
-            var(--muted);
-
-        font-size:
-            12px;
-
-        white-space:
-            nowrap;
-
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
     }
 
 
@@ -352,48 +215,31 @@
     ========================= */
 
     .tasks {
+        flex: 1;
 
-        flex:
-            1;
-
-        overflow-y:
-            auto;
+        overflow-y: auto;
 
         padding:
             8px
             20px
             160px;
 
-        scrollbar-width:
-            none;
-
+        scrollbar-width: none;
     }
-
 
     .tasks::-webkit-scrollbar {
-
-        display:
-            none;
-
+        display: none;
     }
 
-
     .task {
+        min-height: 64px;
 
-        min-height:
-            64px;
+        display: flex;
+        align-items: center;
 
-        display:
-            flex;
+        gap: 13px;
 
-        align-items:
-            center;
-
-        gap:
-            13px;
-
-        padding:
-            11px 3px;
+        padding: 11px 3px;
 
         border-bottom:
             1px solid var(--border);
@@ -401,23 +247,14 @@
         transition:
             opacity .2s ease,
             transform .15s ease;
-
     }
-
 
     .task:last-child {
-
-        border-bottom:
-            none;
-
+        border-bottom: none;
     }
 
-
     .task:active {
-
-        transform:
-            scale(.99);
-
+        transform: scale(.99);
     }
 
 
@@ -426,79 +263,47 @@
     ========================= */
 
     .check {
+        width: 23px;
+        height: 23px;
 
-        width:
-            23px;
-
-        height:
-            23px;
-
-        flex:
-            0 0 23px;
+        flex: 0 0 23px;
 
         border:
             1.8px solid #66736c;
 
-        border-radius:
-            50%;
+        border-radius: 50%;
 
-        display:
-            grid;
-
-        place-items:
-            center;
+        display: grid;
+        place-items: center;
 
         transition:
             all .2s ease;
-
     }
-
 
     .task.completed .check {
-
-        background:
-            var(--green);
-
-        border-color:
-            var(--green);
-
+        background: var(--green);
+        border-color: var(--green);
     }
 
-
     .check::after {
+        content: "✓";
 
-        content:
-            "✓";
+        color: #07120e;
 
-        color:
-            #07120e;
+        font-size: 14px;
+        font-weight: 900;
 
-        font-size:
-            14px;
+        opacity: 0;
 
-        font-weight:
-            900;
-
-        opacity:
-            0;
-
-        transform:
-            scale(.5);
+        transform: scale(.5);
 
         transition:
             all .2s ease;
-
     }
 
-
     .task.completed .check::after {
-
-        opacity:
-            1;
-
-        transform:
-            scale(1);
-
+        opacity: 1;
+        transform: scale(1);
     }
 
 
@@ -507,44 +312,27 @@
     ========================= */
 
     .task-main {
-
-        min-width:
-            0;
-
-        flex:
-            1;
-
+        min-width: 0;
+        flex: 1;
     }
 
-
     .task-title {
+        font-size: 16px;
+        line-height: 1.45;
 
-        font-size:
-            16px;
+        color: #eef3f0;
 
-        line-height:
-            1.45;
-
-        color:
-            #eef3f0;
-
-        overflow-wrap:
-            anywhere;
+        overflow-wrap: anywhere;
 
         transition:
             all .2s ease;
-
     }
 
-
     .task.completed .task-title {
-
-        color:
-            var(--muted-dark);
+        color: var(--muted-dark);
 
         text-decoration:
             line-through;
-
     }
 
 
@@ -553,75 +341,44 @@
     ========================= */
 
     .task-actions {
+        display: flex;
+        align-items: center;
 
-        display:
-            flex;
+        gap: 2px;
 
-        align-items:
-            center;
-
-        gap:
-            2px;
-
-        opacity:
-            .65;
-
+        opacity: .65;
     }
 
-
     .icon-btn {
+        width: 34px;
+        height: 34px;
 
-        width:
-            34px;
+        display: grid;
+        place-items: center;
 
-        height:
-            34px;
+        border-radius: 10px;
 
-        display:
-            grid;
+        background: transparent;
 
-        place-items:
-            center;
+        color: #718078;
 
-        border-radius:
-            10px;
-
-        background:
-            transparent;
-
-        color:
-            #718078;
-
-        font-size:
-            19px;
+        font-size: 19px;
 
         transition:
             all .2s ease;
-
     }
-
 
     .icon-btn:active {
-
         background:
             rgba(255,255,255,.07);
-
     }
-
 
     .icon-btn.starred {
-
-        color:
-            var(--yellow);
-
+        color: var(--yellow);
     }
 
-
     .icon-btn.delete:active {
-
-        color:
-            var(--danger);
-
+        color: var(--danger);
     }
 
 
@@ -630,35 +387,21 @@
     ========================= */
 
     .empty {
-
-        text-align:
-            center;
-
-        padding:
-            80px 25px;
-
+        text-align: center;
+        padding: 80px 25px;
     }
 
-
     .empty-icon {
-
-        width:
-            58px;
-
-        height:
-            58px;
+        width: 58px;
+        height: 58px;
 
         margin:
             0 auto 15px;
 
-        display:
-            grid;
+        display: grid;
+        place-items: center;
 
-        place-items:
-            center;
-
-        border-radius:
-            18px;
+        border-radius: 18px;
 
         background:
             rgba(25,197,139,.09);
@@ -666,190 +409,152 @@
         color:
             var(--green);
 
-        font-size:
-            25px;
-
+        font-size: 25px;
     }
-
 
     .empty strong {
+        display: block;
 
-        display:
-            block;
+        color: #dfe7e3;
 
-        color:
-            #dfe7e3;
+        font-size: 16px;
 
-        font-size:
-            16px;
-
-        margin-bottom:
-            5px;
-
+        margin-bottom: 5px;
     }
 
-
     .empty span {
-
-        color:
-            var(--muted);
-
-        font-size:
-            13px;
-
+        color: var(--muted);
+        font-size: 13px;
     }
 
 
     /* =========================
-       INSTALL CARD
+       INSTALL FLOAT
     ========================= */
 
-    .install-card {
+    .install-overlay {
+        position: fixed;
 
-        display:
-            none;
+        inset: 0;
 
-        margin:
-            0 16px 10px;
+        display: flex;
+
+        align-items: flex-end;
+        justify-content: center;
 
         padding:
-            13px 14px;
-
-        align-items:
-            center;
-
-        gap:
-            12px;
+            18px;
 
         background:
-            rgba(21,27,24,.97);
-
-        border:
-            1px solid var(--border);
-
-        border-radius:
-            17px;
-
-        box-shadow:
-            0 14px 35px rgba(0,0,0,.25);
+            rgba(0,0,0,.22);
 
         backdrop-filter:
-            blur(16px);
+            blur(2px);
 
+        opacity: 0;
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            opacity .25s ease,
+            visibility .25s ease;
+
+        z-index: 1000;
     }
 
-
-    .install-card.show {
-
-        display:
-            flex;
-
-        animation:
-            installIn .28s ease both;
-
+    .install-overlay.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
     }
 
+    .install-sheet {
+        width: 100%;
+        max-width: 620px;
 
-    @keyframes installIn {
+        display: flex;
 
-        from {
+        align-items: center;
 
-            opacity:
-                0;
+        gap: 12px;
 
-            transform:
-                translateY(8px);
+        padding:
+            14px;
 
-        }
+        background:
+            rgba(21,27,24,.98);
 
-        to {
-
-            opacity:
-                1;
-
-            transform:
-                translateY(0);
-
-        }
-
-    }
-
-
-    .install-icon {
-
-        width:
-            38px;
-
-        height:
-            38px;
-
-        flex:
-            0 0 38px;
-
-        display:
-            grid;
-
-        place-items:
-            center;
+        border:
+            1px solid
+            rgba(25,197,139,.13);
 
         border-radius:
-            12px;
+            20px;
+
+        box-shadow:
+            0 20px 55px
+            rgba(0,0,0,.42);
+
+        transform:
+            translateY(25px);
+
+        transition:
+            transform .28s ease;
+    }
+
+    .install-overlay.show
+    .install-sheet {
+        transform:
+            translateY(0);
+    }
+
+    .install-icon {
+        width: 44px;
+        height: 44px;
+
+        flex: 0 0 44px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 14px;
 
         background:
             rgba(25,197,139,.11);
 
-        font-size:
-            18px;
-
+        font-size: 20px;
     }
-
 
     .install-copy {
-
-        min-width:
-            0;
-
-        flex:
-            1;
-
+        min-width: 0;
+        flex: 1;
     }
-
 
     .install-title {
-
-        font-size:
-            14px;
-
-        font-weight:
-            800;
-
-        color:
-            var(--text);
-
+        font-size: 15px;
+        font-weight: 800;
     }
-
 
     .install-subtitle {
+        margin-top: 3px;
 
-        margin-top:
-            2px;
+        color: var(--muted);
 
-        color:
-            var(--muted);
+        font-size: 11px;
 
-        font-size:
-            11px;
-
+        line-height: 1.4;
     }
 
-
     .install-btn {
+        flex-shrink: 0;
 
         padding:
-            9px 12px;
+            10px 14px;
 
         border-radius:
-            11px;
+            12px;
 
         background:
             var(--green);
@@ -861,37 +566,124 @@
             12px;
 
         font-weight:
-            800;
+            900;
 
         white-space:
             nowrap;
 
+        box-shadow:
+            0 6px 18px
+            rgba(25,197,139,.18);
+    }
+
+    .install-close {
+        width: 30px;
+        height: 30px;
+
+        flex: 0 0 30px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.04);
+
+        color:
+            #718078;
+
+        font-size: 18px;
     }
 
 
-    .install-close {
+    /* =========================
+       INSTALL GUIDE
+    ========================= */
 
-        width:
-            28px;
+    .install-guide {
+        position: fixed;
 
-        height:
-            28px;
+        inset: 0;
 
-        display:
-            grid;
+        display: grid;
+        place-items: center;
 
-        place-items:
-            center;
+        padding: 22px;
 
         background:
-            transparent;
+            rgba(0,0,0,.55);
+
+        backdrop-filter:
+            blur(8px);
+
+        opacity: 0;
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            all .25s ease;
+
+        z-index: 1100;
+    }
+
+    .install-guide.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .guide-box {
+        width: 100%;
+        max-width: 380px;
+
+        padding: 22px;
+
+        background:
+            #151b18;
+
+        border:
+            1px solid var(--border);
+
+        border-radius:
+            22px;
+
+        box-shadow:
+            0 25px 70px
+            rgba(0,0,0,.45);
+
+        text-align:
+            center;
+    }
+
+    .guide-box h2 {
+        font-size: 19px;
+        margin-bottom: 9px;
+    }
+
+    .guide-box p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .guide-close {
+        margin-top: 18px;
+
+        width: 100%;
+
+        padding: 11px;
+
+        border-radius: 13px;
+
+        background:
+            rgba(255,255,255,.06);
 
         color:
-            #64716b;
+            var(--text);
 
-        font-size:
-            18px;
-
+        font-size: 13px;
     }
 
 
@@ -900,18 +692,11 @@
     ========================= */
 
     .composer-wrap {
+        position: absolute;
 
-        position:
-            absolute;
-
-        left:
-            0;
-
-        right:
-            0;
-
-        bottom:
-            0;
+        left: 0;
+        right: 0;
+        bottom: 0;
 
         padding:
             12px
@@ -925,25 +710,17 @@
                 transparent
             );
 
-        pointer-events:
-            none;
-
+        pointer-events: none;
     }
 
-
     .composer {
+        pointer-events: auto;
 
-        pointer-events:
-            auto;
+        display: flex;
 
-        display:
-            flex;
+        align-items: flex-end;
 
-        align-items:
-            flex-end;
-
-        gap:
-            8px;
+        gap: 8px;
 
         padding:
             7px
@@ -961,11 +738,11 @@
             20px;
 
         box-shadow:
-            0 18px 45px rgba(0,0,0,.28);
+            0 18px 45px
+            rgba(0,0,0,.28);
 
         backdrop-filter:
             blur(18px);
-
     }
 
 
@@ -974,30 +751,19 @@
     ========================= */
 
     textarea {
+        flex: 1;
 
-        flex:
-            1;
+        min-width: 0;
 
-        min-width:
-            0;
+        min-height: 42px;
+        max-height: 110px;
 
-        min-height:
-            42px;
+        resize: none;
 
-        max-height:
-            110px;
+        border: none;
+        outline: none;
 
-        resize:
-            none;
-
-        border:
-            none;
-
-        outline:
-            none;
-
-        background:
-            transparent;
+        background: transparent;
 
         color:
             var(--text);
@@ -1010,41 +776,28 @@
 
         font-size:
             15px;
-
     }
 
-
     textarea::placeholder {
-
         color:
             #718078;
-
     }
 
 
     /* =========================
-       ADD
+       SUBMIT
     ========================= */
 
     .submit {
+        width: 42px;
+        height: 42px;
 
-        width:
-            42px;
+        flex: 0 0 42px;
 
-        height:
-            42px;
+        display: grid;
+        place-items: center;
 
-        flex:
-            0 0 42px;
-
-        display:
-            grid;
-
-        place-items:
-            center;
-
-        border-radius:
-            14px;
+        border-radius: 14px;
 
         background:
             #29332e;
@@ -1057,12 +810,9 @@
 
         transition:
             all .2s ease;
-
     }
 
-
     .submit.active {
-
         background:
             var(--green);
 
@@ -1072,33 +822,20 @@
         box-shadow:
             0 7px 20px
             rgba(25,197,139,.22);
-
     }
-
 
     .submit:active {
-
         transform:
             scale(.94);
-
     }
-
 
     .submit:disabled {
-
-        cursor:
-            default;
-
         pointer-events:
             none;
-
     }
 
-
     .hint {
-
-        text-align:
-            center;
+        text-align: center;
 
         color:
             #56635c;
@@ -1108,7 +845,6 @@
 
         margin-top:
             7px;
-
     }
 
 
@@ -1119,46 +855,46 @@
     @media (max-width:380px) {
 
         .header {
-
             padding:
                 22px
                 16px
                 12px;
-
         }
 
         .tasks {
-
             padding-left:
                 16px;
 
             padding-right:
                 16px;
-
         }
 
         .greeting h1 {
-
             font-size:
                 24px;
-
         }
 
         .task-title {
-
             font-size:
                 15px;
-
         }
 
-        .install-card {
-
-            margin-left:
+        .install-overlay {
+            padding:
                 12px;
+        }
 
-            margin-right:
+        .install-sheet {
+            gap:
+                9px;
+
+            padding:
                 12px;
+        }
 
+        .install-subtitle {
+            font-size:
+                10px;
         }
 
     }
@@ -1228,53 +964,6 @@
 </main>
 
 
-<!-- INSTALL -->
-
-<div
-    class="install-card"
-    id="installCard">
-
-    <div class="install-icon">
-        📱
-    </div>
-
-
-    <div class="install-copy">
-
-        <div class="install-title">
-            ناوي؟ خليه معاك.
-        </div>
-
-        <div class="install-subtitle">
-            ثبّت التطبيق وابدأ يومك بنية.
-        </div>
-
-    </div>
-
-
-    <button
-        type="button"
-        class="install-btn"
-        id="installBtn">
-
-        ثبّت ناوي
-
-    </button>
-
-
-    <button
-        type="button"
-        class="install-close"
-        id="installClose"
-        aria-label="إغلاق">
-
-        ×
-
-    </button>
-
-</div>
-
-
 <!-- COMPOSER -->
 
 <div class="composer-wrap">
@@ -1306,6 +995,82 @@
     <div class="hint">
         اضغط Enter لإضافة نية جديدة
     </div>
+
+</div>
+
+</div><!-- =========================
+     INSTALL FLOAT
+========================= --><div
+    class="install-overlay"
+    id="installOverlay"
+    aria-hidden="true"><div class="install-sheet">
+
+    <div class="install-icon">
+        📱
+    </div>
+
+
+    <div class="install-copy">
+
+        <div class="install-title">
+            ناوي؟ خليه معاك.
+        </div>
+
+        <div class="install-subtitle">
+            نزّل ناوي وابدأ يومك بنية.
+        </div>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="install-btn"
+        id="installBtn">
+
+        نزّل ناوي
+
+    </button>
+
+
+    <button
+        type="button"
+        class="install-close"
+        id="installClose"
+        aria-label="إغلاق">
+
+        ×
+
+    </button>
+
+</div>
+
+</div><!-- =========================
+     INSTALL GUIDE
+========================= --><div
+    class="install-guide"
+    id="installGuide"
+    aria-hidden="true"><div class="guide-box">
+
+    <h2>
+        خلّي ناوي معاك 📱
+    </h2>
+
+    <p id="guideText">
+        من قائمة المتصفح اختار
+        <strong>إضافة إلى الشاشة الرئيسية</strong>
+        عشان تستخدم ناوي كتطبيق.
+    </p>
+
+
+    <button
+        type="button"
+        class="guide-close"
+        id="guideClose">
+
+        تمام
+
+    </button>
 
 </div>
 
@@ -1355,9 +1120,9 @@
         );
 
 
-    const installCard =
+    const installOverlay =
         document.getElementById(
-            "installCard"
+            "installOverlay"
         );
 
 
@@ -1373,6 +1138,24 @@
         );
 
 
+    const installGuide =
+        document.getElementById(
+            "installGuide"
+        );
+
+
+    const guideText =
+        document.getElementById(
+            "guideText"
+        );
+
+
+    const guideClose =
+        document.getElementById(
+            "guideClose"
+        );
+
+
     let tasks =
         loadTasks();
 
@@ -1381,9 +1164,13 @@
         false;
 
 
+    let deferredInstallPrompt =
+        null;
+
+
     /* =====================================================
-       SOFT TODO SOUND
-       ===================================================== */
+       SOUND
+    ===================================================== */
 
     let audioContext =
         null;
@@ -1399,9 +1186,7 @@
 
 
             if (!AudioContext) {
-
                 return;
-
             }
 
 
@@ -1426,12 +1211,6 @@
             const now =
                 audioContext.currentTime;
 
-
-            /*
-             * Pop قصير جدًا:
-             * نغمة ناعمة تبدأ منخفضة
-             * وتنتهي بسرعة.
-             */
 
             const oscillator =
                 audioContext.createOscillator();
@@ -1487,20 +1266,14 @@
             );
 
 
-            oscillator.connect(
-                gain
-            );
-
+            oscillator.connect(gain);
 
             gain.connect(
                 audioContext.destination
             );
 
 
-            oscillator.start(
-                now
-            );
-
+            oscillator.start(now);
 
             oscillator.stop(
                 now + 0.125
@@ -1591,9 +1364,7 @@
 
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify(
-                tasks
-            )
+            JSON.stringify(tasks)
         );
 
     }
@@ -1615,9 +1386,6 @@
     );
 
 
-    /*
-     * Enter = addTask
-     */
     taskInput.addEventListener(
         "keydown",
         event => {
@@ -1637,9 +1405,6 @@
     );
 
 
-    /*
-     * Arrow = addTask
-     */
     submitBtn.addEventListener(
         "click",
         () => {
@@ -1707,8 +1472,6 @@
 
         if (!text) {
 
-            updateSubmitButton();
-
             return;
 
         }
@@ -1750,9 +1513,6 @@
         render();
 
 
-        /*
-         * صوت الإضافة
-         */
         playAddSound();
 
 
@@ -1771,9 +1531,6 @@
         updateSubmitButton();
 
 
-        /*
-         * إبقاء المؤشر جاهزًا
-         */
         taskInput.focus();
 
     }
@@ -1793,9 +1550,7 @@
 
 
         if (!task) {
-
             return;
-
         }
 
 
@@ -1830,9 +1585,7 @@
 
 
         if (!task) {
-
             return;
-
         }
 
 
@@ -2019,10 +1772,8 @@
             progressFill.style.width =
                 "0%";
 
-
             progressText.textContent =
                 "ابدأ أول نية";
-
 
             return;
 
@@ -2077,9 +1828,7 @@
        ESCAPE HTML
     ========================= */
 
-    function escapeHtml(
-        text
-    ) {
+    function escapeHtml(text) {
 
         const div =
             document.createElement(
@@ -2097,42 +1846,113 @@
 
 
     /* =====================================================
-       PWA INSTALL
-       ===================================================== */
+       INSTALL EXPERIENCE
+    ===================================================== */
 
-    let deferredInstallPrompt =
-        null;
+    function isInstalled() {
 
-
-    function showInstallCard() {
-
-        if (
+        return (
             window.matchMedia(
                 "(display-mode: standalone)"
             ).matches
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            window.navigator.standalone ===
-            true
-        ) {
-
-            return;
-
-        }
-
-
-        installCard.classList.add(
-            "show"
+            ||
+            window.navigator.standalone === true
         );
 
     }
 
+
+    function showInstallOverlay() {
+
+        if (isInstalled()) {
+            return;
+        }
+
+
+        installOverlay.classList.add(
+            "show"
+        );
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
+
+
+    function hideInstallOverlay() {
+
+        installOverlay.classList.remove(
+            "show"
+        );
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    function showInstallGuide() {
+
+        installGuide.classList.add(
+            "show"
+        );
+
+        installGuide.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        const isIOS =
+            /iPad|iPhone|iPod/.test(
+                navigator.userAgent
+            )
+            ||
+            (
+                navigator.platform ===
+                "MacIntel" &&
+                navigator.maxTouchPoints > 1
+            );
+
+
+        if (isIOS) {
+
+            guideText.innerHTML =
+                "اضغط على زر <strong>المشاركة</strong> في المتصفح، ثم اختر <strong>إضافة إلى الشاشة الرئيسية</strong>.";
+
+        }
+
+        else {
+
+            guideText.innerHTML =
+                "من قائمة المتصفح اختار <strong>إضافة إلى الشاشة الرئيسية</strong> أو <strong>Install app</strong> عشان تستخدم ناوي كتطبيق.";
+
+        }
+
+    }
+
+
+    function hideInstallGuide() {
+
+        installGuide.classList.remove(
+            "show"
+        );
+
+        installGuide.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
+    /*
+     * المتصفح أعطانا أمر التثبيت الأصلي
+     */
 
     window.addEventListener(
         "beforeinstallprompt",
@@ -2143,42 +1963,49 @@
             deferredInstallPrompt =
                 event;
 
-            showInstallCard();
-
         }
     );
 
+
+    /*
+     * زر نزّل ناوي
+     */
 
     installBtn.addEventListener(
         "click",
         async () => {
 
             if (
-                !deferredInstallPrompt
+                deferredInstallPrompt
             ) {
+
+                deferredInstallPrompt.prompt();
+
+
+                try {
+
+                    await deferredInstallPrompt.userChoice;
+
+                } catch {}
+
+
+                deferredInstallPrompt =
+                    null;
+
+
+                hideInstallOverlay();
 
                 return;
 
             }
 
 
-            deferredInstallPrompt.prompt();
+            /*
+             * لو المتصفح لا يدعم
+             * الأمر البرمجي
+             */
 
-
-            try {
-
-                await deferredInstallPrompt.userChoice;
-
-            } catch {}
-
-
-            deferredInstallPrompt =
-                null;
-
-
-            installCard.classList.remove(
-                "show"
-            );
+            showInstallGuide();
 
         }
     );
@@ -2188,13 +2015,42 @@
         "click",
         () => {
 
-            installCard.classList.remove(
-                "show"
-            );
+            hideInstallOverlay();
 
         }
     );
 
+
+    guideClose.addEventListener(
+        "click",
+        () => {
+
+            hideInstallGuide();
+
+        }
+    );
+
+
+    installGuide.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                installGuide
+            ) {
+
+                hideInstallGuide();
+
+            }
+
+        }
+    );
+
+
+    /*
+     * بعد نجاح التثبيت
+     */
 
     window.addEventListener(
         "appinstalled",
@@ -2203,17 +2059,40 @@
             deferredInstallPrompt =
                 null;
 
-            installCard.classList.remove(
-                "show"
-            );
+            hideInstallOverlay();
+
+            hideInstallGuide();
+
+        }
+    );
+
+
+    /*
+     * الرسالة أساسية على الويب.
+     * تأخير بسيط حتى لا تغطي الواجهة
+     * قبل أن تظهر.
+     */
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            if (!isInstalled()) {
+
+                setTimeout(
+                    showInstallOverlay,
+                    900
+                );
+
+            }
 
         }
     );
 
 
     /* =====================================================
-       SERVICE WORKER — AUTO UPDATE
-    ===================================================== */
+       SERVICE WORKER
+       ===================================================== */
 
     if (
         "serviceWorker" in navigator
@@ -2249,9 +2128,7 @@
 
 
                             if (!newWorker) {
-
                                 return;
-
                             }
 
 
