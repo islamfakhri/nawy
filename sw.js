@@ -1,53 +1,299 @@
-const CACHE_NAME = 'nawy-app-v2'; // تحديث الإصدار لتجاوز الذاكرة القديمة
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
+/* =====================================================
+   NAWY SERVICE WORKER
+   AUTO UPDATE VERSION
+   ===================================================== */
 
-// 1. تثبيت الـ Service Worker وتحميل الملفات الحديثة
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('تم حفظ الملفات الجديدة في الذاكرة المؤقتة');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
-  // إجبار النسخة الجديدة على التفعيل فوراً بدون انتظار إغلاق المتصفح
-  self.skipWaiting();
-});
 
-// 2. تنظيف الـ Cache القديمة (حذف v1 واستبدالها بـ v2)
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('جاري حذف الذاكرة القديمة:', cache);
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-  // السيطرة المباشرة على جميع الصفحات المفتوحة لتطبيق التحديث
-  self.clients.claim();
-});
+/*
+ * غيّر الرقم ده عند إصدار نسخة كبيرة جديدة.
+ */
 
-// 3. استدعاء الملفات عند انقطاع الإنترنت (Offline Support)
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // إرجاع الملف من الذاكرة إذا كان موجوداً، أو جلبه من الشبكة
-      return cachedResponse || fetch(event.request).catch(() => {
-        // في حال عدم وجود إنترنت وعدم وجود الملف
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+const VERSION = "nawy-v6";
+
+
+const STATIC_CACHE =
+    VERSION + "-static";
+
+
+const RUNTIME_CACHE =
+    VERSION + "-runtime";
+
+
+
+/* =====================================================
+   INSTALL
+   ===================================================== */
+
+self.addEventListener(
+    "install",
+    event => {
+
+        /*
+         * لا ننتظر الـSW القديم.
+         */
+
+        self.skipWaiting();
+
+
+        event.waitUntil(
+
+            caches.open(
+                STATIC_CACHE
+            ).then(cache => {
+
+                return cache.addAll([
+                    "./",
+                    "./index.html",
+                    "./manifest.json",
+                    "./icon-192.png"
+                ]);
+
+            })
+
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   ACTIVATE
+   ===================================================== */
+
+self.addEventListener(
+    "activate",
+    event => {
+
+        event.waitUntil(
+
+            Promise.all([
+
+                /*
+                 * حذف أي Cache قديم
+                 */
+
+                caches.keys()
+                    .then(keys => {
+
+                        return Promise.all(
+
+                            keys
+                                .filter(
+                                    key =>
+                                        key !==
+                                        STATIC_CACHE &&
+                                        key !==
+                                        RUNTIME_CACHE
+                                )
+                                .map(
+                                    key =>
+                                        caches.delete(key)
+                                )
+
+                        );
+
+                    }),
+
+
+                /*
+                 * استلام التحكم فورًا
+                 */
+
+                self.clients.claim()
+
+            ])
+
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   MESSAGE
+   ===================================================== */
+
+self.addEventListener(
+    "message",
+    event => {
+
+        if (
+            event.data &&
+            event.data.type ===
+            "SKIP_WAITING"
+        ) {
+
+            self.skipWaiting();
+
         }
-      });
-    })
-  );
-});
+
+    }
+);
+
+
+
+/* =====================================================
+   FETCH
+   ===================================================== */
+
+self.addEventListener(
+    "fetch",
+    event => {
+
+        const request =
+            event.request;
+
+
+        /*
+         * GET فقط
+         */
+
+        if (
+            request.method !==
+            "GET"
+        ) {
+
+            return;
+
+        }
+
+
+        const url =
+            new URL(
+                request.url
+            );
+
+
+        /*
+         * تجاهل الطلبات الخارجية.
+         */
+
+        if (
+            url.origin !==
+            self.location.origin
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * HTML / Navigation
+         *
+         * Network First
+         *
+         * يعني:
+         * حاول تجيب أحدث نسخة من السيرفر.
+         * لو الإنترنت مش موجود استخدم الكاش.
+         */
+
+        if (
+            request.mode ===
+            "navigate" ||
+            request.destination ===
+            "document"
+        ) {
+
+            event.respondWith(
+
+                fetch(request)
+                    .then(response => {
+
+                        const copy =
+                            response.clone();
+
+
+                        caches.open(
+                            RUNTIME_CACHE
+                        ).then(cache => {
+
+                            cache.put(
+                                request,
+                                copy
+                            );
+
+                        });
+
+
+                        return response;
+
+                    })
+
+                    .catch(() => {
+
+                        return caches.match(
+                            request
+                        ).then(cached => {
+
+                            return cached ||
+                                caches.match(
+                                    "./index.html"
+                                );
+
+                        });
+
+                    })
+
+            );
+
+
+            return;
+
+        }
+
+
+
+        /*
+         * الملفات الأخرى
+         *
+         * Network First
+         */
+
+        event.respondWith(
+
+            fetch(request)
+
+                .then(response => {
+
+                    if (
+                        response &&
+                        response.status === 200
+                    ) {
+
+                        const copy =
+                            response.clone();
+
+
+                        caches.open(
+                            RUNTIME_CACHE
+                        ).then(cache => {
+
+                            cache.put(
+                                request,
+                                copy
+                            );
+
+                        });
+
+                    }
+
+
+                    return response;
+
+                })
+
+                .catch(() => {
+
+                    return caches.match(
+                        request
+                    );
+
+                })
+
+        );
+
+    }
+);
