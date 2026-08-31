@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#10b981">
+    <meta name="theme-color" content="#18181b">
+    <title>ناوي | ناوي على إيه النهاردة؟</title>
     
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./icon-192.png">
     <link rel="apple-touch-icon" href="./icon-192.png">
-    <title>ناوي</title>
+
     <style>
         :root {
-            --bg: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #9ca3af;
-            --border: #e5e7eb;
-            --primary: #10b981;
-            --item-hover: #f9fafb;
-        }
-
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #64748b;
-            --border: #334155;
-            --primary: #10b981;
-            --item-hover: #334155;
+            --bg-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000&auto=format&fit=crop');
+            --card-bg: rgba(30, 30, 30, 0.85);
+            --input-bg: #222225;
+            --text-main: #ffffff;
+            --text-sub: #a1a1aa;
+            --accent: #10b981;
+            --star-color: #fbbf24;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -38,252 +30,405 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            padding: 20px 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #121214 var(--bg-image) no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 440px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            height: fit-content;
+            position: relative;
         }
 
-        header {
+        /* Dark Overlay for Ultra-Clean Contrast */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            z-index: 0;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px 16px 0 16px;
+        }
+
+        /* Header Style */
+        header {
+            margin-top: 15px;
+            margin-bottom: 20px;
         }
 
         header h1 {
-            font-size: 1.5em;
+            font-size: 1.8rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
         }
 
-        .theme-toggle {
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 4px;
+        header .date-subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 4px;
+            font-weight: 400;
         }
 
-        .install-banner {
-            display: none;
-            background: rgba(16, 185, 129, 0.1);
-            border-radius: 10px;
-            padding: 10px 14px;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85em;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .btn-install {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            cursor: pointer;
-        }
-
-        .input-box {
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            background: var(--bg);
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-
-        textarea {
+        /* Tasks List Area */
+        .tasks-container {
             flex: 1;
-            border: none;
-            background: transparent;
-            font-size: 0.95em;
-            font-family: inherit;
-            color: var(--text-main);
-            resize: none;
-            outline: none;
-            min-height: 24px;
-            max-height: 100px;
-            line-height: 1.4;
-        }
-
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-weight: bold;
-            font-size: 0.9em;
-            cursor: pointer;
-        }
-
-        .todo-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 60vh;
             overflow-y: auto;
+            padding-bottom: 120px;
+            scrollbar-width: none;
         }
 
-        .todo-item {
+        .tasks-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .task-card {
+            background: rgba(30, 30, 35, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.2s;
+            gap: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease, background 0.2s;
         }
 
-        .todo-item:last-child {
-            border-bottom: none;
+        .task-card:active {
+            transform: scale(0.99);
         }
 
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            border: 2px solid var(--border);
+        .check-circle {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            margin-top: 2px;
-            flex-shrink: 0;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .todo-item.completed .checkbox {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+        .task-card.completed .check-circle {
+            background: #10b981;
+            border-color: #10b981;
         }
 
-        .checkbox::after {
+        .check-circle::after {
             content: '✓';
-            font-size: 12px;
+            color: white;
+            font-size: 13px;
             display: none;
+            font-weight: bold;
         }
 
-        .todo-item.completed .checkbox::after {
+        .task-card.completed .check-circle::after {
             display: block;
         }
 
-        .todo-text {
+        .task-content {
             flex: 1;
-            font-size: 0.95em;
-            white-space: pre-wrap;
-            word-break: break-word;
-            line-height: 1.4;
-            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .todo-item.completed .todo-text {
+        .task-title {
+            font-size: 1rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #ffffff;
+        }
+
+        .task-card.completed .task-title {
             text-decoration: line-through;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .task-meta {
+            font-size: 0.78rem;
+            color: var(--text-sub);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 2px;
+            transition: color 0.2s, transform 0.1s;
+        }
+
+        .star-btn.starred {
+            color: var(--star-color);
         }
 
         .btn-delete {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.2);
             cursor: pointer;
-            font-size: 1.1em;
-            opacity: 0.6;
-            padding: 0 4px;
+            font-size: 1rem;
+            padding: 2px 4px;
         }
 
         .btn-delete:hover {
-            opacity: 1;
             color: #ef4444;
         }
 
-        .empty {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9em;
-            padding: 20px 0;
+        /* Bottom Fixed Input Section */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: #1c1c1e;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+            z-index: 10;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .add-icon {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.5);
+            padding-bottom: 6px;
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            resize: none;
+            min-height: 24px;
+            max-height: 100px;
+            line-height: 1.4;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-submit {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-submit.active {
+            background: var(--accent);
+        }
+
+        /* Quick Action Toolbar inside Input */
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tool-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="app-container">
         <header>
-            <h1>ناوي 🎯</h1>
-            <button class="theme-toggle" id="themeToggle">🌙</button>
+            <h1>ناوي على إيه النهاردة؟ 🎯</h1>
+            <div class="date-subtitle" id="currentDate">--</div>
         </header>
 
-        <div class="install-banner" id="installBanner">
-            <span>تثبيت التطبيق</span>
-            <button class="btn-install" id="installBtn">تثبيت</button>
+        <div class="tasks-container" id="tasksContainer">
+            <!-- Dynamic Tasks Here -->
         </div>
 
-        <div class="input-box">
-            <textarea id="todoInput" rows="1" placeholder="أضف مهمة جديدة..."></textarea>
-            <button class="btn-add" onclick="addTodo()">إضافة</button>
-        </div>
-
-        <ul class="todo-list" id="todoList"></ul>
-
-        <div class="empty" id="emptyState" style="display: none;">
-            القائمة فارغة
+        <div class="bottom-bar">
+            <div class="input-row">
+                <span class="add-icon">◯</span>
+                <textarea id="taskInput" rows="1" placeholder="اكتب اللي ناوي عليه..."></textarea>
+                <button class="btn-submit" id="submitBtn" onclick="addTask()">⬆</button>
+            </div>
+            <div class="toolbar">
+                <button class="tool-btn" onclick="setTodayDate()">📅 النهاردة</button>
+                <button class="tool-btn" onclick="alert('خاصية التذكير جاية قريباً 🔔')">🔔 فكرني</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- 1. المظهر ---
-        const themeToggle = document.getElementById('themeToggle');
-        const savedTheme = localStorage.getItem('nawyTheme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        // --- 1. التاريخ العربي ---
+        const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+        const todayStr = new Date().toLocaleDateString('ar-EG', dateOptions);
+        document.getElementById('currentDate').textContent = todayStr;
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('nawyTheme', newTheme);
-            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        // --- 2. إدارة المهمات ---
+        let tasks = JSON.parse(localStorage.getItem('nawy_tasks_v3')) || [];
+        const taskInput = document.getElementById('taskInput');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // التعديل التلقائي لارتفاع النص عند الكتابة
+        taskInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+            if(this.value.trim().length > 0) {
+                submitBtn.classList.add('active');
+            } else {
+                submitBtn.classList.remove('active');
+            }
         });
 
-        // --- 2. تثبيت والتحديث الآلي PWA ---
-        let deferredPrompt;
-        const installBanner = document.getElementById('installBanner');
-        const installBtn = document.getElementById('installBtn');
+        document.addEventListener('DOMContentLoaded', renderTasks);
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBanner.style.display = 'flex';
-        });
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (!text) return;
 
-        installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') installBanner.style.display = 'none';
-            deferredPrompt = null;
-        });
+            tasks.unshift({
+                id: Date.now(),
+                text: text,
+                completed: false,
+                starred: false,
+                tag: 'ناوي'
+            });
 
+            saveAndRender();
+            taskInput.value = '';
+            taskInput.style.height = 'auto';
+            submitBtn.classList.remove('active');
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveAndRender();
+            }
+        }
+
+        function toggleStar(id, event) {
+            event.stopPropagation();
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.starred = !task.starred;
+                tasks.sort((a, b) => b.starred - a.starred);
+                saveAndRender();
+            }
+        }
+
+        function deleteTask(id, event) {
+            event.stopPropagation();
+            tasks = tasks.filter(t => t.id !== id);
+            saveAndRender();
+        }
+
+        function setTodayDate() {
+            taskInput.focus();
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('nawy_tasks_v3', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('tasksContainer');
+
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: rgba(255,255,255,0.4); margin-top: 80px; font-size: 0.95rem;">
+                        مفيش نوايا لسه.. ✨<br>ابدأ ودوّن أول نية من تحت!
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = tasks.map(task => `
+                <div class="task-card ${task.completed ? 'completed' : ''}" onclick="toggleTask(${task.id})">
+                    <div class="check-circle"></div>
+                    <div class="task-content">
+                        <div class="task-title">${escapeHtml(task.text)}</div>
+                        <div class="task-meta">
+                            <span>ناوي</span>
+                        </div>
+                    </div>
+                    <button class="star-btn ${task.starred ? 'starred' : ''}" onclick="toggleStar(${task.id}, event)">
+                        ${task.starred ? '★' : '☆'}
+                    </button>
+                    <button class="btn-delete" onclick="deleteTask(${task.id}, event)">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(reg => {
                 reg.addEventListener('updatefound', () => {
@@ -295,88 +440,7 @@
                     });
                 });
             });
-
-            let refreshing = false;
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (!refreshing) {
-                    window.location.reload();
-                    refreshing = true;
-                }
-            });
-        }
-
-        // --- 3. إدارة المهام ---
-        let todos = JSON.parse(localStorage.getItem('nawyTodos')) || [];
-        const todoInput = document.getElementById('todoInput');
-
-        // التعديل الآلي لارتفاع مربع الكتابة
-        todoInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
-
-        document.addEventListener('DOMContentLoaded', renderTodos);
-
-        function addTodo() {
-            const text = todoInput.value.trim();
-            if (text === '') return;
-
-            todos.push({
-                id: Date.now(),
-                text: text,
-                completed: false
-            });
-
-            saveAndRender();
-            todoInput.value = '';
-            todoInput.style.height = 'auto';
-        }
-
-        function toggleTodo(id) {
-            const todo = todos.find(t => t.id === id);
-            if (todo) {
-                todo.completed = !todo.completed;
-                saveAndRender();
-            }
-        }
-
-        function deleteTodo(id) {
-            todos = todos.filter(t => t.id !== id);
-            saveAndRender();
-        }
-
-        function saveAndRender() {
-            localStorage.setItem('nawyTodos', JSON.stringify(todos));
-            renderTodos();
-        }
-
-        function renderTodos() {
-            const todoList = document.getElementById('todoList');
-            const emptyState = document.getElementById('emptyState');
-
-            if (todos.length === 0) {
-                todoList.innerHTML = '';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-
-            todoList.innerHTML = todos.map(todo => `
-                <li class="todo-item ${todo.completed ? 'completed' : ''}">
-                    <div class="checkbox" onclick="toggleTodo(${todo.id})"></div>
-                    <span class="todo-text" onclick="toggleTodo(${todo.id})">${escapeHtml(todo.text)}</span>
-                    <button class="btn-delete" onclick="deleteTodo(${todo.id})">✕</button>
-                </li>
-            `).join('');
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
     </script>
 </body>
 </html>
- 
