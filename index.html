@@ -418,7 +418,7 @@
             themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
         });
 
-        // --- 2. إدارة تثبيت PWA ---
+        // --- 2. إدارة تثبيت PWA والتحديث الآلي ---
         let deferredPrompt;
         const installBanner = document.getElementById('installBanner');
         const installBtn = document.getElementById('installBtn');
@@ -437,8 +437,27 @@
             deferredPrompt = null;
         });
 
+        // تسجيل الـ Service Worker والتحديث التلقائي الفوري عند وجود ملفات جديدة
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.location.reload();
+                        }
+                    });
+                });
+            }).catch(err => console.log('SW Registration Error:', err));
+
+            // إعادة تحديث الشاشة عندما يستلم التطبيق إشارة التحكم الجديدة
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    window.location.reload();
+                    refreshing = true;
+                }
+            });
         }
 
         // --- 3. إدارة النوايا والتصنيفات ---
