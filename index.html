@@ -16,6 +16,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
+<<<<<<< Updated upstream
 
   <link rel="stylesheet" href="./css/app.css">
 </head>
@@ -30,11 +31,23 @@
           <div class="brand-main">
             <div class="brand-mark" aria-hidden="true">🎯</div>
 
+=======
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app" aria-label="تطبيق ناوي">
+      <header class="header">
+        <div class="brand-row">
+          <div class="brand-main">
+            <div class="brand-mark" aria-hidden="true">🎯</div>
+>>>>>>> Stashed changes
             <div>
               <div class="brand-name">ناوي</div>
               <div class="brand-tagline">نية واضحة. يوم أخف.</div>
             </div>
           </div>
+<<<<<<< Updated upstream
 
           <button
             id="soundToggle"
@@ -45,12 +58,18 @@
           >
             <span aria-hidden="true">🔊</span>
           </button>
+=======
+>>>>>>> Stashed changes
 
+          <button id="soundToggle" class="header-btn" type="button" aria-label="إيقاف الأصوات" title="الأصوات">
+            <span aria-hidden="true">🔊</span>
+          </button>
         </div>
 
         <div class="greeting">
           <h1>ناوي على إيه النهارده؟</h1>
           <p id="currentDate">—</p>
+<<<<<<< Updated upstream
         </div>
 
         <div class="progress" aria-label="تقدم اليوم">
@@ -61,9 +80,12 @@
           <div class="progress-text" id="progressText">
             ابدأ أول نية
           </div>
+=======
+>>>>>>> Stashed changes
         </div>
       </header>
 
+<<<<<<< Updated upstream
       <section
         class="tasks"
         id="tasksContainer"
@@ -74,6 +96,20 @@
       <div class="composer-wrap">
         <form class="composer" id="composerForm" novalidate>
 
+=======
+        <div class="progress" aria-label="تقدم اليوم">
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText">ابدأ أول نية</div>
+        </div>
+      </header>
+
+      <section class="tasks" id="tasksContainer" aria-live="polite" aria-label="قائمة النوايا"></section>
+
+      <div class="composer-wrap">
+        <form class="composer" id="composerForm" novalidate>
+>>>>>>> Stashed changes
           <textarea
             id="taskInput"
             rows="1"
@@ -85,6 +121,7 @@
             autocapitalize="sentences"
             spellcheck="true"
           ></textarea>
+<<<<<<< Updated upstream
 
           <button
             type="submit"
@@ -267,6 +304,59 @@
         </button>
       </div>
 
+=======
+          <button type="submit" class="submit" id="submitBtn" aria-label="إضافة نية">↑</button>
+        </form>
+        <div class="hint"><span class="desktop-hint">Enter للإضافة · Shift + Enter لسطر جديد</span><span class="mobile-hint">اكتب نيتك واضغط ↑</span></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Delete / undo toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <span id="toastMessage">تم حذف النية</span>
+    <button id="toastUndo" type="button">تراجع</button>
+  </div>
+
+  <!-- Install prompt -->
+  <div class="modal-backdrop" id="installOverlay" hidden>
+    <div class="install-sheet" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+      <div class="install-icon" aria-hidden="true">📱</div>
+      <div class="install-copy">
+        <div class="install-title" id="installTitle">ناوي؟ خليه معاك.</div>
+        <div class="install-subtitle">ثبّت ناوي عشان تفتحه بسرعة وتستخدمه كتطبيق.</div>
+      </div>
+      <button type="button" class="primary-btn" id="installBtn">ثبّت</button>
+      <button type="button" class="modal-close" id="installClose" aria-label="إغلاق">×</button>
+    </div>
+  </div>
+
+  <!-- iOS / manual install guide -->
+  <div class="modal-backdrop center" id="installGuide" hidden>
+    <div class="guide-box" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+      <div class="guide-icon" aria-hidden="true">✨</div>
+      <h2 id="guideTitle">خلّي ناوي معاك</h2>
+      <p id="guideText">من قائمة المتصفح اختَر <strong>إضافة إلى الشاشة الرئيسية</strong> عشان تستخدم ناوي كتطبيق.</p>
+      <button type="button" class="secondary-btn full" id="guideClose">تمام</button>
+    </div>
+  </div>
+
+  <!-- Edit modal -->
+  <div class="modal-backdrop center" id="editModal" hidden>
+    <form class="edit-box" id="editForm" novalidate>
+      <div class="edit-head">
+        <div>
+          <div class="eyebrow">تعديل النية</div>
+          <h2>خلّيها بالصيغة اللي تريحك</h2>
+        </div>
+        <button type="button" class="modal-close" id="editClose" aria-label="إغلاق">×</button>
+      </div>
+      <textarea id="editInput" maxlength="500" rows="4" aria-label="تعديل النية"></textarea>
+      <div class="edit-actions">
+        <button type="button" class="secondary-btn" id="editCancel">إلغاء</button>
+        <button type="submit" class="primary-btn">حفظ</button>
+      </div>
+>>>>>>> Stashed changes
     </form>
   </div>
 
