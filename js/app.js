@@ -1,816 +1,1112 @@
-/* =========================================================
-   NAWY
-   APP.JS
-   ========================================================= */
-
-"use strict";
-
-
-/* =========================================================
-   STORAGE
-   ========================================================= */
+/* =====================================================
+NAWY — APP.JS
+Version: 5.0
+===================================================== */
 
 const STORAGE_KEY = "nawy_tasks_v4";
 
+/* =====================================================
+ELEMENTS
+===================================================== */
 
-/* =========================================================
-   DOM
-   ========================================================= */
+const taskInput = document.getElementById("taskInput");
+const submitBtn = document.getElementById("submitBtn");
 
-const taskInput =
-    document.getElementById("taskInput");
+const tasksContainer = document.getElementById("tasksContainer");
 
-const submitBtn =
-    document.getElementById("submitBtn");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
-const composerForm =
-    document.getElementById("composerForm");
+const currentDate = document.getElementById("currentDate");
 
-const tasksContainer =
-    document.getElementById("tasksContainer");
+const installOverlay = document.getElementById("installOverlay");
+const installBtn = document.getElementById("installBtn");
+const installClose = document.getElementById("installClose");
 
-const progressFill =
-    document.getElementById("progressFill");
+const installGuide = document.getElementById("installGuide");
+const guideClose = document.getElementById("guideClose");
 
-const progressText =
-    document.getElementById("progressText");
-
-const currentDate =
-    document.getElementById("currentDate");
-
-const installOverlay =
-    document.getElementById("installOverlay");
-
-const installBtn =
-    document.getElementById("installBtn");
-
-const installClose =
-    document.getElementById("installClose");
-
-const installGuide =
-    document.getElementById("installGuide");
-
-const guideClose =
-    document.getElementById("guideClose");
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
+/* =====================================================
+STATE
+===================================================== */
 
 let tasks = loadTasks();
 
 let deferredInstallPrompt = null;
 
+let audioContext = null;
 
-/* =========================================================
-   DATE
-   ========================================================= */
+/* =====================================================
+DATE
+===================================================== */
 
-function updateDate() {
+currentDate.textContent =
+new Intl.DateTimeFormat("ar-EG", {
+weekday: "long",
+day: "numeric",
+month: "long"
+}).format(new Date());
 
-    const formatter =
-        new Intl.DateTimeFormat(
-            "ar-EG",
-            {
-                weekday: "long",
-                day: "numeric",
-                month: "long"
-            }
-        );
-
-    currentDate.textContent =
-        formatter.format(new Date());
-}
-
-
-/* =========================================================
-   STORAGE
-   ========================================================= */
+/* =====================================================
+STORAGE
+===================================================== */
 
 function loadTasks() {
 
-    try {
+```
+try {
 
-        const current =
-            JSON.parse(
-                localStorage.getItem(STORAGE_KEY)
-            );
-
-        if (Array.isArray(current)) {
-            return normalizeTasks(current);
-        }
-
-
-        /*
-           دعم النسخة السابقة
-        */
-
-        const old =
-            JSON.parse(
-                localStorage.getItem("nawy_tasks_v3")
-            );
-
-        if (Array.isArray(old)) {
-            return normalizeTasks(old);
-        }
-
-        return [];
-
-    } catch (error) {
-
-        console.warn(
-            "Nawy storage error:",
-            error
+    const saved =
+        JSON.parse(
+            localStorage.getItem(STORAGE_KEY)
         );
 
-        return [];
+    if (Array.isArray(saved)) {
+        return normalizeTasks(saved);
     }
-}
 
+
+    const old =
+        JSON.parse(
+            localStorage.getItem("nawy_tasks_v3")
+        );
+
+    if (Array.isArray(old)) {
+        return normalizeTasks(old);
+    }
+
+    return [];
+
+} catch (error) {
+
+    console.warn("Nawy storage error:", error);
+
+    return [];
+}
+```
+
+}
 
 function normalizeTasks(list) {
 
-    return list
-        .filter(item => item && typeof item === "object")
-        .map(item => ({
-            id:
-                String(
-                    item.id ||
-                    `${Date.now()}-${Math.random()}`
-                ),
+```
+return list.map(task => ({
+    id:
+        String(
+            task.id ??
+            Date.now() + Math.random()
+        ),
 
-            text:
-                String(item.text || "").trim(),
+    text:
+        String(task.text ?? ""),
 
-            completed:
-                Boolean(item.completed),
+    completed:
+        Boolean(task.completed),
 
-            starred:
-                Boolean(item.starred),
+    starred:
+        Boolean(task.starred),
 
-            createdAt:
-                item.createdAt ||
-                new Date().toISOString()
-        }))
-        .filter(item => item.text.length > 0);
+    createdAt:
+        task.createdAt ??
+        new Date().toISOString()
+}));
+```
+
 }
-
 
 function save() {
 
-    try {
+```
+try {
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(tasks)
-        );
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(tasks)
+    );
 
-    } catch (error) {
+} catch (error) {
 
-        console.warn(
-            "Nawy save error:",
-            error
-        );
-    }
-
-    render();
+    console.warn("Nawy save error:", error);
 }
 
+render();
+```
 
-/* =========================================================
-   TASK ACTIONS
-   ========================================================= */
-
-function addTask(text) {
-
-    const clean =
-        String(text || "").trim();
-
-    if (!clean) {
-        return;
-    }
-
-    const newTask = {
-
-        id:
-            `${Date.now()}-${Math.random()
-                .toString(36)
-                .slice(2, 8)}`,
-
-        text: clean,
-
-        completed: false,
-
-        starred: false,
-
-        createdAt:
-            new Date().toISOString()
-    };
-
-
-    tasks.unshift(newTask);
-
-    save();
 }
 
+/* =====================================================
+AUDIO
+هادئ ونظيف — Chime للإنجاز
+===================================================== */
 
-function toggleTask(id) {
+function ensureAudioContext() {
 
-    const task =
-        tasks.find(
-            item => item.id === id
-        );
+```
+try {
 
-    if (!task) {
-        return;
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return null;
     }
 
-    task.completed =
-        !task.completed;
+    if (!audioContext) {
 
-    save();
-}
-
-
-function toggleStar(id) {
-
-    const task =
-        tasks.find(
-            item => item.id === id
-        );
-
-    if (!task) {
-        return;
+        audioContext =
+            new AudioContext();
     }
 
-    task.starred =
-        !task.starred;
+    if (audioContext.state === "suspended") {
 
-    save();
-}
-
-
-function deleteTask(id) {
-
-    tasks =
-        tasks.filter(
-            item => item.id !== id
-        );
-
-    save();
-}
-
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
-
-function updateProgress() {
-
-    const total =
-        tasks.length;
-
-    const done =
-        tasks.filter(
-            item => item.completed
-        ).length;
-
-
-    if (total === 0) {
-
-        progressFill.style.width = "0%";
-
-        progressText.textContent =
-            "ابدأ أول نية";
-
-        return;
+        audioContext.resume().catch(() => {});
     }
 
+    return audioContext;
 
-    const percentage =
-        Math.round(
-            (done / total) * 100
-        );
+} catch (error) {
 
+    return null;
+}
+```
 
-    progressFill.style.width =
-        `${percentage}%`;
-
-
-    if (percentage === 100) {
-
-        progressText.textContent =
-            "كملت كل نواياك 🎉";
-
-    } else if (done === 0) {
-
-        progressText.textContent =
-            `${total} ${total === 1 ? "نية" : "نوايا"}`;
-
-    } else {
-
-        progressText.textContent =
-            `${done} من ${total} أُنجزت`;
-    }
 }
 
+/*
+صوت الإضافة:
+خفيف جدًا ومش مزعج
+*/
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+function playAddSound() {
 
-function render() {
+```
+try {
 
-    updateProgress();
+    const ctx =
+        ensureAudioContext();
 
-    tasksContainer.innerHTML = "";
+    if (!ctx) return;
+
+    const now =
+        ctx.currentTime;
+
+    const osc =
+        ctx.createOscillator();
+
+    const gain =
+        ctx.createGain();
+
+    osc.type = "sine";
+
+    osc.frequency.setValueAtTime(
+        480,
+        now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        620,
+        now + .07
+    );
+
+    gain.gain.setValueAtTime(
+        .0001,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .025,
+        now + .012
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + .10
+    );
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+
+    osc.stop(now + .11);
+
+} catch (error) {
+    // الصوت اختياري ولا يعطل التطبيق
+}
+```
+
+}
+
+/*
+Chime الإنجاز
+نغمتان قصيرتان وناعمتان
+*/
+
+function playCompletionSound() {
+
+```
+try {
+
+    const ctx =
+        ensureAudioContext();
+
+    if (!ctx) return;
+
+    const now =
+        ctx.currentTime;
 
 
-    const activeTasks =
-        tasks
-            .filter(item => !item.completed)
-            .sort(
-                (a, b) =>
-                    Number(b.starred) -
-                    Number(a.starred)
-            );
+    const notes = [
+        {
+            frequency: 659.25,
+            start: 0,
+            duration: .20,
+            volume: .035
+        },
+        {
+            frequency: 783.99,
+            start: .075,
+            duration: .30,
+            volume: .045
+        }
+    ];
 
 
-    const completedTasks =
-        tasks.filter(
-            item => item.completed
+    notes.forEach(note => {
+
+        const osc =
+            ctx.createOscillator();
+
+        const gain =
+            ctx.createGain();
+
+
+        osc.type = "sine";
+
+        osc.frequency.setValueAtTime(
+            note.frequency,
+            now + note.start
         );
 
 
-    /* EMPTY */
+        gain.gain.setValueAtTime(
+            .0001,
+            now + note.start
+        );
 
-    if (tasks.length === 0) {
+        gain.gain.exponentialRampToValueAtTime(
+            note.volume,
+            now + note.start + .012
+        );
 
-        tasksContainer.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🌱</div>
-
-                <strong>
-                    مفيش نوايا هنا
-                </strong>
-
-                <span>
-                    اكتب أول حاجة ناوي تعملها النهارده.
-                </span>
-            </div>
-        `;
-
-        return;
-    }
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now + note.start + note.duration
+        );
 
 
-    /* ACTIVE */
+        osc.connect(gain);
 
-    activeTasks.forEach(task => {
+        gain.connect(
+            ctx.destination
+        );
 
-        tasksContainer.appendChild(
-            createTaskElement(task)
+
+        osc.start(
+            now + note.start
+        );
+
+        osc.stop(
+            now +
+            note.start +
+            note.duration +
+            .02
         );
 
     });
 
+} catch (error) {
+    // الصوت لا يجب أن يؤثر على التطبيق
+}
+```
 
-    /* COMPLETED */
+}
 
-    if (completedTasks.length > 0) {
+/* =====================================================
+COMPLETION VISUAL
+===================================================== */
 
-        const divider =
-            document.createElement("div");
+function showCompletionFeedback(id) {
 
-        divider.className =
-            "completed-divider";
+```
+if (
+    window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches
+) {
+    return;
+}
 
-        divider.innerHTML = `
+
+const taskElement =
+    document.querySelector(
+        `[data-task-id="${CSS.escape(String(id))}"]`
+    );
+
+
+if (!taskElement) {
+    return;
+}
+
+
+taskElement.classList.add(
+    "just-completed"
+);
+
+
+window.setTimeout(() => {
+
+    taskElement.classList.remove(
+        "just-completed"
+    );
+
+}, 600);
+
+
+const checkElement =
+    taskElement.querySelector(
+        ".check"
+    );
+
+
+if (!checkElement) {
+    return;
+}
+
+
+const bounds =
+    checkElement.getBoundingClientRect();
+
+
+const burst =
+    document.createElement("div");
+
+
+burst.className =
+    "completion-burst";
+
+burst.setAttribute(
+    "aria-hidden",
+    "true"
+);
+
+
+burst.style.left =
+    (
+        bounds.left +
+        bounds.width / 2
+    ) + "px";
+
+
+burst.style.top =
+    (
+        bounds.top +
+        bounds.height / 2
+    ) + "px";
+
+
+const particles = [
+    "#19c58b",
+    "#f4c84d",
+    "#f4f7f5"
+];
+
+
+burst.innerHTML =
+    Array.from(
+        { length: 10 },
+        (_, index) => {
+
+            return `
+                <span
+                    style="
+                        --angle:${index * 36}deg;
+                        --color:${particles[index % particles.length]};
+                        --distance:${28 + (index % 3) * 6}px;
+                        --size:${4 + (index % 2)}px;
+                    "
+                ></span>
+            `;
+        }
+    ).join("");
+
+
+document.body.appendChild(
+    burst
+);
+
+
+window.setTimeout(() => {
+
+    burst.remove();
+
+}, 600);
+```
+
+}
+
+/* =====================================================
+TASK ACTIONS
+===================================================== */
+
+function addTask(text) {
+
+```
+const clean =
+    text.trim();
+
+if (!clean) {
+    return;
+}
+
+
+const newTask = {
+
+    id:
+        String(
+            Date.now() +
+            Math.random()
+        ),
+
+    text:
+        clean,
+
+    completed:
+        false,
+
+    starred:
+        false,
+
+    createdAt:
+        new Date().toISOString()
+};
+
+
+tasks.unshift(
+    newTask
+);
+
+
+playAddSound();
+
+save();
+```
+
+}
+
+function toggleTask(id) {
+
+```
+const task =
+    tasks.find(
+        t => String(t.id) === String(id)
+    );
+
+
+if (!task) {
+    return;
+}
+
+
+task.completed =
+    !task.completed;
+
+
+if (task.completed) {
+
+    /*
+       الصوت والمؤثر بعد التحويل
+    */
+
+    playCompletionSound();
+
+    /*
+       render يحصل داخل save()
+       لذلك نعمل feedback بعد render
+    */
+
+    save();
+
+    requestAnimationFrame(() => {
+
+        showCompletionFeedback(
+            task.id
+        );
+
+    });
+
+    return;
+}
+
+
+save();
+```
+
+}
+
+function toggleStar(id) {
+
+```
+const task =
+    tasks.find(
+        t => String(t.id) === String(id)
+    );
+
+
+if (!task) {
+    return;
+}
+
+
+task.starred =
+    !task.starred;
+
+
+save();
+```
+
+}
+
+function deleteTask(id) {
+
+```
+tasks =
+    tasks.filter(
+        t =>
+            String(t.id) !==
+            String(id)
+    );
+
+
+save();
+```
+
+}
+
+/* =====================================================
+PROGRESS
+===================================================== */
+
+function updateProgress() {
+
+```
+const total =
+    tasks.length;
+
+const done =
+    tasks.filter(
+        t => t.completed
+    ).length;
+
+
+if (total === 0) {
+
+    progressFill.style.width =
+        "0%";
+
+    progressText.textContent =
+        "ابدأ أول نية";
+
+    return;
+}
+
+
+const percentage =
+    Math.round(
+        (done / total) * 100
+    );
+
+
+progressFill.style.width =
+    percentage + "%";
+
+
+if (percentage === 100) {
+
+    progressText.textContent =
+        "ما شاء الله! كملت كل نواياك 🎉";
+
+} else {
+
+    progressText.textContent =
+        `${done} من ${total} أُنجزت (${percentage}%)`;
+}
+```
+
+}
+
+/* =====================================================
+RENDER
+===================================================== */
+
+function render() {
+
+```
+updateProgress();
+
+tasksContainer.innerHTML = "";
+
+
+const activeTasks =
+    tasks
+        .filter(
+            t => !t.completed
+        )
+        .sort(
+            (a, b) =>
+                Number(b.starred) -
+                Number(a.starred)
+        );
+
+
+const completedTasks =
+    tasks.filter(
+        t => t.completed
+    );
+
+
+if (tasks.length === 0) {
+
+    tasksContainer.innerHTML = `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🌱
+            </div>
+
+            <strong>
+                مفيش نوايا هنا
+            </strong>
+
+            <span>
+                اكتب نية جديدة وابدأ يومك.
+            </span>
+
+        </div>
+
+    `;
+
+    return;
+}
+
+
+activeTasks.forEach(task => {
+
+    tasksContainer.appendChild(
+        createTaskElement(task)
+    );
+
+});
+
+
+if (completedTasks.length > 0) {
+
+    const divider =
+        document.createElement("div");
+
+
+    divider.className =
+        "completed-divider";
+
+
+    divider.innerHTML =
+        `
             <span>
                 النوايا المحققة
                 (${completedTasks.length})
             </span>
         `;
 
-        tasksContainer.appendChild(divider);
+
+    tasksContainer.appendChild(
+        divider
+    );
 
 
-        completedTasks.forEach(task => {
+    completedTasks.forEach(task => {
 
-            tasksContainer.appendChild(
-                createTaskElement(task)
-            );
+        tasksContainer.appendChild(
+            createTaskElement(task)
+        );
 
-        });
-    }
+    });
+}
+```
+
 }
 
-
-/* =========================================================
-   TASK ELEMENT
-   ========================================================= */
+/* =====================================================
+CREATE TASK
+===================================================== */
 
 function createTaskElement(task) {
 
-    const el =
-        document.createElement("div");
+```
+const el =
+    document.createElement("div");
 
-    el.className =
-        "task" +
-        (task.completed
+
+el.className =
+    "task" +
+    (
+        task.completed
             ? " completed"
-            : "");
-
-    el.dataset.taskId =
-        task.id;
+            : ""
+    );
 
 
-    el.innerHTML = `
+el.dataset.taskId =
+    String(task.id);
 
-        <div class="check"
-             aria-hidden="true">
+
+el.innerHTML = `
+
+    <div
+        class="check"
+        aria-hidden="true"
+    ></div>
+
+
+    <div class="task-main">
+
+        <div class="task-title">
+            ${escapeHtml(task.text)}
         </div>
 
-
-        <div class="task-main">
-
-            <div class="task-title">
-                ${escapeHtml(task.text)}
-            </div>
-
-        </div>
+    </div>
 
 
-        <div class="task-actions">
+    <div class="task-actions">
 
-            <button
-                type="button"
-                class="icon-btn ${
-                    task.starred
-                        ? "starred"
-                        : ""
-                }"
-                data-action="star"
-                aria-label="${
-                    task.starred
-                        ? "إلغاء التمييز"
-                        : "تمييز"
-                }"
-            >
-                ${
-                    task.starred
-                        ? "★"
-                        : "☆"
-                }
-            </button>
-
-
-            <button
-                type="button"
-                class="icon-btn delete"
-                data-action="delete"
-                aria-label="حذف النية"
-            >
-                ×
-            </button>
-
-        </div>
-    `;
-
-
-    return el;
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replace(
-            /[&<>"']/g,
-            character => {
-
-                const map = {
-
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#039;"
-                };
-
-                return map[character];
+        <button
+            type="button"
+            class="icon-btn ${
+                task.starred
+                    ? "starred"
+                    : ""
+            }"
+            data-action="star"
+            aria-label="تمييز بنجمة"
+        >
+            ${
+                task.starred
+                    ? "★"
+                    : "☆"
             }
-        );
+        </button>
+
+
+        <button
+            type="button"
+            class="icon-btn delete"
+            data-action="delete"
+            aria-label="حذف"
+        >
+            ×
+        </button>
+
+    </div>
+`;
+
+
+return el;
+```
+
 }
 
+/* =====================================================
+SECURITY
+===================================================== */
 
-/* =========================================================
-   TASK EVENTS
-   ========================================================= */
+function escapeHtml(str) {
+
+```
+return String(str).replace(
+    /[&<>"']/g,
+    match => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[match]
+);
+```
+
+}
+
+/* =====================================================
+TASK EVENTS
+===================================================== */
 
 tasksContainer.addEventListener(
-    "click",
-    event => {
+"click",
+event => {
 
-        const button =
-            event.target.closest(
-                ".icon-btn"
-            );
-
-
-        /*
-           Star / Delete
-        */
-
-        if (button) {
-
-            const taskElement =
-                button.closest(".task");
-
-            if (!taskElement) {
-                return;
-            }
-
-            const id =
-                taskElement.dataset.taskId;
-
-            const action =
-                button.dataset.action;
+```
+    const iconBtn =
+        event.target.closest(
+            ".icon-btn"
+        );
 
 
-            if (action === "star") {
+    if (iconBtn) {
 
-                toggleStar(id);
-
-                return;
-            }
+        const taskEl =
+            iconBtn.closest(".task");
 
 
-            if (action === "delete") {
-
-                const confirmed =
-                    window.confirm(
-                        "هل أنت متأكد من حذف هذه النية؟"
-                    );
-
-                if (confirmed) {
-                    deleteTask(id);
-                }
-
-                return;
-            }
-        }
-
-
-        /*
-           Complete / Uncomplete
-        */
-
-        const taskElement =
-            event.target.closest(".task");
-
-        if (!taskElement) {
+        if (!taskEl) {
             return;
         }
 
 
         const id =
-            taskElement.dataset.taskId;
+            taskEl.dataset.taskId;
 
-        if (!id) {
+
+        const action =
+            iconBtn.dataset.action;
+
+
+        if (action === "star") {
+
+            toggleStar(id);
+
             return;
         }
 
 
-        toggleTask(id);
-    }
-);
+        if (action === "delete") {
 
+            if (
+                window.confirm(
+                    "هل أنت متأكد من حذف هذه النية؟"
+                )
+            ) {
 
-/* =========================================================
-   COMPOSER
-   ========================================================= */
+                deleteTask(id);
+            }
 
-function updateComposerState() {
-
-    const hasText =
-        taskInput.value.trim().length > 0;
-
-    submitBtn.disabled =
-        !hasText;
-}
-
-
-function resizeTextarea() {
-
-    taskInput.style.height = "auto";
-
-    const height =
-        Math.min(
-            taskInput.scrollHeight,
-            130
-        );
-
-    taskInput.style.height =
-        `${height}px`;
-}
-
-
-taskInput.addEventListener(
-    "input",
-    () => {
-
-        resizeTextarea();
-
-        updateComposerState();
-    }
-);
-
-
-taskInput.addEventListener(
-    "keydown",
-    event => {
-
-        /*
-           Enter = إرسال
-           Shift + Enter = سطر جديد
-        */
-
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
-
-            event.preventDefault();
-
-            handleSend();
+            return;
         }
     }
+
+
+    const taskEl =
+        event.target.closest(
+            ".task"
+        );
+
+
+    if (!taskEl) {
+        return;
+    }
+
+
+    const id =
+        taskEl.dataset.taskId;
+
+
+    if (!id) {
+        return;
+    }
+
+
+    toggleTask(id);
+}
+```
+
 );
 
+/* =====================================================
+INPUT
+===================================================== */
 
-composerForm.addEventListener(
-    "submit",
-    event => {
+taskInput.addEventListener(
+"input",
+() => {
+
+```
+    taskInput.style.height =
+        "auto";
+
+
+    taskInput.style.height =
+        Math.min(
+            taskInput.scrollHeight,
+            120
+        ) + "px";
+
+
+    if (
+        taskInput.value.trim().length > 0
+    ) {
+
+        submitBtn.classList.add(
+            "active"
+        );
+
+    } else {
+
+        submitBtn.classList.remove(
+            "active"
+        );
+    }
+}
+```
+
+);
+
+/* =====================================================
+ENTER SEND
+===================================================== */
+
+taskInput.addEventListener(
+"keydown",
+event => {
+
+```
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
 
         event.preventDefault();
 
         handleSend();
     }
+}
+```
+
 );
 
+submitBtn.addEventListener(
+"click",
+handleSend
+);
 
 function handleSend() {
 
-    const value =
-        taskInput.value;
-
-    if (!value.trim()) {
-        return;
-    }
+```
+const value =
+    taskInput.value;
 
 
-    addTask(value);
-
-
-    taskInput.value = "";
-
-    taskInput.style.height =
-        "42px";
-
-    updateComposerState();
-
-
-    /*
-       رجّع المؤشر مباشرة
-    */
-
-    requestAnimationFrame(() => {
-
-        taskInput.focus();
-
-    });
+if (!value.trim()) {
+    return;
 }
 
 
-/* =========================================================
-   PWA INSTALL
-   ========================================================= */
+addTask(value);
+
+
+taskInput.value =
+    "";
+
+
+taskInput.style.height =
+    "42px";
+
+
+submitBtn.classList.remove(
+    "active"
+);
+
+
+/*
+   يرجع المؤشر لصندوق الكتابة
+   لتجربة سريعة مثل ChatGPT
+*/
+
+requestAnimationFrame(() => {
+
+    taskInput.focus();
+
+});
+```
+
+}
+
+/* =====================================================
+PWA INSTALL
+===================================================== */
 
 window.addEventListener(
-    "beforeinstallprompt",
-    event => {
+"beforeinstallprompt",
+event => {
 
-        event.preventDefault();
+```
+    event.preventDefault();
 
-        deferredInstallPrompt =
-            event;
+    deferredInstallPrompt =
+        event;
 
-        /*
-           لا نظهر الرسالة فورًا.
-           نترك المستخدم يستخدم التطبيق أولًا.
-        */
-
-        setTimeout(() => {
-
-            if (
-                deferredInstallPrompt &&
-                !isStandalone()
-            ) {
-
-                installOverlay.classList.add(
-                    "show"
-                );
-
-                installOverlay.setAttribute(
-                    "aria-hidden",
-                    "false"
-                );
-            }
-
-        }, 3500);
-    }
-);
-
-
-installBtn.addEventListener(
-    "click",
-    async () => {
-
-        if (!deferredInstallPrompt) {
-
-            showInstallGuide();
-
-            return;
-        }
-
-
-        try {
-
-            deferredInstallPrompt.prompt();
-
-            await deferredInstallPrompt.userChoice;
-
-        } catch (error) {
-
-            console.warn(
-                "Install prompt error:",
-                error
-            );
-
-        } finally {
-
-            deferredInstallPrompt = null;
-
-            closeInstallOverlay();
-        }
-    }
-);
-
-
-installClose.addEventListener(
-    "click",
-    closeInstallOverlay
-);
-
-
-guideClose.addEventListener(
-    "click",
-    () => {
-
-        installGuide.classList.remove(
-            "show"
-        );
-
-        installGuide.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-    }
-);
-
-
-function closeInstallOverlay() {
-
-    installOverlay.classList.remove(
+    installOverlay.classList.add(
         "show"
     );
 
     installOverlay.setAttribute(
         "aria-hidden",
-        "true"
+        "false"
     );
 }
+```
+
+);
+
+installBtn.addEventListener(
+"click",
+async () => {
+
+```
+    if (deferredInstallPrompt) {
+
+        deferredInstallPrompt
+            .prompt();
 
 
-function showInstallGuide() {
+        try {
 
-    closeInstallOverlay();
+            await deferredInstallPrompt
+                .userChoice;
+
+        } catch (_) {}
+
+
+        deferredInstallPrompt =
+            null;
+
+
+        installOverlay.classList.remove(
+            "show"
+        );
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        return;
+    }
+
+
+    installOverlay.classList.remove(
+        "show"
+    );
+
 
     installGuide.classList.add(
         "show"
@@ -821,51 +1117,69 @@ function showInstallGuide() {
         "false"
     );
 }
+```
 
+);
 
-function isStandalone() {
+installClose.addEventListener(
+"click",
+() => {
 
-    return (
-        window.matchMedia(
-            "(display-mode: standalone)"
-        ).matches ||
-        window.navigator.standalone === true
+```
+    installOverlay.classList.remove(
+        "show"
+    );
+
+    installOverlay.setAttribute(
+        "aria-hidden",
+        "true"
     );
 }
+```
 
+);
 
-/* =========================================================
-   SERVICE WORKER
-   ========================================================= */
+guideClose.addEventListener(
+"click",
+() => {
+
+```
+    installGuide.classList.remove(
+        "show"
+    );
+
+    installGuide.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
+```
+
+);
+
+/* =====================================================
+SERVICE WORKER
+===================================================== */
 
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener(
-        "load",
-        () => {
+```
+window.addEventListener(
+    "load",
+    () => {
 
-            navigator.serviceWorker
-                .register("./sw.js")
-                .catch(error => {
+        navigator.serviceWorker
+            .register("./sw.js")
+            .catch(() => {});
 
-                    console.warn(
-                        "Nawy service worker:",
-                        error
-                    );
+    }
+);
+```
 
-                });
-
-        }
-    );
 }
 
-
-/* =========================================================
-   START
-   ========================================================= */
-
-updateDate();
+/* =====================================================
+INITIAL RENDER
+===================================================== */
 
 render();
-
-updateComposerState();
