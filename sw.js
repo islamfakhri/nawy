@@ -33,237 +33,145 @@ const APP_FILES = [
    INSTALL
    ========================================================= */
 
-self.addEventListener(
-    "install",
-    event => {
+self.addEventListener("install", event => {
 
-        event.waitUntil(
+    event.waitUntil(
 
-            caches.open(CACHE_NAME)
-                .then(cache => {
+        caches.open(CACHE_NAME)
+            .then(cache => {
 
-                    return cache.addAll(
-                        APP_FILES
-                    );
+                return cache.addAll(APP_FILES);
 
-                })
-                .then(() => {
+            })
+            .then(() => {
 
-                    /*
-                       لا ننتظر إغلاق النسخة القديمة.
-                       النسخة الجديدة تصبح جاهزة فورًا.
-                    */
+                /*
+                   تفعيل النسخة الجديدة فورًا
+                   بدون انتظار إغلاق النسخة القديمة.
+                */
 
-                    return self.skipWaiting();
+                return self.skipWaiting();
 
-                })
+            })
 
-        );
+    );
 
-    }
-);
+});
 
 
 /* =========================================================
    ACTIVATE
    ========================================================= */
 
-self.addEventListener(
-    "activate",
-    event => {
+self.addEventListener("activate", event => {
 
-        event.waitUntil(
+    event.waitUntil(
 
-            caches.keys()
-                .then(cacheNames => {
+        caches.keys()
+            .then(cacheNames => {
 
-                    return Promise.all(
+                return Promise.all(
 
-                        cacheNames
-                            .filter(
-                                name =>
-                                    name !== CACHE_NAME
-                            )
-                            .map(
-                                name =>
-                                    caches.delete(name)
-                            )
+                    cacheNames
+                        .filter(name => name !== CACHE_NAME)
+                        .map(name => caches.delete(name))
 
-                    );
+                );
 
-                })
-                .then(() => {
+            })
+            .then(() => {
 
-                    /*
-                       السيطرة على الصفحات المفتوحة
-                       فور تفعيل النسخة الجديدة.
-                    */
+                /*
+                   السيطرة على الصفحات المفتوحة
+                   فور تفعيل النسخة الجديدة.
+                */
 
-                    return self.clients.claim();
+                return self.clients.claim();
 
-                })
+            })
 
-        );
+    );
 
-    }
-);
+});
 
 
 /* =========================================================
    FETCH
    ========================================================= */
 
-self.addEventListener(
-    "fetch",
-    event => {
+self.addEventListener("fetch", event => {
 
-        const request =
-            event.request;
+    const request = event.request;
 
 
-        /*
-           نهتم فقط بطلبات GET.
-        */
+    /*
+       نهتم فقط بطلبات GET.
+    */
 
-        if (
-            request.method !== "GET"
-        ) {
-
-            return;
-
-        }
+    if (request.method !== "GET") {
+        return;
+    }
 
 
-        const url =
-            new URL(
-                request.url
-            );
+    const url = new URL(request.url);
 
 
-        /*
-           لا نتدخل في طلبات خارج نطاق التطبيق.
-        */
+    /*
+       لا نتدخل في طلبات خارج نطاق التطبيق.
+    */
 
-        if (
-            url.origin !== self.location.origin
-        ) {
-
-            return;
-
-        }
+    if (url.origin !== self.location.origin) {
+        return;
+    }
 
 
-        /*
-           HTML:
-           نحاول دائمًا الحصول على النسخة الأحدث
-           من السيرفر أولًا.
+    /* =====================================================
+       HTML / NAVIGATION
+       =====================================================
 
-           لو الإنترنت غير متاح:
-           نستخدم النسخة المخزنة.
-        */
+       نحاول الحصول على أحدث نسخة من السيرفر أولًا.
 
-        if (
-            request.mode === "navigate" ||
-            request.destination === "document"
-        ) {
+       لو الإنترنت غير متاح:
+       نستخدم النسخة المخزنة.
+       ===================================================== */
 
-            event.respondWith(
-
-                fetch(request)
-                    .then(response => {
-
-                        /*
-                           حفظ أحدث index.html.
-                        */
-
-                        const copy =
-                            response.clone();
-
-
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-
-                                cache.put(
-                                    request,
-                                    copy
-                                );
-
-                            });
-
-
-                        return response;
-
-                    })
-                    .catch(() => {
-
-                        return caches.match(
-                            request
-                        );
-
-                    })
-
-            );
-
-
-            return;
-
-        }
-
-
-        /*
-           باقي الملفات:
-           Cache First
-
-           سريع جدًا،
-           مع الرجوع للشبكة لو الملف غير موجود.
-        */
+    if (
+        request.mode === "navigate" ||
+        request.destination === "document"
+    ) {
 
         event.respondWith(
 
-            caches.match(request)
-                .then(cachedResponse => {
+            fetch(request)
+                .then(response => {
 
-                    if (
-                        cachedResponse
-                    ) {
+                    /*
+                       حفظ أحدث نسخة من الصفحة.
+                    */
 
-                        return cachedResponse;
+                    const copy = response.clone();
 
-                    }
+                    caches.open(CACHE_NAME)
+                        .then(cache => {
 
+                            cache.put(request, copy);
 
-                    return fetch(request)
-                        .then(response => {
+                        });
 
-                            if (
-                                !response ||
-                                response.status !== 200 ||
-                                response.type === "opaque"
-                            ) {
+                    return response;
 
-                                return response;
+                })
+                .catch(() => {
 
-                            }
+                    /*
+                       Offline fallback.
+                    */
 
+                    return caches.match(request)
+                        .then(cached => {
 
-                            const copy =
-                                response.clone();
-
-
-                            caches.open(
-                                CACHE_NAME
-                            )
-                            .then(cache => {
-
-                                cache.put(
-                                    request,
-                                    copy
-                                );
-
-                            });
-
-
-                            return response;
+                            return cached ||
+                                caches.match("./index.html");
 
                         });
 
@@ -271,5 +179,64 @@ self.addEventListener(
 
         );
 
+        return;
     }
-);
+
+
+    /* =====================================================
+       باقي الملفات
+       =====================================================
+
+       Cache First
+
+       سريع جدًا،
+       وإذا الملف غير موجود في الكاش
+       يتم جلبه من الشبكة وتخزينه.
+       ===================================================== */
+
+    event.respondWith(
+
+        caches.match(request)
+            .then(cachedResponse => {
+
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+
+
+                return fetch(request)
+                    .then(response => {
+
+                        /*
+                           لا نخزن الردود غير الصالحة.
+                        */
+
+                        if (
+                            !response ||
+                            response.status !== 200 ||
+                            response.type === "opaque"
+                        ) {
+
+                            return response;
+
+                        }
+
+
+                        const copy = response.clone();
+
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+
+                                cache.put(request, copy);
+
+                            });
+
+                        return response;
+
+                    });
+
+            })
+
+    );
+
+});
