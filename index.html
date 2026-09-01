@@ -253,6 +253,39 @@
         border-bottom: none;
     }
 
+    .completed-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        margin: 22px 0 3px;
+
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .completed-divider::before,
+    .completed-divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--border);
+    }
+
+    .completed-divider span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+    }
+
+    .completed-divider span::before {
+        content: "✓";
+        color: var(--green);
+        font-size: 13px;
+    }
+
     .task:active {
         transform: scale(.99);
     }
@@ -301,9 +334,99 @@
             all .2s ease;
     }
 
+    .task:not(.completed) .check {
+        cursor: pointer;
+    }
+
+    .task:not(.completed) .check:hover {
+        background: rgba(25,197,139,.1);
+        border-color: var(--green);
+    }
+
+    .task:not(.completed) .check:hover::after {
+        color: var(--green);
+        opacity: .9;
+        transform: scale(.82);
+    }
+
     .task.completed .check::after {
         opacity: 1;
         transform: scale(1);
+    }
+
+    .task.just-completed .check {
+        animation: check-celebrate .52s cubic-bezier(.18,.9,.3,1.35);
+        box-shadow: 0 0 0 7px rgba(25,197,139,.12);
+    }
+
+    .task.just-completed .check::after {
+        animation: check-reveal .36s .06s both;
+    }
+
+    @keyframes check-celebrate {
+        0% { transform: scale(1); }
+        45% { transform: scale(1.28); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes check-reveal {
+        from { transform: scale(.35) rotate(-12deg); }
+        to { transform: scale(1) rotate(0); }
+    }
+
+    .completion-burst {
+        position: fixed;
+        width: 44px;
+        height: 44px;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 20;
+    }
+
+    .completion-burst::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border: 2px solid rgba(25,197,139,.8);
+        border-radius: 50%;
+        animation: completion-ring .52s ease-out forwards;
+    }
+
+    .completion-burst span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background: var(--color);
+        box-shadow: 0 0 8px rgba(255,255,255,.35);
+        animation: completion-particle .58s cubic-bezier(.18,.7,.3,1) forwards;
+    }
+
+    @keyframes completion-ring {
+        from { transform: scale(.55); opacity: .9; }
+        to { transform: scale(1.8); opacity: 0; }
+    }
+
+    @keyframes completion-particle {
+        from {
+            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-8px) scale(.5);
+            opacity: 1;
+        }
+        to {
+            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--distance) * -1)) scale(0);
+            opacity: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .task.just-completed .check,
+        .task.just-completed .check::after,
+        .completion-burst::before,
+        .completion-burst span {
+            animation: none;
+        }
     }
 
 
@@ -1291,6 +1414,165 @@
     }
 
 
+    function playCompletionSound() {
+
+        try {
+
+            const AudioContext =
+                window.AudioContext ||
+                window.webkitAudioContext;
+
+
+            if (!AudioContext) {
+                return;
+            }
+
+
+            if (!audioContext) {
+                audioContext = new AudioContext();
+            }
+
+
+            if (audioContext.state === "suspended") {
+                audioContext.resume();
+            }
+
+
+            const now = audioContext.currentTime;
+            const tones = [
+                { frequency: 1046.5, volume: 0.065, duration: 0.34 },
+                { frequency: 2093, volume: 0.012, duration: 0.22 }
+            ];
+
+
+            tones.forEach(({ frequency, volume, duration }) => {
+
+                const oscillator =
+                    audioContext.createOscillator();
+
+                const gain =
+                    audioContext.createGain();
+
+                oscillator.type = "triangle";
+                oscillator.frequency.setValueAtTime(
+                    frequency,
+                    now
+                );
+
+                gain.gain.setValueAtTime(
+                    0.0001,
+                    now
+                );
+
+                gain.gain.exponentialRampToValueAtTime(
+                    volume,
+                    now + 0.008
+                );
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.0001,
+                    now + duration
+                );
+
+                oscillator.connect(gain);
+                gain.connect(audioContext.destination);
+
+                oscillator.start(now);
+                oscillator.stop(now + duration + 0.01);
+
+            });
+
+        } catch (error) {
+
+            console.log(
+                "Nawy completion sound:",
+                error
+            );
+
+        }
+
+    }
+
+
+    function showCompletionFeedback(id) {
+
+        if (
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches
+        ) {
+            return;
+        }
+
+
+        const taskElement = document.querySelector(
+            `[data-task-id="${id}"]`
+        );
+
+
+        if (taskElement) {
+
+            taskElement.classList.add(
+                "just-completed"
+            );
+
+            window.setTimeout(
+                () => taskElement.classList.remove(
+                    "just-completed"
+                ),
+                550
+            );
+
+        }
+
+
+        const checkElement = taskElement?.querySelector(
+            ".check"
+        );
+
+
+        if (!checkElement) {
+            return;
+        }
+
+
+        const checkBounds = checkElement.getBoundingClientRect();
+        const burst = document.createElement("div");
+
+        burst.className = "completion-burst";
+        burst.setAttribute("aria-hidden", "true");
+        burst.style.left =
+            checkBounds.left + checkBounds.width / 2 + "px";
+        burst.style.top =
+            checkBounds.top + checkBounds.height / 2 + "px";
+
+        burst.innerHTML = Array.from(
+            { length: 12 },
+            (_, index) => {
+
+                const colors = [
+                    "#19c58b",
+                    "#f4c84d",
+                    "#f4f7f5"
+                ];
+
+
+                return `
+                <span style="--angle: ${index * 30}deg; --color: ${colors[index % colors.length]}; --distance: ${29 + index % 3 * 7}px; --size: ${4 + index % 2}px"></span>
+            `
+            }
+        ).join("");
+
+        document.body.appendChild(burst);
+
+        window.setTimeout(
+            () => burst.remove(),
+            560
+        );
+
+    }
+
+
     /* =========================
        DATE
     ========================= */
@@ -1562,6 +1844,17 @@
 
         render();
 
+
+        if (task.completed) {
+
+            playCompletionSound();
+
+            showCompletionFeedback(
+                id
+            );
+
+        }
+
     }
 
 
@@ -1669,11 +1962,11 @@
         }
 
 
-        tasksContainer.innerHTML =
-            tasks.map(
-                task => `
+        const renderTask =
+            task => `
 
                 <article
+                    data-task-id="${task.id}"
                     class="task ${
                         task.completed
                             ? "completed"
@@ -1744,8 +2037,31 @@
 
                 </article>
 
-            `
-            ).join("");
+            `;
+
+
+        const pendingTasks = tasks.filter(
+            task => !task.completed
+        );
+
+
+        const completedTasks = tasks.filter(
+            task => task.completed
+        );
+
+
+        tasksContainer.innerHTML = [
+            pendingTasks.map(renderTask).join(""),
+
+            completedTasks.length
+                ? `
+                    <div class="completed-divider">
+                        <span>تم الإنجاز (${completedTasks.length})</span>
+                    </div>
+                    ${completedTasks.map(renderTask).join("")}
+                `
+                : ""
+        ].join("");
 
     }
 
