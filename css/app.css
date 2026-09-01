@@ -1,1195 +1,1308 @@
-/* =========================================================
-   NAWY
-   Core Application
-========================================================= */
+:root {
+    --bg: #0d0d0d;
+    --surface: #171717;
+    --surface-soft: #1c1c1c;
 
-const STORAGE_KEY = "nawy_tasks_v5";
+    --text: #f5f5f5;
+    --muted: #8e8e8e;
+    --muted-dark: #626262;
 
+    --green: #19c58b;
+    --yellow: #f4c84d;
+    --danger: #ff6262;
 
-/* =========================================================
-   DOM
-========================================================= */
-
-const taskInput =
-    document.getElementById("taskInput");
-
-const submitBtn =
-    document.getElementById("submitBtn");
-
-const tasksContainer =
-    document.getElementById("tasksContainer");
-
-const progressFill =
-    document.getElementById("progressFill");
-
-const progressText =
-    document.getElementById("progressText");
-
-const currentDate =
-    document.getElementById("currentDate");
-
-const installOverlay =
-    document.getElementById("installOverlay");
-
-const installBtn =
-    document.getElementById("installBtn");
-
-const installClose =
-    document.getElementById("installClose");
-
-const installGuide =
-    document.getElementById("installGuide");
-
-const guideClose =
-    document.getElementById("guideClose");
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let tasks = loadTasks();
-
-let deferredInstallPrompt = null;
-
-let audioContext = null;
-
-
-/* =========================================================
-   DATE
-========================================================= */
-
-currentDate.textContent =
-    new Intl.DateTimeFormat("ar-EG", {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    }).format(new Date());
-
-
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function loadTasks() {
-
-    try {
-
-        const current =
-            JSON.parse(
-                localStorage.getItem(STORAGE_KEY)
-            );
-
-        if (Array.isArray(current)) {
-            return current;
-        }
-
-
-        /* Migration from older versions */
-
-        const versions = [
-            "nawy_tasks_v4",
-            "nawy_tasks_v3"
-        ];
-
-        for (const key of versions) {
-
-            const old =
-                JSON.parse(
-                    localStorage.getItem(key)
-                );
-
-            if (Array.isArray(old)) {
-
-                return old.map(task => ({
-                    id: String(task.id),
-                    text: String(task.text || ""),
-                    completed: Boolean(task.completed),
-                    starred: Boolean(task.starred),
-                    createdAt:
-                        task.createdAt ||
-                        new Date().toISOString()
-                }));
-
-            }
-
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Nawy storage error:",
-            error
-        );
-
-    }
-
-    return [];
+    --border: rgba(255,255,255,.08);
 }
 
 
-function save() {
+/* =========================
+   RESET
+========================= */
 
-    try {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(tasks)
-        );
+    -webkit-tap-highlight-color: transparent;
+}
 
-    } catch (error) {
+html {
+    width: 100%;
+    min-height: 100%;
 
-        console.log(
-            "Nawy save error:",
-            error
-        );
+    background: var(--bg);
+}
 
-    }
+body {
+    width: 100%;
+    min-height: 100vh;
 
-    render();
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Noto Sans Arabic",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    overflow: hidden;
 }
 
 
-/* =========================================================
-   AUDIO
-========================================================= */
+/* =========================
+   BUTTONS
+========================= */
 
-function ensureAudioContext() {
+button {
+    font-family: inherit;
 
-    try {
+    border: 0;
+    outline: 0;
 
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
+    cursor: pointer;
 
-        if (!AudioContext) {
-            return null;
-        }
+    -webkit-user-select: none;
+    user-select: none;
 
-        if (!audioContext) {
-
-            audioContext =
-                new AudioContext();
-
-        }
-
-        if (
-            audioContext.state ===
-            "suspended"
-        ) {
-
-            audioContext.resume();
-
-        }
-
-        return audioContext;
-
-    } catch (error) {
-
-        return null;
-
-    }
+    touch-action: manipulation;
 }
 
 
-/* Soft add sound */
+/* =========================
+   APP
+========================= */
 
-function playAddSound() {
+.app {
 
-    const ctx =
-        ensureAudioContext();
+    width: 100%;
+    min-height: 100dvh;
 
-    if (!ctx) return;
+    background:
+        radial-gradient(
+            circle at 80% -15%,
+            rgba(25,197,139,.08),
+            transparent 30%
+        ),
+        var(--bg);
 
-    try {
+    display: flex;
+    flex-direction: column;
 
-        const now =
-            ctx.currentTime;
-
-        const osc =
-            ctx.createOscillator();
-
-        const gain =
-            ctx.createGain();
-
-
-        osc.type = "sine";
-
-        osc.frequency.setValueAtTime(
-            480,
-            now
-        );
-
-        osc.frequency.exponentialRampToValueAtTime(
-            650,
-            now + 0.07
-        );
-
-
-        gain.gain.setValueAtTime(
-            0.0001,
-            now
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.035,
-            now + 0.01
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            now + 0.10
-        );
-
-
-        osc.connect(gain);
-
-        gain.connect(
-            ctx.destination
-        );
-
-
-        osc.start(now);
-
-        osc.stop(
-            now + 0.11
-        );
-
-    } catch (error) {
-
-        console.log(
-            "Add sound error:",
-            error
-        );
-
-    }
-
+    position: relative;
 }
 
 
-/* Soft To-Do style completion chime */
+/* =========================
+   HEADER
+========================= */
 
-function playCompletionSound() {
+.header {
 
-    const ctx =
-        ensureAudioContext();
+    width: 100%;
 
-    if (!ctx) return;
+    padding:
+        24px
+        max(20px, calc((100vw - 900px) / 2))
+        14px;
 
-    try {
-
-        const now =
-            ctx.currentTime;
-
-
-        const notes = [
-            {
-                frequency: 880,
-                start: 0,
-                duration: .16,
-                volume: .045
-            },
-            {
-                frequency: 1174.66,
-                start: .055,
-                duration: .22,
-                volume: .055
-            }
-        ];
-
-
-        notes.forEach(note => {
-
-            const osc =
-                ctx.createOscillator();
-
-            const gain =
-                ctx.createGain();
-
-
-            osc.type =
-                "sine";
-
-
-            osc.frequency.setValueAtTime(
-                note.frequency,
-                now + note.start
-            );
-
-
-            gain.gain.setValueAtTime(
-                0.0001,
-                now + note.start
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                note.volume,
-                now + note.start + .012
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.0001,
-                now +
-                note.start +
-                note.duration
-            );
-
-
-            osc.connect(gain);
-
-            gain.connect(
-                ctx.destination
-            );
-
-
-            osc.start(
-                now + note.start
-            );
-
-            osc.stop(
-                now +
-                note.start +
-                note.duration +
-                .01
-            );
-
-        });
-
-    } catch (error) {
-
-        console.log(
-            "Completion sound error:",
-            error
-        );
-
-    }
-
+    flex-shrink: 0;
 }
 
 
-/* =========================================================
-   TASK ACTIONS
-========================================================= */
+.brand {
 
-function addTask(text) {
-
-    const clean =
-        text.trim();
-
-    if (!clean) return;
-
-
-    const newTask = {
-
-        id:
-            Date.now().toString() +
-            Math.random()
-                .toString(36)
-                .slice(2, 7),
-
-        text:
-            clean,
-
-        completed:
-            false,
-
-        starred:
-            false,
-
-        createdAt:
-            new Date().toISOString()
-
-    };
-
-
-    tasks.unshift(
-        newTask
-    );
-
-
-    playAddSound();
-
-    save();
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 
-function toggleTask(id) {
+.brand-main {
 
-    const task =
-        tasks.find(
-            item => item.id === id
-        );
+    display: flex;
+    align-items: center;
 
-    if (!task) return;
-
-
-    task.completed =
-        !task.completed;
-
-
-    if (task.completed) {
-
-        playCompletionSound();
-
-        save();
-
-        requestAnimationFrame(() => {
-
-            showCompletionFeedback(id);
-
-            const element =
-                document.querySelector(
-                    `[data-task-id="${CSS.escape(id)}"]`
-                );
-
-            if (element) {
-
-                element.classList.add(
-                    "just-completed"
-                );
-
-                setTimeout(() => {
-
-                    element.classList.remove(
-                        "just-completed"
-                    );
-
-                }, 550);
-
-            }
-
-        });
-
-        return;
-    }
-
-
-    save();
-
+    gap: 10px;
 }
 
 
-function toggleStar(id) {
+.brand-mark {
 
-    const task =
-        tasks.find(
-            item => item.id === id
-        );
+    width: 40px;
+    height: 40px;
 
-    if (!task) return;
+    display: grid;
+    place-items: center;
 
+    border-radius: 13px;
 
-    task.starred =
-        !task.starred;
+    background: rgba(25,197,139,.10);
 
-
-    save();
-
+    font-size: 20px;
 }
 
 
-function deleteTask(id) {
+.brand-name {
 
-    tasks =
-        tasks.filter(
-            task => task.id !== id
-        );
+    font-size: 24px;
 
-    save();
+    font-weight: 800;
 
+    letter-spacing: -.8px;
 }
 
 
-/* =========================================================
+.greeting {
+
+    margin-top: 15px;
+}
+
+
+.greeting h1 {
+
+    font-size: 27px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    letter-spacing: -.9px;
+}
+
+
+.greeting p {
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================
    PROGRESS
-========================================================= */
+========================= */
 
-function updateProgress() {
+.progress {
 
-    const total =
-        tasks.length;
+    margin-top: 17px;
 
-    const done =
-        tasks.filter(
-            task => task.completed
-        ).length;
+    display: flex;
+    align-items: center;
 
-
-    if (total === 0) {
-
-        progressFill.style.width =
-            "0%";
-
-        progressText.textContent =
-            "ابدأ أول نية";
-
-        return;
-
-    }
-
-
-    const percentage =
-        Math.round(
-            (done / total) * 100
-        );
-
-
-    progressFill.style.width =
-        percentage + "%";
-
-
-    if (percentage === 100) {
-
-        progressText.textContent =
-            "ما شاء الله! كملت كل نواياك 🎉";
-
-    } else {
-
-        progressText.textContent =
-            `${done} من ${total} أُنجزت (${percentage}%)`;
-
-    }
-
+    gap: 10px;
 }
 
 
-/* =========================================================
-   RENDER
-========================================================= */
+.progress-bar {
 
-function render() {
+    height: 5px;
 
-    updateProgress();
+    flex: 1;
 
-    tasksContainer.innerHTML = "";
+    overflow: hidden;
 
+    border-radius: 99px;
 
-    const activeTasks =
-        tasks
-            .filter(
-                task =>
-                    !task.completed
-            )
-            .sort(
-                (a, b) =>
-                    Number(b.starred) -
-                    Number(a.starred)
-            );
+    background: rgba(255,255,255,.07);
+}
 
 
-    const completedTasks =
-        tasks.filter(
-            task =>
-                task.completed
-        );
+.progress-fill {
+
+    height: 100%;
+
+    width: 0%;
+
+    border-radius: inherit;
+
+    background: var(--green);
+
+    transition: width .35s ease;
+}
 
 
-    if (tasks.length === 0) {
+.progress-text {
 
-        tasksContainer.innerHTML = `
+    color: var(--muted);
 
-            <div class="empty">
+    font-size: 12px;
 
-                <div class="empty-icon">
-                    🌱
-                </div>
+    white-space: nowrap;
+}
 
-                <strong>
-                    مفيش نوايا هنا
-                </strong>
 
-                <span>
-                    اكتب نية جديدة وابدأ يومك.
-                </span>
+/* =========================
+   TASKS
+========================= */
 
-            </div>
+.tasks {
 
-        `;
+    width: 100%;
 
-        return;
+    max-width: 900px;
 
+    margin: 0 auto;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        4px
+        max(20px, calc((100vw - 900px) / 2))
+        150px;
+
+    scrollbar-width: none;
+}
+
+
+.tasks::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================
+   TASK
+========================= */
+
+.task {
+
+    width: 100%;
+
+    min-height: 62px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 9px 3px;
+
+    border-bottom: 1px solid var(--border);
+
+    cursor: pointer;
+
+    transition:
+        opacity .2s ease,
+        transform .15s ease;
+}
+
+
+.task:last-child {
+    border-bottom: none;
+}
+
+
+.task:active {
+    transform: scale(.995);
+}
+
+
+/* =========================
+   CHECK
+========================= */
+
+.check {
+
+    width: 23px;
+    height: 23px;
+
+    flex: 0 0 23px;
+
+    border-radius: 50%;
+
+    border:
+        1.8px solid
+        #69736e;
+
+    display: grid;
+
+    place-items: center;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s ease,
+        box-shadow .18s ease;
+
+    pointer-events: none;
+}
+
+
+.check::after {
+
+    content: "✓";
+
+    color: #07120e;
+
+    font-size: 14px;
+
+    font-weight: 900;
+
+    opacity: 0;
+
+    transform: scale(.45);
+
+    transition:
+        opacity .16s ease,
+        transform .18s ease;
+}
+
+
+/* Hover = preview check */
+
+.task:not(.completed):hover .check {
+
+    border-color: var(--green);
+
+    background: rgba(25,197,139,.10);
+
+    transform: scale(1.08);
+
+    box-shadow:
+        0 0 0 4px rgba(25,197,139,.07);
+}
+
+
+.task:not(.completed):hover .check::after {
+
+    opacity: .85;
+
+    color: var(--green);
+
+    transform: scale(.82);
+}
+
+
+/* Completed */
+
+.task.completed .check {
+
+    background: var(--green);
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(25,197,139,.07);
+}
+
+
+.task.completed .check::after {
+
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+
+/* Completion animation */
+
+.task.just-completed .check {
+
+    animation:
+        check-celebrate
+        .48s
+        cubic-bezier(.18,.9,.3,1.3);
+}
+
+
+@keyframes check-celebrate {
+
+    0% {
+        transform: scale(1);
     }
 
-
-    activeTasks.forEach(task => {
-
-        tasksContainer.appendChild(
-            createTaskElement(task)
-        );
-
-    });
-
-
-    if (completedTasks.length > 0) {
-
-        const divider =
-            document.createElement(
-                "div"
-            );
-
-
-        divider.className =
-            "completed-divider";
-
-
-        divider.innerHTML = `
-            <span>
-                النوايا المحققة
-                (${completedTasks.length})
-            </span>
-        `;
-
-
-        tasksContainer.appendChild(
-            divider
-        );
-
-
-        completedTasks.forEach(task => {
-
-            tasksContainer.appendChild(
-                createTaskElement(task)
-            );
-
-        });
-
+    45% {
+        transform: scale(1.28);
     }
 
-}
-
-
-/* =========================================================
-   CREATE TASK ELEMENT
-========================================================= */
-
-function createTaskElement(task) {
-
-    const el =
-        document.createElement(
-            "div"
-        );
-
-
-    el.className =
-        `task ${
-            task.completed
-                ? "completed"
-                : ""
-        }`;
-
-
-    el.dataset.taskId =
-        task.id;
-
-
-    el.innerHTML = `
-
-        <div class="check"></div>
-
-        <div class="task-main">
-
-            <div class="task-title">
-                ${escapeHtml(task.text)}
-            </div>
-
-        </div>
-
-        <div class="task-actions">
-
-            <button
-                type="button"
-                class="icon-btn ${
-                    task.starred
-                        ? "starred"
-                        : ""
-                }"
-                data-action="star"
-                aria-label="تمييز بنجمة"
-            >
-                ${
-                    task.starred
-                        ? "★"
-                        : "☆"
-                }
-            </button>
-
-
-            <button
-                type="button"
-                class="icon-btn delete"
-                data-action="delete"
-                aria-label="حذف"
-            >
-                ×
-            </button>
-
-        </div>
-
-    `;
-
-
-    return el;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(str) {
-
-    return String(str)
-        .replace(
-            /[&<>"']/g,
-            match => ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            })[match]
-        );
-
-}
-
-
-/* =========================================================
-   COMPLETION VISUAL FEEDBACK
-========================================================= */
-
-function showCompletionFeedback(id) {
-
-    if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) {
-
-        return;
-
+    75% {
+        transform: scale(.94);
     }
 
-
-    const taskElement =
-        document.querySelector(
-            `[data-task-id="${CSS.escape(id)}"]`
-        );
-
-
-    if (!taskElement) return;
-
-
-    const check =
-        taskElement.querySelector(
-            ".check"
-        );
-
-
-    if (!check) return;
-
-
-    const bounds =
-        check.getBoundingClientRect();
-
-
-    const burst =
-        document.createElement(
-            "div"
-        );
-
-
-    burst.className =
-        "completion-burst";
-
-
-    burst.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    burst.style.left =
-        (
-            bounds.left +
-            bounds.width / 2
-        ) + "px";
-
-
-    burst.style.top =
-        (
-            bounds.top +
-            bounds.height / 2
-        ) + "px";
-
-
-    const colors = [
-        "#19c58b",
-        "#f4c84d",
-        "#f5f5f5"
-    ];
-
-
-    burst.innerHTML =
-        Array.from(
-            { length: 12 },
-            (_, index) => {
-
-                return `
-                    <span
-                        style="
-                            --angle:${index * 30}deg;
-                            --color:${colors[index % colors.length]};
-                            --distance:${29 + (index % 3) * 7}px;
-                            --size:${4 + (index % 2)}px;
-                        "
-                    ></span>
-                `;
-
-            }
-        ).join("");
-
-
-    document.body.appendChild(
-        burst
-    );
-
-
-    setTimeout(
-        () => burst.remove(),
-        600
-    );
-
-}
-
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-function updateComposer() {
-
-    taskInput.style.height =
-        "42px";
-
-
-    taskInput.style.height =
-        Math.min(
-            taskInput.scrollHeight,
-            120
-        ) + "px";
-
-
-    const hasText =
-        taskInput.value.trim().length > 0;
-
-
-    submitBtn.classList.toggle(
-        "active",
-        hasText
-    );
-
-}
-
-
-/* =========================================================
-   SEND
-========================================================= */
-
-function handleSend() {
-
-    const value =
-        taskInput.value.trim();
-
-
-    if (!value) {
-
-        taskInput.focus();
-
-        return;
-
+    100% {
+        transform: scale(1);
     }
-
-
-    addTask(value);
-
-
-    taskInput.value = "";
-
-    taskInput.style.height =
-        "42px";
-
-    submitBtn.classList.remove(
-        "active"
-    );
-
-
-    taskInput.focus();
-
 }
 
 
-/* =========================================================
-   INPUT EVENTS
-========================================================= */
+/* =========================
+   TASK TEXT
+========================= */
 
-taskInput.addEventListener(
-    "input",
-    updateComposer
-);
+.task-main {
 
+    min-width: 0;
 
-taskInput.addEventListener(
-    "keydown",
-    event => {
+    flex: 1;
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
-
-            event.preventDefault();
-
-            handleSend();
-
-        }
-
-    }
-);
+    pointer-events: none;
+}
 
 
-/* =========================================================
+.task-title {
+
+    font-size: 16px;
+
+    line-height: 1.5;
+
+    color: #eeeeee;
+
+    overflow-wrap: anywhere;
+
+    transition:
+        color .2s ease;
+}
+
+
+.task.completed .task-title {
+
+    color: var(--muted-dark);
+
+    text-decoration: line-through;
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.task-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1px;
+
+    opacity: .65;
+
+    pointer-events: auto;
+}
+
+
+.icon-btn {
+
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #727c77;
+
+    font-size: 18px;
+
+    transition:
+        background .15s ease,
+        color .15s ease,
+        transform .15s ease;
+}
+
+
+.icon-btn:hover {
+
+    background: rgba(255,255,255,.06);
+
+    color: #b7c0bb;
+}
+
+
+.icon-btn:active {
+
+    transform: scale(.9);
+}
+
+
+.icon-btn.starred {
+
+    color: var(--yellow);
+}
+
+
+.icon-btn.delete:hover {
+
+    color: var(--danger);
+}
+
+
+/* =========================
+   COMPLETED DIVIDER
+========================= */
+
+.completed-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 23px 0 4px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.completed-divider::before,
+.completed-divider::after {
+
+    content: "";
+
+    height: 1px;
+
+    flex: 1;
+
+    background: var(--border);
+}
+
+
+.completed-divider span {
+
+    white-space: nowrap;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+}
+
+
+.completed-divider span::before {
+
+    content: "✓";
+
+    color: var(--green);
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+
+    text-align: center;
+
+    padding: 80px 25px;
+}
+
+
+.empty-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 18px;
+
+    background: rgba(25,197,139,.08);
+
+    font-size: 25px;
+}
+
+
+.empty strong {
+
+    display: block;
+
+    color: #dedede;
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+
+.empty span {
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composer-wrap {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    padding:
+        14px
+        max(16px, calc((100vw - 900px) / 2))
+        calc(12px + env(safe-area-inset-bottom));
+
+    background:
+        linear-gradient(
+            to top,
+            var(--bg) 55%,
+            rgba(13,13,13,.92) 75%,
+            transparent
+        );
+
+    pointer-events: none;
+}
+
+
+.composer {
+
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 8px;
+
+    padding: 6px 7px 6px 10px;
+
+    background:
+        #1b1b1b;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius: 26px;
+
+    box-shadow:
+        0 8px 35px rgba(0,0,0,.28);
+
+    pointer-events: auto;
+}
+
+
+/* =========================
+   TEXTAREA
+========================= */
+
+textarea {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 42px;
+
+    min-height: 42px;
+
+    max-height: 120px;
+
+    resize: none;
+
+    overflow-y: auto;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text);
+
+    padding:
+        10px 7px;
+
+    line-height: 1.45;
+
+    font-size: 15px;
+
+    caret-color: var(--green);
+
+    scrollbar-width: none;
+}
+
+
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
+
+textarea::placeholder {
+
+    color: #747474;
+
+    opacity: 1;
+}
+
+
+/* =========================
    SEND BUTTON
-========================================================= */
+========================= */
 
-submitBtn.addEventListener(
-    "click",
-    event => {
+.submit {
 
-        event.preventDefault();
+    width: 42px;
+    height: 42px;
 
-        handleSend();
+    flex: 0 0 42px;
 
+    border-radius: 50%;
+
+    display: grid;
+
+    place-items: center;
+
+    background: #303030;
+
+    color: #777;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .14s ease,
+        box-shadow .18s ease;
+
+    pointer-events: auto;
+}
+
+
+.submit.active {
+
+    background: #f2f2f2;
+
+    color: #111;
+
+    box-shadow:
+        0 4px 16px rgba(0,0,0,.18);
+}
+
+
+.submit:active {
+
+    transform: scale(.91);
+}
+
+
+/* سهم لأعلى واضح */
+
+.send-arrow {
+
+    display: block;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    transform:
+        translateY(-1px);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   HINT
+========================= */
+
+.hint {
+
+    text-align: center;
+
+    color: #555;
+
+    font-size: 10px;
+
+    margin-top: 7px;
+}
+
+
+/* =========================
+   COMPLETION BURST
+========================= */
+
+.completion-burst {
+
+    position: fixed;
+
+    width: 44px;
+    height: 44px;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 50;
+}
+
+
+.completion-burst::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 9px;
+
+    border:
+        2px solid
+        rgba(25,197,139,.75);
+
+    border-radius: 50%;
+
+    animation:
+        completion-ring
+        .5s
+        ease-out
+        forwards;
+}
+
+
+.completion-burst span {
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: var(--size);
+    height: var(--size);
+
+    border-radius: 50%;
+
+    background: var(--color);
+
+    animation:
+        completion-particle
+        .55s
+        cubic-bezier(.18,.7,.3,1)
+        forwards;
+}
+
+
+@keyframes completion-ring {
+
+    from {
+        transform: scale(.5);
+        opacity: .8;
     }
-);
 
-
-/*
-   مهم جدًا:
-   pointerdown يجعل الزر سريعًا على الموبايل
-   ولا يعتمد على hover أو mouse.
-*/
-
-submitBtn.addEventListener(
-    "pointerdown",
-    event => {
-
-        event.stopPropagation();
-
+    to {
+        transform: scale(1.9);
+        opacity: 0;
     }
-);
+}
 
 
-/* =========================================================
-   TASK EVENTS
-========================================================= */
+@keyframes completion-particle {
 
-tasksContainer.addEventListener(
-    "click",
-    event => {
+    from {
 
-        const button =
-            event.target.closest(
-                ".icon-btn"
-            );
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--angle))
+            translateY(-8px)
+            scale(.6);
 
-
-        if (button) {
-
-            const taskElement =
-                button.closest(
-                    ".task"
-                );
-
-
-            if (!taskElement) return;
-
-
-            const id =
-                taskElement.dataset.taskId;
-
-
-            const action =
-                button.dataset.action;
-
-
-            if (action === "star") {
-
-                toggleStar(id);
-
-                return;
-
-            }
-
-
-            if (action === "delete") {
-
-                if (
-                    confirm(
-                        "هل أنت متأكد من حذف هذه النية؟"
-                    )
-                ) {
-
-                    deleteTask(id);
-
-                }
-
-                return;
-
-            }
-
-        }
-
-
-        const taskElement =
-            event.target.closest(
-                ".task"
-            );
-
-
-        if (!taskElement) return;
-
-
-        const id =
-            taskElement.dataset.taskId;
-
-
-        toggleTask(id);
-
+        opacity: 1;
     }
-);
 
+    to {
 
-/* =========================================================
-   PWA INSTALL
-========================================================= */
+        transform:
+            translate(-50%, -50%)
+            rotate(var(--angle))
+            translateY(calc(var(--distance) * -1))
+            scale(0);
 
-window.addEventListener(
-    "beforeinstallprompt",
-    event => {
-
-        event.preventDefault();
-
-        deferredInstallPrompt =
-            event;
-
-        installOverlay.classList.add(
-            "show"
-        );
-
+        opacity: 0;
     }
-);
+}
 
 
-installBtn.addEventListener(
-    "click",
-    async () => {
+/* =========================
+   INSTALL
+========================= */
 
-        if (
-            deferredInstallPrompt
-        ) {
+.install-overlay {
 
-            deferredInstallPrompt.prompt();
+    position: fixed;
 
-            try {
+    inset: 0;
 
-                await deferredInstallPrompt.userChoice;
+    display: flex;
 
-            } catch {}
+    align-items: flex-end;
 
-            deferredInstallPrompt =
-                null;
+    justify-content: center;
 
-            installOverlay.classList.remove(
-                "show"
-            );
+    padding: 18px;
 
-        } else {
+    background: rgba(0,0,0,.25);
 
-            installOverlay.classList.remove(
-                "show"
-            );
+    backdrop-filter: blur(3px);
 
-            installGuide.classList.add(
-                "show"
-            );
+    opacity: 0;
 
-        }
+    visibility: hidden;
 
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+    z-index: 1000;
+}
+
+
+.install-overlay.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.install-sheet {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    background: #191919;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.42);
+
+    transform: translateY(25px);
+
+    transition:
+        transform .28s ease;
+}
+
+
+.install-overlay.show .install-sheet {
+
+    transform: translateY(0);
+}
+
+
+.install-icon {
+
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background: rgba(25,197,139,.1);
+
+    font-size: 20px;
+}
+
+
+.install-copy {
+
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.install-title {
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+
+.install-subtitle {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+.install-btn {
+
+    flex-shrink: 0;
+
+    padding: 10px 14px;
+
+    border-radius: 12px;
+
+    background: var(--green);
+
+    color: #06140f;
+
+    font-size: 12px;
+
+    font-weight: 900;
+}
+
+
+.install-close {
+
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.05);
+
+    color: #777;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   INSTALL GUIDE
+========================= */
+
+.install-guide {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 22px;
+
+    background: rgba(0,0,0,.58);
+
+    backdrop-filter: blur(8px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition: all .25s ease;
+
+    z-index: 1100;
+}
+
+
+.install-guide.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.guide-box {
+
+    width: 100%;
+
+    max-width: 380px;
+
+    padding: 22px;
+
+    background: #181818;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.45);
+
+    text-align: center;
+}
+
+
+.guide-box h2 {
+
+    font-size: 19px;
+
+    margin-bottom: 9px;
+}
+
+
+.guide-box p {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+.guide-close {
+
+    margin-top: 18px;
+
+    width: 100%;
+
+    padding: 11px;
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,.06);
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .header {
+
+        padding:
+            22px
+            18px
+            12px;
     }
-);
 
+    .tasks {
 
-installClose.addEventListener(
-    "click",
-    () => {
-
-        installOverlay.classList.remove(
-            "show"
-        );
-
+        padding-left: 18px;
+        padding-right: 18px;
     }
-);
 
+    .greeting h1 {
 
-guideClose.addEventListener(
-    "click",
-    () => {
-
-        installGuide.classList.remove(
-            "show"
-        );
-
+        font-size: 24px;
     }
-);
 
+    .composer-wrap {
 
-/* =========================================================
-   SERVICE WORKER
-========================================================= */
-
-if (
-    "serviceWorker" in navigator
-) {
-
-    window.addEventListener(
-        "load",
-        () => {
-
-            navigator.serviceWorker
-                .register("./sw.js")
-                .catch(
-                    error => {
-                        console.log(
-                            "Nawy SW error:",
-                            error
-                        );
-                    }
-                );
-
-        }
-    );
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 
 }
 
 
-/* =========================================================
-   INITIAL RENDER
-========================================================= */
+/* =========================
+   SMALL PHONES
+========================= */
 
-render();
+@media (max-width: 380px) {
 
-updateComposer();
+    .header {
+
+        padding:
+            20px
+            15px
+            10px;
+    }
+
+    .tasks {
+
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .greeting h1 {
+
+        font-size: 22px;
+    }
+
+    .task-title {
+
+        font-size: 15px;
+    }
+
+    .task-actions {
+
+        opacity: .55;
+    }
+
+}
+
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: .01ms !important;
+    }
+
+}
