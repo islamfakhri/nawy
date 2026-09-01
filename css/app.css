@@ -1,1199 +1,1363 @@
-/* =========================================================
-   NAWY
-   APP.CSS
-   Clean / Modern / Arabic / Dark
-   ========================================================= */
-
 :root {
+--bg: #0d0f0e;
+--surface: #151817;
+--surface-2: #1b1f1d;
 
-    --bg: #0d0f0e;
-    --surface: #171a18;
-    --surface-hover: #1c201e;
+```
+--text: #f3f5f4;
+--muted: #89938e;
+--muted-dark: #626c67;
 
-    --text: #f1f3f2;
-    --text-soft: #dce2df;
+--green: #19c58b;
+--green-soft: rgba(25, 197, 139, .12);
 
-    --muted: #858e89;
-    --muted-soft: #69736d;
+--yellow: #f4c84d;
+--danger: #ff6262;
 
-    --green: #19c58b;
-    --green-dark: #0e9d6e;
+--border: rgba(255, 255, 255, .075);
+```
 
-    --yellow: #e8c34d;
-    --danger: #e76161;
-
-    --line: rgba(255,255,255,.065);
-
-    --content-width: 720px;
-
-    --composer-width: 720px;
 }
 
-
-/* =========================================================
-   RESET
-   ========================================================= */
+/* =========================
+RESET
+========================= */
 
 * {
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  }
 
-    margin: 0;
-    padding: 0;
-
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    width: 100%;
-    min-height: 100%;
-
-    background: var(--bg);
-
-    color-scheme: dark;
+html,
+body {
+width: 100%;
+min-height: 100%;
+background: var(--bg);
 }
 
 body {
-    width: 100%;
-    min-height: 100dvh;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+"Noto Sans Arabic",
+Tahoma,
+Arial,
+sans-serif;
 
-    margin: 0;
+```
+color: var(--text);
 
-    background: var(--bg);
+overflow: hidden;
 
-    color: var(--text);
+overscroll-behavior: none;
+```
 
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        "Noto Sans Arabic",
-        "Noto Kufi Arabic",
-        Tahoma,
-        Arial,
-        sans-serif;
-
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-
-    overflow: hidden;
 }
 
 button,
 textarea {
-    font: inherit;
+font-family: inherit;
 }
 
 button {
-    border: 0;
-    outline: 0;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-
-    -webkit-user-select: none;
-    user-select: none;
+border: 0;
+outline: 0;
+cursor: pointer;
+user-select: none;
+touch-action: manipulation;
 }
 
-
-/* =========================================================
-   APP
-   ========================================================= */
+/* =========================
+APP
+========================= */
 
 .app {
-    width: 100%;
-    height: 100dvh;
+width: 100%;
+min-height: 100dvh;
 
-    min-height: 100dvh;
+```
+position: relative;
 
-    position: relative;
+display: flex;
+flex-direction: column;
 
-    display: flex;
-    flex-direction: column;
+background:
+    radial-gradient(
+        circle at 50% -20%,
+        rgba(25, 197, 139, .075),
+        transparent 35%
+    ),
+    var(--bg);
+```
 
-    background: var(--bg);
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* =========================
+HEADER
+========================= */
 
 .header {
-    width: 100%;
+width: 100%;
+max-width: 720px;
 
-    flex-shrink: 0;
+```
+margin: 0 auto;
 
-    padding:
-        28px
-        20px
-        10px;
+padding:
+    calc(22px + env(safe-area-inset-top))
+    22px
+    10px;
+```
+
 }
-
-.header-inner {
-    width: 100%;
-    max-width: var(--content-width);
-
-    margin: 0 auto;
-}
-
-
-/* =========================================================
-   BRAND
-   ========================================================= */
 
 .brand {
-    display: flex;
-    align-items: center;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
 
-    gap: 10px;
+.brand-main {
+display: flex;
+align-items: center;
+gap: 10px;
 }
 
 .brand-mark {
-    width: 38px;
-    height: 38px;
+width: 39px;
+height: 39px;
 
-    display: grid;
-    place-items: center;
+```
+display: grid;
+place-items: center;
 
-    border-radius: 11px;
+border-radius: 13px;
 
-    background: rgba(25,197,139,.11);
+background: rgba(25, 197, 139, .10);
 
-    color: var(--green);
+font-size: 19px;
+```
 
-    font-size: 18px;
-    font-weight: 800;
 }
 
 .brand-name {
-    color: var(--text);
-
-    font-size: 23px;
-    font-weight: 800;
-
-    letter-spacing: -.5px;
+font-size: 24px;
+font-weight: 800;
+letter-spacing: -.8px;
 }
 
-
-/* =========================================================
-   GREETING
-   ========================================================= */
+/* =========================
+GREETING
+========================= */
 
 .greeting {
-    margin-top: 20px;
+margin-top: 15px;
 }
 
 .greeting h1 {
-    color: var(--text);
-
-    font-size: 27px;
-    line-height: 1.3;
-
-    font-weight: 750;
-
-    letter-spacing: -.8px;
+font-size: clamp(23px, 5vw, 28px);
+line-height: 1.25;
+font-weight: 800;
+letter-spacing: -.8px;
 }
 
 .greeting p {
-    margin-top: 5px;
+margin-top: 5px;
 
-    color: var(--muted);
+```
+color: var(--muted);
 
-    font-size: 13px;
+font-size: 13px;
+```
 
-    line-height: 1.5;
 }
 
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
+/* =========================
+PROGRESS
+========================= */
 
 .progress {
-    margin-top: 18px;
+margin-top: 16px;
 
-    display: flex;
-    align-items: center;
+```
+display: flex;
+align-items: center;
 
-    gap: 10px;
+gap: 10px;
+```
+
 }
 
-.progress-track {
-    flex: 1;
+.progress-bar {
+height: 5px;
 
-    height: 5px;
+```
+flex: 1;
 
-    overflow: hidden;
+overflow: hidden;
 
-    border-radius: 999px;
+background: rgba(255, 255, 255, .065);
 
-    background: rgba(255,255,255,.065);
+border-radius: 99px;
+```
+
 }
 
 .progress-fill {
-    width: 0%;
-    height: 100%;
+height: 100%;
+width: 0;
 
-    border-radius: inherit;
+```
+background: var(--green);
 
-    background: var(--green);
+border-radius: inherit;
 
-    transition:
-        width .3s ease;
+transition:
+    width .35s cubic-bezier(.22, 1, .36, 1);
+```
+
 }
 
 .progress-text {
-    flex-shrink: 0;
+color: var(--muted);
 
-    color: var(--muted);
+```
+font-size: 11px;
 
-    font-size: 11px;
+white-space: nowrap;
+```
 
-    white-space: nowrap;
 }
 
-
-/* =========================================================
-   TASK LIST
-   ========================================================= */
+/* =========================
+TASKS
+========================= */
 
 .tasks {
-    width: 100%;
-    max-width: var(--content-width);
+width: 100%;
+max-width: 720px;
 
-    margin: 0 auto;
+```
+flex: 1;
 
-    flex: 1;
+margin: 0 auto;
 
-    overflow-y: auto;
+overflow-y: auto;
 
-    padding:
-        5px 20px
-        170px;
+padding:
+    10px
+    22px
+    175px;
 
-    scrollbar-width: none;
+scrollbar-width: none;
 
-    overscroll-behavior: contain;
+overscroll-behavior: contain;
+```
+
 }
 
 .tasks::-webkit-scrollbar {
-    display: none;
+display: none;
 }
 
-
-/* =========================================================
-   TASK
-   ========================================================= */
+/* =========================
+TASK
+========================= */
 
 .task {
-    width: 100%;
+min-height: 64px;
 
-    min-height: 62px;
+```
+display: flex;
+align-items: center;
 
-    display: flex;
-    align-items: center;
+gap: 13px;
 
-    gap: 13px;
+padding: 10px 2px;
 
-    padding: 10px 2px;
+border-bottom: 1px solid var(--border);
 
-    border-bottom: 1px solid var(--line);
+cursor: pointer;
 
-    transition:
-        opacity .18s ease,
-        transform .15s ease;
+transition:
+    opacity .2s ease,
+    transform .16s ease;
+```
+
 }
 
 .task:last-child {
-    border-bottom-color: transparent;
+border-bottom: 0;
 }
 
 .task:active {
-    transform: scale(.995);
+transform: scale(.992);
 }
 
-
-/* =========================================================
-   CHECKBOX
-   ========================================================= */
+/* =========================
+CHECK
+========================= */
 
 .check {
-    width: 23px;
-    height: 23px;
+width: 23px;
+height: 23px;
 
-    flex: 0 0 23px;
+```
+flex: 0 0 23px;
 
-    display: grid;
-    place-items: center;
+position: relative;
 
-    border:
-        1.7px solid
-        #65716b;
+display: grid;
+place-items: center;
 
-    border-radius: 50%;
+border: 1.7px solid #66716c;
 
-    transition:
-        background .18s ease,
-        border-color .18s ease,
-        transform .2s ease;
+border-radius: 50%;
+
+transition:
+    background .18s ease,
+    border-color .18s ease,
+    transform .18s cubic-bezier(.18, .9, .3, 1.3),
+    box-shadow .18s ease;
+```
+
+}
+
+/*
+Preview ✓
+يظهر فقط عند الوقوف على المهمة
+*/
+
+.task:not(.completed):hover .check {
+border-color: var(--green);
+
+```
+background: rgba(25, 197, 139, .08);
+
+transform: scale(1.08);
+
+box-shadow:
+    0 0 0 4px rgba(25, 197, 139, .055);
+```
+
 }
 
 .check::after {
-    content: "✓";
+content: "✓";
 
-    color: #07120e;
+```
+position: absolute;
 
-    font-size: 13px;
-    font-weight: 900;
+color: var(--green);
 
-    opacity: 0;
+font-size: 14px;
+font-weight: 900;
 
-    transform: scale(.5);
+line-height: 1;
 
-    transition:
-        opacity .16s ease,
-        transform .18s ease;
+opacity: 0;
+
+transform: scale(.45);
+
+transition:
+    opacity .16s ease,
+    transform .18s cubic-bezier(.18, .9, .3, 1.3);
+```
+
 }
 
-.task.completed .check {
-    background: var(--green);
+/*
+Preview علامة الصح
+*/
 
-    border-color: var(--green);
+.task:not(.completed):hover .check::after {
+opacity: .95;
+
+```
+transform: scale(.9);
+```
+
+}
+
+/*
+Completed
+*/
+
+.task.completed .check {
+background: var(--green);
+
+```
+border-color: var(--green);
+
+box-shadow: 0 0 0 0 rgba(25, 197, 139, 0);
+```
+
 }
 
 .task.completed .check::after {
-    opacity: 1;
+color: #06140f;
 
+```
+opacity: 1;
+
+transform: scale(1);
+```
+
+}
+
+/* =========================
+COMPLETION ANIMATION
+========================= */
+
+.task.just-completed .check {
+animation:
+check-pop .48s cubic-bezier(.18, .9, .3, 1.35);
+}
+
+@keyframes check-pop {
+
+```
+0% {
     transform: scale(1);
 }
 
-
-/* =========================================================
-   TASK CONTENT
-   ========================================================= */
-
-.task-main {
-    min-width: 0;
-
-    flex: 1;
-
-    pointer-events: none;
+38% {
+    transform: scale(1.32);
 }
 
-.task-title {
-    color: var(--text-soft);
-
-    font-size: 16px;
-
-    line-height: 1.5;
-
-    overflow-wrap: anywhere;
-
-    transition:
-        color .18s ease;
-}
-
-.task.completed .task-title {
-    color: var(--muted-soft);
-
-    text-decoration: line-through;
-}
-
-
-/* =========================================================
-   TASK ACTIONS
-   ========================================================= */
-
-.task-actions {
-    display: flex;
-    align-items: center;
-
-    gap: 1px;
-
-    opacity: .55;
-
-    pointer-events: auto;
-}
-
-.icon-btn {
-    width: 34px;
-    height: 34px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 9px;
-
-    background: transparent;
-
-    color: #7b8680;
-
-    font-size: 18px;
-
-    transition:
-        background .15s ease,
-        color .15s ease,
-        transform .15s ease;
-}
-
-.icon-btn:hover {
-    background: rgba(255,255,255,.045);
-
-    color: #aab3ae;
-}
-
-.icon-btn:active {
+68% {
     transform: scale(.92);
 }
 
+100% {
+    transform: scale(1);
+}
+```
+
+}
+
+.task.just-completed .check::after {
+animation:
+check-reveal .35s cubic-bezier(.18, .9, .3, 1.3);
+}
+
+@keyframes check-reveal {
+
+```
+0% {
+    opacity: 0;
+    transform: scale(.2) rotate(-15deg);
+}
+
+60% {
+    opacity: 1;
+    transform: scale(1.15) rotate(2deg);
+}
+
+100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+}
+```
+
+}
+
+/* =========================
+COMPLETION BURST
+========================= */
+
+.completion-burst {
+position: fixed;
+
+```
+width: 50px;
+height: 50px;
+
+pointer-events: none;
+
+transform: translate(-50%, -50%);
+
+z-index: 50;
+```
+
+}
+
+.completion-burst::before {
+content: "";
+
+```
+position: absolute;
+
+inset: 8px;
+
+border: 2px solid rgba(25, 197, 139, .65);
+
+border-radius: 50%;
+
+animation:
+    completion-ring .48s ease-out forwards;
+```
+
+}
+
+.completion-burst span {
+position: absolute;
+
+```
+top: 50%;
+left: 50%;
+
+width: var(--size);
+height: var(--size);
+
+border-radius: 50%;
+
+background: var(--color);
+
+animation:
+    completion-particle .55s cubic-bezier(.18, .7, .3, 1) forwards;
+```
+
+}
+
+@keyframes completion-ring {
+
+```
+0% {
+    transform: scale(.35);
+    opacity: .85;
+}
+
+100% {
+    transform: scale(1.9);
+    opacity: 0;
+}
+```
+
+}
+
+@keyframes completion-particle {
+
+```
+0% {
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(-5px)
+        scale(.7);
+
+    opacity: 1;
+}
+
+100% {
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(calc(var(--distance) * -1))
+        scale(0);
+
+    opacity: 0;
+}
+```
+
+}
+
+/* =========================
+TASK CONTENT
+========================= */
+
+.task-main {
+min-width: 0;
+
+```
+flex: 1;
+
+pointer-events: none;
+```
+
+}
+
+.task-title {
+font-size: 16px;
+
+```
+line-height: 1.5;
+
+color: #edf2ef;
+
+overflow-wrap: anywhere;
+
+transition:
+    color .2s ease;
+```
+
+}
+
+.task.completed .task-title {
+color: var(--muted-dark);
+
+```
+text-decoration: line-through;
+```
+
+}
+
+/* =========================
+TASK ACTIONS
+========================= */
+
+.task-actions {
+display: flex;
+align-items: center;
+
+```
+gap: 1px;
+
+opacity: .6;
+
+pointer-events: auto;
+```
+
+}
+
+.icon-btn {
+width: 34px;
+height: 34px;
+
+```
+display: grid;
+place-items: center;
+
+border-radius: 10px;
+
+background: transparent;
+
+color: #718078;
+
+font-size: 18px;
+
+transition:
+    color .16s ease,
+    background .16s ease,
+    transform .16s ease;
+```
+
+}
+
+.icon-btn:hover {
+background: rgba(255, 255, 255, .045);
+
+```
+color: #9ca8a2;
+```
+
+}
+
+.icon-btn:active {
+transform: scale(.9);
+
+```
+background: rgba(255, 255, 255, .07);
+```
+
+}
+
 .icon-btn.starred {
-    color: var(--yellow);
+color: var(--yellow);
 }
 
 .icon-btn.delete:hover,
 .icon-btn.delete:active {
-    color: var(--danger);
+color: var(--danger);
 }
 
-
-/* =========================================================
-   COMPLETED DIVIDER
-   ========================================================= */
+/* =========================
+COMPLETED DIVIDER
+========================= */
 
 .completed-divider {
-    display: flex;
-    align-items: center;
+display: flex;
+align-items: center;
 
-    gap: 10px;
+```
+gap: 10px;
 
-    margin:
-        22px 0
-        3px;
+margin: 22px 0 3px;
+
+color: var(--muted);
+
+font-size: 12px;
+font-weight: 700;
+```
+
 }
 
 .completed-divider::before,
 .completed-divider::after {
-    content: "";
+content: "";
 
-    height: 1px;
+```
+height: 1px;
 
-    flex: 1;
+flex: 1;
 
-    background: var(--line);
+background: var(--border);
+```
+
 }
 
 .completed-divider span {
-    color: var(--muted);
+display: inline-flex;
+align-items: center;
 
-    font-size: 11px;
-    font-weight: 700;
+```
+gap: 5px;
 
-    white-space: nowrap;
+white-space: nowrap;
+```
+
 }
 
 .completed-divider span::before {
-    content: "✓";
+content: "✓";
 
-    margin-left: 5px;
+```
+color: var(--green);
 
-    color: var(--green);
+font-size: 13px;
+```
+
 }
 
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
+/* =========================
+EMPTY
+========================= */
 
 .empty {
-    padding:
-        90px
-        20px
-        40px;
+text-align: center;
 
-    text-align: center;
+```
+padding: 80px 25px;
+```
+
 }
 
 .empty-icon {
-    width: 52px;
-    height: 52px;
+width: 58px;
+height: 58px;
 
-    margin:
-        0 auto
-        14px;
+```
+margin: 0 auto 15px;
 
-    display: grid;
-    place-items: center;
+display: grid;
+place-items: center;
 
-    border-radius: 16px;
+border-radius: 18px;
 
-    background: rgba(25,197,139,.08);
+background: rgba(25, 197, 139, .08);
 
-    color: var(--green);
+color: var(--green);
 
-    font-size: 22px;
+font-size: 25px;
+```
+
 }
 
 .empty strong {
-    display: block;
+display: block;
 
-    margin-bottom: 5px;
+```
+margin-bottom: 5px;
 
-    color: var(--text-soft);
+color: #dfe7e3;
 
-    font-size: 15px;
+font-size: 16px;
+```
+
 }
 
 .empty span {
-    color: var(--muted);
+color: var(--muted);
 
-    font-size: 12px;
+```
+font-size: 13px;
+```
+
 }
 
+/* =========================
+COMPOSER
+========================= */
 
-/* =========================================================
-   COMPOSER AREA
-   ========================================================= */
+.composer-wrap {
+position: fixed;
 
-.composer-area {
-    position: fixed;
+```
+left: 0;
+right: 0;
+bottom: 0;
 
-    left: 0;
-    right: 0;
-    bottom: 0;
+z-index: 20;
 
-    z-index: 50;
+padding:
+    12px
+    18px
+    calc(12px + env(safe-area-inset-bottom));
 
-    padding:
-        12px
-        20px
-        calc(12px + env(safe-area-inset-bottom));
+background:
+    linear-gradient(
+        to top,
+        var(--bg) 65%,
+        rgba(13, 15, 14, .94) 82%,
+        transparent
+    );
 
-    pointer-events: none;
+pointer-events: none;
+```
 
-    background:
-        linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(13,15,14,.75) 32%,
-            var(--bg) 70%
-        );
 }
-
-.composer-shell {
-    width: 100%;
-    max-width: var(--composer-width);
-
-    margin: 0 auto;
-
-    pointer-events: auto;
-}
-
-
-/* =========================================================
-   COMPOSER
-   ========================================================= */
 
 .composer {
-    width: 100%;
+width: 100%;
+max-width: 680px;
 
-    min-height: 54px;
+```
+margin: 0 auto;
 
-    display: flex;
-    align-items: flex-end;
+pointer-events: auto;
 
-    gap: 8px;
+display: flex;
+align-items: flex-end;
 
-    padding:
-        6px
-        6px
-        6px
-        17px;
+gap: 7px;
 
-    background: #191d1b;
+padding: 7px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+background: #191d1b;
 
-    border-radius: 27px;
+border: 1px solid rgba(255, 255, 255, .075);
 
-    box-shadow:
-        0 7px 28px rgba(0,0,0,.20);
+border-radius: 24px;
 
-    transition:
-        border-color .18s ease,
-        background .18s ease,
-        box-shadow .18s ease;
+box-shadow:
+    0 10px 35px rgba(0, 0, 0, .30);
+
+transition:
+    border-color .18s ease,
+    box-shadow .18s ease;
+```
+
 }
+
+/*
+لما المستخدم يدخل الكتابة
+*/
 
 .composer:focus-within {
-    background: #1b201e;
+border-color: rgba(25, 197, 139, .22);
 
-    border-color:
-        rgba(255,255,255,.10);
+```
+box-shadow:
+    0 12px 38px rgba(0, 0, 0, .34),
+    0 0 0 2px rgba(25, 197, 139, .035);
+```
 
-    box-shadow:
-        0 8px 30px rgba(0,0,0,.23);
 }
 
-
-/* =========================================================
-   TEXTAREA
-   ========================================================= */
+/* =========================
+TEXTAREA
+========================= */
 
 textarea {
-    flex: 1;
+flex: 1;
 
-    min-width: 0;
+```
+min-width: 0;
 
-    width: 100%;
+min-height: 42px;
+max-height: 120px;
 
-    min-height: 42px;
-    max-height: 130px;
+resize: none;
 
-    padding:
-        10px
-        0;
+border: 0;
+outline: 0;
 
-    margin: 0;
+background: transparent;
 
-    resize: none;
+color: var(--text);
 
-    overflow-y: auto;
+padding:
+    10px
+    10px
+    9px;
 
-    border: 0 !important;
-    outline: 0 !important;
+line-height: 1.5;
 
-    background: transparent !important;
+font-size: 15px;
 
-    color: var(--text);
+overflow-y: auto;
 
-    font-size: 15px;
+scrollbar-width: none;
+```
 
-    line-height: 1.5;
+}
 
-    box-shadow: none !important;
-
-    appearance: none;
-    -webkit-appearance: none;
+textarea::-webkit-scrollbar {
+display: none;
 }
 
 textarea::placeholder {
-    color: #78837d;
-
-    opacity: 1;
+color: #747f79;
 }
 
-textarea:focus {
-    border: 0 !important;
-
-    outline: 0 !important;
-
-    box-shadow: none !important;
+textarea:focus::placeholder {
+color: #68736e;
 }
 
-
-/* =========================================================
-   SEND BUTTON
-   ========================================================= */
+/* =========================
+SEND BUTTON
+========================= */
 
 .submit {
-    width: 42px;
-    height: 42px;
+width: 42px;
+height: 42px;
 
-    flex: 0 0 42px;
+```
+flex: 0 0 42px;
 
-    display: grid;
-    place-items: center;
+display: grid;
+place-items: center;
 
-    margin: 0;
+border-radius: 50%;
 
-    border-radius: 50%;
+background: #29312d;
 
-    background: #2a302d;
+color: #69756f;
 
-    color: #737e78;
+transition:
+    background .18s ease,
+    color .18s ease,
+    transform .16s ease,
+    box-shadow .18s ease;
+```
 
-    transition:
-        background .18s ease,
-        color .18s ease,
-        transform .15s ease;
 }
 
-.submit:disabled {
-    cursor: default;
+.submit svg {
+width: 20px;
+height: 20px;
 
-    opacity: .75;
+```
+display: block;
+
+fill: none;
+
+stroke: currentColor;
+
+stroke-width: 2;
+
+stroke-linecap: round;
+
+stroke-linejoin: round;
+
+/*
+   تثبيت الاتجاه بصريًا
+   حتى RTL لا يقلب السهم
+*/
+transform: none;
+```
+
 }
 
-.submit:not(:disabled) {
-    background: var(--green);
+.submit.active {
+background: var(--green);
 
-    color: #06140f;
+```
+color: #06140f;
+
+box-shadow:
+    0 6px 18px rgba(25, 197, 139, .18);
+```
+
 }
 
-.submit:not(:disabled):hover {
-    transform: scale(1.04);
+.submit:hover {
+transform: scale(1.035);
 }
 
-.submit:not(:disabled):active {
-    transform: scale(.92);
+.submit:active {
+transform: scale(.92);
 }
 
-.send-icon {
-    width: 19px;
-    height: 19px;
+/* =========================
+HINT
+========================= */
+
+.hint {
+width: 100%;
+max-width: 680px;
+
+```
+margin: 7px auto 0;
+
+text-align: center;
+
+color: #56615c;
+
+font-size: 10px;
+```
+
 }
 
-
-/* =========================================================
-   COMPOSER HINT
-   ========================================================= */
-
-.composer-hint {
-    margin-top: 6px;
-
-    text-align: center;
-
-    color: #515b56;
-
-    font-size: 10px;
-
-    transition:
-        opacity .18s ease;
-}
-
-.composer:focus-within + .composer-hint {
-    opacity: .4;
-}
-
-
-/* =========================================================
-   INSTALL OVERLAY
-   ========================================================= */
+/* =========================
+INSTALL
+========================= */
 
 .install-overlay {
-    position: fixed;
+position: fixed;
+inset: 0;
 
-    inset: 0;
+```
+display: flex;
+align-items: flex-end;
+justify-content: center;
 
-    z-index: 1000;
+padding: 18px;
 
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+background: rgba(0, 0, 0, .22);
 
-    padding: 16px;
+backdrop-filter: blur(2px);
 
-    background: rgba(0,0,0,.28);
+opacity: 0;
+visibility: hidden;
 
-    backdrop-filter: blur(3px);
+pointer-events: none;
 
-    opacity: 0;
-    visibility: hidden;
+transition:
+    opacity .25s ease,
+    visibility .25s ease;
 
-    pointer-events: none;
+z-index: 1000;
+```
 
-    transition:
-        opacity .22s ease,
-        visibility .22s ease;
 }
 
 .install-overlay.show {
-    opacity: 1;
+opacity: 1;
+visibility: visible;
 
-    visibility: visible;
+```
+pointer-events: auto;
+```
 
-    pointer-events: auto;
 }
 
 .install-sheet {
-    width: 100%;
-    max-width: 620px;
+width: 100%;
+max-width: 680px;
 
-    display: flex;
-    align-items: center;
+```
+display: flex;
+align-items: center;
 
-    gap: 11px;
+gap: 12px;
 
-    padding: 13px;
+padding: 14px;
 
-    background: #181c1a;
+background: #151817;
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+border: 1px solid rgba(25, 197, 139, .13);
 
-    border-radius: 18px;
+border-radius: 20px;
 
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.40);
+box-shadow:
+    0 20px 55px rgba(0, 0, 0, .42);
 
-    transform: translateY(15px);
+transform: translateY(25px);
 
-    transition:
-        transform .25s ease;
+transition:
+    transform .28s ease;
+```
+
 }
 
 .install-overlay.show .install-sheet {
-    transform: translateY(0);
+transform: translateY(0);
 }
 
 .install-icon {
-    width: 42px;
-    height: 42px;
+width: 44px;
+height: 44px;
 
-    flex: 0 0 42px;
+```
+flex: 0 0 44px;
 
-    display: grid;
-    place-items: center;
+display: grid;
+place-items: center;
 
-    border-radius: 13px;
+border-radius: 14px;
 
-    background: rgba(25,197,139,.09);
+background: rgba(25, 197, 139, .11);
 
-    font-size: 19px;
+font-size: 20px;
+```
+
 }
 
 .install-copy {
-    min-width: 0;
-
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
+min-width: 0;
+flex: 1;
 }
 
-.install-copy strong {
-    color: var(--text);
-
-    font-size: 14px;
+.install-title {
+font-size: 15px;
+font-weight: 800;
 }
 
-.install-copy span {
-    color: var(--muted);
+.install-subtitle {
+margin-top: 3px;
 
-    font-size: 10px;
+```
+color: var(--muted);
+
+font-size: 11px;
+
+line-height: 1.4;
+```
+
 }
 
 .install-btn {
-    flex-shrink: 0;
+flex-shrink: 0;
 
-    padding:
-        9px
-        13px;
+```
+padding: 10px 14px;
 
-    border-radius: 11px;
+border-radius: 12px;
 
-    background: var(--green);
+background: var(--green);
 
-    color: #06140f;
+color: #06140f;
 
-    font-size: 11px;
-    font-weight: 800;
+font-size: 12px;
+
+font-weight: 900;
+
+white-space: nowrap;
+```
+
 }
 
 .install-close {
-    width: 30px;
-    height: 30px;
+width: 30px;
+height: 30px;
 
-    flex: 0 0 30px;
+```
+flex: 0 0 30px;
 
-    display: grid;
-    place-items: center;
+display: grid;
+place-items: center;
 
-    border-radius: 50%;
+border-radius: 50%;
 
-    background: rgba(255,255,255,.04);
+background: rgba(255, 255, 255, .04);
 
-    color: #77827c;
+color: #718078;
 
-    font-size: 18px;
+font-size: 18px;
+```
+
 }
 
-
-/* =========================================================
-   INSTALL GUIDE
-   ========================================================= */
+/* =========================
+INSTALL GUIDE
+========================= */
 
 .install-guide {
-    position: fixed;
+position: fixed;
+inset: 0;
 
-    inset: 0;
+```
+display: grid;
+place-items: center;
 
-    z-index: 1100;
+padding: 22px;
 
-    display: grid;
-    place-items: center;
+background: rgba(0, 0, 0, .55);
 
-    padding: 20px;
+backdrop-filter: blur(8px);
 
-    background: rgba(0,0,0,.58);
+opacity: 0;
+visibility: hidden;
 
-    backdrop-filter: blur(7px);
+pointer-events: none;
 
-    opacity: 0;
-    visibility: hidden;
+transition: all .25s ease;
 
-    pointer-events: none;
+z-index: 1100;
+```
 
-    transition:
-        opacity .22s ease,
-        visibility .22s ease;
 }
 
 .install-guide.show {
-    opacity: 1;
+opacity: 1;
+visibility: visible;
 
-    visibility: visible;
+```
+pointer-events: auto;
+```
 
-    pointer-events: auto;
 }
 
 .guide-box {
-    width: 100%;
-    max-width: 370px;
+width: 100%;
+max-width: 380px;
 
-    padding: 22px;
+```
+padding: 22px;
 
-    text-align: center;
+background: #151817;
 
-    background: #181c1a;
+border: 1px solid var(--border);
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+border-radius: 22px;
 
-    border-radius: 20px;
+box-shadow:
+    0 25px 70px rgba(0, 0, 0, .45);
 
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.45);
+text-align: center;
+```
+
 }
 
 .guide-box h2 {
-    margin-bottom: 9px;
+font-size: 19px;
 
-    font-size: 18px;
+```
+margin-bottom: 9px;
+```
+
 }
 
 .guide-box p {
-    color: var(--muted);
+color: var(--muted);
 
-    font-size: 13px;
+```
+font-size: 13px;
 
-    line-height: 1.7;
+line-height: 1.7;
+```
+
 }
 
 .guide-close {
-    width: 100%;
+margin-top: 18px;
 
-    margin-top: 18px;
+```
+width: 100%;
 
-    padding: 11px;
+padding: 11px;
 
-    border-radius: 12px;
+border-radius: 13px;
 
-    background: rgba(255,255,255,.06);
+background: rgba(255, 255, 255, .06);
 
-    color: var(--text);
+color: var(--text);
 
-    font-size: 13px;
+font-size: 13px;
+```
+
 }
 
+/* =========================
+RESPONSIVE
+========================= */
 
-/* =========================================================
-   TABLET
-   ========================================================= */
+@media (min-width: 900px) {
 
-@media (min-width: 700px) {
-
-    .header {
-        padding-top: 32px;
-    }
-
-    .tasks {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .composer-area {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .task {
-        min-height: 66px;
-    }
+```
+.header {
+    padding-top: 28px;
 }
 
+.tasks {
+    padding-bottom: 180px;
+}
+```
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .header {
-        padding:
-            22px
-            16px
-            8px;
-    }
-
-    .brand-name {
-        font-size: 22px;
-    }
-
-    .greeting {
-        margin-top: 17px;
-    }
-
-    .greeting h1 {
-        font-size: 23px;
-
-        letter-spacing: -.65px;
-    }
-
-    .tasks {
-        padding:
-            5px
-            16px
-            155px;
-    }
-
-    .task {
-        min-height: 61px;
-
-        gap: 12px;
-
-        padding:
-            9px
-            2px;
-    }
-
-    .task-title {
-        font-size: 15px;
-    }
-
-    .task-actions {
-        opacity: .65;
-    }
-
-    .composer-area {
-        padding:
-            10px
-            12px
-            calc(9px + env(safe-area-inset-bottom));
-
-        background:
-            linear-gradient(
-                to bottom,
-                transparent 0%,
-                rgba(13,15,14,.82) 28%,
-                var(--bg) 70%
-            );
-    }
-
-    .composer {
-        min-height: 53px;
-
-        padding:
-            5px
-            5px
-            5px
-            15px;
-
-        border-radius: 27px;
-    }
-
-    textarea {
-        min-height: 42px;
-
-        font-size: 15px;
-
-        padding:
-            10px
-            0;
-    }
-
-    .submit {
-        width: 42px;
-        height: 42px;
-
-        flex-basis: 42px;
-    }
-
-    .composer-hint {
-        display: none;
-    }
-
-    .install-overlay {
-        padding: 10px;
-    }
-
-    .install-sheet {
-        gap: 8px;
-
-        padding: 11px;
-    }
 }
 
+@media (max-width: 480px) {
 
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
+```
+.header {
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+.tasks {
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+.composer-wrap {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.greeting h1 {
+    font-size: 24px;
+}
+
+.task-title {
+    font-size: 15.5px;
+}
+```
+
+}
 
 @media (max-width: 380px) {
 
-    .header {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    .tasks {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    .greeting h1 {
-        font-size: 22px;
-    }
-
-    .task-title {
-        font-size: 14px;
-    }
-
-    .task-actions {
-        gap: 0;
-    }
-
-    .icon-btn {
-        width: 32px;
-        height: 32px;
-    }
-
-    .composer-area {
-        padding-left: 9px;
-        padding-right: 9px;
-    }
+```
+.header {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
+.tasks {
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+.composer {
+    border-radius: 21px;
+}
+
+.hint {
+    font-size: 9px;
+}
+```
+
+}
+
+/* =========================
+REDUCED MOTION
+========================= */
 
 @media (prefers-reduced-motion: reduce) {
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-    }
+```
+*,
+*::before,
+*::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+}
+```
+
 }
