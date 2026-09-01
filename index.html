@@ -167,7 +167,7 @@
         padding: 11px 3px;
         border-bottom: 1px solid var(--border);
         transition: opacity .2s ease, transform .15s ease;
-        cursor: default;
+        cursor: pointer;
     }
 
     .task:last-child {
@@ -218,7 +218,7 @@
         display: grid;
         place-items: center;
         transition: all .2s ease;
-        cursor: pointer;
+        pointer-events: none; /* نجعل النقر يمر إلى المهمة */
     }
 
     .task.completed .check {
@@ -321,7 +321,7 @@
     .task-main {
         min-width: 0;
         flex: 1;
-        cursor: pointer;
+        pointer-events: none; /* نجعل النقر يمر إلى المهمة */
     }
 
     .task-title {
@@ -342,6 +342,7 @@
         align-items: center;
         gap: 2px;
         opacity: .65;
+        pointer-events: auto; /* الأزرار قابلة للنقر */
     }
 
     .icon-btn {
@@ -638,7 +639,6 @@
                 <div class="brand-mark">🎯</div>
                 <div class="brand-name">ناوي</div>
             </div>
-            <!-- تم إزالة أزرار الفلاتر -->
         </div>
 
         <div class="greeting">
@@ -695,7 +695,8 @@
 
 <script>
     /* =====================================================
-       NAWY - CORE APP LOGIC (محسّن على طريقة Microsoft To Do)
+       NAWY - CORE APP LOGIC
+       التعديل: الضغط على المهمة يبدل حالتها بسلاسة
     ===================================================== */
     const STORAGE_KEY = "nawy_tasks_v4";
 
@@ -709,14 +710,13 @@
     const installBtn = document.getElementById("installBtn");
     const installClose = document.getElementById("installClose");
     const installGuide = document.getElementById("installGuide");
-    const guideText = document.getElementById("guideText");
     const guideClose = document.getElementById("guideClose");
 
     let tasks = loadTasks();
     let deferredInstallPrompt = null;
 
     /* =====================================================
-       SOUNDS (WEB AUDIO API) - محسّن
+       SOUNDS (WEB AUDIO API)
     ===================================================== */
     let audioContext = null;
 
@@ -956,10 +956,11 @@
         const el = document.createElement("div");
         el.className = `task ${task.completed ? "completed" : ""}`;
         el.setAttribute("data-task-id", task.id);
+        el.setAttribute("data-action", "toggle"); // المهمة نفسها تستمع للنقر
 
         el.innerHTML = `
-            <div class="check" data-action="toggle"></div>
-            <div class="task-main" data-action="toggle">
+            <div class="check"></div>
+            <div class="task-main">
                 <div class="task-title">${escapeHtml(task.text)}</div>
             </div>
             <div class="task-actions">
@@ -981,32 +982,41 @@
     }
 
     /* =====================================================
-       EVENTS - استخدام Event Delegation
+       EVENTS - باستخدام Event Delegation
     ===================================================== */
     tasksContainer.addEventListener('click', (e) => {
-        const target = e.target.closest('[data-action]');
-        if (!target) return;
-        const taskEl = target.closest('.task');
+        // إذا كان النقر على زر (نجمة أو حذف) نتعامل معه بشكل منفصل
+        const iconBtn = e.target.closest('.icon-btn');
+        if (iconBtn) {
+            const action = iconBtn.dataset.action;
+            const taskEl = iconBtn.closest('.task');
+            if (!taskEl) return;
+            const id = taskEl.dataset.taskId;
+            if (!id) return;
+
+            if (action === 'star') {
+                toggleStar(id);
+            } else if (action === 'delete') {
+                if (confirm('هل أنت متأكد من حذف هذه النية؟')) {
+                    deleteTask(id);
+                }
+            }
+            return; // منع التعامل معها كـ toggle
+        }
+
+        // النقر على المهمة نفسها (أي مكان آخر)
+        const taskEl = e.target.closest('.task');
         if (!taskEl) return;
         const id = taskEl.dataset.taskId;
         if (!id) return;
 
-        const action = target.dataset.action;
-        switch (action) {
-            case 'toggle':
-                toggleTask(id);
-                break;
-            case 'star':
-                toggleStar(id);
-                break;
-            case 'delete':
-                if (confirm('هل أنت متأكد من حذف هذه النية؟')) {
-                    deleteTask(id);
-                }
-                break;
+        // تأكد من أن العنصر له data-action="toggle" (جميع المهام لها)
+        if (taskEl.dataset.action === 'toggle') {
+            toggleTask(id);
         }
     });
 
+    // باقي الأحداث (الإدخال، الإرسال، التثبيت)
     taskInput.addEventListener("input", () => {
         taskInput.style.height = "auto";
         taskInput.style.height = Math.min(taskInput.scrollHeight, 110) + "px";
