@@ -1,76 +1,251 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b0d0c">
-  <meta name="description" content="ناوي — رتّب نواياك وأنجز يومك ببساطة.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>ناوي — على إيه النهارده؟</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  <link rel="stylesheet" href="./css/app.css">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0d0f0e"
+    >
+
+    <meta
+        name="description"
+        content="ناوي — رتّب يومك وابدأ بنية."
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="ناوي"
+    >
+
+    <title>ناوي — على إيه النهارده؟</title>
+
+    <link rel="manifest" href="./manifest.json">
+
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="./icon-192.png"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="./icon-192.png"
+    >
+
+    <link rel="stylesheet" href="./css/app.css">
 </head>
+
 <body>
-  <div class="app-shell">
+
     <div class="app">
-      <header class="header">
-        <div class="brand-row">
-          <div class="brand">
-            <div class="brand-mark" aria-hidden="true">ن</div>
-            <span>ناوي</span>
-          </div>
-          <div class="today-badge" id="todayBadge">اليوم</div>
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="header">
+
+            <div class="header-inner">
+
+                <div class="brand">
+                    <div class="brand-mark" aria-hidden="true">ن</div>
+                    <div class="brand-name">ناوي</div>
+                </div>
+
+                <div class="greeting">
+                    <h1>ناوي على إيه النهارده؟</h1>
+                    <p id="currentDate">—</p>
+                </div>
+
+                <div class="progress" aria-label="تقدم اليوم">
+                    <div class="progress-track">
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+                    </div>
+
+                    <span
+                        class="progress-text"
+                        id="progressText"
+                    >
+                        ابدأ أول نية
+                    </span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             TASKS
+        ========================== -->
+
+        <main
+            class="tasks"
+            id="tasksContainer"
+            aria-live="polite"
+        ></main>
+
+
+        <!-- =========================
+             COMPOSER
+        ========================== -->
+
+        <div class="composer-area">
+
+            <div class="composer-shell">
+
+                <form
+                    class="composer"
+                    id="composerForm"
+                    autocomplete="off"
+                >
+
+                    <textarea
+                        id="taskInput"
+                        rows="1"
+                        maxlength="500"
+                        placeholder="اكتب اللي ناوي عليه..."
+                        aria-label="نية جديدة"
+                        enterkeyhint="send"
+                    ></textarea>
+
+                    <button
+                        type="submit"
+                        class="submit"
+                        id="submitBtn"
+                        aria-label="إضافة نية"
+                        disabled
+                    >
+                        <svg
+                            class="send-icon"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M5 12h13M13 6l6 6-6 6"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </button>
+
+                </form>
+
+                <div class="composer-hint">
+                    Enter لإضافة نية
+                </div>
+
+            </div>
+
         </div>
 
-        <section class="hero">
-          <p class="eyebrow">بسم الله</p>
-          <h1>ناوي على إيه<br><span>النهارده؟</span></h1>
-          <p class="date" id="currentDate">—</p>
-        </section>
 
-        <div class="progress-row" aria-live="polite">
-          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-          <span class="progress-text" id="progressText">ابدأ أول نية</span>
+        <!-- =========================
+             INSTALL PROMPT
+        ========================== -->
+
+        <div
+            class="install-overlay"
+            id="installOverlay"
+            aria-hidden="true"
+        >
+
+            <div class="install-sheet">
+
+                <div class="install-icon">
+                    📱
+                </div>
+
+                <div class="install-copy">
+
+                    <strong>خلّي ناوي معاك</strong>
+
+                    <span>
+                        ثبّت التطبيق ووصل لنواياك بسرعة.
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="install-btn"
+                    id="installBtn"
+                >
+                    تثبيت
+                </button>
+
+                <button
+                    type="button"
+                    class="install-close"
+                    id="installClose"
+                    aria-label="إغلاق"
+                >
+                    ×
+                </button>
+
+            </div>
+
         </div>
-      </header>
 
-      <main class="content" id="tasksContainer" aria-live="polite"></main>
 
-      <div class="composer-area">
-        <form class="composer" id="composer" autocomplete="off">
-          <div class="composer-inner">
-            <textarea id="taskInput" rows="1" maxlength="500" enterkeyhint="send" aria-label="اكتب نيتك" placeholder="اكتب اللي ناوي عليه..."></textarea>
-            <button class="submit" id="submitBtn" type="submit" aria-label="إضافة نية" disabled>
-              <span aria-hidden="true">↑</span>
-            </button>
-          </div>
-          <div class="composer-meta"><span>Enter للإضافة</span><span>Shift + Enter لسطر جديد</span></div>
-        </form>
-      </div>
+        <!-- =========================
+             INSTALL GUIDE
+        ========================== -->
+
+        <div
+            class="install-guide"
+            id="installGuide"
+            aria-hidden="true"
+        >
+
+            <div class="guide-box">
+
+                <h2>ثبّت ناوي 📱</h2>
+
+                <p id="guideText">
+                    من قائمة المتصفح اختر
+                    <strong>إضافة إلى الشاشة الرئيسية</strong>
+                    لاستخدام ناوي كتطبيق.
+                </p>
+
+                <button
+                    type="button"
+                    class="guide-close"
+                    id="guideClose"
+                >
+                    تمام
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
 
-  <div class="install-overlay" id="installOverlay" aria-hidden="true">
-    <div class="install-sheet" role="dialog" aria-modal="true" aria-labelledby="installTitle">
-      <div class="install-icon">ن</div>
-      <div class="install-copy"><strong id="installTitle">ناوي؟ خليه معاك.</strong><span>ثبّت ناوي على جهازك وابدأ يومك بنية.</span></div>
-      <button class="install-btn" id="installBtn" type="button">ثبّت</button>
-      <button class="install-close" id="installClose" type="button" aria-label="إغلاق">×</button>
-    </div>
-  </div>
+    <script src="./js/app.js" defer></script>
 
-  <div class="guide-overlay" id="installGuide" aria-hidden="true">
-    <div class="guide-box" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
-      <div class="guide-icon">📱</div>
-      <h2 id="guideTitle">خلّي ناوي معاك</h2>
-      <p id="guideText">من قائمة المتصفح اختار <b>إضافة إلى الشاشة الرئيسية</b> عشان تستخدم ناوي كتطبيق.</p>
-      <button class="guide-close" id="guideClose" type="button">تمام</button>
-    </div>
-  </div>
-
-  <script src="./js/app.js" defer></script>
 </body>
 </html>
