@@ -77,15 +77,20 @@ function gtag() {
     dataLayer.push(arguments);
 }
 
-gtag('js', new Date());
+gtag("js", new Date());
 
-gtag('config', 'G-3612TKY0RT', {
+gtag("config", "G-3612TKY0RT", {
     send_page_view: true
 });
 </script>
 
 
 <style>
+
+/* =========================================================
+   NAWY
+   Clean Arabic To-Do
+   ========================================================= */
 
 :root {
 
@@ -109,6 +114,7 @@ gtag('config', 'G-3612TKY0RT', {
     --border: rgba(255,255,255,.075);
 
     --content-width: 760px;
+
 }
 
 
@@ -117,25 +123,38 @@ gtag('config', 'G-3612TKY0RT', {
    ========================================================= */
 
 * {
+
     box-sizing: border-box;
+
     margin: 0;
     padding: 0;
+
     -webkit-tap-highlight-color: transparent;
+
 }
+
 
 html {
+
     width: 100%;
     min-height: 100%;
+
     background: var(--bg);
+
     color-scheme: dark;
+
 }
 
+
 body {
+
     width: 100%;
     min-height: 100dvh;
+
     margin: 0;
 
     background: var(--bg);
+
     color: var(--text);
 
     font-family:
@@ -151,21 +170,32 @@ body {
     overflow: hidden;
 
     -webkit-font-smoothing: antialiased;
+
     text-rendering: optimizeLegibility;
+
 }
+
 
 button,
 textarea,
 input {
+
     font: inherit;
+
 }
 
+
 button {
+
     border: 0;
     outline: 0;
+
     cursor: pointer;
+
     touch-action: manipulation;
+
     user-select: none;
+
 }
 
 
@@ -174,8 +204,10 @@ button {
    ========================================================= */
 
 .app {
+
     width: 100%;
     height: 100dvh;
+
     min-height: 100dvh;
 
     display: flex;
@@ -190,6 +222,7 @@ button {
             transparent 28%
         ),
         var(--bg);
+
 }
 
 
@@ -198,46 +231,138 @@ button {
    ========================================================= */
 
 .header {
+
     width: 100%;
     max-width: var(--content-width);
 
     margin: 0 auto;
 
     padding:
-        calc(24px + env(safe-area-inset-top))
+        calc(22px + env(safe-area-inset-top))
         22px
         11px;
 
     flex-shrink: 0;
+
 }
+
 
 .brand {
+
     display: flex;
     align-items: center;
+
+    gap: 10px;
+
 }
+
+
+.brand-logo {
+
+    width: 39px;
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(25,197,139,.09);
+
+    border:
+        1px solid
+        rgba(25,197,139,.14);
+
+}
+
+
+.brand-logo svg {
+
+    width: 25px;
+    height: 25px;
+
+    fill: none;
+
+    stroke: var(--green);
+
+    stroke-width: 2.3;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+}
+
+
+.brand-copy {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
 
 .brand-name {
-    font-size: 24px;
+
+    font-size: 21px;
+
     line-height: 1;
-    font-weight: 800;
-    letter-spacing: -.8px;
+
+    font-weight: 900;
+
+    letter-spacing: -.7px;
+
 }
+
+
+.brand-tagline {
+
+    color: #666e6a;
+
+    font-size: 9px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+}
+
 
 .greeting {
-    margin-top: 20px;
+
+    margin-top: 24px;
+
 }
+
 
 .greeting h1 {
-    font-size: clamp(24px, 5vw, 29px);
-    line-height: 1.25;
-    font-weight: 800;
-    letter-spacing: -.9px;
+
+    font-size:
+        clamp(25px, 5vw, 30px);
+
+    line-height: 1.22;
+
+    font-weight: 850;
+
+    letter-spacing: -1px;
+
 }
 
+
 .greeting p {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 13px;
+
+    margin-top: 7px;
+
+    color: #777f7b;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
 }
 
 
@@ -246,14 +371,19 @@ button {
    ========================================================= */
 
 .progress {
+
     margin-top: 17px;
 
     display: flex;
     align-items: center;
+
     gap: 10px;
+
 }
 
+
 .progress-bar {
+
     flex: 1;
 
     height: 5px;
@@ -264,10 +394,14 @@ button {
 
     background:
         rgba(255,255,255,.065);
+
 }
 
+
 .progress-fill {
+
     width: 0;
+
     height: 100%;
 
     background: var(--green);
@@ -276,9 +410,12 @@ button {
 
     transition:
         width .35s cubic-bezier(.2,.8,.2,1);
+
 }
 
+
 .progress-text {
+
     min-width: max-content;
 
     color: var(--muted);
@@ -289,10 +426,14 @@ button {
 
     transition:
         color .2s ease;
+
 }
 
+
 .progress.complete .progress-text {
+
     color: var(--green);
+
 }
 
 
@@ -301,6 +442,7 @@ button {
    ========================================================= */
 
 .tasks {
+
     width: 100%;
     max-width: var(--content-width);
 
@@ -320,10 +462,14 @@ button {
     scrollbar-width: none;
 
     overscroll-behavior: contain;
+
 }
 
+
 .tasks::-webkit-scrollbar {
+
     display: none;
+
 }
 
 
@@ -332,8 +478,11 @@ button {
    ========================================================= */
 
 .section-label {
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
 
     margin:
@@ -344,15 +493,22 @@ button {
     color: var(--muted);
 
     font-size: 11px;
+
     font-weight: 700;
+
 }
 
+
 .section-label:first-child {
+
     margin-top: 5px;
+
 }
+
 
 .section-label::before,
 .section-label::after {
+
     content: "";
 
     height: 1px;
@@ -360,10 +516,14 @@ button {
     flex: 1;
 
     background: var(--border);
+
 }
 
+
 .section-label span {
+
     white-space: nowrap;
+
 }
 
 
@@ -372,10 +532,13 @@ button {
    ========================================================= */
 
 .task {
+
     width: 100%;
+
     min-height: 64px;
 
     display: flex;
+
     align-items: center;
 
     gap: 13px;
@@ -390,14 +553,28 @@ button {
     transition:
         opacity .2s ease,
         transform .15s ease;
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-touch-callout: none;
+
 }
+
 
 .task:last-child {
-    border-bottom-color: transparent;
+
+    border-bottom-color:
+        transparent;
+
 }
 
+
 .task:active {
-    transform: scale(.995);
+
+    transform:
+        scale(.995);
+
 }
 
 
@@ -406,6 +583,9 @@ button {
    ========================================================= */
 
 .check {
+
+    position: relative;
+
     width: 24px;
     height: 24px;
 
@@ -430,9 +610,12 @@ button {
         border-color .18s ease,
         transform .18s cubic-bezier(.18,.9,.3,1.3),
         box-shadow .18s ease;
+
 }
 
+
 .check svg {
+
     width: 14px;
     height: 14px;
 
@@ -447,91 +630,225 @@ button {
 
     opacity: 0;
 
-    transform: scale(.5);
+    transform:
+        scale(.5);
 
     transition:
         opacity .16s ease,
         transform .18s cubic-bezier(.18,.9,.3,1.3);
+
 }
 
-.task:not(.completed):hover .check {
-    background: var(--green-soft);
-    border-color: var(--green);
 
-    transform: scale(1.07);
+.task:not(.completed):hover .check {
+
+    background:
+        var(--green-soft);
+
+    border-color:
+        var(--green);
+
+    transform:
+        scale(1.07);
 
     box-shadow:
         0 0 0 4px
         rgba(25,197,139,.055);
+
 }
+
 
 .task:not(.completed):hover .check svg {
+
     opacity: .9;
-    transform: scale(1);
+
+    transform:
+        scale(1);
+
 }
 
+
 .check:focus-visible {
-    border-color: var(--green);
+
+    border-color:
+        var(--green);
 
     box-shadow:
         0 0 0 4px
         rgba(25,197,139,.12);
+
 }
+
 
 .task.completed .check {
-    background: var(--green);
 
-    border-color: var(--green);
+    background:
+        var(--green);
 
-    color: #06130e;
+    border-color:
+        var(--green);
+
+    color:
+        #06130e;
+
 }
 
+
 .task.completed .check svg {
+
     opacity: 1;
-    transform: scale(1);
+
+    transform:
+        scale(1);
+
 }
 
 
 /* =========================================================
-   COMPLETION ANIMATION
+   COMPLETION EFFECT
    ========================================================= */
 
 .task.just-completed .check {
+
     animation:
-        check-pop
-        .5s
-        cubic-bezier(.18,.9,.3,1.3);
+        complete-pop
+        .48s
+        cubic-bezier(.18,.9,.3,1.25);
+
 }
 
-@keyframes check-pop {
+
+.task.just-completed .check::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -7px;
+
+    border:
+        2px solid
+        rgba(25,197,139,.55);
+
+    border-radius: 50%;
+
+    opacity: 0;
+
+    transform:
+        scale(.65);
+
+    animation:
+        complete-ring
+        .55s
+        ease-out;
+
+}
+
+
+.task.just-completed .task-title {
+
+    animation:
+        complete-text
+        .42s
+        ease-out;
+
+}
+
+
+@keyframes complete-pop {
 
     0% {
-        transform: scale(1);
 
-        box-shadow:
-            0 0 0 0
-            rgba(25,197,139,0);
+        transform:
+            scale(1);
+
     }
 
-    40% {
-        transform: scale(1.28);
+    38% {
 
-        box-shadow:
-            0 0 0 8px
-            rgba(25,197,139,.12);
+        transform:
+            scale(1.28);
+
     }
 
-    70% {
-        transform: scale(.94);
+    68% {
+
+        transform:
+            scale(.94);
+
     }
 
     100% {
-        transform: scale(1);
 
-        box-shadow:
-            0 0 0 0
-            rgba(25,197,139,0);
+        transform:
+            scale(1);
+
     }
+
+}
+
+
+@keyframes complete-ring {
+
+    0% {
+
+        opacity: .8;
+
+        transform:
+            scale(.65);
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            scale(1.5);
+
+    }
+
+}
+
+
+@keyframes complete-text {
+
+    0% {
+
+        opacity: .9;
+
+        text-decoration-color:
+            transparent;
+
+        text-decoration-thickness:
+            0;
+
+    }
+
+    45% {
+
+        opacity: 1;
+
+        text-decoration-color:
+            var(--green);
+
+        text-decoration-thickness:
+            2px;
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        text-decoration-color:
+            currentColor;
+
+        text-decoration-thickness:
+            1px;
+
+    }
+
 }
 
 
@@ -540,14 +857,20 @@ button {
    ========================================================= */
 
 .task-main {
+
     min-width: 0;
+
     flex: 1;
+
 }
 
+
 .task-title {
+
     color: #ededed;
 
     font-size: 16px;
+
     line-height: 1.5;
 
     overflow-wrap: anywhere;
@@ -556,26 +879,40 @@ button {
 
     transition:
         color .2s ease;
+
 }
+
 
 .task-title:hover {
-    color: #ffffff;
+
+    color:
+        #ffffff;
+
 }
+
 
 .task.completed .task-title {
-    color: var(--muted-dark);
 
-    text-decoration: line-through;
+    color:
+        var(--muted-dark);
 
-    text-decoration-thickness: 1px;
+    text-decoration:
+        line-through;
+
+    text-decoration-thickness:
+        1px;
+
 }
 
+
 .task-carried {
+
     margin-top: 3px;
 
     color: #59615d;
 
     font-size: 10px;
+
 }
 
 
@@ -584,6 +921,7 @@ button {
    ========================================================= */
 
 .edit-input {
+
     width: 100%;
 
     min-height: 38px;
@@ -611,23 +949,30 @@ button {
     line-height: 1.45;
 
     resize: none;
+
 }
 
+
 .edit-input:focus {
+
     border-color:
         rgba(25,197,139,.45);
 
     box-shadow:
         0 0 0 3px
         rgba(25,197,139,.08);
+
 }
 
+
 .edit-hint {
+
     margin-top: 4px;
 
     color: #555d59;
 
     font-size: 9px;
+
 }
 
 
@@ -636,62 +981,82 @@ button {
    ========================================================= */
 
 .task-actions {
-    display: flex;
-    align-items: center;
 
-    gap: 2px;
+    display: flex;
+
+    align-items: center;
 
     flex-shrink: 0;
 
-    opacity: .62;
+    opacity: .75;
 
-    transition:
-        opacity .15s ease;
 }
 
-.task:hover .task-actions {
-    opacity: 1;
-}
 
 .icon-btn {
-    width: 34px;
-    height: 34px;
+
+    width: 40px;
+    height: 40px;
 
     display: grid;
+
     place-items: center;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
     background: transparent;
 
-    color: #737d78;
+    color: #717a75;
 
-    font-size: 18px;
+    font-size: 25px;
+
+    line-height: 1;
 
     transition:
         background .15s ease,
         color .15s ease,
         transform .15s ease;
+
 }
+
 
 .icon-btn:hover {
+
     background:
-        rgba(255,255,255,.05);
+        rgba(255,255,255,.045);
 
     color:
-        #afb7b3;
+        #b8bfbc;
+
 }
+
 
 .icon-btn:active {
-    transform: scale(.92);
+
+    transform:
+        scale(.9);
+
 }
+
 
 .icon-btn.starred {
-    color: var(--yellow);
+
+    color:
+        var(--yellow);
+
 }
 
-.icon-btn.delete:hover {
-    color: var(--danger);
+
+/*
+   لا نحتاج أزرار تعديل أو حذف مرئية.
+   التعديل والحذف من الضغط المطول/كليك يمين.
+*/
+
+.icon-btn.delete,
+.icon-btn.edit {
+
+    display: none;
+
 }
 
 
@@ -700,29 +1065,51 @@ button {
    ========================================================= */
 
 .empty {
-    padding: 86px 20px;
 
-    text-align: center;
+    padding:
+        86px 20px;
+
+    text-align:
+        center;
+
 }
+
 
 .empty-icon {
-    margin-bottom: 14px;
-    font-size: 29px;
+
+    margin-bottom:
+        14px;
+
+    font-size:
+        29px;
+
 }
+
 
 .empty strong {
+
     display: block;
 
-    color: var(--text-soft);
+    color:
+        var(--text-soft);
 
-    font-size: 16px;
+    font-size:
+        16px;
 
-    margin-bottom: 5px;
+    margin-bottom:
+        5px;
+
 }
 
+
 .empty span {
-    color: var(--muted);
-    font-size: 13px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
 }
 
 
@@ -731,6 +1118,7 @@ button {
    ========================================================= */
 
 .composer-wrap {
+
     position: absolute;
 
     left: 0;
@@ -753,24 +1141,32 @@ button {
             rgba(13,13,13,.93) 70%,
             transparent 100%
         );
+
 }
 
+
 .composer-inner {
+
     width: 100%;
 
-    max-width: var(--content-width);
+    max-width:
+        var(--content-width);
 
     margin: 0 auto;
 
     pointer-events: auto;
+
 }
 
+
 .composer {
+
     width: 100%;
 
     min-height: 56px;
 
     display: flex;
+
     align-items: flex-end;
 
     gap: 8px;
@@ -798,18 +1194,24 @@ button {
     transition:
         border-color .18s ease,
         box-shadow .18s ease;
+
 }
 
+
 .composer:focus-within {
+
     border-color:
         rgba(255,255,255,.12);
 
     box-shadow:
         0 10px 35px
         rgba(0,0,0,.34);
+
 }
 
+
 #taskInput {
+
     flex: 1;
 
     min-width: 0;
@@ -817,12 +1219,14 @@ button {
     width: 100%;
 
     min-height: 42px;
+
     max-height: 120px;
 
     margin: 0;
 
     padding:
-        10px 0;
+        10px
+        0;
 
     resize: none;
 
@@ -832,25 +1236,36 @@ button {
 
     outline: 0 !important;
 
-    background: transparent !important;
+    background:
+        transparent !important;
 
-    color: var(--text);
+    color:
+        var(--text);
 
     font-size: 16px;
 
     line-height: 1.45;
 
-    box-shadow: none !important;
+    box-shadow:
+        none !important;
 
     scrollbar-width: none;
+
 }
+
 
 #taskInput::-webkit-scrollbar {
+
     display: none;
+
 }
 
+
 #taskInput::placeholder {
-    color: #747a77;
+
+    color:
+        #747a77;
+
 }
 
 
@@ -859,6 +1274,7 @@ button {
    ========================================================= */
 
 .submit {
+
     width: 42px;
     height: 42px;
 
@@ -880,9 +1296,12 @@ button {
         color .18s ease,
         transform .15s ease,
         box-shadow .18s ease;
+
 }
 
+
 .submit.active {
+
     background:
         #f2f2f2;
 
@@ -892,29 +1311,42 @@ button {
     box-shadow:
         0 4px 15px
         rgba(0,0,0,.2);
+
 }
+
 
 .submit:active {
-    transform: scale(.92);
+
+    transform:
+        scale(.92);
+
 }
 
+
 .submit:focus-visible {
+
     box-shadow:
         0 0 0 4px
         rgba(25,197,139,.13);
+
 }
 
+
 .send-arrow {
+
     display: block;
 
     font-size: 22px;
+
     line-height: 1;
 
     font-weight: 700;
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 
     pointer-events: none;
+
 }
 
 
@@ -923,13 +1355,16 @@ button {
    ========================================================= */
 
 .hint {
+
     margin-top: 6px;
 
     text-align: center;
 
-    color: #515956;
+    color:
+        #515956;
 
     font-size: 10px;
+
 }
 
 
@@ -938,6 +1373,7 @@ button {
    ========================================================= */
 
 .toast {
+
     position: fixed;
 
     left: 50%;
@@ -993,9 +1429,12 @@ button {
         opacity .2s ease,
         transform .2s ease,
         visibility .2s ease;
+
 }
 
+
 .toast.show {
+
     opacity: 1;
 
     visibility: visible;
@@ -1004,19 +1443,29 @@ button {
 
     transform:
         translate(-50%, 0);
+
 }
+
 
 .toast-message {
-    color: #e9e9e9;
-    font-size: 12px;
+
+    color:
+        #e9e9e9;
+
+    font-size:
+        12px;
+
 }
 
+
 .toast-undo {
+
     padding:
         5px
         8px;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
     background:
         rgba(25,197,139,.10);
@@ -1024,8 +1473,195 @@ button {
     color:
         var(--green);
 
-    font-size: 11px;
-    font-weight: 800;
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   ACTION SHEET
+   ========================================================= */
+
+.action-sheet-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 900;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    padding:
+        14px
+        14px
+        calc(
+            14px +
+            env(safe-area-inset-bottom)
+        );
+
+    background:
+        rgba(0,0,0,.34);
+
+    backdrop-filter:
+        blur(5px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+
+}
+
+
+.action-sheet-overlay.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+.action-sheet {
+
+    width: 100%;
+
+    max-width: 560px;
+
+    padding: 8px;
+
+    background:
+        #191919;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 24px 70px
+        rgba(0,0,0,.5);
+
+    transform:
+        translateY(14px);
+
+    transition:
+        transform .2s
+        cubic-bezier(.18,.9,.3,1.1);
+
+}
+
+
+.action-sheet-overlay.show
+.action-sheet {
+
+    transform:
+        translateY(0);
+
+}
+
+
+.action-sheet-title {
+
+    padding:
+        10px
+        12px
+        8px;
+
+    color:
+        #8c9490;
+
+    font-size:
+        10px;
+
+    white-space:
+        nowrap;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+}
+
+
+.action-sheet-button {
+
+    width: 100%;
+
+    min-height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius:
+        13px;
+
+    background:
+        transparent;
+
+    color:
+        #eeeeee;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+}
+
+
+.action-sheet-button:hover {
+
+    background:
+        rgba(255,255,255,.05);
+
+}
+
+
+.action-sheet-button:active {
+
+    transform:
+        scale(.985);
+
+}
+
+
+.action-sheet-button.danger {
+
+    color:
+        var(--danger);
+
+}
+
+
+.action-sheet-cancel {
+
+    margin-top:
+        6px;
+
 }
 
 
@@ -1035,6 +1671,7 @@ button {
 
 .install-overlay,
 .install-guide {
+
     position: fixed;
 
     inset: 0;
@@ -1044,6 +1681,7 @@ button {
     display: flex;
 
     align-items: flex-end;
+
     justify-content: center;
 
     padding: 16px;
@@ -1051,7 +1689,8 @@ button {
     background:
         rgba(0,0,0,.28);
 
-    backdrop-filter: blur(4px);
+    backdrop-filter:
+        blur(4px);
 
     opacity: 0;
 
@@ -1062,22 +1701,32 @@ button {
     transition:
         opacity .22s ease,
         visibility .22s ease;
+
 }
+
 
 .install-overlay.show,
 .install-guide.show {
+
     opacity: 1;
 
     visibility: visible;
 
     pointer-events: auto;
+
 }
+
 
 .install-guide {
-    align-items: center;
+
+    align-items:
+        center;
+
 }
 
+
 .install-sheet {
+
     width: 100%;
 
     max-width: 620px;
@@ -1103,9 +1752,12 @@ button {
     box-shadow:
         0 22px 60px
         rgba(0,0,0,.42);
+
 }
 
+
 .install-icon {
+
     width: 43px;
     height: 43px;
 
@@ -1114,39 +1766,61 @@ button {
     display: grid;
     place-items: center;
 
-    border-radius: 13px;
+    border-radius:
+        13px;
 
     background:
         rgba(25,197,139,.10);
+
 }
+
 
 .install-copy {
-    min-width: 0;
+
+    min-width:
+        0;
+
     flex: 1;
+
 }
+
 
 .install-title {
-    font-size: 14px;
-    font-weight: 800;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
 }
 
+
 .install-subtitle {
-    margin-top: 3px;
+
+    margin-top:
+        3px;
 
     color:
         var(--muted);
 
-    font-size: 10px;
+    font-size:
+        10px;
+
 }
 
+
 .install-btn {
-    flex-shrink: 0;
+
+    flex-shrink:
+        0;
 
     padding:
         9px
         13px;
 
-    border-radius: 11px;
+    border-radius:
+        11px;
 
     background:
         var(--green);
@@ -1154,11 +1828,17 @@ button {
     color:
         #06130e;
 
-    font-size: 11px;
-    font-weight: 900;
+    font-size:
+        11px;
+
+    font-weight:
+        900;
+
 }
 
+
 .install-close {
+
     width: 30px;
     height: 30px;
 
@@ -1172,17 +1852,24 @@ button {
     background:
         rgba(255,255,255,.05);
 
-    color: #777;
+    color:
+        #777;
 
-    font-size: 18px;
+    font-size:
+        18px;
+
 }
 
+
 .guide-box {
+
     width: 100%;
 
-    max-width: 380px;
+    max-width:
+        380px;
 
-    padding: 23px;
+    padding:
+        23px;
 
     background:
         #181818;
@@ -1191,84 +1878,66 @@ button {
         1px solid
         var(--border);
 
-    border-radius: 21px;
+    border-radius:
+        21px;
 
-    text-align: center;
+    text-align:
+        center;
 
     box-shadow:
         0 25px 70px
         rgba(0,0,0,.45);
+
 }
+
 
 .guide-box h2 {
-    font-size: 19px;
-    margin-bottom: 9px;
+
+    font-size:
+        19px;
+
+    margin-bottom:
+        9px;
+
 }
+
 
 .guide-box p {
-    color: var(--muted);
 
-    font-size: 13px;
-    line-height: 1.7;
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.7;
+
 }
 
+
 .guide-close {
+
     width: 100%;
 
-    margin-top: 18px;
+    margin-top:
+        18px;
 
-    padding: 11px;
+    padding:
+        11px;
 
-    border-radius: 13px;
+    border-radius:
+        13px;
 
     background:
         rgba(255,255,255,.06);
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    font-size: 13px;
-}
+    font-size:
+        13px;
 
-
-/* =========================================================
-   COMPLETION MESSAGE
-   ========================================================= */
-
-.completion-message {
-    position: fixed;
-
-    left: 50%;
-    top: 42%;
-
-    z-index: 500;
-
-    pointer-events: none;
-
-    white-space: nowrap;
-
-    color: var(--green);
-
-    font-size: 16px;
-
-    font-weight: 800;
-
-    opacity: 0;
-
-    transform:
-        translate(-50%, 10px)
-        scale(.96);
-
-    transition:
-        opacity .2s ease,
-        transform .25s cubic-bezier(.18,.9,.3,1.3);
-}
-
-.completion-message.show {
-    opacity: 1;
-
-    transform:
-        translate(-50%, 0)
-        scale(1);
 }
 
 
@@ -1279,31 +1948,56 @@ button {
 @media (max-width: 600px) {
 
     .header {
-        padding-left: 17px;
-        padding-right: 17px;
+
+        padding-left:
+            17px;
+
+        padding-right:
+            17px;
+
     }
 
     .tasks {
-        padding-left: 17px;
-        padding-right: 17px;
+
+        padding-left:
+            17px;
+
+        padding-right:
+            17px;
+
     }
 
     .greeting h1 {
-        font-size: 23px;
+
+        font-size:
+            23px;
+
     }
 
     .task-title {
-        font-size: 15px;
+
+        font-size:
+            15px;
+
     }
 
     .composer-wrap {
-        padding-left: 12px;
-        padding-right: 12px;
+
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+
     }
 
     .hint {
-        display: none;
+
+        display:
+            none;
+
     }
+
 }
 
 
@@ -1314,40 +2008,89 @@ button {
 @media (max-width: 380px) {
 
     .header {
-        padding-left: 14px;
-        padding-right: 14px;
+
+        padding-left:
+            14px;
+
+        padding-right:
+            14px;
+
     }
 
     .tasks {
-        padding-left: 14px;
-        padding-right: 14px;
+
+        padding-left:
+            14px;
+
+        padding-right:
+            14px;
+
+    }
+
+    .brand-logo {
+
+        width:
+            36px;
+
+        height:
+            36px;
+
+        flex-basis:
+            36px;
+
     }
 
     .brand-name {
-        font-size: 22px;
+
+        font-size:
+            20px;
+
     }
 
     .greeting h1 {
-        font-size: 22px;
+
+        font-size:
+            22px;
+
     }
 
     .task {
-        gap: 10px;
+
+        gap:
+            10px;
+
     }
 
     .task-title {
-        font-size: 14px;
+
+        font-size:
+            14px;
+
     }
 
     .icon-btn {
-        width: 31px;
-        height: 31px;
+
+        width:
+            38px;
+
+        height:
+            38px;
+
+        font-size:
+            24px;
+
     }
 
     .composer-wrap {
-        padding-left: 9px;
-        padding-right: 9px;
+
+        padding-left:
+            9px;
+
+        padding-right:
+            9px;
+
     }
+
 }
 
 
@@ -1360,10 +2103,18 @@ button {
     *,
     *::before,
     *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
     }
+
 }
 
 </style>
@@ -1374,11 +2125,53 @@ button {
 
 <div class="app">
 
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header class="header">
 
         <div class="brand">
-            <div class="brand-name">ناوي</div>
+
+            <div
+                class="brand-logo"
+                aria-hidden="true"
+            >
+
+                <svg
+                    viewBox="0 0 44 44"
+                >
+
+                    <circle
+                        cx="22"
+                        cy="22"
+                        r="18"
+                    ></circle>
+
+                    <path
+                        d="M13 22.5l6 6L31 16"
+                    ></path>
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-copy">
+
+                <div class="brand-name">
+                    ناوي
+                </div>
+
+                <div class="brand-tagline">
+                    اكتب نيتك وأنجزها
+                </div>
+
+            </div>
+
         </div>
+
 
         <div class="greeting">
 
@@ -1386,9 +2179,12 @@ button {
                 ناوي على إيه النهارده؟
             </h1>
 
-            <p id="currentDate">—</p>
+            <p id="currentDate">
+                —
+            </p>
 
         </div>
+
 
         <div
             class="progress"
@@ -1411,6 +2207,7 @@ button {
 
             </div>
 
+
             <div
                 class="progress-text"
                 id="progressText"
@@ -1423,6 +2220,10 @@ button {
     </header>
 
 
+    <!-- =====================================================
+         TASKS
+         ===================================================== -->
+
     <main
         class="tasks"
         id="tasksContainer"
@@ -1430,6 +2231,10 @@ button {
         aria-label="قائمة النوايا"
     ></main>
 
+
+    <!-- =====================================================
+         COMPOSER
+         ===================================================== -->
 
     <div class="composer-wrap">
 
@@ -1446,6 +2251,7 @@ button {
                     autocomplete="off"
                     aria-label="نية جديدة"
                 ></textarea>
+
 
                 <button
                     type="button"
@@ -1466,6 +2272,7 @@ button {
 
             </div>
 
+
             <div class="hint">
                 اضغط Enter لإضافة نية جديدة
             </div>
@@ -1477,7 +2284,9 @@ button {
 </div>
 
 
-<!-- TOAST -->
+<!-- =========================================================
+     DELETE TOAST
+     ========================================================= -->
 
 <div
     class="toast"
@@ -1504,18 +2313,66 @@ button {
 </div>
 
 
-<!-- COMPLETION FEEDBACK -->
+<!-- =========================================================
+     ACTION SHEET
+     ضغط مطول / كليك يمين
+     ========================================================= -->
 
 <div
-    class="completion-message"
-    id="completionMessage"
+    class="action-sheet-overlay"
+    id="actionSheetOverlay"
     aria-hidden="true"
 >
-    خلصت اللي ناوي عليه ✨
+
+    <div
+        class="action-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="actionSheetTitle"
+    >
+
+        <div
+            class="action-sheet-title"
+            id="actionSheetTitle"
+        >
+            خيارات النية
+        </div>
+
+
+        <button
+            type="button"
+            class="action-sheet-button"
+            id="actionEdit"
+        >
+            تعديل
+        </button>
+
+
+        <button
+            type="button"
+            class="action-sheet-button danger"
+            id="actionDelete"
+        >
+            حذف
+        </button>
+
+
+        <button
+            type="button"
+            class="action-sheet-button action-sheet-cancel"
+            id="actionCancel"
+        >
+            إلغاء
+        </button>
+
+    </div>
+
 </div>
 
 
-<!-- INSTALL PROMPT -->
+<!-- =========================================================
+     INSTALL PROMPT
+     ========================================================= -->
 
 <div
     class="install-overlay"
@@ -1541,6 +2398,7 @@ button {
 
         </div>
 
+
         <button
             type="button"
             class="install-btn"
@@ -1548,6 +2406,7 @@ button {
         >
             تثبيت
         </button>
+
 
         <button
             type="button"
@@ -1563,7 +2422,9 @@ button {
 </div>
 
 
-<!-- INSTALL GUIDE -->
+<!-- =========================================================
+     INSTALL GUIDE
+     ========================================================= -->
 
 <div
     class="install-guide"
@@ -1582,6 +2443,7 @@ button {
             إضافة إلى الشاشة الرئيسية
             لاستخدام ناوي كتطبيق.
         </p>
+
 
         <button
             type="button"
@@ -1607,9 +2469,11 @@ button {
    STORAGE
    ========================================================= */
 
-const STORAGE_KEY = "nawy_tasks_v8";
+const STORAGE_KEY =
+    "nawy_tasks_v9";
 
 const LEGACY_KEYS = [
+    "nawy_tasks_v8",
     "nawy_tasks_v7",
     "nawy_tasks_v6",
     "nawy_tasks_v5",
@@ -1623,77 +2487,121 @@ const LEGACY_KEYS = [
    ========================================================= */
 
 const taskInput =
-    document.getElementById("taskInput");
+    document.getElementById(
+        "taskInput"
+    );
 
 const submitBtn =
-    document.getElementById("submitBtn");
+    document.getElementById(
+        "submitBtn"
+    );
 
 const tasksContainer =
-    document.getElementById("tasksContainer");
+    document.getElementById(
+        "tasksContainer"
+    );
 
 const progressFill =
-    document.getElementById("progressFill");
+    document.getElementById(
+        "progressFill"
+    );
 
 const progressText =
-    document.getElementById("progressText");
+    document.getElementById(
+        "progressText"
+    );
 
 const progressBar =
-    document.querySelector(".progress-bar");
+    document.querySelector(
+        ".progress-bar"
+    );
 
 const progress =
-    document.querySelector(".progress");
+    document.querySelector(
+        ".progress"
+    );
 
 const currentDate =
-    document.getElementById("currentDate");
+    document.getElementById(
+        "currentDate"
+    );
 
 const toast =
-    document.getElementById("toast");
+    document.getElementById(
+        "toast"
+    );
 
 const toastMessage =
-    document.getElementById("toastMessage");
+    document.getElementById(
+        "toastMessage"
+    );
 
 const toastUndo =
-    document.getElementById("toastUndo");
-
-const completionMessage =
-    document.getElementById("completionMessage");
+    document.getElementById(
+        "toastUndo"
+    );
 
 const installOverlay =
-    document.getElementById("installOverlay");
+    document.getElementById(
+        "installOverlay"
+    );
 
 const installBtn =
-    document.getElementById("installBtn");
+    document.getElementById(
+        "installBtn"
+    );
 
 const installClose =
-    document.getElementById("installClose");
+    document.getElementById(
+        "installClose"
+    );
 
 const installGuide =
-    document.getElementById("installGuide");
+    document.getElementById(
+        "installGuide"
+    );
 
 const guideClose =
-    document.getElementById("guideClose");
+    document.getElementById(
+        "guideClose"
+    );
 
 const guideText =
-    document.getElementById("guideText");
+    document.getElementById(
+        "guideText"
+    );
 
 
 /* =========================================================
    STATE
    ========================================================= */
 
-let tasks = loadTasks();
+let tasks =
+    loadTasks();
 
-let deletedTask = null;
+let deletedTask =
+    null;
 
-let deleteTimer = null;
+let deleteTimer =
+    null;
 
-let deferredInstallPrompt = null;
+let deferredInstallPrompt =
+    null;
 
-let audioContext = null;
+let audioContext =
+    null;
 
-let completionTimer = null;
+let longPressTimer =
+    null;
 
-let currentlyEditingId = null;
+let longPressTriggered =
+    false;
+
+let longPressTaskId =
+    null;
+
+let currentlyEditingId =
+    null;
 
 
 /* =========================================================
@@ -1706,7 +2614,8 @@ function trackEvent(
 ) {
 
     if (
-        typeof window.gtag !== "function"
+        typeof window.gtag !==
+        "function"
     ) {
         return;
     }
@@ -1745,7 +2654,10 @@ function getDateKey(
             date.getDate()
         ).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
+    return (
+        `${year}-${month}-${day}`
+    );
+
 }
 
 
@@ -1761,6 +2673,7 @@ function formatDate(
             month: "long"
         }
     ).format(date);
+
 }
 
 
@@ -1772,17 +2685,15 @@ function updateDate() {
 }
 
 
-/* =========================================================
-   CARRIED AGE
-   ========================================================= */
-
 function getDaysBetween(
     fromKey,
     toDate = new Date()
 ) {
 
     const from =
-        new Date(`${fromKey}T00:00:00`);
+        new Date(
+            `${fromKey}T00:00:00`
+        );
 
     const to =
         new Date(
@@ -1798,6 +2709,7 @@ function getDaysBetween(
             diff / 86400000
         )
     );
+
 }
 
 
@@ -1806,22 +2718,37 @@ function getCarriedLabel(
 ) {
 
     const days =
-        getDaysBetween(taskDay);
+        getDaysBetween(
+            taskDay
+        );
 
+    if (
+        days <= 1
+    ) {
 
-    if (days <= 1) {
         return "من أمس";
+
     }
 
-    if (days === 2) {
+    if (
+        days === 2
+    ) {
+
         return "من يومين";
+
     }
 
-    if (days === 3) {
+    if (
+        days === 3
+    ) {
+
         return "من 3 أيام";
+
     }
 
-    return `منذ ${days} أيام`;
+    return (
+        `منذ ${days} أيام`
+    );
 
 }
 
@@ -1868,7 +2795,10 @@ function normalizeTask(
             ),
 
         text:
-            text.slice(0, 500),
+            text.slice(
+                0,
+                500
+            ),
 
         completed:
             Boolean(
@@ -1885,11 +2815,14 @@ function normalizeTask(
         taskDay:
             raw.taskDay ||
             getDateKey(
-                new Date(createdAt)
+                new Date(
+                    createdAt
+                )
             ),
 
         completedAt:
-            raw.completedAt || null
+            raw.completedAt ||
+            null
 
     };
 
@@ -1901,7 +2834,9 @@ function normalizeTasks(
 ) {
 
     return list
-        .map(normalizeTask)
+        .map(
+            normalizeTask
+        )
         .filter(Boolean);
 
 }
@@ -1915,11 +2850,17 @@ function readTasks(
 
         const value =
             JSON.parse(
-                localStorage.getItem(key)
+                localStorage.getItem(
+                    key
+                )
             );
 
-        return Array.isArray(value)
-            ? normalizeTasks(value)
+        return Array.isArray(
+            value
+        )
+            ? normalizeTasks(
+                value
+            )
             : null;
 
     } catch {
@@ -1934,7 +2875,9 @@ function readTasks(
 function loadTasks() {
 
     const current =
-        readTasks(STORAGE_KEY);
+        readTasks(
+            STORAGE_KEY
+        );
 
     if (current) {
         return current;
@@ -1945,7 +2888,9 @@ function loadTasks() {
     ) {
 
         const old =
-            readTasks(key);
+            readTasks(
+                key
+            );
 
         if (old) {
 
@@ -1953,7 +2898,9 @@ function loadTasks() {
 
                 localStorage.setItem(
                     STORAGE_KEY,
-                    JSON.stringify(old)
+                    JSON.stringify(
+                        old
+                    )
                 );
 
             } catch {}
@@ -1975,7 +2922,9 @@ function saveTasks() {
 
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify(tasks)
+            JSON.stringify(
+                tasks
+            )
         );
 
     } catch (error) {
@@ -2002,13 +2951,19 @@ function getAudioContext() {
             window.AudioContext ||
             window.webkitAudioContext;
 
-        if (!AudioContext) {
+        if (
+            !AudioContext
+        ) {
             return null;
         }
 
-        if (!audioContext) {
+        if (
+            !audioContext
+        ) {
+
             audioContext =
                 new AudioContext();
+
         }
 
         if (
@@ -2018,7 +2973,9 @@ function getAudioContext() {
 
             audioContext
                 .resume()
-                .catch(() => {});
+                .catch(
+                    () => {}
+                );
 
         }
 
@@ -2075,10 +3032,12 @@ function playCompletionChime() {
                     ctx.createGain();
 
                 const start =
-                    now + note.start;
+                    now +
+                    note.start;
 
                 const end =
-                    start + note.duration;
+                    start +
+                    note.duration;
 
                 oscillator.type =
                     "sine";
@@ -2103,13 +3062,17 @@ function playCompletionChime() {
                     end
                 );
 
-                oscillator.connect(gain);
+                oscillator.connect(
+                    gain
+                );
 
                 gain.connect(
                     ctx.destination
                 );
 
-                oscillator.start(start);
+                oscillator.start(
+                    start
+                );
 
                 oscillator.stop(
                     end + .015
@@ -2127,11 +3090,14 @@ function playCompletionChime() {
    ADD TASK
    ========================================================= */
 
-function addTask(text) {
+function addTask(
+    text
+) {
 
     const clean =
-        String(text || "")
-            .trim();
+        String(
+            text || ""
+        ).trim();
 
     if (!clean) {
         return false;
@@ -2145,7 +3111,10 @@ function addTask(text) {
                 .slice(2, 8)}`,
 
         text:
-            clean.slice(0, 500),
+            clean.slice(
+                0,
+                500
+            ),
 
         completed:
             false,
@@ -2164,7 +3133,9 @@ function addTask(text) {
 
     };
 
-    tasks.unshift(task);
+    tasks.unshift(
+        task
+    );
 
     saveTasks();
 
@@ -2183,13 +3154,19 @@ function addTask(text) {
    TOGGLE TASK
    ========================================================= */
 
-function toggleTask(id) {
+function toggleTask(
+    id
+) {
 
     const task =
         tasks.find(
             item =>
-                String(item.id) ===
-                String(id)
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
     if (!task) {
@@ -2199,7 +3176,9 @@ function toggleTask(id) {
     task.completed =
         !task.completed;
 
-    if (task.completed) {
+    if (
+        task.completed
+    ) {
 
         task.completedAt =
             new Date().toISOString();
@@ -2214,11 +3193,41 @@ function toggleTask(id) {
             "task_completed"
         );
 
+
         requestAnimationFrame(
             () => {
 
-                showCompletionFeedback(
-                    task.id
+                const escapedId =
+                    CSS.escape(
+                        String(
+                            task.id
+                        )
+                    );
+
+                const completedElement =
+                    tasksContainer.querySelector(
+                        `.task[data-task-id="${escapedId}"]`
+                    );
+
+                if (
+                    !completedElement
+                ) {
+                    return;
+                }
+
+                completedElement.classList.add(
+                    "just-completed"
+                );
+
+                setTimeout(
+                    () => {
+
+                        completedElement.classList.remove(
+                            "just-completed"
+                        );
+
+                    },
+                    650
                 );
 
             }
@@ -2227,6 +3236,7 @@ function toggleTask(id) {
         return;
 
     }
+
 
     task.completedAt =
         null;
@@ -2243,7 +3253,7 @@ function toggleTask(id) {
 
 
 /* =========================================================
-   EDIT TASK
+   EDIT
    ========================================================= */
 
 function beginEdit(
@@ -2252,7 +3262,12 @@ function beginEdit(
 
     if (
         currentlyEditingId &&
-        currentlyEditingId !== id
+        String(
+            currentlyEditingId
+        ) !==
+        String(
+            id
+        )
     ) {
 
         cancelEdit(
@@ -2261,9 +3276,16 @@ function beginEdit(
 
     }
 
+    const escapedId =
+        CSS.escape(
+            String(
+                id
+            )
+        );
+
     const article =
         tasksContainer.querySelector(
-            `.task[data-task-id="${CSS.escape(String(id))}"]`
+            `.task[data-task-id="${escapedId}"]`
         );
 
     if (!article) {
@@ -2273,15 +3295,20 @@ function beginEdit(
     const task =
         tasks.find(
             item =>
-                String(item.id) ===
-                String(id)
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
     if (!task) {
         return;
     }
 
-    currentlyEditingId = id;
+    currentlyEditingId =
+        id;
 
     const main =
         article.querySelector(
@@ -2302,9 +3329,11 @@ function beginEdit(
     input.className =
         "edit-input";
 
-    input.rows = 1;
+    input.rows =
+        1;
 
-    input.maxLength = 500;
+    input.maxLength =
+        500;
 
     input.value =
         task.text;
@@ -2334,12 +3363,18 @@ function beginEdit(
 
     input.select();
 
-    autoResizeEditInput(input);
+    autoResizeEditInput(
+        input
+    );
 
     input.addEventListener(
         "input",
         () => {
-            autoResizeEditInput(input);
+
+            autoResizeEditInput(
+                input
+            );
+
         }
     );
 
@@ -2348,23 +3383,29 @@ function beginEdit(
         event => {
 
             if (
-                event.key === "Enter" &&
+                event.key ===
+                    "Enter" &&
                 !event.shiftKey
             ) {
 
                 event.preventDefault();
 
-                saveEdit(id);
+                saveEdit(
+                    id
+                );
 
             }
 
             if (
-                event.key === "Escape"
+                event.key ===
+                    "Escape"
             ) {
 
                 event.preventDefault();
 
-                cancelEdit(id);
+                cancelEdit(
+                    id
+                );
 
             }
 
@@ -2397,17 +3438,28 @@ function saveEdit(
     const task =
         tasks.find(
             item =>
-                String(item.id) ===
-                String(id)
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
     if (!task) {
         return;
     }
 
+    const escapedId =
+        CSS.escape(
+            String(
+                id
+            )
+        );
+
     const article =
         tasksContainer.querySelector(
-            `.task[data-task-id="${CSS.escape(String(id))}"]`
+            `.task[data-task-id="${escapedId}"]`
         );
 
     if (!article) {
@@ -2428,7 +3480,9 @@ function saveEdit(
 
     if (!clean) {
 
-        cancelEdit(id);
+        cancelEdit(
+            id
+        );
 
         return;
 
@@ -2438,20 +3492,26 @@ function saveEdit(
         clean === task.text
     ) {
 
-        cancelEdit(id);
+        cancelEdit(
+            id
+        );
 
         return;
 
     }
 
     task.text =
-        clean.slice(0, 500);
+        clean.slice(
+            0,
+            500
+        );
 
     saveTasks();
 
-    render();
+    currentlyEditingId =
+        null;
 
-    currentlyEditingId = null;
+    render();
 
     trackEvent(
         "task_edited"
@@ -2464,7 +3524,8 @@ function cancelEdit(
     id
 ) {
 
-    currentlyEditingId = null;
+    currentlyEditingId =
+        null;
 
     render();
 
@@ -2475,13 +3536,19 @@ function cancelEdit(
    STAR
    ========================================================= */
 
-function toggleStar(id) {
+function toggleStar(
+    id
+) {
 
     const task =
         tasks.find(
             item =>
-                String(item.id) ===
-                String(id)
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
     if (!task) {
@@ -2508,22 +3575,34 @@ function toggleStar(id) {
    DELETE
    ========================================================= */
 
-function deleteTask(id) {
+function deleteTask(
+    id
+) {
 
     const index =
         tasks.findIndex(
             item =>
-                String(item.id) ===
-                String(id)
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
         );
 
-    if (index === -1) {
+    if (
+        index === -1
+    ) {
         return;
     }
 
     deletedTask = {
-        task: tasks[index],
+
+        task:
+            tasks[index],
+
         index
+
     };
 
     tasks.splice(
@@ -2565,7 +3644,9 @@ function deleteTask(id) {
 
 function undoDelete() {
 
-    if (!deletedTask) {
+    if (
+        !deletedTask
+    ) {
         return;
     }
 
@@ -2637,7 +3718,7 @@ toastUndo.addEventListener(
 
 
 /* =========================================================
-   DAILY PROGRESS
+   PROGRESS
    ========================================================= */
 
 function updateProgress() {
@@ -2692,7 +3773,9 @@ function updateProgress() {
 
     progressBar.setAttribute(
         "aria-valuenow",
-        String(percentage)
+        String(
+            percentage
+        )
     );
 
     if (
@@ -2717,47 +3800,6 @@ function updateProgress() {
 
 
 /* =========================================================
-   COMPLETION FEEDBACK
-   ========================================================= */
-
-function showCompletionFeedback(
-    taskId
-) {
-
-    completionMessage.classList.add(
-        "show"
-    );
-
-    completionMessage.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    clearTimeout(
-        completionTimer
-    );
-
-    completionTimer =
-        setTimeout(
-            () => {
-
-                completionMessage.classList.remove(
-                    "show"
-                );
-
-                completionMessage.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            },
-            1400
-        );
-
-}
-
-
-/* =========================================================
    SORT
    ========================================================= */
 
@@ -2772,15 +3814,23 @@ function sortActive(
     ) {
 
         return (
-            Number(b.starred) -
-            Number(a.starred)
+            Number(
+                b.starred
+            ) -
+            Number(
+                a.starred
+            )
         );
 
     }
 
     return (
-        new Date(b.createdAt) -
-        new Date(a.createdAt)
+        new Date(
+            b.createdAt
+        ) -
+        new Date(
+            a.createdAt
+        )
     );
 
 }
@@ -2824,18 +3874,24 @@ function render() {
             .filter(
                 task =>
                     !task.completed &&
-                    task.taskDay === today
+                    task.taskDay ===
+                    today
             )
-            .sort(sortActive);
+            .sort(
+                sortActive
+            );
 
     const carriedTasks =
         tasks
             .filter(
                 task =>
                     !task.completed &&
-                    task.taskDay !== today
+                    task.taskDay !==
+                    today
             )
-            .sort(sortActive);
+            .sort(
+                sortActive
+            );
 
     const completedTasks =
         tasks
@@ -2843,7 +3899,9 @@ function render() {
                 task =>
                     task.completed
             )
-            .sort(sortCompleted);
+            .sort(
+                sortCompleted
+            );
 
     let hasContent =
         false;
@@ -2871,7 +3929,8 @@ function render() {
             }
         );
 
-        hasContent = true;
+        hasContent =
+            true;
 
     }
 
@@ -2899,7 +3958,8 @@ function render() {
             }
         );
 
-        hasContent = true;
+        hasContent =
+            true;
 
     }
 
@@ -2926,12 +3986,15 @@ function render() {
             }
         );
 
-        hasContent = true;
+        hasContent =
+            true;
 
     }
 
 
-    if (!hasContent) {
+    if (
+        !hasContent
+    ) {
 
         tasksContainer.innerHTML = `
             <div class="empty">
@@ -3047,7 +4110,9 @@ function createTaskElement(
             viewBox="0 0 24 24"
             aria-hidden="true"
         >
-            <path d="M5 12.5l4.2 4.2L19 7"></path>
+            <path
+                d="M5 12.5l4.2 4.2L19 7"
+            ></path>
         </svg>
     `;
 
@@ -3157,7 +4222,9 @@ function createTaskElement(
 
     star.setAttribute(
         "aria-pressed",
-        String(task.starred)
+        String(
+            task.starred
+        )
     );
 
     star.textContent =
@@ -3166,57 +4233,10 @@ function createTaskElement(
             : "☆";
 
 
-    const edit =
-        document.createElement(
-            "button"
-        );
-
-    edit.type =
-        "button";
-
-    edit.className =
-        "icon-btn";
-
-    edit.dataset.action =
-        "edit";
-
-    edit.setAttribute(
-        "aria-label",
-        "تعديل النية"
+    actions.appendChild(
+        star
     );
 
-    edit.textContent =
-        "✎";
-
-
-    const remove =
-        document.createElement(
-            "button"
-        );
-
-    remove.type =
-        "button";
-
-    remove.className =
-        "icon-btn delete";
-
-    remove.dataset.action =
-        "delete";
-
-    remove.setAttribute(
-        "aria-label",
-        "حذف النية"
-    );
-
-    remove.textContent =
-        "×";
-
-
-    actions.append(
-        star,
-        edit,
-        remove
-    );
 
     article.append(
         check,
@@ -3230,12 +4250,340 @@ function createTaskElement(
 
 
 /* =========================================================
+   LONG PRESS
+   ========================================================= */
+
+function startLongPress(
+    event
+) {
+
+    const taskElement =
+        event.target.closest(
+            ".task"
+        );
+
+    if (!taskElement) {
+        return;
+    }
+
+
+    /*
+       لا نفتح القائمة إذا بدأ الضغط
+       على النجمة.
+    */
+
+    if (
+        event.target.closest(
+            "button"
+        )
+    ) {
+        return;
+    }
+
+
+    longPressTriggered =
+        false;
+
+    longPressTaskId =
+        taskElement.dataset.taskId;
+
+
+    clearTimeout(
+        longPressTimer
+    );
+
+
+    longPressTimer =
+        setTimeout(
+            () => {
+
+                longPressTriggered =
+                    true;
+
+                openActionSheet(
+                    longPressTaskId
+                );
+
+            },
+            550
+        );
+
+}
+
+
+function cancelLongPress() {
+
+    clearTimeout(
+        longPressTimer
+    );
+
+    longPressTimer =
+        null;
+
+}
+
+
+/* =========================================================
+   LONG PRESS EVENTS
+   ========================================================= */
+
+tasksContainer.addEventListener(
+    "pointerdown",
+    startLongPress
+);
+
+tasksContainer.addEventListener(
+    "pointerup",
+    cancelLongPress
+);
+
+tasksContainer.addEventListener(
+    "pointerleave",
+    cancelLongPress
+);
+
+tasksContainer.addEventListener(
+    "pointercancel",
+    cancelLongPress
+);
+
+
+/* =========================================================
+   RIGHT CLICK — WEB
+   ========================================================= */
+
+tasksContainer.addEventListener(
+    "contextmenu",
+    event => {
+
+        const taskElement =
+            event.target.closest(
+                ".task"
+            );
+
+        if (!taskElement) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+
+        /*
+           كليك يمين على النجمة
+           لا يفتح القائمة.
+        */
+
+        if (
+            event.target.closest(
+                "button"
+            )
+        ) {
+            return;
+        }
+
+
+        const id =
+            taskElement.dataset.taskId;
+
+        if (!id) {
+            return;
+        }
+
+
+        clearTimeout(
+            longPressTimer
+        );
+
+
+        longPressTriggered =
+            true;
+
+
+        openActionSheet(
+            id
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ACTION SHEET
+   ========================================================= */
+
+const actionSheetOverlay =
+    document.getElementById(
+        "actionSheetOverlay"
+    );
+
+const actionSheetTitle =
+    document.getElementById(
+        "actionSheetTitle"
+    );
+
+const actionEdit =
+    document.getElementById(
+        "actionEdit"
+    );
+
+const actionDelete =
+    document.getElementById(
+        "actionDelete"
+    );
+
+const actionCancel =
+    document.getElementById(
+        "actionCancel"
+    );
+
+
+function openActionSheet(
+    id
+) {
+
+    const task =
+        tasks.find(
+            item =>
+                String(
+                    item.id
+                ) ===
+                String(
+                    id
+                )
+        );
+
+    if (!task) {
+        return;
+    }
+
+    longPressTaskId =
+        id;
+
+    actionSheetTitle.textContent =
+        task.text;
+
+    actionSheetOverlay.classList.add(
+        "show"
+    );
+
+    actionSheetOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    trackEvent(
+        "task_options_opened"
+    );
+
+}
+
+
+function closeActionSheet() {
+
+    actionSheetOverlay.classList.remove(
+        "show"
+    );
+
+    actionSheetOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    longPressTaskId =
+        null;
+
+}
+
+
+actionEdit.addEventListener(
+    "click",
+    () => {
+
+        const id =
+            longPressTaskId;
+
+        closeActionSheet();
+
+        if (id) {
+
+            beginEdit(
+                id
+            );
+
+        }
+
+    }
+);
+
+
+actionDelete.addEventListener(
+    "click",
+    () => {
+
+        const id =
+            longPressTaskId;
+
+        closeActionSheet();
+
+        if (id) {
+
+            deleteTask(
+                id
+            );
+
+        }
+
+    }
+);
+
+
+actionCancel.addEventListener(
+    "click",
+    closeActionSheet
+);
+
+
+actionSheetOverlay.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            actionSheetOverlay
+        ) {
+
+            closeActionSheet();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    TASK CLICK
    ========================================================= */
 
 tasksContainer.addEventListener(
     "click",
     event => {
+
+        /*
+           منع الحدث العادي بعد الضغط المطول.
+        */
+
+        if (
+            longPressTriggered
+        ) {
+
+            longPressTriggered =
+                false;
+
+            return;
+
+        }
+
 
         const actionButton =
             event.target.closest(
@@ -3256,6 +4604,7 @@ tasksContainer.addEventListener(
             return;
         }
 
+
         const id =
             taskElement.dataset.taskId;
 
@@ -3271,41 +4620,29 @@ tasksContainer.addEventListener(
             const action =
                 actionButton.dataset.action;
 
+
             if (
-                action === "toggle"
+                action ===
+                "toggle"
             ) {
 
-                toggleTask(id);
+                toggleTask(
+                    id
+                );
 
                 return;
 
             }
 
-            if (
-                action === "star"
-            ) {
-
-                toggleStar(id);
-
-                return;
-
-            }
 
             if (
-                action === "edit"
+                action ===
+                "star"
             ) {
 
-                beginEdit(id);
-
-                return;
-
-            }
-
-            if (
-                action === "delete"
-            ) {
-
-                deleteTask(id);
+                toggleStar(
+                    id
+                );
 
                 return;
 
@@ -3314,11 +4651,18 @@ tasksContainer.addEventListener(
         }
 
 
+        /*
+           الضغط على النص = تعديل.
+           الضغط على الدائرة = إنجاز.
+        */
+
         if (
             titleButton
         ) {
 
-            beginEdit(id);
+            beginEdit(
+                id
+            );
 
         }
 
@@ -3342,8 +4686,10 @@ tasksContainer.addEventListener(
         if (
             title &&
             (
-                event.key === "Enter" ||
-                event.key === " "
+                event.key ===
+                    "Enter" ||
+                event.key ===
+                    " "
             )
         ) {
 
@@ -3376,16 +4722,21 @@ tasksContainer.addEventListener(
             return;
         }
 
+
         if (
-            event.key !== "Enter" &&
-            event.key !== " "
+            event.key !==
+                "Enter" &&
+            event.key !==
+                " "
         ) {
 
             return;
 
         }
 
+
         event.preventDefault();
+
 
         const taskElement =
             button.closest(
@@ -3395,6 +4746,7 @@ tasksContainer.addEventListener(
         if (!taskElement) {
             return;
         }
+
 
         toggleTask(
             taskElement.dataset.taskId
@@ -3466,7 +4818,9 @@ function handleSend() {
     }
 
     if (
-        addTask(text)
+        addTask(
+            text
+        )
     ) {
 
         taskInput.value =
@@ -3498,7 +4852,8 @@ taskInput.addEventListener(
     event => {
 
         if (
-            event.key === "Enter" &&
+            event.key ===
+                "Enter" &&
             !event.shiftKey
         ) {
 
@@ -3524,6 +4879,7 @@ window.addEventListener(
 
         deferredInstallPrompt =
             event;
+
 
         setTimeout(
             () => {
@@ -3672,6 +5028,11 @@ installGuide.addEventListener(
                 "show"
             );
 
+            installGuide.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
         }
 
     }
@@ -3701,10 +5062,32 @@ function isStandalone() {
             "(display-mode: standalone)"
         ).matches ||
 
-        window.navigator.standalone === true
+        window.navigator.standalone ===
+            true
     );
 
 }
+
+
+/* =========================================================
+   ESCAPE
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeActionSheet();
+
+        }
+
+    }
+);
 
 
 /* =========================================================
