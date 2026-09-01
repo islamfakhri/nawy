@@ -1,1363 +1,1195 @@
-:root {
---bg: #0d0f0e;
---surface: #151817;
---surface-2: #1b1f1d;
+/* =========================================================
+   NAWY
+   Core Application
+========================================================= */
 
-```
---text: #f3f5f4;
---muted: #89938e;
---muted-dark: #626c67;
+const STORAGE_KEY = "nawy_tasks_v5";
 
---green: #19c58b;
---green-soft: rgba(25, 197, 139, .12);
 
---yellow: #f4c84d;
---danger: #ff6262;
+/* =========================================================
+   DOM
+========================================================= */
 
---border: rgba(255, 255, 255, .075);
-```
+const taskInput =
+    document.getElementById("taskInput");
 
-}
-
-/* =========================
-RESET
-========================= */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  }
-
-html,
-body {
-width: 100%;
-min-height: 100%;
-background: var(--bg);
-}
-
-body {
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-Roboto,
-"Noto Sans Arabic",
-Tahoma,
-Arial,
-sans-serif;
-
-```
-color: var(--text);
-
-overflow: hidden;
-
-overscroll-behavior: none;
-```
-
-}
-
-button,
-textarea {
-font-family: inherit;
-}
-
-button {
-border: 0;
-outline: 0;
-cursor: pointer;
-user-select: none;
-touch-action: manipulation;
-}
-
-/* =========================
-APP
-========================= */
-
-.app {
-width: 100%;
-min-height: 100dvh;
-
-```
-position: relative;
-
-display: flex;
-flex-direction: column;
-
-background:
-    radial-gradient(
-        circle at 50% -20%,
-        rgba(25, 197, 139, .075),
-        transparent 35%
-    ),
-    var(--bg);
-```
-
-}
-
-/* =========================
-HEADER
-========================= */
-
-.header {
-width: 100%;
-max-width: 720px;
-
-```
-margin: 0 auto;
-
-padding:
-    calc(22px + env(safe-area-inset-top))
-    22px
-    10px;
-```
-
-}
-
-.brand {
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-
-.brand-main {
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.brand-mark {
-width: 39px;
-height: 39px;
-
-```
-display: grid;
-place-items: center;
-
-border-radius: 13px;
-
-background: rgba(25, 197, 139, .10);
-
-font-size: 19px;
-```
-
-}
-
-.brand-name {
-font-size: 24px;
-font-weight: 800;
-letter-spacing: -.8px;
-}
-
-/* =========================
-GREETING
-========================= */
-
-.greeting {
-margin-top: 15px;
-}
-
-.greeting h1 {
-font-size: clamp(23px, 5vw, 28px);
-line-height: 1.25;
-font-weight: 800;
-letter-spacing: -.8px;
-}
-
-.greeting p {
-margin-top: 5px;
-
-```
-color: var(--muted);
-
-font-size: 13px;
-```
-
-}
-
-/* =========================
-PROGRESS
-========================= */
-
-.progress {
-margin-top: 16px;
-
-```
-display: flex;
-align-items: center;
-
-gap: 10px;
-```
-
-}
-
-.progress-bar {
-height: 5px;
-
-```
-flex: 1;
-
-overflow: hidden;
-
-background: rgba(255, 255, 255, .065);
-
-border-radius: 99px;
-```
-
-}
-
-.progress-fill {
-height: 100%;
-width: 0;
-
-```
-background: var(--green);
-
-border-radius: inherit;
-
-transition:
-    width .35s cubic-bezier(.22, 1, .36, 1);
-```
-
-}
-
-.progress-text {
-color: var(--muted);
-
-```
-font-size: 11px;
-
-white-space: nowrap;
-```
-
-}
-
-/* =========================
-TASKS
-========================= */
-
-.tasks {
-width: 100%;
-max-width: 720px;
-
-```
-flex: 1;
-
-margin: 0 auto;
-
-overflow-y: auto;
-
-padding:
-    10px
-    22px
-    175px;
+const submitBtn =
+    document.getElementById("submitBtn");
 
-scrollbar-width: none;
+const tasksContainer =
+    document.getElementById("tasksContainer");
 
-overscroll-behavior: contain;
-```
+const progressFill =
+    document.getElementById("progressFill");
 
-}
-
-.tasks::-webkit-scrollbar {
-display: none;
-}
-
-/* =========================
-TASK
-========================= */
-
-.task {
-min-height: 64px;
-
-```
-display: flex;
-align-items: center;
-
-gap: 13px;
-
-padding: 10px 2px;
-
-border-bottom: 1px solid var(--border);
-
-cursor: pointer;
-
-transition:
-    opacity .2s ease,
-    transform .16s ease;
-```
-
-}
-
-.task:last-child {
-border-bottom: 0;
-}
-
-.task:active {
-transform: scale(.992);
-}
-
-/* =========================
-CHECK
-========================= */
-
-.check {
-width: 23px;
-height: 23px;
-
-```
-flex: 0 0 23px;
+const progressText =
+    document.getElementById("progressText");
 
-position: relative;
+const currentDate =
+    document.getElementById("currentDate");
 
-display: grid;
-place-items: center;
+const installOverlay =
+    document.getElementById("installOverlay");
 
-border: 1.7px solid #66716c;
+const installBtn =
+    document.getElementById("installBtn");
 
-border-radius: 50%;
+const installClose =
+    document.getElementById("installClose");
 
-transition:
-    background .18s ease,
-    border-color .18s ease,
-    transform .18s cubic-bezier(.18, .9, .3, 1.3),
-    box-shadow .18s ease;
-```
+const installGuide =
+    document.getElementById("installGuide");
 
-}
-
-/*
-Preview ✓
-يظهر فقط عند الوقوف على المهمة
-*/
-
-.task:not(.completed):hover .check {
-border-color: var(--green);
-
-```
-background: rgba(25, 197, 139, .08);
-
-transform: scale(1.08);
-
-box-shadow:
-    0 0 0 4px rgba(25, 197, 139, .055);
-```
-
-}
-
-.check::after {
-content: "✓";
-
-```
-position: absolute;
+const guideClose =
+    document.getElementById("guideClose");
 
-color: var(--green);
 
-font-size: 14px;
-font-weight: 900;
+/* =========================================================
+   STATE
+========================================================= */
 
-line-height: 1;
+let tasks = loadTasks();
 
-opacity: 0;
+let deferredInstallPrompt = null;
 
-transform: scale(.45);
+let audioContext = null;
 
-transition:
-    opacity .16s ease,
-    transform .18s cubic-bezier(.18, .9, .3, 1.3);
-```
 
-}
-
-/*
-Preview علامة الصح
-*/
-
-.task:not(.completed):hover .check::after {
-opacity: .95;
-
-```
-transform: scale(.9);
-```
-
-}
-
-/*
-Completed
-*/
+/* =========================================================
+   DATE
+========================================================= */
 
-.task.completed .check {
-background: var(--green);
+currentDate.textContent =
+    new Intl.DateTimeFormat("ar-EG", {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+    }).format(new Date());
 
-```
-border-color: var(--green);
 
-box-shadow: 0 0 0 0 rgba(25, 197, 139, 0);
-```
+/* =========================================================
+   STORAGE
+========================================================= */
 
-}
+function loadTasks() {
 
-.task.completed .check::after {
-color: #06140f;
+    try {
 
-```
-opacity: 1;
+        const current =
+            JSON.parse(
+                localStorage.getItem(STORAGE_KEY)
+            );
 
-transform: scale(1);
-```
-
-}
+        if (Array.isArray(current)) {
+            return current;
+        }
 
-/* =========================
-COMPLETION ANIMATION
-========================= */
 
-.task.just-completed .check {
-animation:
-check-pop .48s cubic-bezier(.18, .9, .3, 1.35);
-}
+        /* Migration from older versions */
 
-@keyframes check-pop {
+        const versions = [
+            "nawy_tasks_v4",
+            "nawy_tasks_v3"
+        ];
 
-```
-0% {
-    transform: scale(1);
-}
+        for (const key of versions) {
 
-38% {
-    transform: scale(1.32);
-}
+            const old =
+                JSON.parse(
+                    localStorage.getItem(key)
+                );
 
-68% {
-    transform: scale(.92);
-}
+            if (Array.isArray(old)) {
 
-100% {
-    transform: scale(1);
-}
-```
+                return old.map(task => ({
+                    id: String(task.id),
+                    text: String(task.text || ""),
+                    completed: Boolean(task.completed),
+                    starred: Boolean(task.starred),
+                    createdAt:
+                        task.createdAt ||
+                        new Date().toISOString()
+                }));
 
-}
+            }
 
-.task.just-completed .check::after {
-animation:
-check-reveal .35s cubic-bezier(.18, .9, .3, 1.3);
-}
+        }
 
-@keyframes check-reveal {
+    } catch (error) {
 
-```
-0% {
-    opacity: 0;
-    transform: scale(.2) rotate(-15deg);
-}
+        console.log(
+            "Nawy storage error:",
+            error
+        );
 
-60% {
-    opacity: 1;
-    transform: scale(1.15) rotate(2deg);
-}
+    }
 
-100% {
-    opacity: 1;
-    transform: scale(1) rotate(0);
+    return [];
 }
-```
 
-}
 
-/* =========================
-COMPLETION BURST
-========================= */
+function save() {
 
-.completion-burst {
-position: fixed;
+    try {
 
-```
-width: 50px;
-height: 50px;
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(tasks)
+        );
 
-pointer-events: none;
+    } catch (error) {
 
-transform: translate(-50%, -50%);
+        console.log(
+            "Nawy save error:",
+            error
+        );
 
-z-index: 50;
-```
+    }
 
+    render();
 }
 
-.completion-burst::before {
-content: "";
 
-```
-position: absolute;
+/* =========================================================
+   AUDIO
+========================================================= */
 
-inset: 8px;
+function ensureAudioContext() {
 
-border: 2px solid rgba(25, 197, 139, .65);
+    try {
 
-border-radius: 50%;
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
 
-animation:
-    completion-ring .48s ease-out forwards;
-```
+        if (!AudioContext) {
+            return null;
+        }
 
-}
+        if (!audioContext) {
 
-.completion-burst span {
-position: absolute;
+            audioContext =
+                new AudioContext();
 
-```
-top: 50%;
-left: 50%;
+        }
 
-width: var(--size);
-height: var(--size);
+        if (
+            audioContext.state ===
+            "suspended"
+        ) {
 
-border-radius: 50%;
+            audioContext.resume();
 
-background: var(--color);
+        }
 
-animation:
-    completion-particle .55s cubic-bezier(.18, .7, .3, 1) forwards;
-```
+        return audioContext;
 
-}
+    } catch (error) {
 
-@keyframes completion-ring {
+        return null;
 
-```
-0% {
-    transform: scale(.35);
-    opacity: .85;
+    }
 }
 
-100% {
-    transform: scale(1.9);
-    opacity: 0;
-}
-```
 
-}
+/* Soft add sound */
 
-@keyframes completion-particle {
+function playAddSound() {
 
-```
-0% {
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--angle))
-        translateY(-5px)
-        scale(.7);
+    const ctx =
+        ensureAudioContext();
 
-    opacity: 1;
-}
+    if (!ctx) return;
 
-100% {
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--angle))
-        translateY(calc(var(--distance) * -1))
-        scale(0);
-
-    opacity: 0;
-}
-```
+    try {
 
-}
+        const now =
+            ctx.currentTime;
 
-/* =========================
-TASK CONTENT
-========================= */
+        const osc =
+            ctx.createOscillator();
 
-.task-main {
-min-width: 0;
+        const gain =
+            ctx.createGain();
 
-```
-flex: 1;
 
-pointer-events: none;
-```
+        osc.type = "sine";
 
-}
+        osc.frequency.setValueAtTime(
+            480,
+            now
+        );
 
-.task-title {
-font-size: 16px;
+        osc.frequency.exponentialRampToValueAtTime(
+            650,
+            now + 0.07
+        );
 
-```
-line-height: 1.5;
 
-color: #edf2ef;
+        gain.gain.setValueAtTime(
+            0.0001,
+            now
+        );
 
-overflow-wrap: anywhere;
+        gain.gain.exponentialRampToValueAtTime(
+            0.035,
+            now + 0.01
+        );
 
-transition:
-    color .2s ease;
-```
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + 0.10
+        );
 
-}
 
-.task.completed .task-title {
-color: var(--muted-dark);
+        osc.connect(gain);
 
-```
-text-decoration: line-through;
-```
+        gain.connect(
+            ctx.destination
+        );
 
-}
 
-/* =========================
-TASK ACTIONS
-========================= */
+        osc.start(now);
 
-.task-actions {
-display: flex;
-align-items: center;
+        osc.stop(
+            now + 0.11
+        );
 
-```
-gap: 1px;
+    } catch (error) {
 
-opacity: .6;
+        console.log(
+            "Add sound error:",
+            error
+        );
 
-pointer-events: auto;
-```
+    }
 
 }
 
-.icon-btn {
-width: 34px;
-height: 34px;
 
-```
-display: grid;
-place-items: center;
+/* Soft To-Do style completion chime */
 
-border-radius: 10px;
+function playCompletionSound() {
 
-background: transparent;
+    const ctx =
+        ensureAudioContext();
 
-color: #718078;
+    if (!ctx) return;
 
-font-size: 18px;
+    try {
 
-transition:
-    color .16s ease,
-    background .16s ease,
-    transform .16s ease;
-```
+        const now =
+            ctx.currentTime;
 
-}
-
-.icon-btn:hover {
-background: rgba(255, 255, 255, .045);
-
-```
-color: #9ca8a2;
-```
-
-}
 
-.icon-btn:active {
-transform: scale(.9);
-
-```
-background: rgba(255, 255, 255, .07);
-```
-
-}
-
-.icon-btn.starred {
-color: var(--yellow);
-}
+        const notes = [
+            {
+                frequency: 880,
+                start: 0,
+                duration: .16,
+                volume: .045
+            },
+            {
+                frequency: 1174.66,
+                start: .055,
+                duration: .22,
+                volume: .055
+            }
+        ];
 
-.icon-btn.delete:hover,
-.icon-btn.delete:active {
-color: var(--danger);
-}
 
-/* =========================
-COMPLETED DIVIDER
-========================= */
+        notes.forEach(note => {
 
-.completed-divider {
-display: flex;
-align-items: center;
+            const osc =
+                ctx.createOscillator();
 
-```
-gap: 10px;
+            const gain =
+                ctx.createGain();
 
-margin: 22px 0 3px;
 
-color: var(--muted);
+            osc.type =
+                "sine";
 
-font-size: 12px;
-font-weight: 700;
-```
 
-}
+            osc.frequency.setValueAtTime(
+                note.frequency,
+                now + note.start
+            );
 
-.completed-divider::before,
-.completed-divider::after {
-content: "";
 
-```
-height: 1px;
+            gain.gain.setValueAtTime(
+                0.0001,
+                now + note.start
+            );
 
-flex: 1;
 
-background: var(--border);
-```
+            gain.gain.exponentialRampToValueAtTime(
+                note.volume,
+                now + note.start + .012
+            );
 
-}
 
-.completed-divider span {
-display: inline-flex;
-align-items: center;
+            gain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                now +
+                note.start +
+                note.duration
+            );
 
-```
-gap: 5px;
 
-white-space: nowrap;
-```
+            osc.connect(gain);
 
-}
+            gain.connect(
+                ctx.destination
+            );
 
-.completed-divider span::before {
-content: "✓";
 
-```
-color: var(--green);
+            osc.start(
+                now + note.start
+            );
 
-font-size: 13px;
-```
+            osc.stop(
+                now +
+                note.start +
+                note.duration +
+                .01
+            );
 
-}
+        });
 
-/* =========================
-EMPTY
-========================= */
+    } catch (error) {
 
-.empty {
-text-align: center;
+        console.log(
+            "Completion sound error:",
+            error
+        );
 
-```
-padding: 80px 25px;
-```
+    }
 
 }
 
-.empty-icon {
-width: 58px;
-height: 58px;
 
-```
-margin: 0 auto 15px;
+/* =========================================================
+   TASK ACTIONS
+========================================================= */
 
-display: grid;
-place-items: center;
+function addTask(text) {
 
-border-radius: 18px;
+    const clean =
+        text.trim();
 
-background: rgba(25, 197, 139, .08);
+    if (!clean) return;
 
-color: var(--green);
 
-font-size: 25px;
-```
+    const newTask = {
 
-}
-
-.empty strong {
-display: block;
+        id:
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .slice(2, 7),
 
-```
-margin-bottom: 5px;
+        text:
+            clean,
 
-color: #dfe7e3;
+        completed:
+            false,
 
-font-size: 16px;
-```
+        starred:
+            false,
 
-}
+        createdAt:
+            new Date().toISOString()
 
-.empty span {
-color: var(--muted);
+    };
 
-```
-font-size: 13px;
-```
-
-}
 
-/* =========================
-COMPOSER
-========================= */
-
-.composer-wrap {
-position: fixed;
-
-```
-left: 0;
-right: 0;
-bottom: 0;
-
-z-index: 20;
-
-padding:
-    12px
-    18px
-    calc(12px + env(safe-area-inset-bottom));
-
-background:
-    linear-gradient(
-        to top,
-        var(--bg) 65%,
-        rgba(13, 15, 14, .94) 82%,
-        transparent
+    tasks.unshift(
+        newTask
     );
 
-pointer-events: none;
-```
+
+    playAddSound();
+
+    save();
 
 }
 
-.composer {
-width: 100%;
-max-width: 680px;
 
-```
-margin: 0 auto;
+function toggleTask(id) {
 
-pointer-events: auto;
+    const task =
+        tasks.find(
+            item => item.id === id
+        );
 
-display: flex;
-align-items: flex-end;
+    if (!task) return;
 
-gap: 7px;
 
-padding: 7px;
+    task.completed =
+        !task.completed;
 
-background: #191d1b;
 
-border: 1px solid rgba(255, 255, 255, .075);
+    if (task.completed) {
 
-border-radius: 24px;
+        playCompletionSound();
 
-box-shadow:
-    0 10px 35px rgba(0, 0, 0, .30);
+        save();
 
-transition:
-    border-color .18s ease,
-    box-shadow .18s ease;
-```
+        requestAnimationFrame(() => {
+
+            showCompletionFeedback(id);
+
+            const element =
+                document.querySelector(
+                    `[data-task-id="${CSS.escape(id)}"]`
+                );
+
+            if (element) {
+
+                element.classList.add(
+                    "just-completed"
+                );
+
+                setTimeout(() => {
+
+                    element.classList.remove(
+                        "just-completed"
+                    );
+
+                }, 550);
+
+            }
+
+        });
+
+        return;
+    }
+
+
+    save();
 
 }
+
+
+function toggleStar(id) {
+
+    const task =
+        tasks.find(
+            item => item.id === id
+        );
+
+    if (!task) return;
+
+
+    task.starred =
+        !task.starred;
+
+
+    save();
+
+}
+
+
+function deleteTask(id) {
+
+    tasks =
+        tasks.filter(
+            task => task.id !== id
+        );
+
+    save();
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    const total =
+        tasks.length;
+
+    const done =
+        tasks.filter(
+            task => task.completed
+        ).length;
+
+
+    if (total === 0) {
+
+        progressFill.style.width =
+            "0%";
+
+        progressText.textContent =
+            "ابدأ أول نية";
+
+        return;
+
+    }
+
+
+    const percentage =
+        Math.round(
+            (done / total) * 100
+        );
+
+
+    progressFill.style.width =
+        percentage + "%";
+
+
+    if (percentage === 100) {
+
+        progressText.textContent =
+            "ما شاء الله! كملت كل نواياك 🎉";
+
+    } else {
+
+        progressText.textContent =
+            `${done} من ${total} أُنجزت (${percentage}%)`;
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    updateProgress();
+
+    tasksContainer.innerHTML = "";
+
+
+    const activeTasks =
+        tasks
+            .filter(
+                task =>
+                    !task.completed
+            )
+            .sort(
+                (a, b) =>
+                    Number(b.starred) -
+                    Number(a.starred)
+            );
+
+
+    const completedTasks =
+        tasks.filter(
+            task =>
+                task.completed
+        );
+
+
+    if (tasks.length === 0) {
+
+        tasksContainer.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🌱
+                </div>
+
+                <strong>
+                    مفيش نوايا هنا
+                </strong>
+
+                <span>
+                    اكتب نية جديدة وابدأ يومك.
+                </span>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    activeTasks.forEach(task => {
+
+        tasksContainer.appendChild(
+            createTaskElement(task)
+        );
+
+    });
+
+
+    if (completedTasks.length > 0) {
+
+        const divider =
+            document.createElement(
+                "div"
+            );
+
+
+        divider.className =
+            "completed-divider";
+
+
+        divider.innerHTML = `
+            <span>
+                النوايا المحققة
+                (${completedTasks.length})
+            </span>
+        `;
+
+
+        tasksContainer.appendChild(
+            divider
+        );
+
+
+        completedTasks.forEach(task => {
+
+            tasksContainer.appendChild(
+                createTaskElement(task)
+            );
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE TASK ELEMENT
+========================================================= */
+
+function createTaskElement(task) {
+
+    const el =
+        document.createElement(
+            "div"
+        );
+
+
+    el.className =
+        `task ${
+            task.completed
+                ? "completed"
+                : ""
+        }`;
+
+
+    el.dataset.taskId =
+        task.id;
+
+
+    el.innerHTML = `
+
+        <div class="check"></div>
+
+        <div class="task-main">
+
+            <div class="task-title">
+                ${escapeHtml(task.text)}
+            </div>
+
+        </div>
+
+        <div class="task-actions">
+
+            <button
+                type="button"
+                class="icon-btn ${
+                    task.starred
+                        ? "starred"
+                        : ""
+                }"
+                data-action="star"
+                aria-label="تمييز بنجمة"
+            >
+                ${
+                    task.starred
+                        ? "★"
+                        : "☆"
+                }
+            </button>
+
+
+            <button
+                type="button"
+                class="icon-btn delete"
+                data-action="delete"
+                aria-label="حذف"
+            >
+                ×
+            </button>
+
+        </div>
+
+    `;
+
+
+    return el;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(str) {
+
+    return String(str)
+        .replace(
+            /[&<>"']/g,
+            match => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[match]
+        );
+
+}
+
+
+/* =========================================================
+   COMPLETION VISUAL FEEDBACK
+========================================================= */
+
+function showCompletionFeedback(id) {
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+
+        return;
+
+    }
+
+
+    const taskElement =
+        document.querySelector(
+            `[data-task-id="${CSS.escape(id)}"]`
+        );
+
+
+    if (!taskElement) return;
+
+
+    const check =
+        taskElement.querySelector(
+            ".check"
+        );
+
+
+    if (!check) return;
+
+
+    const bounds =
+        check.getBoundingClientRect();
+
+
+    const burst =
+        document.createElement(
+            "div"
+        );
+
+
+    burst.className =
+        "completion-burst";
+
+
+    burst.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    burst.style.left =
+        (
+            bounds.left +
+            bounds.width / 2
+        ) + "px";
+
+
+    burst.style.top =
+        (
+            bounds.top +
+            bounds.height / 2
+        ) + "px";
+
+
+    const colors = [
+        "#19c58b",
+        "#f4c84d",
+        "#f5f5f5"
+    ];
+
+
+    burst.innerHTML =
+        Array.from(
+            { length: 12 },
+            (_, index) => {
+
+                return `
+                    <span
+                        style="
+                            --angle:${index * 30}deg;
+                            --color:${colors[index % colors.length]};
+                            --distance:${29 + (index % 3) * 7}px;
+                            --size:${4 + (index % 2)}px;
+                        "
+                    ></span>
+                `;
+
+            }
+        ).join("");
+
+
+    document.body.appendChild(
+        burst
+    );
+
+
+    setTimeout(
+        () => burst.remove(),
+        600
+    );
+
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+function updateComposer() {
+
+    taskInput.style.height =
+        "42px";
+
+
+    taskInput.style.height =
+        Math.min(
+            taskInput.scrollHeight,
+            120
+        ) + "px";
+
+
+    const hasText =
+        taskInput.value.trim().length > 0;
+
+
+    submitBtn.classList.toggle(
+        "active",
+        hasText
+    );
+
+}
+
+
+/* =========================================================
+   SEND
+========================================================= */
+
+function handleSend() {
+
+    const value =
+        taskInput.value.trim();
+
+
+    if (!value) {
+
+        taskInput.focus();
+
+        return;
+
+    }
+
+
+    addTask(value);
+
+
+    taskInput.value = "";
+
+    taskInput.style.height =
+        "42px";
+
+    submitBtn.classList.remove(
+        "active"
+    );
+
+
+    taskInput.focus();
+
+}
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+taskInput.addEventListener(
+    "input",
+    updateComposer
+);
+
+
+taskInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            handleSend();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+submitBtn.addEventListener(
+    "click",
+    event => {
+
+        event.preventDefault();
+
+        handleSend();
+
+    }
+);
+
 
 /*
-لما المستخدم يدخل الكتابة
+   مهم جدًا:
+   pointerdown يجعل الزر سريعًا على الموبايل
+   ولا يعتمد على hover أو mouse.
 */
 
-.composer:focus-within {
-border-color: rgba(25, 197, 139, .22);
+submitBtn.addEventListener(
+    "pointerdown",
+    event => {
 
-```
-box-shadow:
-    0 12px 38px rgba(0, 0, 0, .34),
-    0 0 0 2px rgba(25, 197, 139, .035);
-```
+        event.stopPropagation();
+
+    }
+);
+
+
+/* =========================================================
+   TASK EVENTS
+========================================================= */
+
+tasksContainer.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                ".icon-btn"
+            );
+
+
+        if (button) {
+
+            const taskElement =
+                button.closest(
+                    ".task"
+                );
+
+
+            if (!taskElement) return;
+
+
+            const id =
+                taskElement.dataset.taskId;
+
+
+            const action =
+                button.dataset.action;
+
+
+            if (action === "star") {
+
+                toggleStar(id);
+
+                return;
+
+            }
+
+
+            if (action === "delete") {
+
+                if (
+                    confirm(
+                        "هل أنت متأكد من حذف هذه النية؟"
+                    )
+                ) {
+
+                    deleteTask(id);
+
+                }
+
+                return;
+
+            }
+
+        }
+
+
+        const taskElement =
+            event.target.closest(
+                ".task"
+            );
+
+
+        if (!taskElement) return;
+
+
+        const id =
+            taskElement.dataset.taskId;
+
+
+        toggleTask(id);
+
+    }
+);
+
+
+/* =========================================================
+   PWA INSTALL
+========================================================= */
+
+window.addEventListener(
+    "beforeinstallprompt",
+    event => {
+
+        event.preventDefault();
+
+        deferredInstallPrompt =
+            event;
+
+        installOverlay.classList.add(
+            "show"
+        );
+
+    }
+);
+
+
+installBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            deferredInstallPrompt
+        ) {
+
+            deferredInstallPrompt.prompt();
+
+            try {
+
+                await deferredInstallPrompt.userChoice;
+
+            } catch {}
+
+            deferredInstallPrompt =
+                null;
+
+            installOverlay.classList.remove(
+                "show"
+            );
+
+        } else {
+
+            installOverlay.classList.remove(
+                "show"
+            );
+
+            installGuide.classList.add(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+installClose.addEventListener(
+    "click",
+    () => {
+
+        installOverlay.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+guideClose.addEventListener(
+    "click",
+    () => {
+
+        installGuide.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if (
+    "serviceWorker" in navigator
+) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("./sw.js")
+                .catch(
+                    error => {
+                        console.log(
+                            "Nawy SW error:",
+                            error
+                        );
+                    }
+                );
+
+        }
+    );
 
 }
 
-/* =========================
-TEXTAREA
-========================= */
 
-textarea {
-flex: 1;
+/* =========================================================
+   INITIAL RENDER
+========================================================= */
 
-```
-min-width: 0;
+render();
 
-min-height: 42px;
-max-height: 120px;
-
-resize: none;
-
-border: 0;
-outline: 0;
-
-background: transparent;
-
-color: var(--text);
-
-padding:
-    10px
-    10px
-    9px;
-
-line-height: 1.5;
-
-font-size: 15px;
-
-overflow-y: auto;
-
-scrollbar-width: none;
-```
-
-}
-
-textarea::-webkit-scrollbar {
-display: none;
-}
-
-textarea::placeholder {
-color: #747f79;
-}
-
-textarea:focus::placeholder {
-color: #68736e;
-}
-
-/* =========================
-SEND BUTTON
-========================= */
-
-.submit {
-width: 42px;
-height: 42px;
-
-```
-flex: 0 0 42px;
-
-display: grid;
-place-items: center;
-
-border-radius: 50%;
-
-background: #29312d;
-
-color: #69756f;
-
-transition:
-    background .18s ease,
-    color .18s ease,
-    transform .16s ease,
-    box-shadow .18s ease;
-```
-
-}
-
-.submit svg {
-width: 20px;
-height: 20px;
-
-```
-display: block;
-
-fill: none;
-
-stroke: currentColor;
-
-stroke-width: 2;
-
-stroke-linecap: round;
-
-stroke-linejoin: round;
-
-/*
-   تثبيت الاتجاه بصريًا
-   حتى RTL لا يقلب السهم
-*/
-transform: none;
-```
-
-}
-
-.submit.active {
-background: var(--green);
-
-```
-color: #06140f;
-
-box-shadow:
-    0 6px 18px rgba(25, 197, 139, .18);
-```
-
-}
-
-.submit:hover {
-transform: scale(1.035);
-}
-
-.submit:active {
-transform: scale(.92);
-}
-
-/* =========================
-HINT
-========================= */
-
-.hint {
-width: 100%;
-max-width: 680px;
-
-```
-margin: 7px auto 0;
-
-text-align: center;
-
-color: #56615c;
-
-font-size: 10px;
-```
-
-}
-
-/* =========================
-INSTALL
-========================= */
-
-.install-overlay {
-position: fixed;
-inset: 0;
-
-```
-display: flex;
-align-items: flex-end;
-justify-content: center;
-
-padding: 18px;
-
-background: rgba(0, 0, 0, .22);
-
-backdrop-filter: blur(2px);
-
-opacity: 0;
-visibility: hidden;
-
-pointer-events: none;
-
-transition:
-    opacity .25s ease,
-    visibility .25s ease;
-
-z-index: 1000;
-```
-
-}
-
-.install-overlay.show {
-opacity: 1;
-visibility: visible;
-
-```
-pointer-events: auto;
-```
-
-}
-
-.install-sheet {
-width: 100%;
-max-width: 680px;
-
-```
-display: flex;
-align-items: center;
-
-gap: 12px;
-
-padding: 14px;
-
-background: #151817;
-
-border: 1px solid rgba(25, 197, 139, .13);
-
-border-radius: 20px;
-
-box-shadow:
-    0 20px 55px rgba(0, 0, 0, .42);
-
-transform: translateY(25px);
-
-transition:
-    transform .28s ease;
-```
-
-}
-
-.install-overlay.show .install-sheet {
-transform: translateY(0);
-}
-
-.install-icon {
-width: 44px;
-height: 44px;
-
-```
-flex: 0 0 44px;
-
-display: grid;
-place-items: center;
-
-border-radius: 14px;
-
-background: rgba(25, 197, 139, .11);
-
-font-size: 20px;
-```
-
-}
-
-.install-copy {
-min-width: 0;
-flex: 1;
-}
-
-.install-title {
-font-size: 15px;
-font-weight: 800;
-}
-
-.install-subtitle {
-margin-top: 3px;
-
-```
-color: var(--muted);
-
-font-size: 11px;
-
-line-height: 1.4;
-```
-
-}
-
-.install-btn {
-flex-shrink: 0;
-
-```
-padding: 10px 14px;
-
-border-radius: 12px;
-
-background: var(--green);
-
-color: #06140f;
-
-font-size: 12px;
-
-font-weight: 900;
-
-white-space: nowrap;
-```
-
-}
-
-.install-close {
-width: 30px;
-height: 30px;
-
-```
-flex: 0 0 30px;
-
-display: grid;
-place-items: center;
-
-border-radius: 50%;
-
-background: rgba(255, 255, 255, .04);
-
-color: #718078;
-
-font-size: 18px;
-```
-
-}
-
-/* =========================
-INSTALL GUIDE
-========================= */
-
-.install-guide {
-position: fixed;
-inset: 0;
-
-```
-display: grid;
-place-items: center;
-
-padding: 22px;
-
-background: rgba(0, 0, 0, .55);
-
-backdrop-filter: blur(8px);
-
-opacity: 0;
-visibility: hidden;
-
-pointer-events: none;
-
-transition: all .25s ease;
-
-z-index: 1100;
-```
-
-}
-
-.install-guide.show {
-opacity: 1;
-visibility: visible;
-
-```
-pointer-events: auto;
-```
-
-}
-
-.guide-box {
-width: 100%;
-max-width: 380px;
-
-```
-padding: 22px;
-
-background: #151817;
-
-border: 1px solid var(--border);
-
-border-radius: 22px;
-
-box-shadow:
-    0 25px 70px rgba(0, 0, 0, .45);
-
-text-align: center;
-```
-
-}
-
-.guide-box h2 {
-font-size: 19px;
-
-```
-margin-bottom: 9px;
-```
-
-}
-
-.guide-box p {
-color: var(--muted);
-
-```
-font-size: 13px;
-
-line-height: 1.7;
-```
-
-}
-
-.guide-close {
-margin-top: 18px;
-
-```
-width: 100%;
-
-padding: 11px;
-
-border-radius: 13px;
-
-background: rgba(255, 255, 255, .06);
-
-color: var(--text);
-
-font-size: 13px;
-```
-
-}
-
-/* =========================
-RESPONSIVE
-========================= */
-
-@media (min-width: 900px) {
-
-```
-.header {
-    padding-top: 28px;
-}
-
-.tasks {
-    padding-bottom: 180px;
-}
-```
-
-}
-
-@media (max-width: 480px) {
-
-```
-.header {
-    padding-left: 17px;
-    padding-right: 17px;
-}
-
-.tasks {
-    padding-left: 17px;
-    padding-right: 17px;
-}
-
-.composer-wrap {
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
-.greeting h1 {
-    font-size: 24px;
-}
-
-.task-title {
-    font-size: 15.5px;
-}
-```
-
-}
-
-@media (max-width: 380px) {
-
-```
-.header {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.tasks {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.composer {
-    border-radius: 21px;
-}
-
-.hint {
-    font-size: 9px;
-}
-```
-
-}
-
-/* =========================
-REDUCED MOTION
-========================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-```
-*,
-*::before,
-*::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-}
-```
-
-}
+updateComposer();
