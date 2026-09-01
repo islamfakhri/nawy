@@ -1,115 +1,156 @@
-const CACHE_NAME = "nawy-cache-v5";
+```javascript
+const CACHE_NAME = "nawy-cache-v6";
 
 const APP_FILES = [
     "./",
     "./index.html",
-    "./css/app.css",
-    "./js/app.js",
     "./manifest.json",
     "./icon-192.png",
     "./icon-512.png"
 ];
 
 
-/* Install */
+/* تثبيت النسخة الجديدة */
 
-self.addEventListener(
-    "install",
-    event => {
+self.addEventListener("install", event => {
 
-        event.waitUntil(
+    event.waitUntil(
 
-            caches
-                .open(CACHE_NAME)
-                .then(cache =>
-                    cache.addAll(APP_FILES)
+        caches.open(CACHE_NAME)
+            .then(cache =>
+                cache.addAll(APP_FILES)
+            )
+            .then(() =>
+                self.skipWaiting()
+            )
+
+    );
+});
+
+
+/* تفعيل النسخة الجديدة وحذف الكاش القديم */
+
+self.addEventListener("activate", event => {
+
+    event.waitUntil(
+
+        caches.keys()
+            .then(keys =>
+                Promise.all(
+
+                    keys
+                        .filter(key =>
+                            key.startsWith("nawy-cache-") &&
+                            key !== CACHE_NAME
+                        )
+                        .map(key =>
+                            caches.delete(key)
+                        )
+
                 )
+            )
+            .then(() =>
+                self.clients.claim()
+            )
 
-        );
+    );
+});
 
-        self.skipWaiting();
 
+/*
+   الاستراتيجية:
+
+   HTML:
+   الشبكة أولاً حتى تحصل على آخر نسخة.
+
+   باقي الملفات:
+   الكاش أولاً ثم الشبكة.
+*/
+
+self.addEventListener("fetch", event => {
+
+    const request = event.request;
+
+    if (request.method !== "GET") {
+        return;
     }
-);
 
 
-/* Activate */
-
-self.addEventListener(
-    "activate",
-    event => {
-
-        event.waitUntil(
-
-            caches.keys()
-                .then(keys =>
-                    Promise.all(
-                        keys
-                            .filter(
-                                key =>
-                                    key !== CACHE_NAME
-                            )
-                            .map(
-                                key =>
-                                    caches.delete(key)
-                            )
-                    )
-                )
-
-        );
-
-        self.clients.claim();
-
-    }
-);
+    const isHTML =
+        request.mode === "navigate" ||
+        request.destination === "document";
 
 
-/* Fetch */
-
-self.addEventListener(
-    "fetch",
-    event => {
-
-        if (
-            event.request.method !==
-            "GET"
-        ) {
-            return;
-        }
-
+    if (isHTML) {
 
         event.respondWith(
 
-            fetch(event.request)
+            fetch(request)
                 .then(response => {
 
                     const copy =
                         response.clone();
 
-
-                    caches.open(
-                        CACHE_NAME
-                    ).then(cache => {
-
-                        cache.put(
-                            event.request,
-                            copy
+                    caches.open(CACHE_NAME)
+                        .then(cache =>
+                            cache.put(
+                                request,
+                                copy
+                            )
                         );
 
-                    });
-
-
                     return response;
-
                 })
-                .catch(
-                    () =>
-                        caches.match(
-                            event.request
+
+                .catch(() =>
+                    caches.match(request)
+                        .then(cached =>
+                            cached ||
+                            caches.match("./index.html")
                         )
                 )
 
         );
 
+        return;
     }
-);
+
+
+    event.respondWith(
+
+        caches.match(request)
+            .then(cached => {
+
+                if (cached) {
+                    return cached;
+                }
+
+                return fetch(request)
+                    .then(response => {
+
+                        if (
+                            !response ||
+                            response.status !== 200
+                        ) {
+                            return response;
+                        }
+
+                        const copy =
+                            response.clone();
+
+                        caches.open(CACHE_NAME)
+                            .then(cache =>
+                                cache.put(
+                                    request,
+                                    copy
+                                )
+                            );
+
+                        return response;
+                    });
+
+            })
+
+    );
+});
+```
