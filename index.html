@@ -1,1089 +1,275 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0d1210">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>ناوي — على إيه النهارده؟</title>
-
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/png" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
-
-<style>
-    :root {
-        --bg: #0d1210;
-        --surface: #151b18;
-        --text: #f4f7f5;
-        --muted: #87948d;
-        --muted-dark: #65716b;
-        --green: #19c58b;
-        --yellow: #f4c84d;
-        --danger: #ff6262;
-        --border: rgba(255,255,255,.07);
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-        width: 100%;
-        min-height: 100%;
-        background: var(--bg);
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Arabic", Tahoma, Arial, sans-serif;
-        color: var(--text);
-        overflow: hidden;
-    }
-
-    button, textarea {
-        font-family: inherit;
-    }
-
-    button {
-        border: none;
-        outline: none;
-        cursor: pointer;
-        -webkit-user-select: none;
-        user-select: none;
-        touch-action: manipulation;
-    }
-
-    .app {
-        width: 100%;
-        max-width: 620px;
-        height: 100dvh;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        background: radial-gradient(circle at 85% -10%, rgba(25,197,139,.13), transparent 30%), var(--bg);
-    }
-
-    .header {
-        padding: 24px 20px 12px;
-        flex-shrink: 0;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .brand-main {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .brand-mark {
-        width: 40px;
-        height: 40px;
-        display: grid;
-        place-items: center;
-        border-radius: 13px;
-        background: rgba(25,197,139,.12);
-        color: var(--green);
-        font-size: 20px;
-    }
-
-    .brand-name {
-        font-size: 24px;
-        font-weight: 800;
-        letter-spacing: -.8px;
-    }
-
-    .greeting {
-        margin-top: 14px;
-    }
-
-    .greeting h1 {
-        font-size: 26px;
-        line-height: 1.25;
-        font-weight: 800;
-        letter-spacing: -.8px;
-    }
-
-    .greeting p {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 13px;
-    }
-
-    .progress {
-        margin-top: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .progress-bar {
-        height: 6px;
-        flex: 1;
-        background: rgba(255,255,255,.07);
-        border-radius: 99px;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        width: 0%;
-        background: var(--green);
-        border-radius: 99px;
-        transition: width .3s ease;
-    }
-
-    .progress-text {
-        color: var(--muted);
-        font-size: 12px;
-        white-space: nowrap;
-    }
-
-    .tasks {
-        flex: 1;
-        overflow-y: auto;
-        padding: 8px 20px 160px;
-        scrollbar-width: none;
-    }
-
-    .tasks::-webkit-scrollbar {
-        display: none;
-    }
-
-    .task {
-        min-height: 64px;
-        display: flex;
-        align-items: center;
-        gap: 13px;
-        padding: 11px 3px;
-        border-bottom: 1px solid var(--border);
-        transition: opacity .2s ease, transform .15s ease;
-        cursor: pointer;
-    }
-
-    .task:last-child {
-        border-bottom: none;
-    }
-
-    .task:active {
-        transform: scale(.99);
-    }
-
-    .completed-divider {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 22px 0 3px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .completed-divider::before,
-    .completed-divider::after {
-        content: "";
-        height: 1px;
-        flex: 1;
-        background: var(--border);
-    }
-
-    .completed-divider span {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        white-space: nowrap;
-    }
-
-    .completed-divider span::before {
-        content: "✓";
-        color: var(--green);
-        font-size: 13px;
-    }
-
-    .check {
-        width: 23px;
-        height: 23px;
-        flex: 0 0 23px;
-        border: 1.8px solid #66736c;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        transition: all .2s ease;
-        pointer-events: none; /* نمرر النقر إلى المهمة */
-    }
-
-    .task.completed .check {
-        background: var(--green);
-        border-color: var(--green);
-    }
-
-    .check::after {
-        content: "✓";
-        color: #07120e;
-        font-size: 14px;
-        font-weight: 900;
-        opacity: 0;
-        transform: scale(.5);
-        transition: all .2s ease;
-    }
-
-    .task:not(.completed) .check:hover {
-        background: rgba(25,197,139,.1);
-        border-color: var(--green);
-    }
-
-    .task:not(.completed) .check:hover::after {
-        color: var(--green);
-        opacity: .9;
-        transform: scale(.82);
-    }
-
-    .task.completed .check::after {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    .task.just-completed .check {
-        animation: check-celebrate .52s cubic-bezier(.18,.9,.3,1.35);
-        box-shadow: 0 0 0 7px rgba(25,197,139,.12);
-    }
-
-    .task.just-completed .check::after {
-        animation: check-reveal .36s .06s both;
-    }
-
-    @keyframes check-celebrate {
-        0% { transform: scale(1); }
-        45% { transform: scale(1.28); }
-        100% { transform: scale(1); }
-    }
-
-    @keyframes check-reveal {
-        from { transform: scale(.35) rotate(-12deg); }
-        to { transform: scale(1) rotate(0); }
-    }
-
-    .completion-burst {
-        position: fixed;
-        width: 44px;
-        height: 44px;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        z-index: 20;
-    }
-
-    .completion-burst::before {
-        content: "";
-        position: absolute;
-        inset: 10px;
-        border: 2px solid rgba(25,197,139,.8);
-        border-radius: 50%;
-        animation: completion-ring .52s ease-out forwards;
-    }
-
-    .completion-burst span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: var(--size);
-        height: var(--size);
-        border-radius: 50%;
-        background: var(--color);
-        box-shadow: 0 0 8px rgba(255,255,255,.35);
-        animation: completion-particle .58s cubic-bezier(.18,.7,.3,1) forwards;
-    }
-
-    @keyframes completion-ring {
-        from { transform: scale(.55); opacity: .9; }
-        to { transform: scale(1.8); opacity: 0; }
-    }
-
-    @keyframes completion-particle {
-        from {
-            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-8px) scale(.5);
-            opacity: 1;
-        }
-        to {
-            transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(var(--distance) * -1)) scale(0);
-            opacity: 0;
-        }
-    }
-
-    .task-main {
-        min-width: 0;
-        flex: 1;
-        pointer-events: none; /* نمرر النقر إلى المهمة */
-    }
-
-    .task-title {
-        font-size: 16px;
-        line-height: 1.45;
-        color: #eef3f0;
-        overflow-wrap: anywhere;
-        transition: all .2s ease;
-    }
-
-    .task.completed .task-title {
-        color: var(--muted-dark);
-        text-decoration: line-through;
-    }
-
-    .task-actions {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        opacity: .65;
-        pointer-events: auto; /* الأزرار قابلة للنقر */
-    }
-
-    .icon-btn {
-        width: 34px;
-        height: 34px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-        background: transparent;
-        color: #718078;
-        font-size: 18px;
-        transition: all .2s ease;
-        cursor: pointer;
-    }
-
-    .icon-btn:active {
-        background: rgba(255,255,255,.07);
-    }
-
-    .icon-btn.starred {
-        color: var(--yellow);
-    }
-
-    .icon-btn.delete:hover,
-    .icon-btn.delete:active {
-        color: var(--danger);
-    }
-
-    .empty {
-        text-align: center;
-        padding: 80px 25px;
-    }
-
-    .empty-icon {
-        width: 58px;
-        height: 58px;
-        margin: 0 auto 15px;
-        display: grid;
-        place-items: center;
-        border-radius: 18px;
-        background: rgba(25,197,139,.09);
-        color: var(--green);
-        font-size: 25px;
-    }
-
-    .empty strong {
-        display: block;
-        color: #dfe7e3;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    .empty span {
-        color: var(--muted);
-        font-size: 13px;
-    }
-
-    .install-overlay {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 18px;
-        background: rgba(0,0,0,.22);
-        backdrop-filter: blur(2px);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity .25s ease, visibility .25s ease;
-        z-index: 1000;
-    }
-
-    .install-overlay.show {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    .install-sheet {
-        width: 100%;
-        max-width: 620px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px;
-        background: rgba(21,27,24,.98);
-        border: 1px solid rgba(25,197,139,.13);
-        border-radius: 20px;
-        box-shadow: 0 20px 55px rgba(0,0,0,.42);
-        transform: translateY(25px);
-        transition: transform .28s ease;
-    }
-
-    .install-overlay.show .install-sheet {
-        transform: translateY(0);
-    }
-
-    .install-icon {
-        width: 44px;
-        height: 44px;
-        flex: 0 0 44px;
-        display: grid;
-        place-items: center;
-        border-radius: 14px;
-        background: rgba(25,197,139,.11);
-        font-size: 20px;
-    }
-
-    .install-copy {
-        min-width: 0;
-        flex: 1;
-    }
-
-    .install-title {
-        font-size: 15px;
-        font-weight: 800;
-    }
-
-    .install-subtitle {
-        margin-top: 3px;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.4;
-    }
-
-    .install-btn {
-        flex-shrink: 0;
-        padding: 10px 14px;
-        border-radius: 12px;
-        background: var(--green);
-        color: #06140f;
-        font-size: 12px;
-        font-weight: 900;
-        white-space: nowrap;
-        box-shadow: 0 6px 18px rgba(25,197,139,.18);
-    }
-
-    .install-close {
-        width: 30px;
-        height: 30px;
-        flex: 0 0 30px;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        background: rgba(255,255,255,.04);
-        color: #718078;
-        font-size: 18px;
-    }
-
-    .install-guide {
-        position: fixed;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        padding: 22px;
-        background: rgba(0,0,0,.55);
-        backdrop-filter: blur(8px);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: all .25s ease;
-        z-index: 1100;
-    }
-
-    .install-guide.show {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    .guide-box {
-        width: 100%;
-        max-width: 380px;
-        padding: 22px;
-        background: #151b18;
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        box-shadow: 0 25px 70px rgba(0,0,0,.45);
-        text-align: center;
-    }
-
-    .guide-box h2 {
-        font-size: 19px;
-        margin-bottom: 9px;
-    }
-
-    .guide-box p {
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.7;
-    }
-
-    .guide-close {
-        margin-top: 18px;
-        width: 100%;
-        padding: 11px;
-        border-radius: 13px;
-        background: rgba(255,255,255,.06);
-        color: var(--text);
-        font-size: 13px;
-    }
-
-    .composer-wrap {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-        background: linear-gradient(to top, var(--bg) 70%, transparent);
-        pointer-events: none;
-    }
-
-    .composer {
-        pointer-events: auto;
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
-        padding: 7px 8px 7px 7px;
-        background: rgba(25,32,29,.96);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        box-shadow: 0 18px 45px rgba(0,0,0,.28);
-        backdrop-filter: blur(18px);
-    }
-
-    textarea {
-        flex: 1;
-        min-width: 0;
-        min-height: 42px;
-        max-height: 110px;
-        resize: none;
-        border: none;
-        outline: none;
-        background: transparent;
-        color: var(--text);
-        padding: 10px;
-        line-height: 1.45;
-        font-size: 15px;
-    }
-
-    textarea::placeholder {
-        color: #718078;
-    }
-
-    .submit {
-        width: 42px;
-        height: 42px;
-        flex: 0 0 42px;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        background: #29332e;
-        color: #718078;
-        font-size: 20px;
-        transition: all .2s ease;
-    }
-
-    .submit.active {
-        background: var(--green);
-        color: #06140f;
-        box-shadow: 0 7px 20px rgba(25,197,139,.22);
-    }
-
-    .submit:active {
-        transform: scale(.94);
-    }
-
-    .hint {
-        text-align: center;
-        color: #56635c;
-        font-size: 10px;
-        margin-top: 7px;
-    }
-
-    @media (max-width:380px) {
-        .header { padding: 22px 16px 12px; }
-        .tasks { padding-left: 16px; padding-right: 16px; }
-        .greeting h1 { font-size: 23px; }
-        .task-title { font-size: 15px; }
-        .install-overlay { padding: 12px; }
-        .install-sheet { gap: 9px; padding: 12px; }
-        .install-subtitle { font-size: 10px; }
-    }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1210">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="ناوي — اكتب نيتك، أنجزها، وخلّي يومك أوضح.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ناوي">
+
+  <title>ناوي — على إيه النهارده؟</title>
+
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+
+  <link rel="stylesheet" href="./css/app.css">
 </head>
-<body>
 
-<div class="app">
-    <!-- HEADER -->
-    <header class="header">
-        <div class="brand">
-            <div class="brand-main">
-                <div class="brand-mark">🎯</div>
-                <div class="brand-name">ناوي</div>
+<body>
+  <div class="app-shell">
+    <main class="app" aria-label="تطبيق ناوي">
+
+      <header class="header">
+        <div class="brand-row">
+
+          <div class="brand-main">
+            <div class="brand-mark" aria-hidden="true">🎯</div>
+
+            <div>
+              <div class="brand-name">ناوي</div>
+              <div class="brand-tagline">نية واضحة. يوم أخف.</div>
             </div>
+          </div>
+
+          <button
+            id="soundToggle"
+            class="header-btn"
+            type="button"
+            aria-label="إيقاف الأصوات"
+            title="الأصوات"
+          >
+            <span aria-hidden="true">🔊</span>
+          </button>
+
         </div>
 
         <div class="greeting">
-            <h1>ناوي على إيه النهارده؟</h1>
-            <p id="currentDate">—</p>
+          <h1>ناوي على إيه النهارده؟</h1>
+          <p id="currentDate">—</p>
         </div>
 
-        <div class="progress">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-text" id="progressText">ابدأ أول نية</div>
-        </div>
-    </header>
+        <div class="progress" aria-label="تقدم اليوم">
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
 
-    <!-- TASKS CONTAINER -->
-    <main class="tasks" id="tasksContainer"></main>
-
-    <!-- COMPOSER -->
-    <div class="composer-wrap">
-        <div class="composer">
-            <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب اللي ناوي عليه..." enterkeyhint="send"></textarea>
-            <button type="button" class="submit" id="submitBtn" aria-label="إضافة نية">↑</button>
+          <div class="progress-text" id="progressText">
+            ابدأ أول نية
+          </div>
         </div>
-        <div class="hint">اضغط Enter لإضافة نية جديدة</div>
+      </header>
+
+      <section
+        class="tasks"
+        id="tasksContainer"
+        aria-live="polite"
+        aria-label="قائمة النوايا"
+      ></section>
+
+      <div class="composer-wrap">
+        <form class="composer" id="composerForm" novalidate>
+
+          <textarea
+            id="taskInput"
+            rows="1"
+            maxlength="500"
+            placeholder="اكتب اللي ناوي عليه..."
+            enterkeyhint="send"
+            aria-label="نية جديدة"
+            autocomplete="off"
+            autocapitalize="sentences"
+            spellcheck="true"
+          ></textarea>
+
+          <button
+            type="submit"
+            class="submit"
+            id="submitBtn"
+            aria-label="إضافة نية"
+          >
+            ↑
+          </button>
+
+        </form>
+
+        <div class="hint">
+          <span class="desktop-hint">
+            Enter للإضافة · Shift + Enter لسطر جديد
+          </span>
+
+          <span class="mobile-hint">
+            اكتب نيتك واضغط ↑
+          </span>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- DELETE UNDO TOAST -->
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <span id="toastMessage">تم حذف النية</span>
+    <button id="toastUndo" type="button">تراجع</button>
+  </div>
+
+  <!-- INSTALL PROMPT -->
+  <div
+    class="modal-backdrop"
+    id="installOverlay"
+    hidden
+  >
+    <div
+      class="install-sheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="installTitle"
+    >
+
+      <div class="install-icon" aria-hidden="true">
+        📱
+      </div>
+
+      <div class="install-copy">
+        <div class="install-title" id="installTitle">
+          ناوي؟ خليه معاك.
+        </div>
+
+        <div class="install-subtitle">
+          ثبّت ناوي عشان تفتحه بسرعة وتستخدمه كتطبيق.
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="primary-btn"
+        id="installBtn"
+      >
+        ثبّت
+      </button>
+
+      <button
+        type="button"
+        class="modal-close"
+        id="installClose"
+        aria-label="إغلاق"
+      >
+        ×
+      </button>
+
     </div>
-</div>
+  </div>
 
-<!-- INSTALL FLOAT -->
-<div class="install-overlay" id="installOverlay" aria-hidden="true">
-    <div class="install-sheet">
-        <div class="install-icon">📱</div>
-        <div class="install-copy">
-            <div class="install-title">ناوي؟ خليه معاك.</div>
-            <div class="install-subtitle">نزّل ناوي وابدأ يومك بنية.</div>
+  <!-- MANUAL INSTALL GUIDE -->
+  <div
+    class="modal-backdrop center"
+    id="installGuide"
+    hidden
+  >
+    <div
+      class="guide-box"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="guideTitle"
+    >
+
+      <div class="guide-icon" aria-hidden="true">
+        ✨
+      </div>
+
+      <h2 id="guideTitle">
+        خلّي ناوي معاك
+      </h2>
+
+      <p id="guideText">
+        من قائمة المتصفح اختَر
+        <strong>إضافة إلى الشاشة الرئيسية</strong>
+        عشان تستخدم ناوي كتطبيق.
+      </p>
+
+      <button
+        type="button"
+        class="secondary-btn full"
+        id="guideClose"
+      >
+        تمام
+      </button>
+
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div
+    class="modal-backdrop center"
+    id="editModal"
+    hidden
+  >
+    <form
+      class="edit-box"
+      id="editForm"
+      novalidate
+    >
+
+      <div class="edit-head">
+
+        <div>
+          <div class="eyebrow">
+            تعديل النية
+          </div>
+
+          <h2>
+            خلّيها بالصيغة اللي تريحك
+          </h2>
         </div>
-        <button type="button" class="install-btn" id="installBtn">نزّل ناوي</button>
-        <button type="button" class="install-close" id="installClose" aria-label="إغلاق">×</button>
-    </div>
-</div>
 
-<!-- INSTALL GUIDE -->
-<div class="install-guide" id="installGuide" aria-hidden="true">
-    <div class="guide-box">
-        <h2>خلّي ناوي معاك 📱</h2>
-        <p id="guideText">
-            من قائمة المتصفح اختار
-            <strong>إضافة إلى الشاشة الرئيسية</strong>
-            عشان تستخدم ناوي كتطبيق.
-        </p>
-        <button type="button" class="guide-close" id="guideClose">تمام</button>
-    </div>
-</div>
+        <button
+          type="button"
+          class="modal-close"
+          id="editClose"
+          aria-label="إغلاق"
+        >
+          ×
+        </button>
 
-<script>
-    /* =====================================================
-       NAWY - CORE APP LOGIC (يعمل مع كل المهام)
-    ===================================================== */
-    const STORAGE_KEY = "nawy_tasks_v4";
+      </div>
 
-    const taskInput = document.getElementById("taskInput");
-    const submitBtn = document.getElementById("submitBtn");
-    const tasksContainer = document.getElementById("tasksContainer");
-    const progressFill = document.getElementById("progressFill");
-    const progressText = document.getElementById("progressText");
-    const currentDate = document.getElementById("currentDate");
-    const installOverlay = document.getElementById("installOverlay");
-    const installBtn = document.getElementById("installBtn");
-    const installClose = document.getElementById("installClose");
-    const installGuide = document.getElementById("installGuide");
-    const guideClose = document.getElementById("guideClose");
+      <textarea
+        id="editInput"
+        maxlength="500"
+        rows="4"
+        aria-label="تعديل النية"
+      ></textarea>
 
-    let tasks = loadTasks();
-    let deferredInstallPrompt = null;
+      <div class="edit-actions">
+        <button
+          type="button"
+          class="secondary-btn"
+          id="editCancel"
+        >
+          إلغاء
+        </button>
 
-    /* =====================================================
-       SOUNDS (WEB AUDIO API)
-    ===================================================== */
-    let audioContext = null;
+        <button
+          type="submit"
+          class="primary-btn"
+        >
+          حفظ
+        </button>
+      </div>
 
-    function ensureAudioContext() {
-        try {
-            if (!audioContext) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return null;
-                audioContext = new AudioContext();
-            }
-            if (audioContext.state === "suspended") {
-                audioContext.resume();
-            } else if (audioContext.state === "closed") {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            return audioContext;
-        } catch (e) {
-            console.log("Nawy audio error:", e);
-            return null;
-        }
-    }
+    </form>
+  </div>
 
-    function playAddSound() {
-        try {
-            const ctx = ensureAudioContext();
-            if (!ctx) return;
-            const now = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(430, now);
-            osc.frequency.exponentialRampToValueAtTime(680, now + 0.055);
-            osc.frequency.exponentialRampToValueAtTime(540, now + 0.10);
-
-            gain.gain.setValueAtTime(0.0001, now);
-            gain.gain.exponentialRampToValueAtTime(0.055, now + 0.008);
-            gain.gain.exponentialRampToValueAtTime(0.018, now + 0.045);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(now);
-            osc.stop(now + 0.125);
-        } catch (e) {
-            console.log("Nawy sound error:", e);
-        }
-    }
-
-    function playCompletionSound() {
-        try {
-            const ctx = ensureAudioContext();
-            if (!ctx) return;
-            const now = ctx.currentTime;
-            const tones = [
-                { frequency: 1046.5, volume: 0.065, duration: 0.34 },
-                { frequency: 2093, volume: 0.012, duration: 0.22 }
-            ];
-
-            tones.forEach(({ frequency, volume, duration }) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = "triangle";
-                osc.frequency.setValueAtTime(frequency, now);
-
-                gain.gain.setValueAtTime(0.0001, now);
-                gain.gain.exponentialRampToValueAtTime(volume, now + 0.008);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(now);
-                osc.stop(now + duration + 0.01);
-            });
-        } catch (e) {
-            console.log("Nawy sound error:", e);
-        }
-    }
-
-    function showCompletionFeedback(id) {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-        const taskElement = document.querySelector(`[data-task-id="${id}"]`);
-        if (taskElement) {
-            taskElement.classList.add("just-completed");
-            window.setTimeout(() => taskElement.classList.remove("just-completed"), 550);
-        }
-
-        const checkElement = taskElement?.querySelector(".check");
-        if (!checkElement) return;
-
-        const checkBounds = checkElement.getBoundingClientRect();
-        const burst = document.createElement("div");
-
-        burst.className = "completion-burst";
-        burst.setAttribute("aria-hidden", "true");
-        burst.style.left = (checkBounds.left + checkBounds.width / 2) + "px";
-        burst.style.top = (checkBounds.top + checkBounds.height / 2) + "px";
-
-        const colors = ["#19c58b", "#f4c84d", "#f4f7f5"];
-        burst.innerHTML = Array.from({ length: 12 }, (_, index) => {
-            return `<span style="--angle: ${index * 30}deg; --color: ${colors[index % colors.length]}; --distance: ${29 + (index % 3) * 7}px; --size: ${4 + (index % 2)}px"></span>`;
-        }).join("");
-
-        document.body.appendChild(burst);
-        window.setTimeout(() => burst.remove(), 560);
-    }
-
-    /* =====================================================
-       DATE FORMATTING
-    ===================================================== */
-    currentDate.textContent = new Intl.DateTimeFormat("ar-EG", {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    }).format(new Date());
-
-    /* =====================================================
-       STORAGE & TASK ACTIONS
-    ===================================================== */
-    function loadTasks() {
-        try {
-            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-            if (Array.isArray(saved)) return saved;
-
-            const old = JSON.parse(localStorage.getItem("nawy_tasks_v3"));
-            return Array.isArray(old) ? old : [];
-        } catch {
-            return [];
-        }
-    }
-
-    function save() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-        render();
-    }
-
-    function addTask(text) {
-        const clean = text.trim();
-        if (!clean) return;
-
-        const newTask = {
-            id: Date.now().toString(),
-            text: clean,
-            completed: false,
-            starred: false,
-            createdAt: new Date().toISOString()
-        };
-
-        tasks.unshift(newTask);
-        playAddSound();
-        save();
-    }
-
-    function toggleTask(id) {
-        const task = tasks.find(t => t.id === id);
-        if (!task) return;
-
-        task.completed = !task.completed;
-        if (task.completed) {
-            playCompletionSound();
-            showCompletionFeedback(id);
-        }
-        save();
-    }
-
-    function toggleStar(id) {
-        const task = tasks.find(t => t.id === id);
-        if (!task) return;
-        task.starred = !task.starred;
-        save();
-    }
-
-    function deleteTask(id) {
-        tasks = tasks.filter(t => t.id !== id);
-        save();
-    }
-
-    /* =====================================================
-       RENDER LOGIC (على طريقة Microsoft To Do)
-    ===================================================== */
-    function updateProgress() {
-        const total = tasks.length;
-        const done = tasks.filter(t => t.completed).length;
-
-        if (total === 0) {
-            progressFill.style.width = "0%";
-            progressText.textContent = "ابدأ أول نية";
-            return;
-        }
-
-        const percentage = Math.round((done / total) * 100);
-        progressFill.style.width = percentage + "%";
-
-        if (percentage === 100) {
-            progressText.textContent = "ماشاء الله! كملت كل نواياك 🎉";
-        } else {
-            progressText.textContent = `${done} من ${total} أُنجزت (${percentage}%)`;
-        }
-    }
-
-    function render() {
-        updateProgress();
-        tasksContainer.innerHTML = "";
-
-        // فصل المهام إلى نشطة ومكتملة
-        const activeTasks = tasks.filter(t => !t.completed)
-            .sort((a, b) => (b.starred ? 1 : 0) - (a.starred ? 1 : 0));
-        const completedTasks = tasks.filter(t => t.completed);
-
-        if (tasks.length === 0) {
-            tasksContainer.innerHTML = `
-                <div class="empty">
-                    <div class="empty-icon">🌱</div>
-                    <strong>مفيش نوايا هنا</strong>
-                    <span>اكتب نية جديدة واكتشف إنجازك!</span>
-                </div>
-            `;
-            return;
-        }
-
-        // عرض المهام النشطة أولاً
-        activeTasks.forEach(t => tasksContainer.appendChild(createTaskElement(t)));
-
-        // عرض المهام المكتملة مع فاصل إذا وجدت
-        if (completedTasks.length > 0) {
-            const divider = document.createElement("div");
-            divider.className = "completed-divider";
-            divider.innerHTML = `<span>النوايا المحققة (${completedTasks.length})</span>`;
-            tasksContainer.appendChild(divider);
-            completedTasks.forEach(t => tasksContainer.appendChild(createTaskElement(t)));
-        }
-    }
-
-    function createTaskElement(task) {
-        const el = document.createElement("div");
-        el.className = `task ${task.completed ? "completed" : ""}`;
-        el.setAttribute("data-task-id", task.id);
-        // لا نحتاج data-action على المهمة لأننا سنعتمد على النقر على أي جزء منها
-
-        el.innerHTML = `
-            <div class="check"></div>
-            <div class="task-main">
-                <div class="task-title">${escapeHtml(task.text)}</div>
-            </div>
-            <div class="task-actions">
-                <button type="button" class="icon-btn ${task.starred ? "starred" : ""}" data-action="star" aria-label="تمييز بنجمة">
-                    ${task.starred ? "★" : "☆"}
-                </button>
-                <button type="button" class="icon-btn delete" data-action="delete" aria-label="حذف">
-                    ×
-                </button>
-            </div>
-        `;
-        return el;
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, match => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        })[match]);
-    }
-
-    /* =====================================================
-       EVENTS - باستخدام Event Delegation (يعمل مع كل المهام)
-    ===================================================== */
-    tasksContainer.addEventListener('click', (e) => {
-        // 1. إذا كان النقر على زر (نجمة أو حذف)
-        const iconBtn = e.target.closest('.icon-btn');
-        if (iconBtn) {
-            const action = iconBtn.dataset.action;
-            const taskEl = iconBtn.closest('.task');
-            if (!taskEl) return;
-            const id = taskEl.dataset.taskId;
-            if (!id) return;
-
-            if (action === 'star') {
-                toggleStar(id);
-            } else if (action === 'delete') {
-                if (confirm('هل أنت متأكد من حذف هذه النية؟')) {
-                    deleteTask(id);
-                }
-            }
-            return; // نمنع تنفيذ أي إجراء آخر
-        }
-
-        // 2. النقر على أي جزء آخر من المهمة (بما في ذلك check والنص)
-        const taskEl = e.target.closest('.task');
-        if (!taskEl) return;
-        const id = taskEl.dataset.taskId;
-        if (!id) return;
-
-        // تبديل الحالة (إنجاز / إلغاء إنجاز)
-        toggleTask(id);
-    });
-
-    // باقي الأحداث (الإدخال، الإرسال، التثبيت)
-    taskInput.addEventListener("input", () => {
-        taskInput.style.height = "auto";
-        taskInput.style.height = Math.min(taskInput.scrollHeight, 110) + "px";
-        if (taskInput.value.trim().length > 0) {
-            submitBtn.classList.add("active");
-        } else {
-            submitBtn.classList.remove("active");
-        }
-    });
-
-    taskInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-        }
-    });
-
-    submitBtn.addEventListener("click", handleSend);
-
-    function handleSend() {
-        const val = taskInput.value;
-        if (val.trim()) {
-            addTask(val);
-            taskInput.value = "";
-            taskInput.style.height = "42px";
-            submitBtn.classList.remove("active");
-        }
-    }
-
-    /* =====================================================
-       PWA INSTALLATION
-    ===================================================== */
-    window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredInstallPrompt = e;
-        installOverlay.classList.add("show");
-    });
-
-    installBtn.addEventListener("click", async () => {
-        if (deferredInstallPrompt) {
-            deferredInstallPrompt.prompt();
-            const { outcome } = await deferredInstallPrompt.userChoice;
-            deferredInstallPrompt = null;
-            installOverlay.classList.remove("show");
-        } else {
-            installOverlay.classList.remove("show");
-            installGuide.classList.add("show");
-        }
-    });
-
-    installClose.addEventListener("click", () => installOverlay.classList.remove("show"));
-    guideClose.addEventListener("click", () => installGuide.classList.remove("show"));
-
-    /* =====================================================
-       OFFLINE SERVICE WORKER AUTO-REGISTER
-    ===================================================== */
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            const swCode = `
-                const CACHE = 'nawy-cache-v1';
-                self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./']))));
-                self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
-            `;
-            const blob = new Blob([swCode], { type: 'text/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-        });
-    }
-
-    // التشغيل الأولي
-    render();
-</script>
+  <script src="./js/app.js" defer></script>
 </body>
 </html>
