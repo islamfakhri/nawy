@@ -2,814 +2,1295 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<meta name="theme-color" content="#0d0f0e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<title>ناوي — على إيه النهارده؟</title>
-
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
-
-<style>
-:root {
-    --bg: #0d0f0e;
-    --surface: #171a18;
-    --surface-2: #202421;
-    --text: #f3f5f4;
-    --muted: #8c9691;
-    --muted-2: #626b66;
-    --green: #19c58b;
-    --danger: #ff6868;
-    --yellow: #f3c84b;
-    --border: rgba(255,255,255,.075);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    width: 100%;
-    min-height: 100%;
-    background: var(--bg);
-}
-
-body {
-    width: 100%;
-    min-height: 100dvh;
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans Arabic",
-        Tahoma,
-        Arial,
-        sans-serif;
-    overflow: hidden;
-}
-
-button,
-textarea {
-    font: inherit;
-}
-
-button {
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-    touch-action: manipulation;
-}
-
-/* =========================
-   APP
-========================= */
-
-.app {
-    width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding:
-        calc(22px + env(safe-area-inset-top))
-        22px
-        12px;
-    flex-shrink: 0;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-}
-
-.brand-name {
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: -1px;
-}
-
-.greeting {
-    margin-top: 20px;
-}
-
-.greeting h1 {
-    font-size: clamp(24px, 5vw, 29px);
-    line-height: 1.25;
-    font-weight: 800;
-    letter-spacing: -.9px;
-}
-
-.greeting p {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.progress {
-    margin-top: 17px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.progress-bar {
-    flex: 1;
-    height: 5px;
-    background: rgba(255,255,255,.07);
-    border-radius: 99px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    width: 0;
-    height: 100%;
-    background: var(--green);
-    border-radius: inherit;
-    transition: width .35s ease;
-}
-
-.progress-text {
-    min-width: max-content;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-/* =========================
-   TASKS
-========================= */
-
-.tasks {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    flex: 1;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 8px 22px 170px;
-    scrollbar-width: none;
-}
-
-.tasks::-webkit-scrollbar {
-    display: none;
-}
-
-.task {
-    min-height: 64px;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition:
-        opacity .2s ease,
-        transform .15s ease;
-}
-
-.task:active {
-    transform: scale(.995);
-}
-
-/* =========================
-   CHECK
-========================= */
-
-.check {
-    width: 24px;
-    height: 24px;
-    flex: 0 0 24px;
-    border: 1.8px solid #68736e;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    color: var(--green);
-    transition:
-        background .18s ease,
-        border-color .18s ease,
-        transform .18s ease,
-        box-shadow .18s ease;
-}
-
-/* علامة الصح تظهر عند الوقوف */
-
-.task:not(.completed):hover .check {
-    border-color: var(--green);
-    background: rgba(25,197,139,.10);
-    transform: scale(1.06);
-}
-
-.check::after {
-    content: "✓";
-    font-size: 14px;
-    font-weight: 900;
-    opacity: 0;
-    transform: scale(.5);
-    transition: opacity .15s ease, transform .15s ease;
-}
-
-.task:not(.completed):hover .check::after {
-    opacity: .9;
-    transform: scale(1);
-}
-
-.task.completed .check {
-    background: var(--green);
-    border-color: var(--green);
-    color: #07130e;
-}
-
-.task.completed .check::after {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* Animation الإنجاز */
-
-.task.just-completed .check {
-    animation: checkPop .45s cubic-bezier(.2,.9,.3,1.3);
-    box-shadow: 0 0 0 8px rgba(25,197,139,.10);
-}
-
-@keyframes checkPop {
-    0% { transform: scale(1); }
-    45% { transform: scale(1.28); }
-    100% { transform: scale(1); }
-}
-
-/* =========================
-   TASK TEXT
-========================= */
-
-.task-main {
-    min-width: 0;
-    flex: 1;
-}
-
-.task-title {
-    color: #edf1ef;
-    font-size: 16px;
-    line-height: 1.5;
-    overflow-wrap: anywhere;
-}
-
-.task.completed .task-title {
-    color: var(--muted-2);
-    text-decoration: line-through;
-}
-
-/* =========================
-   ACTIONS
-========================= */
-
-.task-actions {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.icon-btn {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
-    background: transparent;
-    color: #68736e;
-    font-size: 18px;
-    transition: background .15s ease, color .15s ease;
-}
-
-.icon-btn:hover {
-    background: rgba(255,255,255,.05);
-}
-
-.icon-btn.starred {
-    color: var(--yellow);
-}
-
-.icon-btn.delete:hover {
-    color: var(--danger);
-}
-
-/* =========================
-   COMPLETED DIVIDER
-========================= */
-
-.completed-divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 22px 0 4px;
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.completed-divider::before,
-.completed-divider::after {
-    content: "";
-    height: 1px;
-    flex: 1;
-    background: var(--border);
-}
-
-.completed-divider span {
-    white-space: nowrap;
-}
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty {
-    padding: 85px 20px;
-    text-align: center;
-}
-
-.empty-icon {
-    font-size: 30px;
-    margin-bottom: 14px;
-}
-
-.empty strong {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.empty span {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-/* =========================
-   COMPOSER
-========================= */
-
-.composer-wrap {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    padding:
-        20px 18px
-        calc(12px + env(safe-area-inset-bottom));
-    background:
-        linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(13,15,14,.82) 28%,
-            var(--bg) 58%
-        );
-    pointer-events: none;
-}
-
-.composer-inner {
-    width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
-    pointer-events: auto;
-}
-
-/*
-   صندوق الكتابة
-   بدون border مربع داخلي
-*/
-
-.composer {
-    width: 100%;
-    min-height: 56px;
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding: 7px 7px 7px 14px;
-
-    background: #1b1f1d;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 28px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.30);
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-.composer:focus-within {
-    border-color: rgba(25,197,139,.28);
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.34),
-        0 0 0 3px rgba(25,197,139,.05);
-}
-
-#taskInput {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-
-    min-height: 42px;
-    max-height: 120px;
-
-    resize: none;
-    overflow-y: auto;
-
-    border: 0;
-    outline: 0;
-
-    background: transparent !important;
-
-    color: var(--text);
-    font-size: 16px;
-    line-height: 1.45;
-
-    padding: 10px 2px;
-
-    appearance: none;
-    -webkit-appearance: none;
-    box-shadow: none !important;
-}
-
-#taskInput::placeholder {
-    color: #737d78;
-}
-
-#taskInput::-webkit-scrollbar {
-    width: 0;
-}
-
-/* =========================
-   SEND BUTTON
-========================= */
-
-.submit {
-    width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: #2a302d;
-    color: #737d78;
-
-    font-size: 21px;
-    font-weight: 700;
-
-    transition:
-        transform .15s ease,
-        background .18s ease,
-        color .18s ease,
-        box-shadow .18s ease;
-}
-
-.submit.active {
-    background: var(--green);
-    color: #06130e;
-    box-shadow: 0 6px 18px rgba(25,197,139,.22);
-}
-
-.submit:active {
-    transform: scale(.91);
-}
-
-/* سهم لفوق حقيقي */
-
-.submit span {
-    display: block;
-    line-height: 1;
-    transform: translateY(-1px);
-}
-
-/* =========================
-   HINT
-========================= */
-
-.hint {
-    text-align: center;
-    margin-top: 7px;
-    color: #56605b;
-    font-size: 10px;
-}
-
-/* =========================
-   COMPLETION BURST
-========================= */
-
-.completion-burst {
-    position: fixed;
-    width: 46px;
-    height: 46px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 100;
-}
-
-.completion-burst::before {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border: 2px solid rgba(25,197,139,.75);
-    border-radius: 50%;
-    animation: ring .48s ease-out forwards;
-}
-
-.completion-burst i {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
-    background: var(--color);
-    animation: particle .55s cubic-bezier(.2,.8,.3,1) forwards;
-}
-
-@keyframes ring {
-    from {
-        transform: scale(.5);
-        opacity: .9;
-    }
-    to {
-        transform: scale(1.8);
-        opacity: 0;
-    }
-}
-
-@keyframes particle {
-    from {
-        transform:
-            translate(-50%,-50%)
-            rotate(var(--angle))
-            translateY(-7px)
-            scale(.6);
-        opacity: 1;
-    }
-    to {
-        transform:
-            translate(-50%,-50%)
-            rotate(var(--angle))
-            translateY(calc(var(--distance) * -1))
-            scale(0);
-        opacity: 0;
-    }
-}
-
-/* =========================
-   INSTALL
-========================= */
-
-.install-overlay,
-.install-guide {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    padding: 16px;
-
-    background: rgba(0,0,0,.38);
-    backdrop-filter: blur(5px);
-
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-
-    transition: opacity .25s ease, visibility .25s ease;
-}
-
-.install-overlay.show,
-.install-guide.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.install-sheet {
-    width: 100%;
-    max-width: 620px;
-
-    display: flex;
-    align-items: center;
-    gap: 11px;
-
-    padding: 13px;
-
-    background: #191d1b;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-
-    box-shadow: 0 20px 60px rgba(0,0,0,.45);
-}
-
-.install-icon {
-    width: 42px;
-    height: 42px;
-    flex: 0 0 42px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 13px;
-    background: rgba(25,197,139,.10);
-}
-
-.install-copy {
-    min-width: 0;
-    flex: 1;
-}
-
-.install-title {
-    font-size: 14px;
-    font-weight: 800;
-}
-
-.install-subtitle {
-    margin-top: 3px;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.install-btn {
-    padding: 10px 13px;
-    border-radius: 12px;
-
-    background: var(--green);
-    color: #06130e;
-
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.install-close {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-
-    border-radius: 50%;
-    background: rgba(255,255,255,.05);
-    color: var(--muted);
-    font-size: 18px;
-}
-
-.install-guide {
-    align-items: center;
-}
-
-.guide-box {
-    width: 100%;
-    max-width: 380px;
-
-    padding: 23px;
-
-    background: #191d1b;
-    border: 1px solid var(--border);
-    border-radius: 22px;
-
-    text-align: center;
-}
-
-.guide-box h2 {
-    font-size: 19px;
-    margin-bottom: 9px;
-}
-
-.guide-box p {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.7;
-}
-
-.guide-close {
-    width: 100%;
-    margin-top: 18px;
-    padding: 11px;
-
-    border-radius: 13px;
-
-    background: rgba(255,255,255,.06);
-    color: var(--text);
-
-    font-size: 13px;
-}
-
-/* =========================
-   SMALL SCREENS
-========================= */
-
-@media (max-width: 420px) {
-
-    .header {
-        padding-left: 17px;
-        padding-right: 17px;
-    }
-
-    .tasks {
-        padding-left: 17px;
-        padding-right: 17px;
-    }
-
-    .greeting {
-        margin-top: 18px;
-    }
-
-    .task-title {
-        font-size: 15px;
-    }
-
-    .task-actions {
-        gap: 0;
-    }
-
-    .icon-btn {
-        width: 31px;
-        height: 31px;
-    }
-
-    .composer-wrap {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .hint {
-        display: none;
-    }
-}
-
-/* =========================
-   REDUCED MOTION
-========================= */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#0d0d0d">
+    <meta name="color-scheme" content="dark">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+    <meta name="apple-mobile-web-app-title" content="ناوي">
+
+    <meta
+        name="description"
+        content="ناوي — اكتب نيتك وأنجزها."
+    >
+
+    <title>ناوي — على إيه النهارده؟</title>
+
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+
+
+    <style>
+        /* =====================================================
+           NAWY — ONE FILE APP
+           Clean / Modern / Dark / Arabic
+        ===================================================== */
+
+        :root {
+            --bg: #0d0d0d;
+            --surface: #191919;
+            --surface-hover: #1d1d1d;
+
+            --text: #f4f4f4;
+            --text-soft: #e5e5e5;
+
+            --muted: #888;
+            --muted-soft: #666;
+
+            --green: #19c58b;
+            --green-soft: rgba(25, 197, 139, 0.10);
+
+            --yellow: #e7bd45;
+            --danger: #ff6666;
+
+            --line: rgba(255, 255, 255, 0.075);
+
+            --content-width: 760px;
+            --composer-max-width: 760px;
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100%;
+
+            background: var(--bg);
+
+            color-scheme: dark;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100dvh;
+
+            background: var(--bg);
+            color: var(--text);
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                "Noto Sans Arabic",
+                "Noto Kufi Arabic",
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            overflow: hidden;
+
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        button,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+            outline: 0;
+
+            cursor: pointer;
+
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        .app {
+            position: relative;
+
+            width: 100%;
+            height: 100dvh;
+            min-height: 100dvh;
+
+            display: flex;
+            flex-direction: column;
+
+            background:
+                radial-gradient(
+                    circle at 86% -12%,
+                    rgba(25, 197, 139, 0.07),
+                    transparent 28%
+                ),
+                var(--bg);
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            width: 100%;
+            max-width: var(--content-width);
+
+            margin: 0 auto;
+
+            padding:
+                calc(24px + env(safe-area-inset-top))
+                22px
+                10px;
+
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            line-height: 1;
+
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .greeting {
+            margin-top: 20px;
+        }
+
+        .greeting h1 {
+            color: var(--text);
+
+            font-size: clamp(24px, 5vw, 29px);
+            line-height: 1.25;
+
+            font-weight: 800;
+            letter-spacing: -0.9px;
+        }
+
+        .greeting p {
+            margin-top: 6px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 17px;
+        }
+
+        .progress-bar {
+            flex: 1;
+
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 99px;
+
+            background:
+                rgba(255, 255, 255, 0.065);
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+
+            background: var(--green);
+
+            border-radius: inherit;
+
+            transition:
+                width 0.35s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .progress-text {
+            min-width: max-content;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           TASKS
+        ===================================================== */
+
+        .tasks {
+            width: 100%;
+            max-width: var(--content-width);
+
+            margin: 0 auto;
+
+            flex: 1;
+            min-height: 0;
+
+            overflow-y: auto;
+
+            padding:
+                7px
+                22px
+                175px;
+
+            scrollbar-width: none;
+
+            overscroll-behavior: contain;
+        }
+
+        .tasks::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        /* =====================================================
+           SECTION LABEL
+        ===================================================== */
+
+        .section-label {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin:
+                17px 0
+                4px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .section-label:first-child {
+            margin-top: 5px;
+        }
+
+        .section-label::before,
+        .section-label::after {
+            content: "";
+
+            height: 1px;
+
+            flex: 1;
+
+            background: var(--line);
+        }
+
+        .section-label span {
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .task {
+            width: 100%;
+
+            min-height: 63px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 9px 2px;
+
+            border-bottom:
+                1px solid var(--line);
+
+            cursor: pointer;
+
+            transition:
+                opacity 0.2s ease,
+                transform 0.15s ease;
+        }
+
+        .task:last-child {
+            border-bottom-color: transparent;
+        }
+
+        .task:active {
+            transform: scale(.995);
+        }
+
+
+        /* =====================================================
+           CHECK
+        ===================================================== */
+
+        .check {
+            position: relative;
+
+            width: 24px;
+            height: 24px;
+
+            flex: 0 0 24px;
+
+            display: grid;
+            place-items: center;
+
+            border:
+                1.8px solid #68716d;
+
+            border-radius: 50%;
+
+            background: transparent;
+
+            transition:
+                background .18s ease,
+                border-color .18s ease,
+                transform .18s cubic-bezier(.18, .9, .3, 1.3),
+                box-shadow .18s ease;
+        }
+
+        .check::after {
+            content: "✓";
+
+            position: absolute;
+
+            color: var(--green);
+
+            font-size: 14px;
+            font-weight: 900;
+
+            line-height: 1;
+
+            opacity: 0;
+
+            transform: scale(.5);
+
+            transition:
+                opacity .16s ease,
+                transform .18s cubic-bezier(.18, .9, .3, 1.3);
+        }
+
+
+        /* Preview before click */
+
+        .task:not(.completed):hover .check {
+            background:
+                var(--green-soft);
+
+            border-color:
+                var(--green);
+
+            transform:
+                scale(1.07);
+
+            box-shadow:
+                0 0 0 4px
+                rgba(25, 197, 139, .055);
+        }
+
+        .task:not(.completed):hover .check::after {
+            opacity: .9;
+
+            transform:
+                scale(1);
+        }
+
+
+        /* Completed */
+
+        .task.completed .check {
+            background:
+                var(--green);
+
+            border-color:
+                var(--green);
+        }
+
+        .task.completed .check::after {
+            opacity: 1;
+
+            color: #07130f;
+
+            transform:
+                scale(1);
+        }
+
+
+        /* =====================================================
+           COMPLETION ANIMATION
+        ===================================================== */
+
+        .task.just-completed .check {
+            animation:
+                check-pop
+                .5s
+                cubic-bezier(.18, .9, .3, 1.3);
+        }
+
+        @keyframes check-pop {
+            0% {
+                transform: scale(1);
+                box-shadow:
+                    0 0 0 0
+                    rgba(25, 197, 139, .0);
+            }
+
+            40% {
+                transform: scale(1.28);
+                box-shadow:
+                    0 0 0 8px
+                    rgba(25, 197, 139, .11);
+            }
+
+            72% {
+                transform: scale(.94);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow:
+                    0 0 0 0
+                    rgba(25, 197, 139, .0);
+            }
+        }
+
+
+        /* =====================================================
+           TASK TEXT
+        ===================================================== */
+
+        .task-main {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .task-title {
+            color: #ededed;
+
+            font-size: 16px;
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
+
+            transition:
+                color .2s ease;
+        }
+
+        .task.completed .task-title {
+            color: var(--muted-soft);
+
+            text-decoration:
+                line-through;
+
+            text-decoration-thickness:
+                1px;
+        }
+
+
+        /* =====================================================
+           CARRIED TASK
+        ===================================================== */
+
+        .task-carried {
+            margin-top: 3px;
+
+            color: #555d59;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .task-actions {
+            display: flex;
+            align-items: center;
+
+            gap: 1px;
+
+            flex-shrink: 0;
+
+            opacity: .62;
+
+            transition:
+                opacity .15s ease;
+        }
+
+        .task:hover .task-actions {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: #737d78;
+
+            font-size: 18px;
+
+            transition:
+                background .15s ease,
+                color .15s ease,
+                transform .15s ease;
+        }
+
+        .icon-btn:hover {
+            background:
+                rgba(255,255,255,.05);
+
+            color: #afb7b3;
+        }
+
+        .icon-btn:active {
+            transform: scale(.92);
+        }
+
+        .icon-btn.starred {
+            color: var(--yellow);
+        }
+
+        .icon-btn.delete:hover {
+            color: var(--danger);
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+            padding:
+                82px 20px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            margin-bottom: 14px;
+
+            font-size: 29px;
+        }
+
+        .empty strong {
+            display: block;
+
+            color: var(--text-soft);
+
+            font-size: 16px;
+
+            margin-bottom: 5px;
+        }
+
+        .empty span {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           COMPOSER
+        ===================================================== */
+
+        .composer-area {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            z-index: 20;
+
+            padding:
+                14px
+                18px
+                calc(12px + env(safe-area-inset-bottom));
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--bg) 35%,
+                    rgba(13,13,13,.94) 70%,
+                    transparent
+                );
+
+            pointer-events: none;
+        }
+
+        .composer-shell {
+            width: 100%;
+            max-width: var(--composer-max-width);
+
+            margin: 0 auto;
+
+            pointer-events: auto;
+        }
+
+        .composer {
+            width: 100%;
+
+            min-height: 56px;
+
+            display: flex;
+            align-items: flex-end;
+
+            gap: 8px;
+
+            padding:
+                7px
+                7px
+                7px
+                15px;
+
+            background:
+                #1a1a1a;
+
+            border:
+                1px solid
+                rgba(255,255,255,.085);
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 9px 32px
+                rgba(0,0,0,.28);
+        }
+
+        .composer:focus-within {
+            border-color:
+                rgba(255,255,255,.12);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0,0,0,.32);
+        }
+
+        #taskInput {
+            flex: 1;
+
+            min-width: 0;
+
+            width: 100%;
+
+            min-height: 42px;
+            max-height: 120px;
+
+            margin: 0;
+            padding:
+                10px
+                0;
+
+            resize: none;
+
+            overflow-y: auto;
+
+            border: 0 !important;
+            outline: 0 !important;
+
+            background: transparent !important;
+
+            color: var(--text);
+
+            font-size: 16px;
+            line-height: 1.45;
+
+            box-shadow: none !important;
+
+            scrollbar-width: none;
+        }
+
+        #taskInput::-webkit-scrollbar {
+            width: 0;
+        }
+
+        #taskInput::placeholder {
+            color: #747a77;
+        }
+
+
+        /* =====================================================
+           SEND BUTTON
+        ===================================================== */
+
+        .submit {
+            width: 42px;
+            height: 42px;
+
+            flex: 0 0 42px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                #2c302e;
+
+            color:
+                #777d7a;
+
+            font-size: 22px;
+            font-weight: 700;
+
+            transition:
+                background .18s ease,
+                color .18s ease,
+                transform .14s ease,
+                box-shadow .18s ease;
+        }
+
+        .submit.active {
+            background:
+                var(--green);
+
+            color:
+                #06130e;
+
+            box-shadow:
+                0 5px 18px
+                rgba(25,197,139,.20);
+        }
+
+        .submit.active:hover {
+            transform: scale(1.04);
+        }
+
+        .submit.active:active {
+            transform: scale(.92);
+        }
+
+        .submit:disabled {
+            cursor: default;
+        }
+
+        .send-arrow {
+            display: block;
+
+            line-height: 1;
+
+            transform:
+                translateY(-1px);
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           COMPOSER HINT
+        ===================================================== */
+
+        .hint {
+            margin-top: 6px;
+
+            text-align: center;
+
+            color: #515a56;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           TOAST / UNDO
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+
+            bottom:
+                calc(86px + env(safe-area-inset-bottom));
+
+            z-index: 300;
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            min-width: 235px;
+
+            padding:
+                10px
+                11px
+                10px
+                14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 14px;
+
+            background:
+                #181818;
+
+            box-shadow:
+                0 18px 45px
+                rgba(0,0,0,.38);
+
+            transform:
+                translate(-50%, 16px);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transition:
+                opacity .2s ease,
+                transform .2s ease,
+                visibility .2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+        .toast-message {
+            color: #e7e7e7;
+
+            font-size: 12px;
+        }
+
+        .toast-undo {
+            padding:
+                5px
+                8px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(25,197,139,.10);
+
+            color:
+                var(--green);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           INSTALL
+        ===================================================== */
+
+        .install-overlay,
+        .install-guide {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            display: flex;
+
+            align-items: flex-end;
+            justify-content: center;
+
+            padding: 16px;
+
+            background:
+                rgba(0,0,0,.28);
+
+            backdrop-filter:
+                blur(3px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transition:
+                opacity .22s ease,
+                visibility .22s ease;
+        }
+
+        .install-overlay.show,
+        .install-guide.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .install-guide {
+            align-items: center;
+        }
+
+        .install-sheet,
+        .guide-box {
+            width: 100%;
+
+            max-width: 620px;
+
+            background:
+                #181818;
+
+            border:
+                1px solid
+                var(--border);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,.42);
+        }
+
+        .install-sheet {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 13px;
+
+            border-radius: 19px;
+        }
+
+        .install-icon {
+            width: 43px;
+            height: 43px;
+
+            flex: 0 0 43px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            background:
+                rgba(25,197,139,.10);
+        }
+
+        .install-copy {
+            min-width: 0;
+
+            flex: 1;
+        }
+
+        .install-title {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .install-subtitle {
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .install-btn {
+            flex-shrink: 0;
+
+            padding:
+                9px
+                13px;
+
+            border-radius: 11px;
+
+            background:
+                var(--green);
+
+            color:
+                #06130e;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .install-close {
+            width: 30px;
+            height: 30px;
+
+            flex: 0 0 30px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.05);
+
+            color:
+                #777;
+
+            font-size: 18px;
+        }
+
+        .guide-box {
+            max-width: 380px;
+
+            padding: 23px;
+
+            border-radius: 21px;
+
+            text-align: center;
+        }
+
+        .guide-box h2 {
+            font-size: 19px;
+
+            margin-bottom: 9px;
+        }
+
+        .guide-box p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .guide-close {
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 11px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.06);
+
+            color:
+                var(--text);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding-left: 17px;
+                padding-right: 17px;
+            }
+
+            .tasks {
+                padding-left: 17px;
+                padding-right: 17px;
+            }
+
+            .greeting h1 {
+                font-size: 23px;
+            }
+
+            .composer-area {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .hint {
+                display: none;
+            }
+
+            .task-title {
+                font-size: 15px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .header {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .tasks {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .greeting h1 {
+                font-size: 22px;
+            }
+
+            .task {
+                gap: 11px;
+            }
+
+            .task-actions {
+                gap: 0;
+            }
+
+            .icon-btn {
+                width: 31px;
+                height: 31px;
+            }
+
+            .composer-area {
+                padding-left: 9px;
+                padding-right: 9px;
+            }
+
+            .composer {
+                padding-left: 12px;
+            }
+
+            .submit {
+                width: 40px;
+                height: 40px;
+
+                flex-basis: 40px;
+            }
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
     <header class="header">
 
         <div class="brand">
-            <div class="brand-name">ناوي</div>
+            <div class="brand-name">
+                ناوي
+            </div>
         </div>
 
         <div class="greeting">
-            <h1>ناوي على إيه النهارده؟</h1>
-            <p id="currentDate">—</p>
+
+            <h1>
+                ناوي على إيه النهارده؟
+            </h1>
+
+            <p id="currentDate">
+                —
+            </p>
+
         </div>
 
         <div class="progress">
+
             <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
             </div>
-            <div class="progress-text" id="progressText">
+
+            <div
+                class="progress-text"
+                id="progressText"
+            >
                 ابدأ أول نية
             </div>
+
         </div>
 
     </header>
 
-    <main class="tasks" id="tasksContainer"></main>
 
-    <div class="composer-wrap">
+    <!-- =========================
+         TASKS
+    ========================== -->
 
-        <div class="composer-inner">
+    <main
+        class="tasks"
+        id="tasksContainer"
+        aria-live="polite"
+    ></main>
+
+
+    <!-- =========================
+         COMPOSER
+    ========================== -->
+
+    <div class="composer-area">
+
+        <div class="composer-shell">
 
             <div class="composer">
 
@@ -821,6 +1302,7 @@ button {
                     enterkeyhint="send"
                     autocomplete="off"
                     spellcheck="true"
+                    aria-label="نية جديدة"
                 ></textarea>
 
                 <button
@@ -828,8 +1310,14 @@ button {
                     class="submit"
                     id="submitBtn"
                     aria-label="إضافة نية"
+                    disabled
                 >
-                    <span>↑</span>
+                    <span
+                        class="send-arrow"
+                        aria-hidden="true"
+                    >
+                        ↑
+                    </span>
                 </button>
 
             </div>
@@ -842,9 +1330,40 @@ button {
 
     </div>
 
+
 </div>
 
-<!-- INSTALL -->
+
+<!-- =========================
+     DELETE TOAST
+========================== -->
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+>
+    <span
+        class="toast-message"
+        id="toastMessage"
+    >
+        تم حذف النية
+    </span>
+
+    <button
+        type="button"
+        class="toast-undo"
+        id="toastUndo"
+    >
+        تراجع
+    </button>
+</div>
+
+
+<!-- =========================
+     INSTALL
+========================== -->
 
 <div
     class="install-overlay"
@@ -853,16 +1372,20 @@ button {
 >
     <div class="install-sheet">
 
-        <div class="install-icon">📱</div>
+        <div class="install-icon">
+            📱
+        </div>
 
         <div class="install-copy">
+
             <div class="install-title">
-                ناوي؟ خليه معاك.
+                خلّي ناوي معاك
             </div>
 
             <div class="install-subtitle">
-                نزّل ناوي وابدأ يومك بنية.
+                ثبّت ناوي ووصل لنواياك بسرعة.
             </div>
+
         </div>
 
         <button
@@ -870,7 +1393,7 @@ button {
             class="install-btn"
             id="installBtn"
         >
-            نزّل ناوي
+            تثبيت
         </button>
 
         <button
@@ -885,7 +1408,10 @@ button {
     </div>
 </div>
 
-<!-- INSTALL GUIDE -->
+
+<!-- =========================
+     INSTALL GUIDE
+========================== -->
 
 <div
     class="install-guide"
@@ -894,12 +1420,14 @@ button {
 >
     <div class="guide-box">
 
-        <h2>خلّي ناوي معاك 📱</h2>
+        <h2>
+            خلّي ناوي معاك 📱
+        </h2>
 
         <p id="guideText">
-            من قائمة المتصفح اختار
-            <strong>إضافة إلى الشاشة الرئيسية</strong>
-            عشان تستخدم ناوي كتطبيق.
+            من قائمة المتصفح اختَر
+            إضافة إلى الشاشة الرئيسية
+            لاستخدام ناوي كتطبيق.
         </p>
 
         <button
@@ -913,846 +1441,1678 @@ button {
     </div>
 </div>
 
+
 <script>
-
 /* =========================================================
-   NAWY
-   نسخة بسيطة: كل المنطق هنا داخل index.html
+   NAWY — APPLICATION LOGIC
 ========================================================= */
 
-const STORAGE_KEY = "nawy_tasks_v5";
+(() => {
 
-const taskInput = document.getElementById("taskInput");
-const submitBtn = document.getElementById("submitBtn");
-const tasksContainer = document.getElementById("tasksContainer");
-const progressFill = document.getElementById("progressFill");
-const progressText = document.getElementById("progressText");
-const currentDate = document.getElementById("currentDate");
-
-const installOverlay = document.getElementById("installOverlay");
-const installBtn = document.getElementById("installBtn");
-const installClose = document.getElementById("installClose");
-
-const installGuide = document.getElementById("installGuide");
-const guideClose = document.getElementById("guideClose");
-
-let tasks = loadTasks();
-let deferredInstallPrompt = null;
-let audioContext = null;
+    "use strict";
 
 
-/* =========================================================
-   DATE
-========================================================= */
+    /* =====================================================
+       CONSTANTS
+    ===================================================== */
 
-currentDate.textContent =
-    new Intl.DateTimeFormat("ar-EG", {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    }).format(new Date());
+    const STORAGE_KEY =
+        "nawy_tasks_v6";
+
+    const OLD_KEYS = [
+        "nawy_tasks_v5",
+        "nawy_tasks_v4",
+        "nawy_tasks_v3"
+    ];
+
+    const DELETED_TTL =
+        5000;
 
 
-/* =========================================================
-   STORAGE
-========================================================= */
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-function loadTasks() {
+    const taskInput =
+        document.getElementById("taskInput");
 
-    try {
+    const submitBtn =
+        document.getElementById("submitBtn");
 
-        const current =
-            JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const tasksContainer =
+        document.getElementById("tasksContainer");
 
-        if (Array.isArray(current)) {
-            return current;
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const currentDate =
+        document.getElementById("currentDate");
+
+    const toast =
+        document.getElementById("toast");
+
+    const toastMessage =
+        document.getElementById("toastMessage");
+
+    const toastUndo =
+        document.getElementById("toastUndo");
+
+    const installOverlay =
+        document.getElementById("installOverlay");
+
+    const installBtn =
+        document.getElementById("installBtn");
+
+    const installClose =
+        document.getElementById("installClose");
+
+    const installGuide =
+        document.getElementById("installGuide");
+
+    const guideClose =
+        document.getElementById("guideClose");
+
+    const guideText =
+        document.getElementById("guideText");
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let tasks =
+        loadTasks();
+
+    let deletedTask = null;
+
+    let deleteTimer = null;
+
+    let deferredInstallPrompt = null;
+
+    let audioContext = null;
+
+
+    /* =====================================================
+       DATE HELPERS
+    ===================================================== */
+
+    function getDateKey(date = new Date()) {
+
+        const year =
+            date.getFullYear();
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+
+    const TODAY =
+        getDateKey();
+
+
+    function formatDate(date = new Date()) {
+
+        return new Intl.DateTimeFormat(
+            "ar-EG",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            }
+        ).format(date);
+    }
+
+
+    currentDate.textContent =
+        formatDate();
+
+
+    /* =====================================================
+       NORMALIZE TASKS
+    ===================================================== */
+
+    function normalizeTask(raw) {
+
+        if (
+            !raw ||
+            typeof raw !== "object"
+        ) {
+            return null;
         }
 
-        const old =
-            JSON.parse(localStorage.getItem("nawy_tasks_v4"));
+        const text =
+            String(
+                raw.text || ""
+            ).trim();
 
-        if (Array.isArray(old)) {
-            return old;
+        if (!text) {
+            return null;
         }
 
-        const older =
-            JSON.parse(localStorage.getItem("nawy_tasks_v3"));
 
-        return Array.isArray(older) ? older : [];
+        const createdAt =
+            raw.createdAt ||
+            new Date().toISOString();
 
-    } catch {
+
+        return {
+
+            id:
+                String(
+                    raw.id ||
+                    `${Date.now()}-${Math.random()}`
+                ),
+
+            text,
+
+            completed:
+                Boolean(
+                    raw.completed
+                ),
+
+            starred:
+                Boolean(
+                    raw.starred
+                ),
+
+            createdAt,
+
+            /*
+               taskDay هو يوم إنشاء النية.
+               القديم بدون taskDay يأخذ يوم createdAt.
+            */
+
+            taskDay:
+                raw.taskDay ||
+                getDateKey(
+                    new Date(createdAt)
+                )
+        };
+    }
+
+
+    function normalizeTaskList(list) {
+
+        return list
+            .map(normalizeTask)
+            .filter(Boolean);
+    }
+
+
+    /* =====================================================
+       LOAD
+    ===================================================== */
+
+    function loadTasks() {
+
+        try {
+
+            const current =
+                JSON.parse(
+                    localStorage.getItem(
+                        STORAGE_KEY
+                    )
+                );
+
+
+            if (
+                Array.isArray(current)
+            ) {
+
+                return normalizeTaskList(
+                    current
+                );
+            }
+
+
+            for (
+                const key
+                of OLD_KEYS
+            ) {
+
+                const old =
+                    JSON.parse(
+                        localStorage.getItem(
+                            key
+                        )
+                    );
+
+
+                if (
+                    Array.isArray(old)
+                ) {
+
+                    const migrated =
+                        normalizeTaskList(
+                            old
+                        );
+
+
+                    /*
+                       نحفظ النسخة المطورة
+                    */
+
+                    localStorage.setItem(
+                        STORAGE_KEY,
+                        JSON.stringify(
+                            migrated
+                        )
+                    );
+
+
+                    return migrated;
+                }
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "NAWY storage:",
+                error
+            );
+        }
+
 
         return [];
     }
-}
 
-function saveTasks() {
 
-    try {
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(tasks)
-        );
-    } catch (error) {
-        console.warn("Nawy storage error:", error);
+    /* =====================================================
+       SAVE
+    ===================================================== */
+
+    function save() {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(tasks)
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "NAWY save:",
+                error
+            );
+        }
     }
-}
 
 
-/* =========================================================
-   AUDIO
-   صوت خفيف فقط
-========================================================= */
+    /* =====================================================
+       AUDIO
+       لا صوت عند الإضافة.
+       Chime فقط عند الإنجاز.
+    ===================================================== */
 
-function getAudioContext() {
+    function getAudioContext() {
 
-    try {
-
-        if (!audioContext) {
+        try {
 
             const AudioContext =
                 window.AudioContext ||
                 window.webkitAudioContext;
 
+
             if (!AudioContext) {
                 return null;
             }
 
-            audioContext = new AudioContext();
+
+            if (!audioContext) {
+
+                audioContext =
+                    new AudioContext();
+
+            }
+
+
+            if (
+                audioContext.state ===
+                "suspended"
+            ) {
+
+                audioContext
+                    .resume()
+                    .catch(() => {});
+            }
+
+
+            return audioContext;
+
+        } catch {
+
+            return null;
         }
-
-        if (audioContext.state === "suspended") {
-            audioContext.resume();
-        }
-
-        return audioContext;
-
-    } catch {
-
-        return null;
     }
-}
 
 
-/* صوت إضافة النية */
+    function playCompletionChime() {
 
-function playAddSound() {
+        const ctx =
+            getAudioContext();
 
-    const ctx = getAudioContext();
-
-    if (!ctx) return;
-
-    try {
-
-        const now = ctx.currentTime;
-
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = "sine";
-
-        osc.frequency.setValueAtTime(520, now);
-        osc.frequency.exponentialRampToValueAtTime(
-            650,
-            now + .07
-        );
-
-        gain.gain.setValueAtTime(.0001, now);
-        gain.gain.exponentialRampToValueAtTime(
-            .025,
-            now + .01
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            .0001,
-            now + .09
-        );
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(now);
-        osc.stop(now + .1);
-
-    } catch {}
-}
+        if (!ctx) {
+            return;
+        }
 
 
-/* صوت إنجاز — Chime خفيف */
+        try {
 
-function playCompletionSound() {
+            const now =
+                ctx.currentTime;
 
-    const ctx = getAudioContext();
 
-    if (!ctx) return;
+            /*
+               Chime قصير وناعم.
+            */
 
-    try {
+            const notes = [
+                {
+                    frequency: 783.99,
+                    offset: 0,
+                    duration: 0.16,
+                    volume: 0.035
+                },
+                {
+                    frequency: 987.77,
+                    offset: 0.065,
+                    duration: 0.24,
+                    volume: 0.042
+                }
+            ];
 
-        const now = ctx.currentTime;
 
-        const notes = [
-            { freq: 784, time: 0, volume: .045 },
-            { freq: 988, time: .075, volume: .038 },
-            { freq: 1175, time: .15, volume: .028 }
-        ];
+            notes.forEach(
+                note => {
 
-        notes.forEach(note => {
+                    const osc =
+                        ctx.createOscillator();
 
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+                    const gain =
+                        ctx.createGain();
 
-            osc.type = "sine";
 
-            osc.frequency.setValueAtTime(
-                note.freq,
-                now + note.time
+                    const start =
+                        now +
+                        note.offset;
+
+                    const end =
+                        start +
+                        note.duration;
+
+
+                    osc.type =
+                        "sine";
+
+
+                    osc.frequency.setValueAtTime(
+                        note.frequency,
+                        start
+                    );
+
+
+                    gain.gain.setValueAtTime(
+                        0.0001,
+                        start
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        note.volume,
+                        start + 0.012
+                    );
+
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.0001,
+                        end
+                    );
+
+
+                    osc.connect(gain);
+
+                    gain.connect(
+                        ctx.destination
+                    );
+
+
+                    osc.start(start);
+
+                    osc.stop(
+                        end + 0.015
+                    );
+                }
             );
 
-            gain.gain.setValueAtTime(
-                .0001,
-                now + note.time
+        } catch (error) {
+
+            console.warn(
+                "NAWY audio:",
+                error
             );
-
-            gain.gain.exponentialRampToValueAtTime(
-                note.volume,
-                now + note.time + .008
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                .0001,
-                now + note.time + .24
-            );
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(now + note.time);
-            osc.stop(now + note.time + .25);
-
-        });
-
-    } catch {}
-}
+        }
+    }
 
 
-/* =========================================================
-   TASKS
-========================================================= */
+    /* =====================================================
+       ADD TASK
+       اسم الدالة محفوظ كما هو
+    ===================================================== */
 
-function addTask(text) {
+    function addTask(text) {
 
-    const clean = text.trim();
-
-    if (!clean) return;
-
-    const task = {
-
-        id:
-            Date.now().toString() +
-            Math.random().toString(36).slice(2, 7),
-
-        text: clean,
-
-        completed: false,
-
-        starred: false,
-
-        createdAt: new Date().toISOString()
-    };
-
-    tasks.unshift(task);
-
-    saveTasks();
-
-    playAddSound();
-
-    render();
-}
+        const clean =
+            String(text || "")
+                .trim();
 
 
-function toggleTask(id) {
+        if (!clean) {
+            return false;
+        }
 
-    const task =
-        tasks.find(item => item.id === id);
 
-    if (!task) return;
+        const task = {
 
-    task.completed = !task.completed;
+            id:
+                `${Date.now()}-${Math.random()
+                    .toString(36)
+                    .slice(2, 7)}`,
 
-    if (task.completed) {
+            text:
+                clean.slice(0, 500),
 
-        playCompletionSound();
+            completed:
+                false,
+
+            starred:
+                false,
+
+            createdAt:
+                new Date().toISOString(),
+
+            taskDay:
+                getDateKey()
+        };
+
+
+        tasks.unshift(task);
+
+        save();
 
         render();
 
-        showCompletionFeedback(id);
+        return true;
+    }
 
-    } else {
+
+    /* =====================================================
+       TOGGLE TASK
+    ===================================================== */
+
+    function toggleTask(id) {
+
+        const task =
+            tasks.find(
+                item =>
+                    String(item.id) ===
+                    String(id)
+            );
+
+
+        if (!task) {
+            return;
+        }
+
+
+        task.completed =
+            !task.completed;
+
+
+        save();
+
+        render();
+
+
+        if (
+            task.completed
+        ) {
+
+            /*
+               الصوت + التأثير بعد الرسم
+            */
+
+            playCompletionChime();
+
+            requestAnimationFrame(
+                () => {
+
+                    showCompletionFeedback(
+                        task.id
+                    );
+
+                }
+            );
+        }
+    }
+
+
+    /* =====================================================
+       STAR
+    ===================================================== */
+
+    function toggleStar(id) {
+
+        const task =
+            tasks.find(
+                item =>
+                    String(item.id) ===
+                    String(id)
+            );
+
+
+        if (!task) {
+            return;
+        }
+
+
+        task.starred =
+            !task.starred;
+
+
+        save();
 
         render();
     }
 
-    saveTasks();
-}
+
+    /* =====================================================
+       DELETE + UNDO
+    ===================================================== */
+
+    function deleteTask(id) {
+
+        const index =
+            tasks.findIndex(
+                item =>
+                    String(item.id) ===
+                    String(id)
+            );
 
 
-function toggleStar(id) {
-
-    const task =
-        tasks.find(item => item.id === id);
-
-    if (!task) return;
-
-    task.starred = !task.starred;
-
-    saveTasks();
-
-    render();
-}
+        if (index === -1) {
+            return;
+        }
 
 
-function deleteTask(id) {
+        deletedTask = {
+            task:
+                tasks[index],
 
-    tasks =
-        tasks.filter(item => item.id !== id);
-
-    saveTasks();
-
-    render();
-}
+            index
+        };
 
 
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function updateProgress() {
-
-    const total = tasks.length;
-
-    const done =
-        tasks.filter(task => task.completed).length;
-
-    if (!total) {
-
-        progressFill.style.width = "0%";
-
-        progressText.textContent =
-            "ابدأ أول نية";
-
-        return;
-    }
-
-    const percentage =
-        Math.round((done / total) * 100);
-
-    progressFill.style.width =
-        percentage + "%";
-
-    if (percentage === 100) {
-
-        progressText.textContent =
-            "ما شاء الله! كملت كل نواياك 🎉";
-
-    } else {
-
-        progressText.textContent =
-            `${done} من ${total} أُنجزت`;
-    }
-}
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render() {
-
-    updateProgress();
-
-    tasksContainer.innerHTML = "";
-
-    if (!tasks.length) {
-
-        tasksContainer.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">🌱</div>
-                <strong>مفيش نوايا هنا</strong>
-                <span>اكتب أول حاجة ناوي تعملها.</span>
-            </div>
-        `;
-
-        return;
-    }
-
-    const activeTasks =
-        tasks
-        .filter(task => !task.completed)
-        .sort((a, b) =>
-            Number(b.starred) - Number(a.starred)
+        tasks.splice(
+            index,
+            1
         );
 
-    const completedTasks =
-        tasks.filter(task => task.completed);
 
-    activeTasks.forEach(task => {
+        save();
 
-        tasksContainer.appendChild(
-            createTaskElement(task)
+        render();
+
+        showToast(
+            "تم حذف النية"
         );
 
-    });
+
+        clearTimeout(
+            deleteTimer
+        );
 
 
-    if (completedTasks.length) {
+        deleteTimer =
+            setTimeout(
+                () => {
+
+                    deletedTask =
+                        null;
+
+                    hideToast();
+
+                },
+                DELETED_TTL
+            );
+    }
+
+
+    function undoDelete() {
+
+        if (!deletedTask) {
+            return;
+        }
+
+
+        const {
+            task,
+            index
+        } = deletedTask;
+
+
+        tasks.splice(
+            Math.min(
+                index,
+                tasks.length
+            ),
+            0,
+            task
+        );
+
+
+        deletedTask =
+            null;
+
+
+        clearTimeout(
+            deleteTimer
+        );
+
+
+        save();
+
+        render();
+
+        hideToast();
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(message) {
+
+        toastMessage.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+    }
+
+
+    function hideToast() {
+
+        toast.classList.remove(
+            "show"
+        );
+    }
+
+
+    toastUndo.addEventListener(
+        "click",
+        undoDelete
+    );
+
+
+    /* =====================================================
+       DAILY PROGRESS
+       فقط مهام اليوم تدخل في النسبة.
+       المهام القديمة خارج النسبة.
+    ===================================================== */
+
+    function updateProgress() {
+
+        const todayTasks =
+            tasks.filter(
+                task =>
+                    task.taskDay ===
+                    TODAY
+            );
+
+
+        const total =
+            todayTasks.length;
+
+
+        const done =
+            todayTasks.filter(
+                task =>
+                    task.completed
+            ).length;
+
+
+        if (!total) {
+
+            progressFill.style.width =
+                "0%";
+
+            progressText.textContent =
+                "ابدأ أول نية";
+
+            return;
+        }
+
+
+        const percentage =
+            Math.round(
+                (done / total) * 100
+            );
+
+
+        progressFill.style.width =
+            `${percentage}%`;
+
+
+        if (
+            percentage === 100
+        ) {
+
+            progressText.textContent =
+                `${done} من ${total} · 100%`;
+
+        } else {
+
+            progressText.textContent =
+                `${done} من ${total} · ${percentage}%`;
+        }
+    }
+
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    function sortActive(a, b) {
+
+        if (
+            a.starred !==
+            b.starred
+        ) {
+
+            return (
+                Number(b.starred) -
+                Number(a.starred)
+            );
+        }
+
+
+        return (
+            new Date(b.createdAt) -
+            new Date(a.createdAt)
+        );
+    }
+
+
+    function sortCompleted(a, b) {
+
+        return (
+            new Date(b.createdAt) -
+            new Date(a.createdAt)
+        );
+    }
+
+
+    /* =====================================================
+       RENDER
+    ===================================================== */
+
+    function render() {
+
+        updateProgress();
+
+        tasksContainer.innerHTML =
+            "";
+
+
+        const todayActive =
+            tasks
+                .filter(
+                    task =>
+                        !task.completed &&
+                        task.taskDay === TODAY
+                )
+                .sort(sortActive);
+
+
+        const carriedActive =
+            tasks
+                .filter(
+                    task =>
+                        !task.completed &&
+                        task.taskDay !== TODAY
+                )
+                .sort(sortActive);
+
+
+        const completed =
+            tasks
+                .filter(
+                    task =>
+                        task.completed
+                )
+                .sort(sortCompleted);
+
+
+        let renderedSomething =
+            false;
+
+
+        /*
+           نوايا اليوم
+        */
+
+        if (
+            todayActive.length
+        ) {
+
+            appendSectionTitle(
+                "نوايا اليوم"
+            );
+
+            todayActive.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+            renderedSomething =
+                true;
+        }
+
+
+        /*
+           النوايا المستمرة من أيام سابقة
+           لا تدخل في النسبة.
+        */
+
+        if (
+            carriedActive.length
+        ) {
+
+            appendSectionTitle(
+                "مستمرة من قبل"
+            );
+
+
+            carriedActive.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(
+                            task,
+                            true
+                        )
+                    );
+
+                }
+            );
+
+            renderedSomething =
+                true;
+        }
+
+
+        /*
+           النوايا المحققة
+        */
+
+        if (
+            completed.length
+        ) {
+
+            appendSectionTitle(
+                "النوايا المحققة"
+            );
+
+
+            completed.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+
+            renderedSomething =
+                true;
+        }
+
+
+        if (
+            !renderedSomething
+        ) {
+
+            tasksContainer.innerHTML = `
+                <div class="empty">
+                    <div class="empty-icon">
+                        🌱
+                    </div>
+
+                    <strong>
+                        مفيش نوايا هنا
+                    </strong>
+
+                    <span>
+                        اكتب أول حاجة ناوي تعملها النهارده.
+                    </span>
+                </div>
+            `;
+        }
+    }
+
+
+    /* =====================================================
+       SECTION TITLE
+    ===================================================== */
+
+    function appendSectionTitle(label) {
 
         const divider =
-            document.createElement("div");
-
-        divider.className =
-            "completed-divider";
-
-        divider.innerHTML =
-            `<span>النوايا المحققة (${completedTasks.length})</span>`;
-
-        tasksContainer.appendChild(divider);
-
-
-        completedTasks.forEach(task => {
-
-            tasksContainer.appendChild(
-                createTaskElement(task)
+            document.createElement(
+                "div"
             );
 
-        });
+        divider.className =
+            "section-label";
+
+        divider.innerHTML =
+            `<span>${label}</span>`;
+
+        tasksContainer.appendChild(
+            divider
+        );
     }
-}
 
 
-/* =========================================================
-   CREATE TASK
-========================================================= */
+    /* =====================================================
+       TASK ELEMENT
+    ===================================================== */
 
-function createTaskElement(task) {
-
-    const element =
-        document.createElement("div");
-
-    element.className =
-        "task" +
-        (task.completed ? " completed" : "");
-
-    element.dataset.taskId =
-        task.id;
-
-    element.innerHTML = `
-
-        <div class="check" aria-hidden="true"></div>
-
-        <div class="task-main">
-            <div class="task-title">
-                ${escapeHtml(task.text)}
-            </div>
-        </div>
-
-        <div class="task-actions">
-
-            <button
-                type="button"
-                class="icon-btn ${task.starred ? "starred" : ""}"
-                data-action="star"
-                aria-label="تمييز"
-            >
-                ${task.starred ? "★" : "☆"}
-            </button>
-
-            <button
-                type="button"
-                class="icon-btn delete"
-                data-action="delete"
-                aria-label="حذف"
-            >
-                ×
-            </button>
-
-        </div>
-    `;
-
-    return element;
-}
-
-
-/* =========================================================
-   SECURITY
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value).replace(
-        /[&<>"']/g,
-        character => ({
-
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-
-        })[character]
-    );
-}
-
-
-/* =========================================================
-   COMPLETION ANIMATION
-========================================================= */
-
-function showCompletionFeedback(id) {
-
-    if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
+    function createTaskElement(
+        task,
+        isCarried = false
     ) {
-        return;
-    }
 
-    const taskElement =
-        document.querySelector(
-            `[data-task-id="${CSS.escape(id)}"]`
+        const element =
+            document.createElement(
+                "article"
+            );
+
+
+        element.className =
+            `task ${
+                task.completed
+                    ? "completed"
+                    : ""
+            }`;
+
+
+        element.dataset.taskId =
+            task.id;
+
+
+        const check =
+            document.createElement(
+                "div"
+            );
+
+        check.className =
+            "check";
+
+        check.setAttribute(
+            "aria-hidden",
+            "true"
         );
 
-    if (!taskElement) return;
 
-    taskElement.classList.add("just-completed");
+        const main =
+            document.createElement(
+                "div"
+            );
 
-    setTimeout(() => {
+        main.className =
+            "task-main";
 
-        taskElement.classList.remove(
+
+        const title =
+            document.createElement(
+                "div"
+            );
+
+        title.className =
+            "task-title";
+
+        title.textContent =
+            task.text;
+
+
+        main.appendChild(
+            title
+        );
+
+
+        if (
+            isCarried &&
+            !task.completed
+        ) {
+
+            const carried =
+                document.createElement(
+                    "div"
+                );
+
+            carried.className =
+                "task-carried";
+
+            carried.textContent =
+                "من يوم سابق";
+
+            main.appendChild(
+                carried
+            );
+        }
+
+
+        const actions =
+            document.createElement(
+                "div"
+            );
+
+        actions.className =
+            "task-actions";
+
+
+        const star =
+            document.createElement(
+                "button"
+            );
+
+        star.type =
+            "button";
+
+        star.className =
+            `icon-btn ${
+                task.starred
+                    ? "starred"
+                    : ""
+            }`;
+
+        star.dataset.action =
+            "star";
+
+        star.setAttribute(
+            "aria-label",
+            task.starred
+                ? "إلغاء التمييز"
+                : "تمييز النية"
+        );
+
+        star.textContent =
+            task.starred
+                ? "★"
+                : "☆";
+
+
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.type =
+            "button";
+
+        remove.className =
+            "icon-btn delete";
+
+        remove.dataset.action =
+            "delete";
+
+        remove.setAttribute(
+            "aria-label",
+            "حذف النية"
+        );
+
+        remove.textContent =
+            "×";
+
+
+        actions.append(
+            star,
+            remove
+        );
+
+
+        element.append(
+            check,
+            main,
+            actions
+        );
+
+
+        return element;
+    }
+
+
+    /* =====================================================
+       COMPLETION FEEDBACK
+    ===================================================== */
+
+    function showCompletionFeedback(id) {
+
+        const taskElement =
+            tasksContainer.querySelector(
+                `[data-task-id="${CSS.escape(String(id))}"]`
+            );
+
+
+        if (!taskElement) {
+            return;
+        }
+
+
+        taskElement.classList.add(
             "just-completed"
         );
 
-    }, 500);
 
-    const check =
-        taskElement.querySelector(".check");
+        setTimeout(
+            () => {
 
-    if (!check) return;
+                taskElement.classList.remove(
+                    "just-completed"
+                );
 
-    const rect =
-        check.getBoundingClientRect();
-
-    const burst =
-        document.createElement("div");
-
-    burst.className =
-        "completion-burst";
-
-    burst.style.left =
-        (rect.left + rect.width / 2) + "px";
-
-    burst.style.top =
-        (rect.top + rect.height / 2) + "px";
-
-    const particles = 10;
-
-    const fragment =
-        document.createDocumentFragment();
-
-    const colors = [
-        "#19c58b",
-        "#f3c84b",
-        "#f3f5f4"
-    ];
-
-    for (let i = 0; i < particles; i++) {
-
-        const particle =
-            document.createElement("i");
-
-        particle.style.setProperty(
-            "--angle",
-            `${i * (360 / particles)}deg`
+            },
+            600
         );
 
-        particle.style.setProperty(
-            "--distance",
-            `${28 + (i % 3) * 7}px`
+
+        /*
+           لا نعرض burst إذا المستخدم يقلل الحركة.
+        */
+
+        if (
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches
+        ) {
+            return;
+        }
+
+
+        const check =
+            taskElement.querySelector(
+                ".check"
+            );
+
+
+        if (!check) {
+            return;
+        }
+
+
+        const rect =
+            check.getBoundingClientRect();
+
+
+        const burst =
+            document.createElement(
+                "div"
+            );
+
+
+        burst.className =
+            "completion-burst";
+
+
+        burst.style.left =
+            `${rect.left + rect.width / 2}px`;
+
+
+        burst.style.top =
+            `${rect.top + rect.height / 2}px`;
+
+
+        const colors = [
+            "#19c58b",
+            "#f4c84d",
+            "#f4f5f4"
+        ];
+
+
+        for (
+            let i = 0;
+            i < 10;
+            i++
+        ) {
+
+            const dot =
+                document.createElement(
+                    "span"
+                );
+
+
+            dot.style.setProperty(
+                "--angle",
+                `${i * 36}deg`
+            );
+
+
+            dot.style.setProperty(
+                "--distance",
+                `${25 + (i % 3) * 7}px`
+            );
+
+
+            dot.style.setProperty(
+                "--size",
+                `${4 + (i % 2)}px`
+            );
+
+
+            dot.style.setProperty(
+                "--color",
+                colors[
+                    i % colors.length
+                ]
+            );
+
+
+            burst.appendChild(
+                dot
+            );
+        }
+
+
+        document.body.appendChild(
+            burst
         );
 
-        particle.style.setProperty(
-            "--size",
-            `${4 + (i % 2)}px`
-        );
 
-        particle.style.setProperty(
-            "--color",
-            colors[i % colors.length]
-        );
+        setTimeout(
+            () => {
 
-        fragment.appendChild(particle);
+                burst.remove();
+
+            },
+            600
+        );
     }
 
-    burst.appendChild(fragment);
 
-    document.body.appendChild(burst);
+    /* =====================================================
+       INPUT
+    ===================================================== */
 
-    setTimeout(() => {
-        burst.remove();
-    }, 600);
-}
+    function updateInput() {
+
+        taskInput.style.height =
+            "auto";
 
 
-/* =========================================================
-   TASK EVENTS
-========================================================= */
+        taskInput.style.height =
+            Math.min(
+                taskInput.scrollHeight,
+                120
+            ) + "px";
 
-tasksContainer.addEventListener(
-    "click",
-    event => {
 
-        const button =
-            event.target.closest(".icon-btn");
+        const hasText =
+            taskInput.value.trim()
+                .length > 0;
 
-        if (button) {
+
+        submitBtn.disabled =
+            !hasText;
+
+
+        submitBtn.classList.toggle(
+            "active",
+            hasText
+        );
+    }
+
+
+    taskInput.addEventListener(
+        "input",
+        updateInput
+    );
+
+
+    taskInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                handleSend();
+            }
+        }
+    );
+
+
+    submitBtn.addEventListener(
+        "click",
+        handleSend
+    );
+
+
+    function handleSend() {
+
+        const text =
+            taskInput.value.trim();
+
+
+        if (!text) {
+            return;
+        }
+
+
+        if (
+            addTask(text)
+        ) {
+
+            taskInput.value =
+                "";
+
+            taskInput.style.height =
+                "42px";
+
+            updateInput();
+
+            taskInput.focus();
+
+            tasksContainer.scrollTop =
+                0;
+        }
+    }
+
+
+    /* =====================================================
+       TASK CLICK
+    ===================================================== */
+
+    tasksContainer.addEventListener(
+        "click",
+        event => {
+
+            const actionButton =
+                event.target.closest(
+                    ".icon-btn"
+                );
+
+
+            if (actionButton) {
+
+                const taskElement =
+                    actionButton.closest(
+                        ".task"
+                    );
+
+
+                if (!taskElement) {
+                    return;
+                }
+
+
+                const id =
+                    taskElement.dataset.taskId;
+
+
+                const action =
+                    actionButton.dataset.action;
+
+
+                if (
+                    action === "star"
+                ) {
+
+                    toggleStar(id);
+
+                    return;
+                }
+
+
+                if (
+                    action === "delete"
+                ) {
+
+                    deleteTask(id);
+
+                    return;
+                }
+            }
+
 
             const taskElement =
-                button.closest(".task");
+                event.target.closest(
+                    ".task"
+                );
 
-            if (!taskElement) return;
+
+            if (!taskElement) {
+                return;
+            }
+
 
             const id =
                 taskElement.dataset.taskId;
 
-            const action =
-                button.dataset.action;
 
-            if (action === "star") {
-
-                toggleStar(id);
-
-            }
-
-            if (action === "delete") {
-
-                if (
-                    confirm(
-                        "هل أنت متأكد من حذف هذه النية؟"
-                    )
-                ) {
-
-                    deleteTask(id);
-                }
-            }
-
-            return;
+            toggleTask(id);
         }
-
-
-        const taskElement =
-            event.target.closest(".task");
-
-        if (!taskElement) return;
-
-        toggleTask(
-            taskElement.dataset.taskId
-        );
-    }
-);
-
-
-/* =========================================================
-   COMPOSER
-========================================================= */
-
-function resizeInput() {
-
-    taskInput.style.height = "auto";
-
-    taskInput.style.height =
-        Math.min(
-            taskInput.scrollHeight,
-            120
-        ) + "px";
-}
-
-
-function updateSendButton() {
-
-    submitBtn.classList.toggle(
-        "active",
-        taskInput.value.trim().length > 0
     );
-}
 
 
-taskInput.addEventListener(
-    "input",
-    () => {
+    /* =====================================================
+       INSTALL
+    ===================================================== */
 
-        resizeInput();
-
-        updateSendButton();
-    }
-);
-
-
-taskInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+    window.addEventListener(
+        "beforeinstallprompt",
+        event => {
 
             event.preventDefault();
 
-            handleSend();
-        }
-    }
-);
+            deferredInstallPrompt =
+                event;
 
 
-submitBtn.addEventListener(
-    "click",
-    handleSend
-);
+            setTimeout(
+                () => {
 
+                    if (
+                        deferredInstallPrompt &&
+                        !isStandalone()
+                    ) {
 
-function handleSend() {
+                        installOverlay.classList.add(
+                            "show"
+                        );
 
-    const text =
-        taskInput.value.trim();
+                        installOverlay.setAttribute(
+                            "aria-hidden",
+                            "false"
+                        );
+                    }
 
-    if (!text) {
-
-        taskInput.focus();
-
-        return;
-    }
-
-    addTask(text);
-
-    taskInput.value = "";
-
-    taskInput.style.height = "42px";
-
-    updateSendButton();
-
-    taskInput.focus();
-}
-
-
-/* =========================================================
-   PWA INSTALL
-========================================================= */
-
-window.addEventListener(
-    "beforeinstallprompt",
-    event => {
-
-        event.preventDefault();
-
-        deferredInstallPrompt = event;
-
-        installOverlay.classList.add("show");
-
-        installOverlay.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-    }
-);
-
-
-installBtn.addEventListener(
-    "click",
-    async () => {
-
-        if (!deferredInstallPrompt) {
-
-            installOverlay.classList.remove("show");
-
-            installGuide.classList.add("show");
-
-            return;
-        }
-
-        deferredInstallPrompt.prompt();
-
-        try {
-
-            await deferredInstallPrompt.userChoice;
-
-        } catch {}
-
-        deferredInstallPrompt = null;
-
-        installOverlay.classList.remove("show");
-    }
-);
-
-
-installClose.addEventListener(
-    "click",
-    () => {
-
-        installOverlay.classList.remove("show");
-
-        installOverlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-    }
-);
-
-
-guideClose.addEventListener(
-    "click",
-    () => {
-
-        installGuide.classList.remove("show");
-
-        installGuide.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-    }
-);
-
-
-/* =========================================================
-   SERVICE WORKER
-========================================================= */
-
-if ("serviceWorker" in navigator) {
-
-    window.addEventListener(
-        "load",
-        () => {
-
-            navigator.serviceWorker
-                .register("./sw.js")
-                .catch(error => {
-                    console.warn(
-                        "Nawy SW error:",
-                        error
-                    );
-                });
+                },
+                8000
+            );
         }
     );
-}
 
 
-/* =========================================================
-   START
-========================================================= */
+    installBtn.addEventListener(
+        "click",
+        async () => {
 
-render();
+            if (
+                deferredInstallPrompt
+            ) {
 
-updateSendButton();
+                try {
 
+                    deferredInstallPrompt.prompt();
+
+                    await deferredInstallPrompt.userChoice;
+
+                } catch {}
+
+                deferredInstallPrompt =
+                    null;
+
+                installOverlay.classList.remove(
+                    "show"
+                );
+
+                installOverlay.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                return;
+            }
+
+
+            installOverlay.classList.remove(
+                "show"
+            );
+
+            installGuide.classList.add(
+                "show"
+            );
+
+            installGuide.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+
+            if (
+                /iphone|ipad|ipod/i.test(
+                    navigator.userAgent
+                )
+            ) {
+
+                guideText.textContent =
+                    "في Safari اضغط مشاركة ثم اختَر إضافة إلى الشاشة الرئيسية.";
+
+            } else {
+
+                guideText.textContent =
+                    "من قائمة المتصفح اختَر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية.";
+            }
+        }
+    );
+
+
+    installClose.addEventListener(
+        "click",
+        () => {
+
+            installOverlay.classList.remove(
+                "show"
+            );
+
+            installOverlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
+    );
+
+
+    guideClose.addEventListener(
+        "click",
+        () => {
+
+            installGuide.classList.remove(
+                "show"
+            );
+
+            installGuide.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
+    );
+
+
+    function isStandalone() {
+
+        return (
+            window.matchMedia(
+                "(display-mode: standalone)"
+            ).matches ||
+            window.navigator.standalone === true
+        );
+    }
+
+
+    /* =====================================================
+       SERVICE WORKER
+    ===================================================== */
+
+    if (
+        "serviceWorker" in navigator
+    ) {
+
+        window.addEventListener(
+            "load",
+            () => {
+
+                navigator.serviceWorker
+                    .register(
+                        "./sw.js",
+                        {
+                            scope: "./"
+                        }
+                    )
+                    .catch(() => {});
+
+            }
+        );
+    }
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    updateInput();
+
+    render();
+
+})();
 </script>
 
 </body>
