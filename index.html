@@ -4,109 +4,59 @@
 <head>
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-<meta
-    name="theme-color"
-    content="#0d0d0d"
->
+<meta name="theme-color" content="#0d0d0d">
+<meta name="color-scheme" content="dark">
 
-<meta
-    name="color-scheme"
-    content="dark"
->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ناوي">
 
-<meta
-    name="mobile-web-app-capable"
-    content="yes"
->
-
-<meta
-    name="apple-mobile-web-app-capable"
-    content="yes"
->
-
-<meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="black-translucent"
->
-
-<meta
-    name="apple-mobile-web-app-title"
-    content="ناوي"
->
-
-<meta
-    name="description"
-    content="ناوي — اكتب نيتك وأنجزها."
->
+<meta name="description" content="ناوي — اكتب نيتك وأنجزها.">
 
 <title>ناوي — على إيه النهارده؟</title>
 
 <link rel="manifest" href="./manifest.json">
 
-<link
-    rel="icon"
-    type="image/png"
-    sizes="192x192"
-    href="./icon-192.png"
->
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
 
-<link
-    rel="apple-touch-icon"
-    href="./icon-192.png"
->
-
-
-<!-- =========================================================
-     GOOGLE ANALYTICS 4 — NAWY
-     ========================================================= -->
-
-<script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"
-></script>
-
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 
-function gtag() {
+function gtag(){
     dataLayer.push(arguments);
 }
 
 gtag("js", new Date());
-
-gtag("config", "G-3612TKY0RT", {
-    send_page_view: true
-});
+gtag("config", "G-3612TKY0RT");
 </script>
-
 
 <style>
 
 /* =========================================================
    NAWY
-   Clean Arabic To-Do
+   Minimal Arabic To-Do
    ========================================================= */
 
 :root {
 
     --bg: #0d0d0d;
+    --surface: #191919;
+    --surface-2: #222222;
 
-    --surface: #181818;
-    --surface-2: #202020;
+    --text: #f4f4f4;
+    --text-soft: #dedede;
 
-    --text: #f3f3f3;
-    --text-soft: #e6e6e6;
-
-    --muted: #898989;
-    --muted-dark: #626262;
+    --muted: #858585;
+    --muted-dark: #555b58;
 
     --green: #19c58b;
-    --green-soft: rgba(25,197,139,.10);
+    --green-soft: rgba(25,197,139,.12);
 
     --yellow: #e8bf48;
     --danger: #ff6666;
@@ -114,7 +64,6 @@ gtag("config", "G-3612TKY0RT", {
     --border: rgba(255,255,255,.075);
 
     --content-width: 760px;
-
 }
 
 
@@ -123,38 +72,25 @@ gtag("config", "G-3612TKY0RT", {
    ========================================================= */
 
 * {
-
     box-sizing: border-box;
-
     margin: 0;
     padding: 0;
-
     -webkit-tap-highlight-color: transparent;
-
 }
-
 
 html {
-
     width: 100%;
     min-height: 100%;
-
     background: var(--bg);
-
     color-scheme: dark;
-
 }
 
-
 body {
-
     width: 100%;
     min-height: 100dvh;
-
     margin: 0;
 
     background: var(--bg);
-
     color: var(--text);
 
     font-family:
@@ -170,32 +106,20 @@ body {
     overflow: hidden;
 
     -webkit-font-smoothing: antialiased;
-
     text-rendering: optimizeLegibility;
-
 }
-
 
 button,
-textarea,
-input {
-
+textarea {
     font: inherit;
-
 }
 
-
 button {
-
     border: 0;
     outline: 0;
-
     cursor: pointer;
-
     touch-action: manipulation;
-
     user-select: none;
-
 }
 
 
@@ -204,10 +128,8 @@ button {
    ========================================================= */
 
 .app {
-
     width: 100%;
     height: 100dvh;
-
     min-height: 100dvh;
 
     display: flex;
@@ -218,11 +140,10 @@ button {
     background:
         radial-gradient(
             circle at 84% -12%,
-            rgba(25,197,139,.065),
+            rgba(25,197,139,.06),
             transparent 28%
         ),
         var(--bg);
-
 }
 
 
@@ -238,131 +159,85 @@ button {
     margin: 0 auto;
 
     padding:
-        calc(22px + env(safe-area-inset-top))
+        calc(25px + env(safe-area-inset-top))
         22px
-        11px;
+        12px;
 
     flex-shrink: 0;
-
 }
-
 
 .brand {
-
     display: flex;
     align-items: center;
-
-    gap: 10px;
-
 }
-
 
 .brand-logo {
 
-    width: 39px;
-    height: 39px;
+    width: 30px;
+    height: 30px;
 
-    flex: 0 0 39px;
+    margin-left: 9px;
 
     display: grid;
     place-items: center;
 
-    border-radius: 12px;
+    border-radius: 9px;
 
     background:
-        rgba(25,197,139,.09);
+        linear-gradient(
+            145deg,
+            #1bd092,
+            #119b6f
+        );
 
-    border:
-        1px solid
-        rgba(25,197,139,.14);
+    color: #06130e;
 
+    font-size: 17px;
+    font-weight: 950;
+
+    box-shadow:
+        0 5px 18px rgba(25,197,139,.16);
 }
-
-
-.brand-logo svg {
-
-    width: 25px;
-    height: 25px;
-
-    fill: none;
-
-    stroke: var(--green);
-
-    stroke-width: 2.3;
-
-    stroke-linecap: round;
-    stroke-linejoin: round;
-
-}
-
-
-.brand-copy {
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
-
-}
-
 
 .brand-name {
 
-    font-size: 21px;
-
+    font-size: 25px;
     line-height: 1;
 
     font-weight: 900;
 
-    letter-spacing: -.7px;
+    letter-spacing: -.9px;
 
+    color: #f5f5f5;
 }
-
-
-.brand-tagline {
-
-    color: #666e6a;
-
-    font-size: 9px;
-
-    line-height: 1;
-
-    font-weight: 600;
-
-}
-
 
 .greeting {
-
-    margin-top: 24px;
-
+    margin-top: 20px;
 }
-
 
 .greeting h1 {
 
     font-size:
         clamp(25px, 5vw, 30px);
 
-    line-height: 1.22;
+    line-height: 1.2;
 
-    font-weight: 850;
+    font-weight: 900;
 
-    letter-spacing: -1px;
+    letter-spacing: -1.1px;
 
+    color: #f3f3f3;
 }
-
 
 .greeting p {
 
     margin-top: 7px;
 
-    color: #777f7b;
+    color: #747a77;
 
-    font-size: 12px;
+    font-size: 13px;
 
     font-weight: 500;
-
 }
 
 
@@ -378,9 +253,7 @@ button {
     align-items: center;
 
     gap: 10px;
-
 }
-
 
 .progress-bar {
 
@@ -394,14 +267,11 @@ button {
 
     background:
         rgba(255,255,255,.065);
-
 }
-
 
 .progress-fill {
 
     width: 0;
-
     height: 100%;
 
     background: var(--green);
@@ -409,10 +279,8 @@ button {
     border-radius: inherit;
 
     transition:
-        width .35s cubic-bezier(.2,.8,.2,1);
-
+        width .4s cubic-bezier(.2,.8,.2,1);
 }
-
 
 .progress-text {
 
@@ -423,17 +291,6 @@ button {
     font-size: 11px;
 
     white-space: nowrap;
-
-    transition:
-        color .2s ease;
-
-}
-
-
-.progress.complete .progress-text {
-
-    color: var(--green);
-
 }
 
 
@@ -449,7 +306,6 @@ button {
     margin: 0 auto;
 
     flex: 1;
-
     min-height: 0;
 
     overflow-y: auto;
@@ -457,30 +313,25 @@ button {
     padding:
         7px
         22px
-        175px;
+        155px;
 
     scrollbar-width: none;
 
     overscroll-behavior: contain;
-
 }
 
-
 .tasks::-webkit-scrollbar {
-
     display: none;
-
 }
 
 
 /* =========================================================
-   SECTION LABEL
+   SECTION
    ========================================================= */
 
 .section-label {
 
     display: flex;
-
     align-items: center;
 
     gap: 10px;
@@ -490,21 +341,16 @@ button {
         0
         4px;
 
-    color: var(--muted);
+    color: #777d7a;
 
     font-size: 11px;
 
-    font-weight: 700;
-
+    font-weight: 800;
 }
-
 
 .section-label:first-child {
-
     margin-top: 5px;
-
 }
-
 
 .section-label::before,
 .section-label::after {
@@ -516,14 +362,10 @@ button {
     flex: 1;
 
     background: var(--border);
-
 }
 
-
 .section-label span {
-
     white-space: nowrap;
-
 }
 
 
@@ -538,7 +380,6 @@ button {
     min-height: 64px;
 
     display: flex;
-
     align-items: center;
 
     gap: 13px;
@@ -550,31 +391,21 @@ button {
     border-bottom:
         1px solid var(--border);
 
+    cursor: pointer;
+
+    position: relative;
+
     transition:
         opacity .2s ease,
         transform .15s ease;
-
-    -webkit-user-select: none;
-    user-select: none;
-
-    -webkit-touch-callout: none;
-
 }
-
 
 .task:last-child {
-
-    border-bottom-color:
-        transparent;
-
+    border-bottom-color: transparent;
 }
 
-
 .task:active {
-
-    transform:
-        scale(.995);
-
+    transform: scale(.995);
 }
 
 
@@ -584,12 +415,10 @@ button {
 
 .check {
 
-    position: relative;
+    width: 25px;
+    height: 25px;
 
-    width: 24px;
-    height: 24px;
-
-    flex: 0 0 24px;
+    flex: 0 0 25px;
 
     display: grid;
     place-items: center;
@@ -605,14 +434,14 @@ button {
 
     color: var(--green);
 
+    position: relative;
+
     transition:
         background .18s ease,
         border-color .18s ease,
         transform .18s cubic-bezier(.18,.9,.3,1.3),
         box-shadow .18s ease;
-
 }
-
 
 .check svg {
 
@@ -630,225 +459,105 @@ button {
 
     opacity: 0;
 
-    transform:
-        scale(.5);
+    transform: scale(.5);
 
     transition:
         opacity .16s ease,
         transform .18s cubic-bezier(.18,.9,.3,1.3);
-
 }
-
 
 .task:not(.completed):hover .check {
 
-    background:
-        var(--green-soft);
+    background: var(--green-soft);
 
-    border-color:
-        var(--green);
+    border-color: var(--green);
 
-    transform:
-        scale(1.07);
+    transform: scale(1.07);
 
     box-shadow:
         0 0 0 4px
-        rgba(25,197,139,.055);
-
+        rgba(25,197,139,.05);
 }
-
-
-.task:not(.completed):hover .check svg {
-
-    opacity: .9;
-
-    transform:
-        scale(1);
-
-}
-
-
-.check:focus-visible {
-
-    border-color:
-        var(--green);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(25,197,139,.12);
-
-}
-
 
 .task.completed .check {
 
-    background:
-        var(--green);
+    background: var(--green);
 
-    border-color:
-        var(--green);
+    border-color: var(--green);
 
-    color:
-        #06130e;
-
+    color: #06130e;
 }
-
 
 .task.completed .check svg {
 
     opacity: 1;
 
-    transform:
-        scale(1);
-
+    transform: scale(1);
 }
 
 
 /* =========================================================
-   COMPLETION EFFECT
+   COMPLETION CELEBRATION
    ========================================================= */
 
 .task.just-completed .check {
 
     animation:
-        complete-pop
-        .48s
-        cubic-bezier(.18,.9,.3,1.25);
-
-}
-
-
-.task.just-completed .check::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: -7px;
-
-    border:
-        2px solid
-        rgba(25,197,139,.55);
-
-    border-radius: 50%;
-
-    opacity: 0;
-
-    transform:
-        scale(.65);
-
-    animation:
-        complete-ring
+        check-celebrate
         .55s
-        ease-out;
-
+        cubic-bezier(.18,.9,.3,1.3);
 }
-
 
 .task.just-completed .task-title {
 
     animation:
-        complete-text
-        .42s
-        ease-out;
-
+        strike-in
+        .34s
+        ease forwards;
 }
 
-
-@keyframes complete-pop {
+@keyframes check-celebrate {
 
     0% {
-
-        transform:
-            scale(1);
-
+        transform: scale(1);
+        box-shadow:
+            0 0 0 0
+            rgba(25,197,139,0);
     }
 
-    38% {
-
-        transform:
-            scale(1.28);
-
+    35% {
+        transform: scale(1.32);
+        box-shadow:
+            0 0 0 8px
+            rgba(25,197,139,.14);
     }
 
-    68% {
-
-        transform:
-            scale(.94);
-
+    65% {
+        transform: scale(.94);
+        box-shadow:
+            0 0 0 13px
+            rgba(25,197,139,.045);
     }
 
     100% {
-
-        transform:
-            scale(1);
-
+        transform: scale(1);
+        box-shadow:
+            0 0 0 0
+            rgba(25,197,139,0);
     }
-
 }
 
-
-@keyframes complete-ring {
+@keyframes strike-in {
 
     0% {
-
-        opacity: .8;
-
-        transform:
-            scale(.65);
-
+        color: #ededed;
+        text-decoration-color: transparent;
     }
 
     100% {
-
-        opacity: 0;
-
-        transform:
-            scale(1.5);
-
+        color: var(--muted-dark);
+        text-decoration-color: var(--muted-dark);
     }
-
-}
-
-
-@keyframes complete-text {
-
-    0% {
-
-        opacity: .9;
-
-        text-decoration-color:
-            transparent;
-
-        text-decoration-thickness:
-            0;
-
-    }
-
-    45% {
-
-        opacity: 1;
-
-        text-decoration-color:
-            var(--green);
-
-        text-decoration-thickness:
-            2px;
-
-    }
-
-    100% {
-
-        opacity: 1;
-
-        text-decoration-color:
-            currentColor;
-
-        text-decoration-thickness:
-            1px;
-
-    }
-
 }
 
 
@@ -861,9 +570,7 @@ button {
     min-width: 0;
 
     flex: 1;
-
 }
-
 
 .task-title {
 
@@ -875,26 +582,13 @@ button {
 
     overflow-wrap: anywhere;
 
-    cursor: text;
-
     transition:
-        color .2s ease;
-
+        color .25s ease;
 }
-
-
-.task-title:hover {
-
-    color:
-        #ffffff;
-
-}
-
 
 .task.completed .task-title {
 
-    color:
-        var(--muted-dark);
+    color: var(--muted-dark);
 
     text-decoration:
         line-through;
@@ -902,96 +596,33 @@ button {
     text-decoration-thickness:
         1px;
 
+    text-decoration-color:
+        var(--muted-dark);
 }
-
 
 .task-carried {
 
     margin-top: 3px;
 
-    color: #59615d;
-
-    font-size: 10px;
-
-}
-
-
-/* =========================================================
-   EDIT MODE
-   ========================================================= */
-
-.edit-input {
-
-    width: 100%;
-
-    min-height: 38px;
-
-    padding:
-        7px
-        10px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    border-radius: 10px;
-
-    outline: none;
-
-    background:
-        #202020;
-
-    color:
-        var(--text);
-
-    font-size: 15px;
-
-    line-height: 1.45;
-
-    resize: none;
-
-}
-
-
-.edit-input:focus {
-
-    border-color:
-        rgba(25,197,139,.45);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(25,197,139,.08);
-
-}
-
-
-.edit-hint {
-
-    margin-top: 4px;
-
     color: #555d59;
 
-    font-size: 9px;
-
+    font-size: 10px;
 }
 
 
 /* =========================================================
-   TASK ACTIONS
+   STAR
    ========================================================= */
 
 .task-actions {
 
     display: flex;
-
     align-items: center;
 
     flex-shrink: 0;
 
-    opacity: .75;
-
+    opacity: .7;
 }
-
 
 .icon-btn {
 
@@ -999,14 +630,13 @@ button {
     height: 40px;
 
     display: grid;
-
     place-items: center;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     background: transparent;
 
-    color: #717a75;
+    color: #737d78;
 
     font-size: 25px;
 
@@ -1016,47 +646,22 @@ button {
         background .15s ease,
         color .15s ease,
         transform .15s ease;
-
 }
-
 
 .icon-btn:hover {
 
     background:
-        rgba(255,255,255,.045);
+        rgba(255,255,255,.05);
 
-    color:
-        #b8bfbc;
-
+    color: #afb7b3;
 }
-
 
 .icon-btn:active {
-
-    transform:
-        scale(.9);
-
+    transform: scale(.9);
 }
-
 
 .icon-btn.starred {
-
-    color:
-        var(--yellow);
-
-}
-
-
-/*
-   لا نحتاج أزرار تعديل أو حذف مرئية.
-   التعديل والحذف من الضغط المطول/كليك يمين.
-*/
-
-.icon-btn.delete,
-.icon-btn.edit {
-
-    display: none;
-
+    color: var(--yellow);
 }
 
 
@@ -1069,47 +674,32 @@ button {
     padding:
         86px 20px;
 
-    text-align:
-        center;
-
+    text-align: center;
 }
-
 
 .empty-icon {
 
-    margin-bottom:
-        14px;
+    margin-bottom: 14px;
 
-    font-size:
-        29px;
-
+    font-size: 29px;
 }
-
 
 .empty strong {
 
     display: block;
 
-    color:
-        var(--text-soft);
+    color: var(--text-soft);
 
-    font-size:
-        16px;
+    font-size: 16px;
 
-    margin-bottom:
-        5px;
-
+    margin-bottom: 5px;
 }
-
 
 .empty span {
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        13px;
-
+    font-size: 13px;
 }
 
 
@@ -1123,27 +713,26 @@ button {
 
     left: 0;
     right: 0;
-    bottom: 0;
+
+    bottom: 8px;
 
     z-index: 50;
 
     padding:
-        15px
+        12px
         18px
-        calc(11px + env(safe-area-inset-bottom));
+        calc(12px + env(safe-area-inset-bottom));
 
     pointer-events: none;
 
     background:
         linear-gradient(
             to top,
-            var(--bg) 34%,
-            rgba(13,13,13,.93) 70%,
+            var(--bg) 35%,
+            rgba(13,13,13,.92) 68%,
             transparent 100%
         );
-
 }
-
 
 .composer-inner {
 
@@ -1155,9 +744,7 @@ button {
     margin: 0 auto;
 
     pointer-events: auto;
-
 }
-
 
 .composer {
 
@@ -1166,7 +753,6 @@ button {
     min-height: 56px;
 
     display: flex;
-
     align-items: flex-end;
 
     gap: 8px;
@@ -1189,26 +775,27 @@ button {
 
     box-shadow:
         0 9px 32px
-        rgba(0,0,0,.28);
+        rgba(0,0,0,.30);
 
     transition:
         border-color .18s ease,
         box-shadow .18s ease;
-
 }
-
 
 .composer:focus-within {
 
     border-color:
-        rgba(255,255,255,.12);
+        rgba(255,255,255,.13);
 
     box-shadow:
-        0 10px 35px
-        rgba(0,0,0,.34);
-
+        0 10px 38px
+        rgba(0,0,0,.36);
 }
 
+
+/* =========================================================
+   INPUT
+   ========================================================= */
 
 #taskInput {
 
@@ -1219,7 +806,6 @@ button {
     width: 100%;
 
     min-height: 42px;
-
     max-height: 120px;
 
     margin: 0;
@@ -1233,14 +819,12 @@ button {
     overflow-y: auto;
 
     border: 0 !important;
-
     outline: 0 !important;
 
     background:
         transparent !important;
 
-    color:
-        var(--text);
+    color: var(--text);
 
     font-size: 16px;
 
@@ -1250,27 +834,19 @@ button {
         none !important;
 
     scrollbar-width: none;
-
 }
-
 
 #taskInput::-webkit-scrollbar {
-
     display: none;
-
 }
 
-
 #taskInput::placeholder {
-
-    color:
-        #747a77;
-
+    color: #747a77;
 }
 
 
 /* =========================================================
-   SEND BUTTON
+   SEND
    ========================================================= */
 
 .submit {
@@ -1296,9 +872,7 @@ button {
         color .18s ease,
         transform .15s ease,
         box-shadow .18s ease;
-
 }
-
 
 .submit.active {
 
@@ -1311,26 +885,11 @@ button {
     box-shadow:
         0 4px 15px
         rgba(0,0,0,.2);
-
 }
-
 
 .submit:active {
-
-    transform:
-        scale(.92);
-
+    transform: scale(.92);
 }
-
-
-.submit:focus-visible {
-
-    box-shadow:
-        0 0 0 4px
-        rgba(25,197,139,.13);
-
-}
-
 
 .send-arrow {
 
@@ -1346,173 +905,132 @@ button {
         translateY(-1px);
 
     pointer-events: none;
-
 }
 
 
 /* =========================================================
-   HINT
+   CONTEXT MENU
    ========================================================= */
 
-.hint {
-
-    margin-top: 6px;
-
-    text-align: center;
-
-    color:
-        #515956;
-
-    font-size: 10px;
-
-}
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-.toast {
+.context-menu {
 
     position: fixed;
 
-    left: 50%;
+    z-index: 900;
 
-    bottom:
-        calc(
-            88px +
-            env(safe-area-inset-bottom)
-        );
+    width: 170px;
 
-    z-index: 400;
-
-    min-width: 235px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 14px;
-
-    padding:
-        10px
-        12px
-        10px
-        14px;
+    padding: 6px;
 
     background:
-        #191919;
+        rgba(27,27,27,.97);
 
     border:
         1px solid
-        var(--border);
+        rgba(255,255,255,.09);
 
-    border-radius:
-        14px;
+    border-radius: 15px;
 
     box-shadow:
-        0 18px 48px
-        rgba(0,0,0,.38);
+        0 18px 50px
+        rgba(0,0,0,.5);
 
-    transform:
-        translate(-50%, 15px);
+    backdrop-filter:
+        blur(16px);
 
     opacity: 0;
 
     visibility: hidden;
 
-    pointer-events: none;
+    transform:
+        scale(.94)
+        translateY(4px);
+
+    transform-origin:
+        top right;
 
     transition:
-        opacity .2s ease,
-        transform .2s ease,
-        visibility .2s ease;
-
+        opacity .14s ease,
+        transform .14s ease,
+        visibility .14s ease;
 }
 
-
-.toast.show {
+.context-menu.show {
 
     opacity: 1;
 
     visibility: visible;
 
-    pointer-events: auto;
-
     transform:
-        translate(-50%, 0);
-
+        scale(1)
+        translateY(0);
 }
 
+.context-option {
 
-.toast-message {
+    width: 100%;
 
-    color:
-        #e9e9e9;
+    min-height: 48px;
 
-    font-size:
-        12px;
+    display: flex;
 
-}
+    align-items: center;
 
-
-.toast-undo {
+    gap: 11px;
 
     padding:
-        5px
-        8px;
+        0
+        13px;
 
-    border-radius:
-        8px;
+    border-radius: 11px;
+
+    background: transparent;
+
+    color: #eeeeee;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    text-align: right;
+}
+
+.context-option:hover {
 
     background:
-        rgba(25,197,139,.10);
+        rgba(255,255,255,.06);
+}
 
-    color:
-        var(--green);
+.context-option.delete {
 
-    font-size:
-        11px;
-
-    font-weight:
-        800;
-
+    color: var(--danger);
 }
 
 
 /* =========================================================
-   ACTION SHEET
+   EDIT MODAL
    ========================================================= */
 
-.action-sheet-overlay {
+.edit-overlay {
 
     position: fixed;
 
     inset: 0;
 
-    z-index: 900;
+    z-index: 1000;
 
     display: flex;
 
-    align-items: flex-end;
-
+    align-items: center;
     justify-content: center;
 
-    padding:
-        14px
-        14px
-        calc(
-            14px +
-            env(safe-area-inset-bottom)
-        );
+    padding: 18px;
 
     background:
-        rgba(0,0,0,.34);
+        rgba(0,0,0,.5);
 
     backdrop-filter:
-        blur(5px);
+        blur(7px);
 
     opacity: 0;
 
@@ -1523,145 +1041,134 @@ button {
     transition:
         opacity .18s ease,
         visibility .18s ease;
-
 }
 
-
-.action-sheet-overlay.show {
+.edit-overlay.show {
 
     opacity: 1;
 
     visibility: visible;
 
     pointer-events: auto;
-
 }
 
-
-.action-sheet {
+.edit-box {
 
     width: 100%;
 
-    max-width: 560px;
+    max-width: 430px;
 
-    padding: 8px;
+    padding: 18px;
 
     background:
-        #191919;
+        #181818;
 
     border:
-        1px solid
-        rgba(255,255,255,.08);
+        1px solid var(--border);
 
     border-radius: 20px;
 
     box-shadow:
-        0 24px 70px
+        0 25px 70px
         rgba(0,0,0,.5);
 
     transform:
-        translateY(14px);
+        translateY(8px)
+        scale(.98);
 
     transition:
-        transform .2s
-        cubic-bezier(.18,.9,.3,1.1);
-
+        transform .18s ease;
 }
 
-
-.action-sheet-overlay.show
-.action-sheet {
+.edit-overlay.show .edit-box {
 
     transform:
-        translateY(0);
-
+        translateY(0)
+        scale(1);
 }
 
+.edit-title {
 
-.action-sheet-title {
+    margin-bottom: 13px;
 
-    padding:
-        10px
-        12px
-        8px;
+    font-size: 17px;
 
-    color:
-        #8c9490;
-
-    font-size:
-        10px;
-
-    white-space:
-        nowrap;
-
-    overflow:
-        hidden;
-
-    text-overflow:
-        ellipsis;
-
+    font-weight: 900;
 }
 
-
-.action-sheet-button {
+.edit-input {
 
     width: 100%;
 
-    min-height: 48px;
+    min-height: 105px;
+
+    padding: 13px;
+
+    resize: vertical;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    outline: 0;
+
+    border-radius: 13px;
+
+    background:
+        #101010;
+
+    color:
+        #f2f2f2;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+}
+
+.edit-input:focus {
+
+    border-color:
+        rgba(25,197,139,.4);
+}
+
+.edit-actions {
 
     display: flex;
 
-    align-items: center;
+    gap: 8px;
 
-    justify-content: center;
+    margin-top: 11px;
+}
 
-    border-radius:
-        13px;
+.edit-action {
+
+    flex: 1;
+
+    min-height: 46px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+}
+
+.edit-save {
 
     background:
-        transparent;
+        var(--green);
 
     color:
-        #eeeeee;
-
-    font-size:
-        14px;
-
-    font-weight:
-        700;
-
+        #06130e;
 }
 
-
-.action-sheet-button:hover {
+.edit-cancel {
 
     background:
-        rgba(255,255,255,.05);
-
-}
-
-
-.action-sheet-button:active {
-
-    transform:
-        scale(.985);
-
-}
-
-
-.action-sheet-button.danger {
+        rgba(255,255,255,.06);
 
     color:
-        var(--danger);
-
-}
-
-
-.action-sheet-cancel {
-
-    margin-top:
-        6px;
-
+        #ddd;
 }
 
 
@@ -1669,14 +1176,13 @@ button {
    INSTALL
    ========================================================= */
 
-.install-overlay,
-.install-guide {
+.install-overlay {
 
     position: fixed;
 
     inset: 0;
 
-    z-index: 1000;
+    z-index: 1100;
 
     display: flex;
 
@@ -1701,29 +1207,16 @@ button {
     transition:
         opacity .22s ease,
         visibility .22s ease;
-
 }
 
-
-.install-overlay.show,
-.install-guide.show {
+.install-overlay.show {
 
     opacity: 1;
 
     visibility: visible;
 
     pointer-events: auto;
-
 }
-
-
-.install-guide {
-
-    align-items:
-        center;
-
-}
-
 
 .install-sheet {
 
@@ -1743,18 +1236,14 @@ button {
         #181818;
 
     border:
-        1px solid
-        var(--border);
+        1px solid var(--border);
 
-    border-radius:
-        19px;
+    border-radius: 19px;
 
     box-shadow:
         0 22px 60px
         rgba(0,0,0,.42);
-
 }
-
 
 .install-icon {
 
@@ -1766,61 +1255,44 @@ button {
     display: grid;
     place-items: center;
 
-    border-radius:
-        13px;
+    border-radius: 13px;
 
     background:
         rgba(25,197,139,.10);
-
 }
-
 
 .install-copy {
 
-    min-width:
-        0;
+    min-width: 0;
 
     flex: 1;
-
 }
-
 
 .install-title {
 
-    font-size:
-        14px;
+    font-size: 14px;
 
-    font-weight:
-        800;
-
+    font-weight: 800;
 }
-
 
 .install-subtitle {
 
-    margin-top:
-        3px;
+    margin-top: 3px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        10px;
-
+    font-size: 10px;
 }
-
 
 .install-btn {
 
-    flex-shrink:
-        0;
+    flex-shrink: 0;
 
     padding:
         9px
         13px;
 
-    border-radius:
-        11px;
+    border-radius: 11px;
 
     background:
         var(--green);
@@ -1828,14 +1300,10 @@ button {
     color:
         #06130e;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    font-weight:
-        900;
-
+    font-weight: 900;
 }
-
 
 .install-close {
 
@@ -1852,245 +1320,94 @@ button {
     background:
         rgba(255,255,255,.05);
 
-    color:
-        #777;
+    color: #777;
 
-    font-size:
-        18px;
-
-}
-
-
-.guide-box {
-
-    width: 100%;
-
-    max-width:
-        380px;
-
-    padding:
-        23px;
-
-    background:
-        #181818;
-
-    border:
-        1px solid
-        var(--border);
-
-    border-radius:
-        21px;
-
-    text-align:
-        center;
-
-    box-shadow:
-        0 25px 70px
-        rgba(0,0,0,.45);
-
-}
-
-
-.guide-box h2 {
-
-    font-size:
-        19px;
-
-    margin-bottom:
-        9px;
-
-}
-
-
-.guide-box p {
-
-    color:
-        var(--muted);
-
-    font-size:
-        13px;
-
-    line-height:
-        1.7;
-
-}
-
-
-.guide-close {
-
-    width: 100%;
-
-    margin-top:
-        18px;
-
-    padding:
-        11px;
-
-    border-radius:
-        13px;
-
-    background:
-        rgba(255,255,255,.06);
-
-    color:
-        var(--text);
-
-    font-size:
-        13px;
-
+    font-size: 18px;
 }
 
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
    ========================================================= */
 
 @media (max-width: 600px) {
 
     .header {
-
-        padding-left:
-            17px;
-
-        padding-right:
-            17px;
-
+        padding-left: 17px;
+        padding-right: 17px;
     }
 
     .tasks {
-
-        padding-left:
-            17px;
-
-        padding-right:
-            17px;
-
+        padding-left: 17px;
+        padding-right: 17px;
+        padding-bottom: 145px;
     }
 
     .greeting h1 {
-
-        font-size:
-            23px;
-
+        font-size: 24px;
     }
 
     .task-title {
-
-        font-size:
-            15px;
-
+        font-size: 15px;
     }
 
     .composer-wrap {
-
-        padding-left:
-            12px;
-
-        padding-right:
-            12px;
-
+        bottom: 10px;
+        padding-left: 11px;
+        padding-right: 11px;
     }
 
-    .hint {
-
-        display:
-            none;
-
+    .context-menu {
+        width: min(190px, calc(100vw - 28px));
     }
 
+    .context-option {
+        min-height: 52px;
+        font-size: 16px;
+    }
 }
-
-
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
 
 @media (max-width: 380px) {
 
     .header {
-
-        padding-left:
-            14px;
-
-        padding-right:
-            14px;
-
+        padding-left: 14px;
+        padding-right: 14px;
     }
 
     .tasks {
-
-        padding-left:
-            14px;
-
-        padding-right:
-            14px;
-
-    }
-
-    .brand-logo {
-
-        width:
-            36px;
-
-        height:
-            36px;
-
-        flex-basis:
-            36px;
-
+        padding-left: 14px;
+        padding-right: 14px;
     }
 
     .brand-name {
-
-        font-size:
-            20px;
-
+        font-size: 23px;
     }
 
     .greeting h1 {
-
-        font-size:
-            22px;
-
+        font-size: 22px;
     }
 
     .task {
-
-        gap:
-            10px;
-
+        gap: 10px;
     }
 
     .task-title {
-
-        font-size:
-            14px;
-
+        font-size: 14px;
     }
 
     .icon-btn {
-
-        width:
-            38px;
-
-        height:
-            38px;
-
-        font-size:
-            24px;
-
+        width: 38px;
+        height: 38px;
+        font-size: 23px;
     }
 
     .composer-wrap {
-
-        padding-left:
-            9px;
-
-        padding-right:
-            9px;
-
+        left: 0;
+        right: 0;
+        bottom: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
     }
-
 }
 
 
@@ -2112,9 +1429,7 @@ button {
 
         transition-duration:
             .01ms !important;
-
     }
-
 }
 
 </style>
@@ -2125,49 +1440,18 @@ button {
 
 <div class="app">
 
-
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+    <!-- HEADER -->
 
     <header class="header">
 
         <div class="brand">
 
-            <div
-                class="brand-logo"
-                aria-hidden="true"
-            >
-
-                <svg
-                    viewBox="0 0 44 44"
-                >
-
-                    <circle
-                        cx="22"
-                        cy="22"
-                        r="18"
-                    ></circle>
-
-                    <path
-                        d="M13 22.5l6 6L31 16"
-                    ></path>
-
-                </svg>
-
+            <div class="brand-logo" aria-hidden="true">
+                ن
             </div>
 
-
-            <div class="brand-copy">
-
-                <div class="brand-name">
-                    ناوي
-                </div>
-
-                <div class="brand-tagline">
-                    اكتب نيتك وأنجزها
-                </div>
-
+            <div class="brand-name">
+                ناوي
             </div>
 
         </div>
@@ -2179,9 +1463,7 @@ button {
                 ناوي على إيه النهارده؟
             </h1>
 
-            <p id="currentDate">
-                —
-            </p>
+            <p id="currentDate">—</p>
 
         </div>
 
@@ -2207,7 +1489,6 @@ button {
 
             </div>
 
-
             <div
                 class="progress-text"
                 id="progressText"
@@ -2220,9 +1501,7 @@ button {
     </header>
 
 
-    <!-- =====================================================
-         TASKS
-         ===================================================== -->
+    <!-- TASKS -->
 
     <main
         class="tasks"
@@ -2232,9 +1511,7 @@ button {
     ></main>
 
 
-    <!-- =====================================================
-         COMPOSER
-         ===================================================== -->
+    <!-- COMPOSER -->
 
     <div class="composer-wrap">
 
@@ -2252,7 +1529,6 @@ button {
                     aria-label="نية جديدة"
                 ></textarea>
 
-
                 <button
                     type="button"
                     class="submit"
@@ -2260,21 +1536,14 @@ button {
                     aria-label="إضافة نية"
                     disabled
                 >
-
                     <span
                         class="send-arrow"
                         aria-hidden="true"
                     >
                         ↑
                     </span>
-
                 </button>
 
-            </div>
-
-
-            <div class="hint">
-                اضغط Enter لإضافة نية جديدة
             </div>
 
         </div>
@@ -2284,95 +1553,82 @@ button {
 </div>
 
 
-<!-- =========================================================
-     DELETE TOAST
-     ========================================================= -->
+<!-- CONTEXT MENU -->
 
 <div
-    class="toast"
-    id="toast"
-    role="status"
-    aria-live="polite"
+    class="context-menu"
+    id="contextMenu"
+    role="menu"
+    aria-hidden="true"
 >
-
-    <span
-        class="toast-message"
-        id="toastMessage"
-    >
-        تم حذف النية
-    </span>
 
     <button
         type="button"
-        class="toast-undo"
-        id="toastUndo"
+        class="context-option"
+        id="editOption"
+        role="menuitem"
     >
-        تراجع
+        تعديل
+    </button>
+
+    <button
+        type="button"
+        class="context-option delete"
+        id="deleteOption"
+        role="menuitem"
+    >
+        حذف
     </button>
 
 </div>
 
 
-<!-- =========================================================
-     ACTION SHEET
-     ضغط مطول / كليك يمين
-     ========================================================= -->
+<!-- EDIT -->
 
 <div
-    class="action-sheet-overlay"
-    id="actionSheetOverlay"
+    class="edit-overlay"
+    id="editOverlay"
     aria-hidden="true"
 >
 
-    <div
-        class="action-sheet"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="actionSheetTitle"
-    >
+    <div class="edit-box">
 
-        <div
-            class="action-sheet-title"
-            id="actionSheetTitle"
-        >
-            خيارات النية
+        <div class="edit-title">
+            تعديل النية
         </div>
 
+        <textarea
+            class="edit-input"
+            id="editInput"
+            maxlength="500"
+        ></textarea>
 
-        <button
-            type="button"
-            class="action-sheet-button"
-            id="actionEdit"
-        >
-            تعديل
-        </button>
+        <div class="edit-actions">
 
+            <button
+                type="button"
+                class="edit-action edit-save"
+                id="editSave"
+            >
+                حفظ
+            </button>
 
-        <button
-            type="button"
-            class="action-sheet-button danger"
-            id="actionDelete"
-        >
-            حذف
-        </button>
+            <button
+                type="button"
+                class="edit-action edit-cancel"
+                id="editCancel"
+            >
+                إلغاء
+            </button>
 
-
-        <button
-            type="button"
-            class="action-sheet-button action-sheet-cancel"
-            id="actionCancel"
-        >
-            إلغاء
-        </button>
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- =========================================================
-     INSTALL PROMPT
-     ========================================================= -->
+<!-- INSTALL -->
 
 <div
     class="install-overlay"
@@ -2398,7 +1654,6 @@ button {
 
         </div>
 
-
         <button
             type="button"
             class="install-btn"
@@ -2407,7 +1662,6 @@ button {
             تثبيت
         </button>
 
-
         <button
             type="button"
             class="install-close"
@@ -2415,42 +1669,6 @@ button {
             aria-label="إغلاق"
         >
             ×
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     INSTALL GUIDE
-     ========================================================= -->
-
-<div
-    class="install-guide"
-    id="installGuide"
-    aria-hidden="true"
->
-
-    <div class="guide-box">
-
-        <h2>
-            خلّي ناوي معاك 📱
-        </h2>
-
-        <p id="guideText">
-            من قائمة المتصفح اختَر
-            إضافة إلى الشاشة الرئيسية
-            لاستخدام ناوي كتطبيق.
-        </p>
-
-
-        <button
-            type="button"
-            class="guide-close"
-            id="guideClose"
-        >
-            تمام
         </button>
 
     </div>
@@ -2469,11 +1687,9 @@ button {
    STORAGE
    ========================================================= */
 
-const STORAGE_KEY =
-    "nawy_tasks_v9";
+const STORAGE_KEY = "nawy_tasks_v8";
 
 const LEGACY_KEYS = [
-    "nawy_tasks_v8",
     "nawy_tasks_v7",
     "nawy_tasks_v6",
     "nawy_tasks_v5",
@@ -2487,183 +1703,94 @@ const LEGACY_KEYS = [
    ========================================================= */
 
 const taskInput =
-    document.getElementById(
-        "taskInput"
-    );
+    document.getElementById("taskInput");
 
 const submitBtn =
-    document.getElementById(
-        "submitBtn"
-    );
+    document.getElementById("submitBtn");
 
 const tasksContainer =
-    document.getElementById(
-        "tasksContainer"
-    );
+    document.getElementById("tasksContainer");
 
 const progressFill =
-    document.getElementById(
-        "progressFill"
-    );
+    document.getElementById("progressFill");
 
 const progressText =
-    document.getElementById(
-        "progressText"
-    );
+    document.getElementById("progressText");
 
 const progressBar =
-    document.querySelector(
-        ".progress-bar"
-    );
-
-const progress =
-    document.querySelector(
-        ".progress"
-    );
+    document.querySelector(".progress-bar");
 
 const currentDate =
-    document.getElementById(
-        "currentDate"
-    );
+    document.getElementById("currentDate");
 
-const toast =
-    document.getElementById(
-        "toast"
-    );
+const contextMenu =
+    document.getElementById("contextMenu");
 
-const toastMessage =
-    document.getElementById(
-        "toastMessage"
-    );
+const editOption =
+    document.getElementById("editOption");
 
-const toastUndo =
-    document.getElementById(
-        "toastUndo"
-    );
+const deleteOption =
+    document.getElementById("deleteOption");
+
+const editOverlay =
+    document.getElementById("editOverlay");
+
+const editInput =
+    document.getElementById("editInput");
+
+const editSave =
+    document.getElementById("editSave");
+
+const editCancel =
+    document.getElementById("editCancel");
 
 const installOverlay =
-    document.getElementById(
-        "installOverlay"
-    );
+    document.getElementById("installOverlay");
 
 const installBtn =
-    document.getElementById(
-        "installBtn"
-    );
+    document.getElementById("installBtn");
 
 const installClose =
-    document.getElementById(
-        "installClose"
-    );
-
-const installGuide =
-    document.getElementById(
-        "installGuide"
-    );
-
-const guideClose =
-    document.getElementById(
-        "guideClose"
-    );
-
-const guideText =
-    document.getElementById(
-        "guideText"
-    );
+    document.getElementById("installClose");
 
 
 /* =========================================================
    STATE
    ========================================================= */
 
-let tasks =
-    loadTasks();
+let tasks = loadTasks();
 
-let deletedTask =
-    null;
+let contextTaskId = null;
 
-let deleteTimer =
-    null;
+let longPressTimer = null;
 
-let deferredInstallPrompt =
-    null;
+let longPressTriggered = false;
 
-let audioContext =
-    null;
-
-let longPressTimer =
-    null;
-
-let longPressTriggered =
-    false;
-
-let longPressTaskId =
-    null;
-
-let currentlyEditingId =
-    null;
-
-
-/* =========================================================
-   ANALYTICS
-   ========================================================= */
-
-function trackEvent(
-    eventName,
-    params = {}
-) {
-
-    if (
-        typeof window.gtag !==
-        "function"
-    ) {
-        return;
-    }
-
-    try {
-
-        window.gtag(
-            "event",
-            eventName,
-            params
-        );
-
-    } catch {}
-
-}
+let deferredInstallPrompt = null;
 
 
 /* =========================================================
    DATE
    ========================================================= */
 
-function getDateKey(
-    date = new Date()
-) {
+function getDateKey(date = new Date()) {
 
     const year =
         date.getFullYear();
 
     const month =
-        String(
-            date.getMonth() + 1
-        ).padStart(2, "0");
+        String(date.getMonth() + 1)
+        .padStart(2, "0");
 
     const day =
-        String(
-            date.getDate()
-        ).padStart(2, "0");
+        String(date.getDate())
+        .padStart(2, "0");
 
-    return (
-        `${year}-${month}-${day}`
-    );
-
+    return `${year}-${month}-${day}`;
 }
 
 
-function formatDate(
-    date = new Date()
-) {
+function formatDate(date = new Date()) {
 
     return new Intl.DateTimeFormat(
         "ar-EG",
@@ -2673,7 +1800,6 @@ function formatDate(
             month: "long"
         }
     ).format(date);
-
 }
 
 
@@ -2685,98 +1811,22 @@ function updateDate() {
 }
 
 
-function getDaysBetween(
-    fromKey,
-    toDate = new Date()
-) {
-
-    const from =
-        new Date(
-            `${fromKey}T00:00:00`
-        );
-
-    const to =
-        new Date(
-            `${getDateKey(toDate)}T00:00:00`
-        );
-
-    const diff =
-        to - from;
-
-    return Math.max(
-        0,
-        Math.round(
-            diff / 86400000
-        )
-    );
-
-}
-
-
-function getCarriedLabel(
-    taskDay
-) {
-
-    const days =
-        getDaysBetween(
-            taskDay
-        );
-
-    if (
-        days <= 1
-    ) {
-
-        return "من أمس";
-
-    }
-
-    if (
-        days === 2
-    ) {
-
-        return "من يومين";
-
-    }
-
-    if (
-        days === 3
-    ) {
-
-        return "من 3 أيام";
-
-    }
-
-    return (
-        `منذ ${days} أيام`
-    );
-
-}
-
-
-updateDate();
-
-
 /* =========================================================
    STORAGE
    ========================================================= */
 
-function normalizeTask(
-    raw
-) {
+function normalizeTask(raw) {
 
     if (
         !raw ||
         typeof raw !== "object"
     ) {
-
         return null;
-
     }
 
     const text =
-        String(
-            raw.text || ""
-        ).trim();
+        String(raw.text || "")
+        .trim();
 
     if (!text) {
         return null;
@@ -2795,72 +1845,50 @@ function normalizeTask(
             ),
 
         text:
-            text.slice(
-                0,
-                500
-            ),
+            text.slice(0, 500),
 
         completed:
-            Boolean(
-                raw.completed
-            ),
+            Boolean(raw.completed),
 
         starred:
-            Boolean(
-                raw.starred
-            ),
+            Boolean(raw.starred),
 
         createdAt,
 
         taskDay:
             raw.taskDay ||
             getDateKey(
-                new Date(
-                    createdAt
-                )
+                new Date(createdAt)
             ),
 
         completedAt:
-            raw.completedAt ||
-            null
+            raw.completedAt || null
 
     };
-
 }
 
 
-function normalizeTasks(
-    list
-) {
+function normalizeTasks(list) {
 
-    return list
-        .map(
-            normalizeTask
-        )
-        .filter(Boolean);
-
+    return Array.isArray(list)
+        ? list
+            .map(normalizeTask)
+            .filter(Boolean)
+        : [];
 }
 
 
-function readTasks(
-    key
-) {
+function readTasks(key) {
 
     try {
 
         const value =
             JSON.parse(
-                localStorage.getItem(
-                    key
-                )
+                localStorage.getItem(key)
             );
 
-        return Array.isArray(
-            value
-        )
-            ? normalizeTasks(
-                value
-            )
+        return Array.isArray(value)
+            ? normalizeTasks(value)
             : null;
 
     } catch {
@@ -2868,16 +1896,13 @@ function readTasks(
         return null;
 
     }
-
 }
 
 
 function loadTasks() {
 
     const current =
-        readTasks(
-            STORAGE_KEY
-        );
+        readTasks(STORAGE_KEY);
 
     if (current) {
         return current;
@@ -2888,9 +1913,7 @@ function loadTasks() {
     ) {
 
         const old =
-            readTasks(
-                key
-            );
+            readTasks(key);
 
         if (old) {
 
@@ -2898,21 +1921,16 @@ function loadTasks() {
 
                 localStorage.setItem(
                     STORAGE_KEY,
-                    JSON.stringify(
-                        old
-                    )
+                    JSON.stringify(old)
                 );
 
             } catch {}
 
             return old;
-
         }
-
     }
 
     return [];
-
 }
 
 
@@ -2922,9 +1940,7 @@ function saveTasks() {
 
         localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify(
-                tasks
-            )
+            JSON.stringify(tasks)
         );
 
     } catch (error) {
@@ -2935,153 +1951,27 @@ function saveTasks() {
         );
 
     }
-
 }
 
 
 /* =========================================================
-   AUDIO
+   ANALYTICS
    ========================================================= */
 
-function getAudioContext() {
+function trackEvent(name, params = {}) {
 
-    try {
+    if (
+        typeof window.gtag ===
+        "function"
+    ) {
 
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-        if (
-            !AudioContext
-        ) {
-            return null;
-        }
-
-        if (
-            !audioContext
-        ) {
-
-            audioContext =
-                new AudioContext();
-
-        }
-
-        if (
-            audioContext.state ===
-            "suspended"
-        ) {
-
-            audioContext
-                .resume()
-                .catch(
-                    () => {}
-                );
-
-        }
-
-        return audioContext;
-
-    } catch {
-
-        return null;
-
-    }
-
-}
-
-
-function playCompletionChime() {
-
-    const ctx =
-        getAudioContext();
-
-    if (!ctx) {
-        return;
-    }
-
-    try {
-
-        const now =
-            ctx.currentTime;
-
-        const notes = [
-
-            {
-                frequency: 783.99,
-                start: 0,
-                duration: .16,
-                volume: .055
-            },
-
-            {
-                frequency: 987.77,
-                start: .06,
-                duration: .24,
-                volume: .065
-            }
-
-        ];
-
-        notes.forEach(
-            note => {
-
-                const oscillator =
-                    ctx.createOscillator();
-
-                const gain =
-                    ctx.createGain();
-
-                const start =
-                    now +
-                    note.start;
-
-                const end =
-                    start +
-                    note.duration;
-
-                oscillator.type =
-                    "sine";
-
-                oscillator.frequency.setValueAtTime(
-                    note.frequency,
-                    start
-                );
-
-                gain.gain.setValueAtTime(
-                    0.0001,
-                    start
-                );
-
-                gain.gain.exponentialRampToValueAtTime(
-                    note.volume,
-                    start + .012
-                );
-
-                gain.gain.exponentialRampToValueAtTime(
-                    0.0001,
-                    end
-                );
-
-                oscillator.connect(
-                    gain
-                );
-
-                gain.connect(
-                    ctx.destination
-                );
-
-                oscillator.start(
-                    start
-                );
-
-                oscillator.stop(
-                    end + .015
-                );
-
-            }
+        window.gtag(
+            "event",
+            name,
+            params
         );
 
-    } catch {}
+    }
 
 }
 
@@ -3090,14 +1980,11 @@ function playCompletionChime() {
    ADD TASK
    ========================================================= */
 
-function addTask(
-    text
-) {
+function addTask(text) {
 
     const clean =
-        String(
-            text || ""
-        ).trim();
+        String(text || "")
+        .trim();
 
     if (!clean) {
         return false;
@@ -3111,16 +1998,11 @@ function addTask(
                 .slice(2, 8)}`,
 
         text:
-            clean.slice(
-                0,
-                500
-            ),
+            clean.slice(0, 500),
 
-        completed:
-            false,
+        completed: false,
 
-        starred:
-            false,
+        starred: false,
 
         createdAt:
             new Date().toISOString(),
@@ -3130,43 +2012,37 @@ function addTask(
 
         completedAt:
             null
-
     };
 
-    tasks.unshift(
-        task
-    );
+    tasks.unshift(task);
 
     saveTasks();
 
     render();
 
     trackEvent(
-        "task_created"
+        "add_task",
+        {
+            task_length:
+                clean.length
+        }
     );
 
     return true;
-
 }
 
 
 /* =========================================================
-   TOGGLE TASK
+   TOGGLE
    ========================================================= */
 
-function toggleTask(
-    id
-) {
+function toggleTask(id) {
 
     const task =
         tasks.find(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
+                String(item.id) ===
+                String(id)
         );
 
     if (!task) {
@@ -3176,9 +2052,7 @@ function toggleTask(
     task.completed =
         !task.completed;
 
-    if (
-        task.completed
-    ) {
+    if (task.completed) {
 
         task.completedAt =
             new Date().toISOString();
@@ -3187,56 +2061,34 @@ function toggleTask(
 
         render();
 
-        playCompletionChime();
+        const element =
+            document.querySelector(
+                `.task[data-task-id="${CSS.escape(String(id))}"]`
+            );
+
+        if (element) {
+
+            element.classList.add(
+                "just-completed"
+            );
+
+            setTimeout(
+                () => {
+                    element.classList.remove(
+                        "just-completed"
+                    );
+                },
+                650
+            );
+
+        }
 
         trackEvent(
-            "task_completed"
-        );
-
-
-        requestAnimationFrame(
-            () => {
-
-                const escapedId =
-                    CSS.escape(
-                        String(
-                            task.id
-                        )
-                    );
-
-                const completedElement =
-                    tasksContainer.querySelector(
-                        `.task[data-task-id="${escapedId}"]`
-                    );
-
-                if (
-                    !completedElement
-                ) {
-                    return;
-                }
-
-                completedElement.classList.add(
-                    "just-completed"
-                );
-
-                setTimeout(
-                    () => {
-
-                        completedElement.classList.remove(
-                            "just-completed"
-                        );
-
-                    },
-                    650
-                );
-
-            }
+            "complete_task"
         );
 
         return;
-
     }
-
 
     task.completedAt =
         null;
@@ -3246,289 +2098,8 @@ function toggleTask(
     render();
 
     trackEvent(
-        "task_uncompleted"
+        "uncomplete_task"
     );
-
-}
-
-
-/* =========================================================
-   EDIT
-   ========================================================= */
-
-function beginEdit(
-    id
-) {
-
-    if (
-        currentlyEditingId &&
-        String(
-            currentlyEditingId
-        ) !==
-        String(
-            id
-        )
-    ) {
-
-        cancelEdit(
-            currentlyEditingId
-        );
-
-    }
-
-    const escapedId =
-        CSS.escape(
-            String(
-                id
-            )
-        );
-
-    const article =
-        tasksContainer.querySelector(
-            `.task[data-task-id="${escapedId}"]`
-        );
-
-    if (!article) {
-        return;
-    }
-
-    const task =
-        tasks.find(
-            item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
-        );
-
-    if (!task) {
-        return;
-    }
-
-    currentlyEditingId =
-        id;
-
-    const main =
-        article.querySelector(
-            ".task-main"
-        );
-
-    if (!main) {
-        return;
-    }
-
-    main.innerHTML = "";
-
-    const input =
-        document.createElement(
-            "textarea"
-        );
-
-    input.className =
-        "edit-input";
-
-    input.rows =
-        1;
-
-    input.maxLength =
-        500;
-
-    input.value =
-        task.text;
-
-    input.setAttribute(
-        "aria-label",
-        "تعديل النية"
-    );
-
-    const hint =
-        document.createElement(
-            "div"
-        );
-
-    hint.className =
-        "edit-hint";
-
-    hint.textContent =
-        "Enter للحفظ · Esc للإلغاء";
-
-    main.append(
-        input,
-        hint
-    );
-
-    input.focus();
-
-    input.select();
-
-    autoResizeEditInput(
-        input
-    );
-
-    input.addEventListener(
-        "input",
-        () => {
-
-            autoResizeEditInput(
-                input
-            );
-
-        }
-    );
-
-    input.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key ===
-                    "Enter" &&
-                !event.shiftKey
-            ) {
-
-                event.preventDefault();
-
-                saveEdit(
-                    id
-                );
-
-            }
-
-            if (
-                event.key ===
-                    "Escape"
-            ) {
-
-                event.preventDefault();
-
-                cancelEdit(
-                    id
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-function autoResizeEditInput(
-    input
-) {
-
-    input.style.height =
-        "auto";
-
-    input.style.height =
-        `${Math.min(
-            input.scrollHeight,
-            120
-        )}px`;
-
-}
-
-
-function saveEdit(
-    id
-) {
-
-    const task =
-        tasks.find(
-            item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
-        );
-
-    if (!task) {
-        return;
-    }
-
-    const escapedId =
-        CSS.escape(
-            String(
-                id
-            )
-        );
-
-    const article =
-        tasksContainer.querySelector(
-            `.task[data-task-id="${escapedId}"]`
-        );
-
-    if (!article) {
-        return;
-    }
-
-    const input =
-        article.querySelector(
-            ".edit-input"
-        );
-
-    if (!input) {
-        return;
-    }
-
-    const clean =
-        input.value.trim();
-
-    if (!clean) {
-
-        cancelEdit(
-            id
-        );
-
-        return;
-
-    }
-
-    if (
-        clean === task.text
-    ) {
-
-        cancelEdit(
-            id
-        );
-
-        return;
-
-    }
-
-    task.text =
-        clean.slice(
-            0,
-            500
-        );
-
-    saveTasks();
-
-    currentlyEditingId =
-        null;
-
-    render();
-
-    trackEvent(
-        "task_edited"
-    );
-
-}
-
-
-function cancelEdit(
-    id
-) {
-
-    currentlyEditingId =
-        null;
-
-    render();
-
 }
 
 
@@ -3536,19 +2107,13 @@ function cancelEdit(
    STAR
    ========================================================= */
 
-function toggleStar(
-    id
-) {
+function toggleStar(id) {
 
     const task =
         tasks.find(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
+                String(item.id) ===
+                String(id)
         );
 
     if (!task) {
@@ -3564,10 +2129,9 @@ function toggleStar(
 
     trackEvent(
         task.starred
-            ? "task_starred"
-            : "task_unstarred"
+            ? "star_task"
+            : "unstar_task"
     );
-
 }
 
 
@@ -3575,35 +2139,18 @@ function toggleStar(
    DELETE
    ========================================================= */
 
-function deleteTask(
-    id
-) {
+function deleteTask(id) {
 
     const index =
         tasks.findIndex(
             item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
+                String(item.id) ===
+                String(id)
         );
 
-    if (
-        index === -1
-    ) {
+    if (index === -1) {
         return;
     }
-
-    deletedTask = {
-
-        task:
-            tasks[index],
-
-        index
-
-    };
 
     tasks.splice(
         index,
@@ -3614,107 +2161,117 @@ function deleteTask(
 
     render();
 
-    showToast(
-        "تم حذف النية"
-    );
+    closeContextMenu();
 
     trackEvent(
-        "task_deleted"
+        "delete_task"
     );
-
-    clearTimeout(
-        deleteTimer
-    );
-
-    deleteTimer =
-        setTimeout(
-            () => {
-
-                deletedTask =
-                    null;
-
-                hideToast();
-
-            },
-            5000
-        );
-
 }
 
 
-function undoDelete() {
+/* =========================================================
+   EDIT
+   ========================================================= */
 
-    if (
-        !deletedTask
-    ) {
+function openEdit(id) {
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+    if (!task) {
         return;
     }
 
-    const {
-        task,
-        index
-    } = deletedTask;
+    contextTaskId =
+        String(id);
 
-    tasks.splice(
-        Math.min(
-            index,
-            tasks.length
-        ),
-        0,
-        task
+    editInput.value =
+        task.text;
+
+    closeContextMenu();
+
+    editOverlay.classList.add(
+        "show"
     );
 
-    deletedTask =
-        null;
-
-    clearTimeout(
-        deleteTimer
+    editOverlay.setAttribute(
+        "aria-hidden",
+        "false"
     );
+
+    requestAnimationFrame(
+        () => {
+
+            editInput.focus();
+
+            editInput.setSelectionRange(
+                editInput.value.length,
+                editInput.value.length
+            );
+
+        }
+    );
+}
+
+
+function saveEdit() {
+
+    if (!contextTaskId) {
+        return;
+    }
+
+    const task =
+        tasks.find(
+            item =>
+                String(item.id) ===
+                String(contextTaskId)
+        );
+
+    if (!task) {
+        closeEdit();
+        return;
+    }
+
+    const text =
+        editInput.value.trim();
+
+    if (!text) {
+        editInput.focus();
+        return;
+    }
+
+    task.text =
+        text.slice(0, 500);
 
     saveTasks();
 
     render();
 
-    hideToast();
+    closeEdit();
 
     trackEvent(
-        "task_restored"
+        "edit_task"
     );
-
 }
 
 
-/* =========================================================
-   TOAST
-   ========================================================= */
+function closeEdit() {
 
-function showToast(
-    message
-) {
-
-    toastMessage.textContent =
-        message;
-
-    toast.classList.add(
+    editOverlay.classList.remove(
         "show"
     );
 
-}
-
-
-function hideToast() {
-
-    toast.classList.remove(
-        "show"
+    editOverlay.setAttribute(
+        "aria-hidden",
+        "true"
     );
 
+    contextTaskId = null;
 }
-
-
-toastUndo.addEventListener(
-    "click",
-    undoDelete
-);
 
 
 /* =========================================================
@@ -3742,10 +2299,6 @@ function updateProgress() {
                 task.completed
         ).length;
 
-    progress.classList.remove(
-        "complete"
-    );
-
     if (!total) {
 
         progressFill.style.width =
@@ -3760,7 +2313,6 @@ function updateProgress() {
         );
 
         return;
-
     }
 
     const percentage =
@@ -3773,29 +2325,11 @@ function updateProgress() {
 
     progressBar.setAttribute(
         "aria-valuenow",
-        String(
-            percentage
-        )
+        String(percentage)
     );
 
-    if (
-        percentage === 100
-    ) {
-
-        progress.classList.add(
-            "complete"
-        );
-
-        progressText.textContent =
-            "خلصت اللي ناوي عليه ✨";
-
-    } else {
-
-        progressText.textContent =
-            `${done} من ${total} · ${percentage}%`;
-
-    }
-
+    progressText.textContent =
+        `${done} من ${total} · ${percentage}%`;
 }
 
 
@@ -3803,10 +2337,7 @@ function updateProgress() {
    SORT
    ========================================================= */
 
-function sortActive(
-    a,
-    b
-) {
+function sortActive(a, b) {
 
     if (
         a.starred !==
@@ -3814,32 +2345,19 @@ function sortActive(
     ) {
 
         return (
-            Number(
-                b.starred
-            ) -
-            Number(
-                a.starred
-            )
+            Number(b.starred) -
+            Number(a.starred)
         );
-
     }
 
     return (
-        new Date(
-            b.createdAt
-        ) -
-        new Date(
-            a.createdAt
-        )
+        new Date(b.createdAt) -
+        new Date(a.createdAt)
     );
-
 }
 
 
-function sortCompleted(
-    a,
-    b
-) {
+function sortCompleted(a, b) {
 
     return (
         new Date(
@@ -3851,7 +2369,6 @@ function sortCompleted(
             a.createdAt
         )
     );
-
 }
 
 
@@ -3874,24 +2391,18 @@ function render() {
             .filter(
                 task =>
                     !task.completed &&
-                    task.taskDay ===
-                    today
+                    task.taskDay === today
             )
-            .sort(
-                sortActive
-            );
+            .sort(sortActive);
 
     const carriedTasks =
         tasks
             .filter(
                 task =>
                     !task.completed &&
-                    task.taskDay !==
-                    today
+                    task.taskDay !== today
             )
-            .sort(
-                sortActive
-            );
+            .sort(sortActive);
 
     const completedTasks =
         tasks
@@ -3899,19 +2410,13 @@ function render() {
                 task =>
                     task.completed
             )
-            .sort(
-                sortCompleted
-            );
+            .sort(sortCompleted);
 
     let hasContent =
         false;
 
 
-    /* TODAY */
-
-    if (
-        todayTasks.length
-    ) {
+    if (todayTasks.length) {
 
         appendSection(
             "نوايا اليوم"
@@ -3929,17 +2434,11 @@ function render() {
             }
         );
 
-        hasContent =
-            true;
-
+        hasContent = true;
     }
 
 
-    /* CARRIED */
-
-    if (
-        carriedTasks.length
-    ) {
+    if (carriedTasks.length) {
 
         appendSection(
             "مستمرة من قبل"
@@ -3958,17 +2457,11 @@ function render() {
             }
         );
 
-        hasContent =
-            true;
-
+        hasContent = true;
     }
 
 
-    /* COMPLETED */
-
-    if (
-        completedTasks.length
-    ) {
+    if (completedTasks.length) {
 
         appendSection(
             "النوايا المحققة"
@@ -3986,17 +2479,14 @@ function render() {
             }
         );
 
-        hasContent =
-            true;
-
+        hasContent = true;
     }
 
 
-    if (
-        !hasContent
-    ) {
+    if (!hasContent) {
 
         tasksContainer.innerHTML = `
+
             <div class="empty">
 
                 <div
@@ -4015,10 +2505,9 @@ function render() {
                 </span>
 
             </div>
+
         `;
-
     }
-
 }
 
 
@@ -4026,9 +2515,7 @@ function render() {
    SECTION
    ========================================================= */
 
-function appendSection(
-    label
-) {
+function appendSection(label) {
 
     const section =
         document.createElement(
@@ -4053,7 +2540,6 @@ function appendSection(
     tasksContainer.appendChild(
         section
     );
-
 }
 
 
@@ -4082,8 +2568,6 @@ function createTaskElement(
         task.id;
 
 
-    /* CHECK */
-
     const check =
         document.createElement(
             "button"
@@ -4110,14 +2594,10 @@ function createTaskElement(
             viewBox="0 0 24 24"
             aria-hidden="true"
         >
-            <path
-                d="M5 12.5l4.2 4.2L19 7"
-            ></path>
+            <path d="M5 12.5l4.2 4.2L19 7"></path>
         </svg>
     `;
 
-
-    /* MAIN */
 
     const main =
         document.createElement(
@@ -4139,21 +2619,6 @@ function createTaskElement(
     title.textContent =
         task.text;
 
-    title.setAttribute(
-        "role",
-        "button"
-    );
-
-    title.setAttribute(
-        "tabindex",
-        "0"
-    );
-
-    title.setAttribute(
-        "aria-label",
-        `تعديل النية: ${task.text}`
-    );
-
     main.appendChild(
         title
     );
@@ -4173,18 +2638,13 @@ function createTaskElement(
             "task-carried";
 
         label.textContent =
-            getCarriedLabel(
-                task.taskDay
-            );
+            "من يوم سابق";
 
         main.appendChild(
             label
         );
-
     }
 
-
-    /* ACTIONS */
 
     const actions =
         document.createElement(
@@ -4222,16 +2682,13 @@ function createTaskElement(
 
     star.setAttribute(
         "aria-pressed",
-        String(
-            task.starred
-        )
+        String(task.starred)
     );
 
     star.textContent =
         task.starred
             ? "★"
             : "☆";
-
 
     actions.appendChild(
         star
@@ -4244,112 +2701,262 @@ function createTaskElement(
         actions
     );
 
-    return article;
 
+    return article;
 }
+
+
+/* =========================================================
+   CONTEXT MENU
+   ========================================================= */
+
+function openContextMenu(
+    taskId,
+    x,
+    y
+) {
+
+    contextTaskId =
+        String(taskId);
+
+    contextMenu.classList.add(
+        "show"
+    );
+
+    contextMenu.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    const width =
+        170;
+
+    const height =
+        112;
+
+    const padding =
+        10;
+
+    let left =
+        x;
+
+    let top =
+        y;
+
+
+    if (
+        left + width >
+        window.innerWidth - padding
+    ) {
+
+        left =
+            window.innerWidth -
+            width -
+            padding;
+    }
+
+    if (
+        top + height >
+        window.innerHeight - padding
+    ) {
+
+        top =
+            window.innerHeight -
+            height -
+            padding;
+    }
+
+    contextMenu.style.left =
+        `${Math.max(
+            padding,
+            left
+        )}px`;
+
+    contextMenu.style.top =
+        `${Math.max(
+            padding,
+            top
+        )}px`;
+}
+
+
+function closeContextMenu() {
+
+    contextMenu.classList.remove(
+        "show"
+    );
+
+    contextMenu.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
+
+
+/* =========================================================
+   TASK CLICK
+   ========================================================= */
+
+tasksContainer.addEventListener(
+    "click",
+    event => {
+
+        if (longPressTriggered) {
+
+            longPressTriggered =
+                false;
+
+            return;
+        }
+
+
+        const actionButton =
+            event.target.closest(
+                "[data-action]"
+            );
+
+        const taskElement =
+            event.target.closest(
+                ".task"
+            );
+
+        if (!taskElement) {
+            return;
+        }
+
+        const id =
+            taskElement.dataset.taskId;
+
+        if (!id) {
+            return;
+        }
+
+
+        if (actionButton) {
+
+            const action =
+                actionButton.dataset.action;
+
+            if (
+                action ===
+                "toggle"
+            ) {
+
+                toggleTask(id);
+
+                return;
+            }
+
+            if (
+                action ===
+                "star"
+            ) {
+
+                toggleStar(id);
+
+                return;
+            }
+        }
+
+
+        toggleTask(id);
+    }
+);
 
 
 /* =========================================================
    LONG PRESS
    ========================================================= */
 
-function startLongPress(
-    event
-) {
-
-    const taskElement =
-        event.target.closest(
-            ".task"
-        );
-
-    if (!taskElement) {
-        return;
-    }
-
-
-    /*
-       لا نفتح القائمة إذا بدأ الضغط
-       على النجمة.
-    */
-
-    if (
-        event.target.closest(
-            "button"
-        )
-    ) {
-        return;
-    }
-
-
-    longPressTriggered =
-        false;
-
-    longPressTaskId =
-        taskElement.dataset.taskId;
-
-
-    clearTimeout(
-        longPressTimer
-    );
-
-
-    longPressTimer =
-        setTimeout(
-            () => {
-
-                longPressTriggered =
-                    true;
-
-                openActionSheet(
-                    longPressTaskId
-                );
-
-            },
-            550
-        );
-
-}
-
-
-function cancelLongPress() {
-
-    clearTimeout(
-        longPressTimer
-    );
-
-    longPressTimer =
-        null;
-
-}
-
-
-/* =========================================================
-   LONG PRESS EVENTS
-   ========================================================= */
-
 tasksContainer.addEventListener(
     "pointerdown",
-    startLongPress
+    event => {
+
+        const taskElement =
+            event.target.closest(
+                ".task"
+            );
+
+        if (!taskElement) {
+            return;
+        }
+
+        if (
+            event.target.closest(
+                "button"
+            )
+        ) {
+            return;
+        }
+
+        if (
+            event.pointerType ===
+            "mouse"
+        ) {
+            return;
+        }
+
+        const id =
+            taskElement.dataset.taskId;
+
+        longPressTriggered =
+            false;
+
+        clearTimeout(
+            longPressTimer
+        );
+
+        longPressTimer =
+            setTimeout(
+                () => {
+
+                    longPressTriggered =
+                        true;
+
+                    openContextMenu(
+                        id,
+                        event.clientX,
+                        event.clientY
+                    );
+
+                },
+                520
+            );
+
+    },
+    {
+        passive: true
+    }
 );
+
 
 tasksContainer.addEventListener(
     "pointerup",
-    cancelLongPress
+    () => {
+
+        clearTimeout(
+            longPressTimer
+        );
+
+    }
 );
 
-tasksContainer.addEventListener(
-    "pointerleave",
-    cancelLongPress
-);
 
 tasksContainer.addEventListener(
     "pointercancel",
-    cancelLongPress
+    () => {
+
+        clearTimeout(
+            longPressTimer
+        );
+
+    }
 );
 
 
 /* =========================================================
-   RIGHT CLICK — WEB
+   RIGHT CLICK
    ========================================================= */
 
 tasksContainer.addEventListener(
@@ -4365,392 +2972,118 @@ tasksContainer.addEventListener(
             return;
         }
 
-
         event.preventDefault();
 
-
-        /*
-           كليك يمين على النجمة
-           لا يفتح القائمة.
-        */
-
-        if (
-            event.target.closest(
-                "button"
-            )
-        ) {
-            return;
-        }
-
-
-        const id =
-            taskElement.dataset.taskId;
-
-        if (!id) {
-            return;
-        }
-
-
-        clearTimeout(
-            longPressTimer
+        openContextMenu(
+            taskElement.dataset.taskId,
+            event.clientX,
+            event.clientY
         );
-
-
-        longPressTriggered =
-            true;
-
-
-        openActionSheet(
-            id
-        );
-
     }
 );
 
 
 /* =========================================================
-   ACTION SHEET
+   CONTEXT ACTIONS
    ========================================================= */
 
-const actionSheetOverlay =
-    document.getElementById(
-        "actionSheetOverlay"
-    );
-
-const actionSheetTitle =
-    document.getElementById(
-        "actionSheetTitle"
-    );
-
-const actionEdit =
-    document.getElementById(
-        "actionEdit"
-    );
-
-const actionDelete =
-    document.getElementById(
-        "actionDelete"
-    );
-
-const actionCancel =
-    document.getElementById(
-        "actionCancel"
-    );
-
-
-function openActionSheet(
-    id
-) {
-
-    const task =
-        tasks.find(
-            item =>
-                String(
-                    item.id
-                ) ===
-                String(
-                    id
-                )
-        );
-
-    if (!task) {
-        return;
-    }
-
-    longPressTaskId =
-        id;
-
-    actionSheetTitle.textContent =
-        task.text;
-
-    actionSheetOverlay.classList.add(
-        "show"
-    );
-
-    actionSheetOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    trackEvent(
-        "task_options_opened"
-    );
-
-}
-
-
-function closeActionSheet() {
-
-    actionSheetOverlay.classList.remove(
-        "show"
-    );
-
-    actionSheetOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    longPressTaskId =
-        null;
-
-}
-
-
-actionEdit.addEventListener(
+editOption.addEventListener(
     "click",
     () => {
 
-        const id =
-            longPressTaskId;
-
-        closeActionSheet();
-
-        if (id) {
-
-            beginEdit(
-                id
+        if (contextTaskId) {
+            openEdit(
+                contextTaskId
             );
-
         }
-
     }
 );
 
 
-actionDelete.addEventListener(
+deleteOption.addEventListener(
     "click",
     () => {
 
-        const id =
-            longPressTaskId;
+        if (contextTaskId) {
 
-        closeActionSheet();
+            const id =
+                contextTaskId;
 
-        if (id) {
+            contextTaskId =
+                null;
 
-            deleteTask(
-                id
-            );
-
+            deleteTask(id);
         }
-
     }
 );
 
 
-actionCancel.addEventListener(
-    "click",
-    closeActionSheet
+document.addEventListener(
+    "pointerdown",
+    event => {
+
+        if (
+            !contextMenu.contains(
+                event.target
+            )
+        ) {
+
+            closeContextMenu();
+        }
+    }
 );
 
 
-actionSheetOverlay.addEventListener(
+/* =========================================================
+   EDIT EVENTS
+   ========================================================= */
+
+editSave.addEventListener(
+    "click",
+    saveEdit
+);
+
+editCancel.addEventListener(
+    "click",
+    closeEdit
+);
+
+
+editOverlay.addEventListener(
     "click",
     event => {
 
         if (
             event.target ===
-            actionSheetOverlay
+            editOverlay
         ) {
 
-            closeActionSheet();
-
+            closeEdit();
         }
-
     }
 );
 
 
-/* =========================================================
-   TASK CLICK
-   ========================================================= */
-
-tasksContainer.addEventListener(
-    "click",
-    event => {
-
-        /*
-           منع الحدث العادي بعد الضغط المطول.
-        */
-
-        if (
-            longPressTriggered
-        ) {
-
-            longPressTriggered =
-                false;
-
-            return;
-
-        }
-
-
-        const actionButton =
-            event.target.closest(
-                "[data-action]"
-            );
-
-        const titleButton =
-            event.target.closest(
-                ".task-title"
-            );
-
-        const taskElement =
-            event.target.closest(
-                ".task"
-            );
-
-        if (!taskElement) {
-            return;
-        }
-
-
-        const id =
-            taskElement.dataset.taskId;
-
-        if (!id) {
-            return;
-        }
-
-
-        if (
-            actionButton
-        ) {
-
-            const action =
-                actionButton.dataset.action;
-
-
-            if (
-                action ===
-                "toggle"
-            ) {
-
-                toggleTask(
-                    id
-                );
-
-                return;
-
-            }
-
-
-            if (
-                action ===
-                "star"
-            ) {
-
-                toggleStar(
-                    id
-                );
-
-                return;
-
-            }
-
-        }
-
-
-        /*
-           الضغط على النص = تعديل.
-           الضغط على الدائرة = إنجاز.
-        */
-
-        if (
-            titleButton
-        ) {
-
-            beginEdit(
-                id
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   KEYBOARD TASK SUPPORT
-   ========================================================= */
-
-tasksContainer.addEventListener(
+document.addEventListener(
     "keydown",
     event => {
 
-        const title =
-            event.target.closest(
-                ".task-title"
-            );
-
         if (
-            title &&
-            (
-                event.key ===
-                    "Enter" ||
-                event.key ===
-                    " "
-            )
+            event.key ===
+            "Escape"
         ) {
 
-            event.preventDefault();
+            closeContextMenu();
 
-            const taskElement =
-                title.closest(
-                    ".task"
-                );
+            if (
+                editOverlay.classList.contains(
+                    "show"
+                )
+            ) {
 
-            if (!taskElement) {
-                return;
+                closeEdit();
             }
-
-            beginEdit(
-                taskElement.dataset.taskId
-            );
-
-            return;
-
         }
-
-
-        const button =
-            event.target.closest(
-                ".check"
-            );
-
-        if (!button) {
-            return;
-        }
-
-
-        if (
-            event.key !==
-                "Enter" &&
-            event.key !==
-                " "
-        ) {
-
-            return;
-
-        }
-
-
-        event.preventDefault();
-
-
-        const taskElement =
-            button.closest(
-                ".task"
-            );
-
-        if (!taskElement) {
-            return;
-        }
-
-
-        toggleTask(
-            taskElement.dataset.taskId
-        );
 
     }
 );
@@ -4770,7 +3103,6 @@ function resizeInput() {
             taskInput.scrollHeight,
             120
         )}px`;
-
 }
 
 
@@ -4778,8 +3110,8 @@ function updateSubmitButton() {
 
     const hasText =
         taskInput.value
-            .trim()
-            .length > 0;
+        .trim()
+        .length > 0;
 
     submitBtn.disabled =
         !hasText;
@@ -4788,7 +3120,6 @@ function updateSubmitButton() {
         "active",
         hasText
     );
-
 }
 
 
@@ -4818,9 +3149,7 @@ function handleSend() {
     }
 
     if (
-        addTask(
-            text
-        )
+        addTask(text)
     ) {
 
         taskInput.value =
@@ -4835,9 +3164,7 @@ function handleSend() {
 
         tasksContainer.scrollTop =
             0;
-
     }
-
 }
 
 
@@ -4853,14 +3180,13 @@ taskInput.addEventListener(
 
         if (
             event.key ===
-                "Enter" &&
+            "Enter" &&
             !event.shiftKey
         ) {
 
             event.preventDefault();
 
             handleSend();
-
         }
 
     }
@@ -4868,7 +3194,7 @@ taskInput.addEventListener(
 
 
 /* =========================================================
-   PWA INSTALL
+   INSTALL
    ========================================================= */
 
 window.addEventListener(
@@ -4879,7 +3205,6 @@ window.addEventListener(
 
         deferredInstallPrompt =
             event;
-
 
         setTimeout(
             () => {
@@ -4897,17 +3222,11 @@ window.addEventListener(
                         "aria-hidden",
                         "false"
                     );
-
-                    trackEvent(
-                        "install_prompt_shown"
-                    );
-
                 }
 
             },
             8000
         );
-
     }
 );
 
@@ -4922,10 +3241,6 @@ installBtn.addEventListener(
 
             try {
 
-                trackEvent(
-                    "install_started"
-                );
-
                 deferredInstallPrompt.prompt();
 
                 await deferredInstallPrompt.userChoice;
@@ -4937,43 +3252,14 @@ installBtn.addEventListener(
 
             closeInstall();
 
+            trackEvent(
+                "install_prompt"
+            );
+
             return;
-
         }
-
 
         closeInstall();
-
-        installGuide.classList.add(
-            "show"
-        );
-
-        installGuide.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        trackEvent(
-            "install_guide_opened"
-        );
-
-
-        if (
-            /iphone|ipad|ipod/i.test(
-                navigator.userAgent
-            )
-        ) {
-
-            guideText.textContent =
-                "في Safari اضغط مشاركة ثم اختَر إضافة إلى الشاشة الرئيسية.";
-
-        } else {
-
-            guideText.textContent =
-                "من قائمة المتصفح اختَر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية.";
-
-        }
-
     }
 );
 
@@ -4988,66 +3274,12 @@ function closeInstall() {
         "aria-hidden",
         "true"
     );
-
 }
 
 
 installClose.addEventListener(
     "click",
     closeInstall
-);
-
-
-guideClose.addEventListener(
-    "click",
-    () => {
-
-        installGuide.classList.remove(
-            "show"
-        );
-
-        installGuide.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-    }
-);
-
-
-installGuide.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            installGuide
-        ) {
-
-            installGuide.classList.remove(
-                "show"
-            );
-
-            installGuide.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-        }
-
-    }
-);
-
-
-window.addEventListener(
-    "appinstalled",
-    () => {
-
-        trackEvent(
-            "app_installed"
-        );
-
-    }
 );
 
 
@@ -5062,36 +3294,13 @@ function isStandalone() {
             "(display-mode: standalone)"
         ).matches ||
 
-        window.navigator.standalone ===
-            true
+        window.navigator.standalone === true
     );
-
 }
 
 
 /* =========================================================
-   ESCAPE
-   ========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key ===
-            "Escape"
-        ) {
-
-            closeActionSheet();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   VISIBILITY / DATE REFRESH
+   DAY CHANGE
    ========================================================= */
 
 document.addEventListener(
@@ -5105,9 +3314,7 @@ document.addEventListener(
             updateDate();
 
             render();
-
         }
-
     }
 );
 
@@ -5137,7 +3344,6 @@ if (
 
         }
     );
-
 }
 
 
@@ -5145,9 +3351,7 @@ if (
    START
    ========================================================= */
 
-trackEvent(
-    "app_open"
-);
+updateDate();
 
 updateSubmitButton();
 
