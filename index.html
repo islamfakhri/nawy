@@ -1688,8 +1688,6 @@ button {
 
         </div>
 
-        <!-- MENU -->
-
         <button
             class="settings-btn"
             id="menuBtn"
@@ -2337,6 +2335,42 @@ const menuSettingsLabel =
     document.getElementById("menuSettingsLabel");
 
 /* =========================================================
+   COMPLETION SOUND
+   ========================================================= */
+
+/*
+   ضع ملف الصوت هنا:
+   ./sounds/ding.mp3
+*/
+
+const completeSound =
+    new Audio("./sounds/ding.mp3");
+
+completeSound.preload = "auto";
+
+function playCompleteSound() {
+
+    try {
+
+        completeSound.currentTime = 0;
+
+        const playPromise =
+            completeSound.play();
+
+        if (
+            playPromise &&
+            typeof playPromise.catch === "function"
+        ) {
+
+            playPromise.catch(() => {});
+
+        }
+
+    } catch {}
+
+}
+
+/* =========================================================
    STATE
 ========================================================= */
 
@@ -2642,6 +2676,13 @@ function completeTask(id) {
             new Date().toISOString();
 
         analytics("complete_task");
+
+        /*
+         * صوت تمام المهمة
+         * يشتغل فقط عند تحويل المهمة
+         * من غير مكتملة إلى مكتملة.
+         */
+        playCompleteSound();
 
     }
 
@@ -4980,7 +5021,6 @@ applySettings();
 updateSubmitButton();
 
 })();
-
 </script>
 
 </body>
