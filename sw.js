@@ -1,299 +1,204 @@
-/* =====================================================
-   NAWY SERVICE WORKER
-   AUTO UPDATE VERSION
-   ===================================================== */
+const CACHE_NAME = "nawy-static-v5";
 
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./css/app.css",
+  "./js/app.js",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
+];
 
-/*
- * غيّر الرقم ده عند إصدار نسخة كبيرة جديدة.
- */
-
-const VERSION = "nawy-v6";
-
-
-const STATIC_CACHE =
-    VERSION + "-static";
-
-
-const RUNTIME_CACHE =
-    VERSION + "-runtime";
-
-
-
-/* =====================================================
+/* =========================================================
    INSTALL
-   ===================================================== */
+========================================================= */
 
 self.addEventListener(
-    "install",
-    event => {
+  "install",
+  (event) => {
 
-        /*
-         * لا ننتظر الـSW القديم.
-         */
+    event.waitUntil(
 
-        self.skipWaiting();
+      caches
+        .open(CACHE_NAME)
+        .then(
+          (cache) =>
+            cache.addAll(APP_SHELL)
+        )
+        .then(
+          () =>
+            self.skipWaiting()
+        )
 
+    );
 
-        event.waitUntil(
-
-            caches.open(
-                STATIC_CACHE
-            ).then(cache => {
-
-                return cache.addAll([
-                    "./",
-                    "./index.html",
-                    "./manifest.json",
-                    "./icon-192.png"
-                ]);
-
-            })
-
-        );
-
-    }
+  }
 );
 
-
-
-/* =====================================================
+/* =========================================================
    ACTIVATE
-   ===================================================== */
+========================================================= */
 
 self.addEventListener(
-    "activate",
-    event => {
+  "activate",
+  (event) => {
 
-        event.waitUntil(
+    event.waitUntil(
 
-            Promise.all([
+      caches.keys()
+        .then(
+          (keys) =>
+            Promise.all(
 
-                /*
-                 * حذف أي Cache قديم
-                 */
+              keys
+                .filter(
+                  (key) =>
+                    key.startsWith(
+                      "nawy-static-"
+                    ) &&
+                    key !== CACHE_NAME
+                )
+                .map(
+                  (key) =>
+                    caches.delete(key)
+                )
 
-                caches.keys()
-                    .then(keys => {
+            )
+        )
+        .then(
+          () =>
+            self.clients.claim()
+        )
 
-                        return Promise.all(
+    );
 
-                            keys
-                                .filter(
-                                    key =>
-                                        key !==
-                                        STATIC_CACHE &&
-                                        key !==
-                                        RUNTIME_CACHE
-                                )
-                                .map(
-                                    key =>
-                                        caches.delete(key)
-                                )
-
-                        );
-
-                    }),
-
-
-                /*
-                 * استلام التحكم فورًا
-                 */
-
-                self.clients.claim()
-
-            ])
-
-        );
-
-    }
+  }
 );
 
-
-
-/* =====================================================
-   MESSAGE
-   ===================================================== */
-
-self.addEventListener(
-    "message",
-    event => {
-
-        if (
-            event.data &&
-            event.data.type ===
-            "SKIP_WAITING"
-        ) {
-
-            self.skipWaiting();
-
-        }
-
-    }
-);
-
-
-
-/* =====================================================
+/* =========================================================
    FETCH
-   ===================================================== */
+========================================================= */
 
 self.addEventListener(
-    "fetch",
-    event => {
+  "fetch",
+  (event) => {
 
-        const request =
-            event.request;
+    const request =
+      event.request;
 
+    if (
+      request.method !== "GET"
+    ) {
+      return;
+    }
 
-        /*
-         * GET فقط
-         */
+    /* -----------------------------------------------------
+       NAVIGATION
+       الشبكة أولًا
+       Cache fallback عند انقطاع الإنترنت
+    ----------------------------------------------------- */
 
-        if (
-            request.method !==
-            "GET"
-        ) {
+    if (
+      request.mode === "navigate"
+    ) {
 
-            return;
+      event.respondWith(
 
-        }
+        fetch(request)
+          .then(
+            (response) => {
 
+              const copy =
+                response.clone();
 
-        const url =
-            new URL(
-                request.url
-            );
+              caches
+                .open(CACHE_NAME)
+                .then(
+                  (cache) =>
+                    cache.put(
+                      "./index.html",
+                      copy
+                    )
+                );
 
+              return response;
+            }
+          )
+          .catch(
+            () =>
+              caches
+                .match("./index.html")
+                .then(
+                  (cached) =>
+                    cached ||
+                    caches.match("./")
+                )
+          )
 
-        /*
-         * تجاهل الطلبات الخارجية.
-         */
+      );
 
-        if (
-            url.origin !==
-            self.location.origin
-        ) {
+      return;
+    }
 
-            return;
+    /* -----------------------------------------------------
+       STATIC ASSETS
+       Cache First
+    ----------------------------------------------------- */
 
-        }
+    event.respondWith(
 
+      caches
+        .match(request)
+        .then(
+          (cached) => {
 
-        /*
-         * HTML / Navigation
-         *
-         * Network First
-         *
-         * يعني:
-         * حاول تجيب أحدث نسخة من السيرفر.
-         * لو الإنترنت مش موجود استخدم الكاش.
-         */
-
-        if (
-            request.mode ===
-            "navigate" ||
-            request.destination ===
-            "document"
-        ) {
-
-            event.respondWith(
-
-                fetch(request)
-                    .then(response => {
-
-                        const copy =
-                            response.clone();
-
-
-                        caches.open(
-                            RUNTIME_CACHE
-                        ).then(cache => {
-
-                            cache.put(
-                                request,
-                                copy
-                            );
-
-                        });
-
-
-                        return response;
-
-                    })
-
-                    .catch(() => {
-
-                        return caches.match(
-                            request
-                        ).then(cached => {
-
-                            return cached ||
-                                caches.match(
-                                    "./index.html"
-                                );
-
-                        });
-
-                    })
-
-            );
-
-
-            return;
-
-        }
-
-
-
-        /*
-         * الملفات الأخرى
-         *
-         * Network First
-         */
-
-        event.respondWith(
-
-            fetch(request)
-
-                .then(response => {
+            const networkFetch =
+              fetch(request)
+                .then(
+                  (response) => {
 
                     if (
-                        response &&
-                        response.status === 200
+                      response.ok &&
+                      new URL(
+                        request.url
+                      ).origin ===
+                        self.location.origin
                     ) {
 
-                        const copy =
-                            response.clone();
+                      const copy =
+                        response.clone();
 
-
-                        caches.open(
-                            RUNTIME_CACHE
-                        ).then(cache => {
-
+                      caches
+                        .open(
+                          CACHE_NAME
+                        )
+                        .then(
+                          (cache) =>
                             cache.put(
-                                request,
-                                copy
-                            );
-
-                        });
+                              request,
+                              copy
+                            )
+                        );
 
                     }
 
-
                     return response;
+                  }
+                )
+                .catch(
+                  () =>
+                    cached
+                );
 
-                })
+            return (
+              cached ||
+              networkFetch
+            );
+          }
+        )
 
-                .catch(() => {
+    );
 
-                    return caches.match(
-                        request
-                    );
-
-                })
-
-        );
-
-    }
+  }
 );
