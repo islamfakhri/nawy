@@ -1,10 +1,6 @@
-/* =========================================================
-   NAWY SERVICE WORKER
-   ========================================================= */
-
 const CACHE_NAME = "nawy-cache-v5";
 
-const APP_SHELL = [
+const APP_FILES = [
     "./",
     "./index.html",
     "./css/app.css",
@@ -15,9 +11,7 @@ const APP_SHELL = [
 ];
 
 
-/* =========================================================
-   INSTALL
-   ========================================================= */
+/* Install */
 
 self.addEventListener(
     "install",
@@ -28,20 +22,18 @@ self.addEventListener(
             caches
                 .open(CACHE_NAME)
                 .then(cache =>
-                    cache.addAll(APP_SHELL)
-                )
-                .then(() =>
-                    self.skipWaiting()
+                    cache.addAll(APP_FILES)
                 )
 
         );
+
+        self.skipWaiting();
+
     }
 );
 
 
-/* =========================================================
-   ACTIVATE
-   ========================================================= */
+/* Activate */
 
 self.addEventListener(
     "activate",
@@ -49,55 +41,38 @@ self.addEventListener(
 
         event.waitUntil(
 
-            caches
-                .keys()
-                .then(cacheNames =>
-
+            caches.keys()
+                .then(keys =>
                     Promise.all(
-
-                        cacheNames
+                        keys
                             .filter(
-                                name =>
-                                    name.startsWith(
-                                        "nawy-cache-"
-                                    ) &&
-                                    name !== CACHE_NAME
+                                key =>
+                                    key !== CACHE_NAME
                             )
                             .map(
-                                name =>
-                                    caches.delete(name)
+                                key =>
+                                    caches.delete(key)
                             )
-
                     )
-
-                )
-                .then(() =>
-                    self.clients.claim()
                 )
 
         );
+
+        self.clients.claim();
+
     }
 );
 
 
-/* =========================================================
-   FETCH
-   ========================================================= */
+/* Fetch */
 
 self.addEventListener(
     "fetch",
     event => {
 
-        const request =
-            event.request;
-
-
-        /*
-           نحن نهتم فقط بطلبات GET
-        */
-
         if (
-            request.method !== "GET"
+            event.request.method !==
+            "GET"
         ) {
             return;
         }
@@ -105,35 +80,36 @@ self.addEventListener(
 
         event.respondWith(
 
-            fetch(request)
+            fetch(event.request)
                 .then(response => {
-
-                    /*
-                       تحديث الكاش بالنسخة الجديدة
-                    */
 
                     const copy =
                         response.clone();
 
-                    caches
-                        .open(CACHE_NAME)
-                        .then(cache => {
 
-                            cache.put(
-                                request,
-                                copy
-                            );
+                    caches.open(
+                        CACHE_NAME
+                    ).then(cache => {
 
-                        });
+                        cache.put(
+                            event.request,
+                            copy
+                        );
+
+                    });
 
 
                     return response;
-                })
 
-                .catch(() =>
-                    caches.match(request)
+                })
+                .catch(
+                    () =>
+                        caches.match(
+                            event.request
+                        )
                 )
 
         );
+
     }
 );
