@@ -24,7 +24,6 @@
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
-<!-- Google Analytics -->
 <script async
 src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
 
@@ -42,20 +41,17 @@ gtag('config', 'G-3612TKY0RT', {
 });
 </script>
 
-
 <style>
 
 /* =========================================================
-   NAWY
-   Minimal Arabic Productivity App
+   NAWY — SIMPLE PRODUCTIVITY APP
    ========================================================= */
 
 :root {
-
     --bg: #101111;
     --surface: #181a19;
     --surface-2: #202321;
-    --surface-3: #272a28;
+    --surface-3: #292c2a;
 
     --text: #f4f5f4;
     --text-soft: #d8dbd9;
@@ -79,50 +75,39 @@ gtag('config', 'G-3612TKY0RT', {
     --radius: 18px;
 }
 
-
 /* =========================================================
    ACCENTS
    ========================================================= */
 
 body[data-accent="blue"] {
-
     --accent: #5b9cff;
     --accent-soft: rgba(91,156,255,.12);
     --accent-glow: rgba(91,156,255,.22);
-
 }
 
 body[data-accent="purple"] {
-
     --accent: #a879ff;
     --accent-soft: rgba(168,121,255,.12);
     --accent-glow: rgba(168,121,255,.22);
-
 }
 
 body[data-accent="orange"] {
-
     --accent: #ff9b52;
     --accent-soft: rgba(255,155,82,.12);
     --accent-glow: rgba(255,155,82,.22);
-
 }
 
 body[data-accent="pink"] {
-
     --accent: #f278b4;
     --accent-soft: rgba(242,120,180,.12);
     --accent-glow: rgba(242,120,180,.22);
-
 }
-
 
 /* =========================================================
    LIGHT
    ========================================================= */
 
 body.light {
-
     --bg: #f5f6f5;
     --surface: #ffffff;
     --surface-2: #f0f2f1;
@@ -135,41 +120,31 @@ body.light {
     --muted-dark: #a0a6a3;
 
     --border: rgba(0,0,0,.08);
-
 }
 
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
-
     box-sizing: border-box;
-
     margin: 0;
     padding: 0;
-
     -webkit-tap-highlight-color: transparent;
-
 }
-
 
 html {
-
     width: 100%;
     min-height: 100%;
-
     background: var(--bg);
-
 }
 
-
 body {
-
     width: 100%;
     min-height: 100dvh;
-
     overflow: hidden;
 
     background: var(--bg);
-
     color: var(--text);
 
     font-family:
@@ -183,44 +158,30 @@ body {
         sans-serif;
 
     -webkit-font-smoothing: antialiased;
-
     text-rendering: optimizeLegibility;
-
 }
-
 
 button,
 textarea,
 input {
-
     font: inherit;
-
 }
-
 
 button {
-
     border: 0;
     outline: 0;
-
     cursor: pointer;
-
     touch-action: manipulation;
-
     user-select: none;
-
 }
-
 
 /* =========================================================
    APP
    ========================================================= */
 
 .app {
-
     width: 100%;
     height: 100dvh;
-
     min-height: 100dvh;
 
     display: flex;
@@ -235,16 +196,13 @@ button {
             transparent 28%
         ),
         var(--bg);
-
 }
-
 
 /* =========================================================
    HEADER
    ========================================================= */
 
 .header {
-
     width: 100%;
     max-width: var(--content-width);
 
@@ -256,34 +214,21 @@ button {
         10px;
 
     flex-shrink: 0;
-
 }
-
 
 .header-top {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
 }
-
 
 .brand {
-
     display: flex;
-
     align-items: center;
-
     gap: 9px;
-
 }
 
-
 .logo {
-
     width: 32px;
     height: 32px;
 
@@ -293,180 +238,127 @@ button {
     border-radius: 10px;
 
     background: var(--accent);
-
     color: #07130e;
 
     font-size: 16px;
-
     font-weight: 900;
 
     box-shadow:
         0 5px 18px var(--accent-glow);
-
 }
-
 
 .brand-name {
-
     font-size: 24px;
-
     line-height: 1;
-
     font-weight: 850;
-
-    letter-spacing: -.9px;
-
+    letter-spacing: -.8px;
 }
 
+/* 3 DOT MENU */
 
 .settings-btn {
-
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
 
     display: grid;
     place-items: center;
 
-    border-radius: 12px;
+    border-radius: 13px;
 
     background: transparent;
-
     color: var(--muted);
 
-    font-size: 21px;
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: 1;
 
     transition:
         background .18s ease,
         color .18s ease,
         transform .15s ease;
-
 }
-
 
 .settings-btn:hover {
-
     background: var(--surface-2);
-
     color: var(--text);
-
 }
-
 
 .settings-btn:active {
-
-    transform: scale(.92);
-
+    transform: scale(.9);
 }
-
 
 .greeting {
-
     margin-top: 21px;
-
 }
-
 
 .greeting h1 {
-
     font-size: clamp(24px, 5vw, 29px);
-
     line-height: 1.25;
-
     font-weight: 850;
-
-    letter-spacing: -.9px;
-
+    letter-spacing: -.8px;
 }
-
 
 .greeting p {
-
     margin-top: 6px;
-
     color: var(--muted);
-
     font-size: 13px;
-
     font-weight: 500;
-
 }
-
 
 /* =========================================================
    PROGRESS
    ========================================================= */
 
 .progress {
-
     margin-top: 17px;
 
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
 }
 
-
 .progress-bar {
-
     flex: 1;
-
     height: 5px;
 
     overflow: hidden;
-
     border-radius: 999px;
 
-    background:
-        rgba(127,127,127,.16);
-
+    background: rgba(127,127,127,.16);
 }
 
-
 .progress-fill {
-
     width: 0;
-
     height: 100%;
 
     border-radius: inherit;
-
     background: var(--accent);
 
     transition:
         width .35s cubic-bezier(.2,.8,.2,1);
-
 }
 
-
 .progress-text {
-
     min-width: max-content;
 
     color: var(--muted);
 
     font-size: 11px;
-
     white-space: nowrap;
-
 }
-
 
 /* =========================================================
    TASK AREA
    ========================================================= */
 
 .tasks {
-
     width: 100%;
     max-width: var(--content-width);
 
     margin: 0 auto;
 
     flex: 1;
-
     min-height: 0;
 
     overflow-y: auto;
@@ -477,29 +369,20 @@ button {
         155px;
 
     scrollbar-width: none;
-
     overscroll-behavior: contain;
-
 }
-
 
 .tasks::-webkit-scrollbar {
-
     display: none;
-
 }
-
 
 /* =========================================================
    SECTION
    ========================================================= */
 
 .section-label {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
     margin:
@@ -510,89 +393,67 @@ button {
     color: var(--muted);
 
     font-size: 11px;
-
     font-weight: 750;
-
 }
-
 
 .section-label:first-child {
-
     margin-top: 5px;
-
 }
-
 
 .section-label::before,
 .section-label::after {
-
     content: "";
 
     height: 1px;
-
     flex: 1;
 
     background: var(--border);
-
 }
-
 
 /* =========================================================
    TASK
    ========================================================= */
 
 .task {
-
     position: relative;
 
     width: 100%;
-
     min-height: 66px;
 
     display: flex;
-
     align-items: center;
 
-    gap: 13px;
+    gap: 11px;
 
     padding:
-        9px
-        2px;
+        8px
+        0;
 
     border-bottom:
         1px solid var(--border);
 
     user-select: none;
-
 }
-
 
 .task:last-child {
-
     border-bottom-color: transparent;
-
 }
 
-
 .task-main {
-
     flex: 1;
-
     min-width: 0;
 
     cursor: pointer;
 
-    padding: 7px 0;
+    padding: 8px 2px;
 
+    border-radius: 8px;
 }
 
-
 .task-title {
-
     color: var(--text);
 
     font-size: var(--task-font);
-
     line-height: 1.5;
 
     font-weight: 500;
@@ -600,58 +461,49 @@ button {
     overflow-wrap: anywhere;
 
     transition:
-        color .25s ease;
-
+        color .25s ease,
+        opacity .25s ease;
 }
-
 
 .task.completed .task-title {
-
     color: var(--muted-dark);
 
+    text-decoration-line: line-through;
+    text-decoration-color: var(--muted-dark);
+    text-decoration-thickness: 1px;
 }
 
-
 .task-carried {
-
     margin-top: 3px;
 
     color: var(--muted-dark);
 
     font-size: 10px;
-
 }
-
 
 /* =========================================================
    CHECK
    ========================================================= */
 
 .check-hit {
+    width: 46px;
+    height: 46px;
 
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
+    flex: 0 0 46px;
 
     display: grid;
-
     place-items: center;
 
     background: transparent;
 
     cursor: pointer;
-
 }
 
-
 .check {
-
     width: 27px;
     height: 27px;
 
     display: grid;
-
     place-items: center;
 
     border:
@@ -660,7 +512,6 @@ button {
     border-radius: 50%;
 
     background: transparent;
-
     color: #07130e;
 
     transition:
@@ -668,23 +519,18 @@ button {
         border-color .2s ease,
         transform .2s cubic-bezier(.18,.9,.3,1.3),
         box-shadow .2s ease;
-
 }
 
-
 .check svg {
-
     width: 15px;
     height: 15px;
 
     fill: none;
 
     stroke: currentColor;
-
     stroke-width: 2.8;
 
     stroke-linecap: round;
-
     stroke-linejoin: round;
 
     opacity: 0;
@@ -694,143 +540,74 @@ button {
     transition:
         opacity .18s ease,
         transform .2s cubic-bezier(.18,.9,.3,1.3);
-
 }
-
 
 .check-hit:hover .check {
-
     border-color: var(--accent);
-
     background: var(--accent-soft);
-
 }
-
 
 .task.completed .check {
-
     background: var(--accent);
-
     border-color: var(--accent);
-
 }
-
 
 .task.completed .check svg {
-
     opacity: 1;
-
     transform: scale(1);
-
 }
 
-
 /* =========================================================
-   COMPLETION ANIMATION
+   COMPLETION
    ========================================================= */
 
 .task.just-completed .check {
-
     animation:
         complete-pop .55s cubic-bezier(.18,.9,.3,1.3);
-
 }
-
-
-.task.just-completed .task-title {
-
-    animation:
-        strike-in .38s ease forwards;
-
-}
-
 
 @keyframes complete-pop {
 
     0% {
-
         transform: scale(1);
-
-        box-shadow:
-            0 0 0 0
-            transparent;
-
+        box-shadow: 0 0 0 0 transparent;
     }
 
     35% {
-
         transform: scale(1.32);
-
         box-shadow:
             0 0 0 8px
             var(--accent-soft);
-
     }
 
     70% {
-
         transform: scale(.94);
-
     }
 
     100% {
-
         transform: scale(1);
-
-        box-shadow:
-            0 0 0 0
-            transparent;
-
+        box-shadow: 0 0 0 0 transparent;
     }
-
 }
-
-
-@keyframes strike-in {
-
-    0% {
-
-        text-decoration-color:
-            transparent;
-
-    }
-
-    100% {
-
-        text-decoration-line: line-through;
-
-        text-decoration-color:
-            var(--muted-dark);
-
-        text-decoration-thickness:
-            1px;
-
-    }
-
-}
-
 
 /* =========================================================
    STAR
    ========================================================= */
 
 .star-btn {
+    width: 46px;
+    height: 46px;
 
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
+    flex: 0 0 46px;
 
     display: grid;
-
     place-items: center;
 
     background: transparent;
 
     color: var(--muted-dark);
 
-    font-size: 25px;
-
+    font-size: 26px;
     line-height: 1;
 
     border-radius: 12px;
@@ -839,71 +616,45 @@ button {
         color .18s ease,
         transform .18s ease,
         background .18s ease;
-
 }
-
 
 .star-btn:hover {
-
     background: var(--surface-2);
-
     color: var(--yellow);
-
 }
-
 
 .star-btn:active {
-
-    transform: scale(.86);
-
+    transform: scale(.84);
 }
-
 
 .star-btn.starred {
-
     color: var(--yellow);
-
 }
-
 
 /* =========================================================
    EMPTY
    ========================================================= */
 
 .empty {
-
-    padding:
-        82px 20px;
-
+    padding: 82px 20px;
     text-align: center;
-
 }
-
 
 .empty-icon {
-
     margin-bottom: 14px;
-
     font-size: 31px;
-
 }
 
-
 .empty strong {
-
     display: block;
 
     color: var(--text-soft);
 
     font-size: 16px;
-
     font-weight: 750;
-
 }
 
-
 .empty span {
-
     display: block;
 
     margin-top: 5px;
@@ -911,16 +662,13 @@ button {
     color: var(--muted);
 
     font-size: 13px;
-
 }
-
 
 /* =========================================================
    COMPOSER
    ========================================================= */
 
 .composer-wrap {
-
     position: absolute;
 
     left: 0;
@@ -947,31 +695,23 @@ button {
             ) 72%,
             transparent 100%
         );
-
 }
 
-
 .composer-inner {
-
     width: 100%;
-
     max-width: var(--content-width);
 
     margin: 0 auto;
 
     pointer-events: auto;
-
 }
 
-
 .composer {
-
     width: 100%;
 
     min-height: 58px;
 
     display: flex;
-
     align-items: flex-end;
 
     gap: 8px;
@@ -991,20 +731,14 @@ button {
 
     box-shadow:
         0 10px 34px rgba(0,0,0,.28);
-
 }
 
-
 #taskInput {
-
     flex: 1;
-
     min-width: 0;
-
     width: 100%;
 
     min-height: 42px;
-
     max-height: 115px;
 
     resize: none;
@@ -1016,109 +750,77 @@ button {
         0;
 
     border: 0;
-
     outline: 0;
 
     background: transparent;
-
     color: var(--text);
 
     font-size: 16px;
-
     line-height: 1.45;
 
     scrollbar-width: none;
-
 }
-
 
 #taskInput::-webkit-scrollbar {
-
     display: none;
-
 }
-
 
 #taskInput::placeholder {
-
     color: var(--muted);
-
 }
 
-
 .submit {
-
     width: 44px;
     height: 44px;
 
     flex: 0 0 44px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 50%;
 
     background: var(--surface-3);
-
     color: var(--muted-dark);
 
     transition:
         background .18s ease,
         color .18s ease,
         transform .15s ease;
-
 }
 
-
 .submit.active {
-
     background: var(--accent);
-
     color: #07130e;
 
     box-shadow:
         0 5px 18px var(--accent-glow);
-
 }
-
 
 .submit:active {
-
     transform: scale(.91);
-
 }
 
-
 .send-arrow {
-
     font-size: 23px;
-
     line-height: 1;
-
     font-weight: 850;
 
     transform: translateY(-1px);
-
 }
 
-
 /* =========================================================
-   ACTION SHEET
+   ACTION CARD
    ========================================================= */
 
 .action-overlay {
-
     position: fixed;
-
     inset: 0;
 
     z-index: 500;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 18px;
@@ -1128,7 +830,6 @@ button {
     backdrop-filter: blur(7px);
 
     opacity: 0;
-
     visibility: hidden;
 
     pointer-events: none;
@@ -1136,23 +837,15 @@ button {
     transition:
         opacity .18s ease,
         visibility .18s ease;
-
 }
-
 
 .action-overlay.show {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
-
 }
 
-
 .action-card {
-
     width: min(390px, 100%);
 
     padding: 9px;
@@ -1173,21 +866,15 @@ button {
 
     transition:
         transform .2s cubic-bezier(.18,.9,.3,1.1);
-
 }
 
-
 .action-overlay.show .action-card {
-
     transform:
         translateY(0)
         scale(1);
-
 }
 
-
 .action-title {
-
     padding:
         13px
         13px
@@ -1196,20 +883,17 @@ button {
     color: var(--muted);
 
     font-size: 11px;
-
     font-weight: 750;
 
+    overflow-wrap: anywhere;
 }
 
-
 .action-button {
-
     width: 100%;
 
     min-height: 53px;
 
     display: flex;
-
     align-items: center;
 
     gap: 13px;
@@ -1221,85 +905,181 @@ button {
     border-radius: 14px;
 
     background: transparent;
-
     color: var(--text);
 
-    text-align: right;
+    text-align: start;
 
     font-size: 15px;
-
     font-weight: 650;
 
     transition:
         background .15s ease;
-
 }
-
 
 .action-button:hover {
-
     background: var(--surface-2);
-
 }
 
-
 .action-icon {
+    width: 34px;
+    height: 34px;
 
-    width: 32px;
-    height: 32px;
+    flex: 0 0 34px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 10px;
 
     background: var(--surface-2);
-
     color: var(--text-soft);
 
     font-size: 17px;
-
 }
-
 
 .action-button.complete .action-icon {
-
     color: var(--accent);
-
 }
-
 
 .action-button.delete {
-
     color: var(--danger);
-
 }
-
 
 .action-button.delete .action-icon {
-
     color: var(--danger);
-
 }
 
+/* =========================================================
+   MAIN MENU
+   ========================================================= */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 550;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    padding:
+        calc(68px + env(safe-area-inset-top))
+        18px
+        18px;
+
+    background: transparent;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu-card {
+    width: min(270px, calc(100vw - 36px));
+
+    padding: 8px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.38);
+
+    transform:
+        translateY(-5px)
+        scale(.97);
+
+    transition:
+        transform .18s ease;
+}
+
+.menu-overlay.show .menu-card {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.menu-button {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        8px
+        10px;
+
+    border-radius: 12px;
+
+    background: transparent;
+    color: var(--text);
+
+    text-align: start;
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.menu-button:hover {
+    background: var(--surface-2);
+}
+
+.menu-button.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.menu-icon {
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: var(--surface-2);
+
+    font-size: 15px;
+}
+
+.menu-divider {
+    height: 1px;
+    margin: 5px 8px;
+
+    background: var(--border);
+}
 
 /* =========================================================
    MODAL
    ========================================================= */
 
 .modal-overlay {
-
     position: fixed;
-
     inset: 0;
 
     z-index: 600;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 18px;
@@ -1309,7 +1089,6 @@ button {
     backdrop-filter: blur(8px);
 
     opacity: 0;
-
     visibility: hidden;
 
     pointer-events: none;
@@ -1317,23 +1096,15 @@ button {
     transition:
         opacity .18s ease,
         visibility .18s ease;
-
 }
-
 
 .modal-overlay.show {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
-
 }
 
-
 .modal {
-
     width: min(430px, 100%);
 
     padding: 18px;
@@ -1347,25 +1118,17 @@ button {
 
     box-shadow:
         0 25px 80px rgba(0,0,0,.45);
-
 }
 
-
 .modal h2 {
-
     font-size: 19px;
-
     font-weight: 800;
 
     margin-bottom: 13px;
-
 }
 
-
 .modal textarea {
-
     width: 100%;
-
     min-height: 110px;
 
     resize: vertical;
@@ -1380,37 +1143,24 @@ button {
     border-radius: 14px;
 
     background: var(--surface-2);
-
     color: var(--text);
 
     font-size: 15px;
-
     line-height: 1.6;
-
 }
-
 
 .modal textarea:focus {
-
-    border-color:
-        var(--accent);
-
+    border-color: var(--accent);
 }
 
-
 .modal-actions {
-
     display: flex;
-
     gap: 8px;
 
     margin-top: 12px;
-
 }
 
-
 .modal-actions button {
-
     flex: 1;
 
     min-height: 46px;
@@ -1418,46 +1168,31 @@ button {
     border-radius: 13px;
 
     font-size: 14px;
-
     font-weight: 750;
-
 }
-
 
 .modal-save {
-
     background: var(--accent);
-
     color: #07130e;
-
 }
-
 
 .modal-cancel {
-
     background: var(--surface-2);
-
     color: var(--text);
-
 }
-
 
 /* =========================================================
    SETTINGS
    ========================================================= */
 
 .settings-panel {
-
     position: fixed;
-
     inset: 0;
 
     z-index: 700;
 
     display: flex;
-
     align-items: flex-end;
-
     justify-content: center;
 
     padding: 12px;
@@ -1467,31 +1202,21 @@ button {
     backdrop-filter: blur(7px);
 
     opacity: 0;
-
     visibility: hidden;
-
     pointer-events: none;
 
     transition:
         opacity .2s ease,
         visibility .2s ease;
-
 }
-
 
 .settings-panel.show {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
-
 }
 
-
 .settings-box {
-
     width: min(620px, 100%);
 
     max-height: 88dvh;
@@ -1509,89 +1234,60 @@ button {
 
     box-shadow:
         0 25px 80px rgba(0,0,0,.45);
-
 }
 
-
 .settings-head {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     margin-bottom: 16px;
-
 }
-
 
 .settings-head h2 {
-
     font-size: 20px;
-
     font-weight: 850;
-
 }
 
-
 .close-settings {
-
     width: 38px;
     height: 38px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 11px;
 
     background: var(--surface-2);
-
     color: var(--muted);
 
     font-size: 20px;
-
 }
 
-
 .setting-group {
-
-    padding:
-        14px 0;
+    padding: 14px 0;
 
     border-top:
         1px solid var(--border);
-
 }
 
-
 .setting-label {
-
     margin-bottom: 10px;
 
     color: var(--text-soft);
 
     font-size: 13px;
-
     font-weight: 750;
-
 }
 
-
 .setting-options {
-
     display: flex;
-
     flex-wrap: wrap;
 
     gap: 8px;
-
 }
 
-
 .setting-option {
-
     min-height: 40px;
 
     padding:
@@ -1601,43 +1297,37 @@ button {
     border-radius: 11px;
 
     background: var(--surface-2);
-
     color: var(--muted);
 
     font-size: 12px;
-
     font-weight: 700;
-
 }
 
-
 .setting-option.active {
-
     background: var(--accent-soft);
-
     color: var(--accent);
 
     box-shadow:
         inset 0 0 0 1px var(--accent);
-
 }
 
-
 .accent-dot {
-
     width: 18px;
     height: 18px;
 
     display: inline-block;
 
-    margin-left: 5px;
+    margin-right: 5px;
 
     vertical-align: -4px;
 
     border-radius: 50%;
-
 }
 
+[dir="rtl"] .accent-dot {
+    margin-right: 0;
+    margin-left: 5px;
+}
 
 .dot-green {
     background: #19c58b;
@@ -1659,9 +1349,7 @@ button {
     background: #f278b4;
 }
 
-
 .trash-open {
-
     width: 100%;
 
     min-height: 46px;
@@ -1671,32 +1359,24 @@ button {
     border-radius: 13px;
 
     background: var(--surface-2);
-
     color: var(--text);
 
     font-size: 13px;
-
     font-weight: 750;
-
 }
-
 
 /* =========================================================
    TRASH
    ========================================================= */
 
 .trash-panel {
-
     position: fixed;
-
     inset: 0;
 
     z-index: 800;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     padding: 18px;
@@ -1706,27 +1386,17 @@ button {
     backdrop-filter: blur(8px);
 
     opacity: 0;
-
     visibility: hidden;
-
     pointer-events: none;
-
 }
-
 
 .trash-panel.show {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
-
 }
 
-
 .trash-box {
-
     width: min(560px, 100%);
 
     max-height: 82dvh;
@@ -1739,35 +1409,24 @@ button {
 
     border-radius: 22px;
 
-    border: 1px solid var(--border);
-
+    border:
+        1px solid var(--border);
 }
 
-
 .trash-head {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     margin-bottom: 13px;
-
 }
-
 
 .trash-head h2 {
-
     font-size: 19px;
-
     font-weight: 850;
-
 }
 
-
 .trash-empty {
-
     padding: 50px 20px;
 
     text-align: center;
@@ -1775,29 +1434,22 @@ button {
     color: var(--muted);
 
     font-size: 13px;
-
 }
 
-
 .trash-item {
-
     display: flex;
-
     align-items: center;
 
     gap: 10px;
 
     padding: 11px 0;
 
-    border-bottom: 1px solid var(--border);
-
+    border-bottom:
+        1px solid var(--border);
 }
 
-
 .trash-text {
-
     flex: 1;
-
     min-width: 0;
 
     color: var(--text-soft);
@@ -1805,21 +1457,14 @@ button {
     font-size: 14px;
 
     overflow-wrap: anywhere;
-
 }
-
 
 .trash-actions {
-
     display: flex;
-
     gap: 5px;
-
 }
 
-
 .trash-actions button {
-
     min-height: 36px;
 
     padding:
@@ -1829,29 +1474,21 @@ button {
     border-radius: 9px;
 
     background: var(--surface-2);
-
     color: var(--text);
 
     font-size: 11px;
-
     font-weight: 700;
-
 }
-
 
 .trash-actions .permanent {
-
     color: var(--danger);
-
 }
-
 
 /* =========================================================
    TOAST
    ========================================================= */
 
 .toast {
-
     position: fixed;
 
     left: 50%;
@@ -1865,7 +1502,6 @@ button {
     z-index: 900;
 
     display: flex;
-
     align-items: center;
 
     gap: 12px;
@@ -1888,7 +1524,6 @@ button {
         translate(-50%, 15px);
 
     opacity: 0;
-
     visibility: hidden;
 
     pointer-events: none;
@@ -1896,35 +1531,23 @@ button {
     transition:
         opacity .2s ease,
         transform .2s ease;
-
 }
 
-
 .toast.show {
-
     opacity: 1;
-
     visibility: visible;
-
     pointer-events: auto;
 
     transform:
         translate(-50%, 0);
-
 }
-
 
 .toast-message {
-
     color: var(--text);
-
     font-size: 12px;
-
 }
 
-
 .toast-undo {
-
     padding:
         6px
         9px;
@@ -1932,15 +1555,11 @@ button {
     border-radius: 8px;
 
     background: var(--accent-soft);
-
     color: var(--accent);
 
     font-size: 11px;
-
     font-weight: 800;
-
 }
-
 
 /* =========================================================
    MOBILE
@@ -1949,37 +1568,28 @@ button {
 @media (max-width: 600px) {
 
     .header {
-
         padding-left: 17px;
         padding-right: 17px;
-
     }
-
 
     .tasks {
-
         padding-left: 17px;
         padding-right: 17px;
-
     }
 
+    .brand-name {
+        font-size: 23px;
+    }
 
     .greeting h1 {
-
         font-size: 24px;
-
     }
-
 
     .task-title {
-
         font-size: 16px;
-
     }
 
-
     .composer-wrap {
-
         padding-left: 11px;
         padding-right: 11px;
 
@@ -1988,85 +1598,58 @@ button {
                 13px +
                 env(safe-area-inset-bottom)
             );
-
     }
-
 
     .action-card {
-
         width: 100%;
-
         max-width: 390px;
-
     }
 
+    .menu-overlay {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
 }
-
 
 @media (max-width: 380px) {
 
     .header {
-
         padding-left: 14px;
         padding-right: 14px;
-
     }
-
 
     .tasks {
-
         padding-left: 14px;
         padding-right: 14px;
-
     }
-
 
     .brand-name {
-
         font-size: 22px;
-
     }
-
 
     .greeting h1 {
-
         font-size: 22px;
-
     }
-
 
     .task {
-
-        gap: 8px;
-
+        gap: 7px;
     }
-
 
     .task-title {
-
         font-size: 15px;
-
     }
-
 
     .check-hit,
     .star-btn {
-
         width: 42px;
         flex-basis: 42px;
-
     }
-
 
     .check {
-
         width: 26px;
         height: 26px;
-
     }
-
 }
-
 
 /* =========================================================
    REDUCED MOTION
@@ -2077,28 +1660,17 @@ button {
     *,
     *::before,
     *::after {
-
         animation-duration: .01ms !important;
-
         transition-duration: .01ms !important;
-
     }
-
 }
 
 </style>
 </head>
 
-
 <body data-accent="green">
 
-
 <div class="app">
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <header class="header">
 
@@ -2106,29 +1678,28 @@ button {
 
         <div class="brand">
 
-            <div class="logo"
-                 aria-hidden="true">
+            <div class="logo" aria-hidden="true">
                 ن
             </div>
 
-            <div class="brand-name">
+            <div class="brand-name" id="brandName">
                 ناوي
             </div>
 
         </div>
 
+        <!-- MENU -->
 
         <button
             class="settings-btn"
-            id="settingsBtn"
-            aria-label="الإعدادات"
+            id="menuBtn"
+            aria-label="القائمة"
             type="button"
         >
-            ⚙
+            ⋯
         </button>
 
     </div>
-
 
     <div class="greeting">
 
@@ -2136,12 +1707,9 @@ button {
             ناوي على إيه النهارده؟
         </h1>
 
-        <p id="currentDate">
-            —
-        </p>
+        <p id="currentDate">—</p>
 
     </div>
-
 
     <div class="progress">
 
@@ -2153,14 +1721,11 @@ button {
             aria-valuenow="0"
             aria-label="نسبة الإنجاز"
         >
-
             <div
                 class="progress-fill"
                 id="progressFill"
             ></div>
-
         </div>
-
 
         <div
             class="progress-text"
@@ -2173,22 +1738,12 @@ button {
 
 </header>
 
-
-<!-- =====================================================
-     TASKS
-===================================================== -->
-
 <main
     class="tasks"
     id="tasksContainer"
     aria-live="polite"
     aria-label="قائمة النوايا"
 ></main>
-
-
-<!-- =====================================================
-     COMPOSER
-===================================================== -->
 
 <div class="composer-wrap">
 
@@ -2206,7 +1761,6 @@ button {
                 aria-label="نية جديدة"
             ></textarea>
 
-
             <button
                 class="submit"
                 id="submitBtn"
@@ -2214,14 +1768,12 @@ button {
                 aria-label="إضافة نية"
                 disabled
             >
-
                 <span
                     class="send-arrow"
                     aria-hidden="true"
                 >
                     ↑
                 </span>
-
             </button>
 
         </div>
@@ -2232,6 +1784,62 @@ button {
 
 </div>
 
+<!-- =====================================================
+     MAIN MENU
+===================================================== -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+    aria-hidden="true"
+>
+
+    <div
+        class="menu-card"
+        role="menu"
+    >
+
+        <button
+            class="menu-button active"
+            id="menuToday"
+            type="button"
+        >
+            <span class="menu-icon">☀</span>
+            <span id="menuTodayLabel">اليوم</span>
+        </button>
+
+        <button
+            class="menu-button"
+            id="menuAll"
+            type="button"
+        >
+            <span class="menu-icon">☷</span>
+            <span id="menuAllLabel">كل النوايا</span>
+        </button>
+
+        <button
+            class="menu-button"
+            id="menuCompleted"
+            type="button"
+        >
+            <span class="menu-icon">✓</span>
+            <span id="menuCompletedLabel">المكتملة</span>
+        </button>
+
+        <div class="menu-divider"></div>
+
+        <button
+            class="menu-button"
+            id="menuSettings"
+            type="button"
+        >
+            <span class="menu-icon">⚙</span>
+            <span id="menuSettingsLabel">الإعدادات</span>
+        </button>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      ACTION CARD
@@ -2256,64 +1864,39 @@ button {
             النية
         </div>
 
-
         <button
             class="action-button complete"
             id="actionComplete"
             type="button"
         >
-
-            <span class="action-icon">
-                ✓
-            </span>
-
-            <span id="completeLabel">
-                تمت
-            </span>
-
+            <span class="action-icon">✓</span>
+            <span id="completeLabel">تمت</span>
         </button>
-
 
         <button
             class="action-button"
             id="actionEdit"
             type="button"
         >
-
-            <span class="action-icon">
-                ✦
-            </span>
-
-            <span id="editLabel">
-                تعديل
-            </span>
-
+            <span class="action-icon">✦</span>
+            <span id="editLabel">تعديل</span>
         </button>
-
 
         <button
             class="action-button delete"
             id="actionDelete"
             type="button"
         >
-
-            <span class="action-icon">
-                ×
-            </span>
-
-            <span id="deleteLabel">
-                حذف
-            </span>
-
+            <span class="action-icon">×</span>
+            <span id="deleteLabel">حذف</span>
         </button>
 
     </div>
 
 </div>
 
-
 <!-- =====================================================
-     EDIT MODAL
+     EDIT
 ===================================================== -->
 
 <div
@@ -2332,7 +1915,6 @@ button {
             id="editInput"
             maxlength="500"
         ></textarea>
-
 
         <div class="modal-actions">
 
@@ -2357,7 +1939,6 @@ button {
     </div>
 
 </div>
-
 
 <!-- =====================================================
      SETTINGS
@@ -2387,9 +1968,6 @@ button {
             </button>
 
         </div>
-
-
-        <!-- LANGUAGE -->
 
         <div class="setting-group">
 
@@ -2422,9 +2000,6 @@ button {
 
         </div>
 
-
-        <!-- THEME -->
-
         <div class="setting-group">
 
             <div
@@ -2456,9 +2031,6 @@ button {
 
         </div>
 
-
-        <!-- ACCENT -->
-
         <div class="setting-group">
 
             <div
@@ -2476,7 +2048,7 @@ button {
                     type="button"
                 >
                     <span class="accent-dot dot-green"></span>
-                    أخضر
+                    <span data-accent-text="green">أخضر</span>
                 </button>
 
                 <button
@@ -2485,7 +2057,7 @@ button {
                     type="button"
                 >
                     <span class="accent-dot dot-blue"></span>
-                    أزرق
+                    <span data-accent-text="blue">أزرق</span>
                 </button>
 
                 <button
@@ -2494,7 +2066,7 @@ button {
                     type="button"
                 >
                     <span class="accent-dot dot-purple"></span>
-                    بنفسجي
+                    <span data-accent-text="purple">بنفسجي</span>
                 </button>
 
                 <button
@@ -2503,7 +2075,7 @@ button {
                     type="button"
                 >
                     <span class="accent-dot dot-orange"></span>
-                    برتقالي
+                    <span data-accent-text="orange">برتقالي</span>
                 </button>
 
                 <button
@@ -2512,15 +2084,12 @@ button {
                     type="button"
                 >
                     <span class="accent-dot dot-pink"></span>
-                    وردي
+                    <span data-accent-text="pink">وردي</span>
                 </button>
 
             </div>
 
         </div>
-
-
-        <!-- TRASH -->
 
         <div class="setting-group">
 
@@ -2544,7 +2113,6 @@ button {
     </div>
 
 </div>
-
 
 <!-- =====================================================
      TRASH
@@ -2575,13 +2143,11 @@ button {
 
         </div>
 
-
         <div id="trashContainer"></div>
 
     </div>
 
 </div>
-
 
 <!-- =====================================================
      TOAST
@@ -2611,28 +2177,19 @@ button {
 
 </div>
 
-
 <script>
-
-/* =========================================================
-   NAWY CORE
-   ========================================================= */
 
 (() => {
 
 "use strict";
-
 
 /* =========================================================
    STORAGE
 ========================================================= */
 
 const STORAGE_KEY = "nawy_tasks_v8";
-
 const TRASH_KEY = "nawy_trash_v1";
-
 const SETTINGS_KEY = "nawy_settings_v1";
-
 
 /* =========================================================
    DOM
@@ -2658,6 +2215,30 @@ const progressBar =
 
 const currentDate =
     document.getElementById("currentDate");
+
+const brandName =
+    document.getElementById("brandName");
+
+const greetingTitle =
+    document.getElementById("greetingTitle");
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const menuOverlay =
+    document.getElementById("menuOverlay");
+
+const menuToday =
+    document.getElementById("menuToday");
+
+const menuAll =
+    document.getElementById("menuAll");
+
+const menuCompleted =
+    document.getElementById("menuCompleted");
+
+const menuSettings =
+    document.getElementById("menuSettings");
 
 const actionOverlay =
     document.getElementById("actionOverlay");
@@ -2686,9 +2267,6 @@ const editSave =
 const editCancel =
     document.getElementById("editCancel");
 
-const settingsBtn =
-    document.getElementById("settingsBtn");
-
 const settingsPanel =
     document.getElementById("settingsPanel");
 
@@ -2716,6 +2294,47 @@ const toastMessage =
 const toastUndo =
     document.getElementById("toastUndo");
 
+const settingsTitle =
+    document.getElementById("settingsTitle");
+
+const languageLabel =
+    document.getElementById("languageLabel");
+
+const themeLabel =
+    document.getElementById("themeLabel");
+
+const accentLabel =
+    document.getElementById("accentLabel");
+
+const trashLabel =
+    document.getElementById("trashLabel");
+
+const completeLabel =
+    document.getElementById("completeLabel");
+
+const editLabel =
+    document.getElementById("editLabel");
+
+const deleteLabel =
+    document.getElementById("deleteLabel");
+
+const editTitle =
+    document.getElementById("editTitle");
+
+const trashTitle =
+    document.getElementById("trashTitle");
+
+const menuTodayLabel =
+    document.getElementById("menuTodayLabel");
+
+const menuAllLabel =
+    document.getElementById("menuAllLabel");
+
+const menuCompletedLabel =
+    document.getElementById("menuCompletedLabel");
+
+const menuSettingsLabel =
+    document.getElementById("menuSettingsLabel");
 
 /* =========================================================
    STATE
@@ -2740,6 +2359,8 @@ let settings = loadJSON(
     }
 );
 
+let currentView = "today";
+
 let selectedTaskId = null;
 
 let deletedTask = null;
@@ -2750,9 +2371,8 @@ let longPressTimer = null;
 
 let longPressTriggered = false;
 
-
 /* =========================================================
-   SAFE STORAGE
+   STORAGE
 ========================================================= */
 
 function loadJSON(key, fallback) {
@@ -2774,7 +2394,6 @@ function loadJSON(key, fallback) {
 
 }
 
-
 function saveJSON(key, value) {
 
     try {
@@ -2793,7 +2412,6 @@ function saveJSON(key, value) {
     }
 
 }
-
 
 /* =========================================================
    DATE
@@ -2818,7 +2436,6 @@ function getDateKey(date = new Date()) {
 
 }
 
-
 function formatDate(date = new Date()) {
 
     const locale =
@@ -2837,14 +2454,12 @@ function formatDate(date = new Date()) {
 
 }
 
-
 function updateDate() {
 
     currentDate.textContent =
         formatDate();
 
 }
-
 
 /* =========================================================
    NORMALIZE
@@ -2856,9 +2471,7 @@ function normalizeTask(task) {
         !task ||
         typeof task !== "object"
     ) {
-
         return null;
-
     }
 
     const text =
@@ -2867,9 +2480,7 @@ function normalizeTask(task) {
             .slice(0, 500);
 
     if (!text) {
-
         return null;
-
     }
 
     const createdAt =
@@ -2907,12 +2518,10 @@ function normalizeTask(task) {
 
 }
 
-
 tasks =
     tasks
         .map(normalizeTask)
         .filter(Boolean);
-
 
 /* =========================================================
    ANALYTICS
@@ -2938,7 +2547,6 @@ function analytics(event, params = {}) {
 
 }
 
-
 /* =========================================================
    ADD
 ========================================================= */
@@ -2951,9 +2559,7 @@ function addTask(text) {
             .slice(0, 500);
 
     if (!clean) {
-
         return false;
-
     }
 
     const task = {
@@ -2986,9 +2592,9 @@ function addTask(text) {
         tasks
     );
 
-    analytics(
-        "add_task"
-    );
+    analytics("add_task");
+
+    currentView = "today";
 
     render();
 
@@ -2996,6 +2602,19 @@ function addTask(text) {
 
 }
 
+/* =========================================================
+   FIND
+========================================================= */
+
+function findTask(id) {
+
+    return tasks.find(
+        task =>
+            String(task.id) ===
+            String(id)
+    );
+
+}
 
 /* =========================================================
    COMPLETE
@@ -3007,15 +2626,12 @@ function completeTask(id) {
         findTask(id);
 
     if (!task) {
-
         return;
-
     }
 
     if (task.completed) {
 
         task.completed = false;
-
         task.completedAt = null;
 
     } else {
@@ -3025,9 +2641,7 @@ function completeTask(id) {
         task.completedAt =
             new Date().toISOString();
 
-        analytics(
-            "complete_task"
-        );
+        analytics("complete_task");
 
     }
 
@@ -3069,22 +2683,6 @@ function completeTask(id) {
 
 }
 
-
-/* =========================================================
-   FIND
-========================================================= */
-
-function findTask(id) {
-
-    return tasks.find(
-        task =>
-            String(task.id) ===
-            String(id)
-    );
-
-}
-
-
 /* =========================================================
    STAR
 ========================================================= */
@@ -3095,9 +2693,7 @@ function toggleStar(id) {
         findTask(id);
 
     if (!task) {
-
         return;
-
     }
 
     task.starred =
@@ -3120,7 +2716,6 @@ function toggleStar(id) {
 
 }
 
-
 /* =========================================================
    DELETE
 ========================================================= */
@@ -3135,9 +2730,7 @@ function deleteTask(id) {
         );
 
     if (index === -1) {
-
         return;
-
     }
 
     const task =
@@ -3169,9 +2762,7 @@ function deleteTask(id) {
         trash
     );
 
-    analytics(
-        "delete_task"
-    );
+    analytics("delete_task");
 
     render();
 
@@ -3194,7 +2785,6 @@ function deleteTask(id) {
 
 }
 
-
 /* =========================================================
    UNDO
 ========================================================= */
@@ -3202,9 +2792,7 @@ function deleteTask(id) {
 function undoDelete() {
 
     if (!deletedTask) {
-
         return;
-
     }
 
     const {
@@ -3259,7 +2847,6 @@ function undoDelete() {
 
 }
 
-
 /* =========================================================
    EDIT
 ========================================================= */
@@ -3270,9 +2857,7 @@ function openEdit(id) {
         findTask(id);
 
     if (!task) {
-
         return;
-
     }
 
     selectedTaskId =
@@ -3295,20 +2880,16 @@ function openEdit(id) {
     setTimeout(() => {
 
         editInput.focus();
-
         editInput.select();
 
     }, 50);
 
 }
 
-
 function saveEdit() {
 
     if (!selectedTaskId) {
-
         return;
-
     }
 
     const task =
@@ -3317,9 +2898,7 @@ function saveEdit() {
         );
 
     if (!task) {
-
         return;
-
     }
 
     const text =
@@ -3328,9 +2907,7 @@ function saveEdit() {
             .slice(0, 500);
 
     if (!text) {
-
         return;
-
     }
 
     task.text =
@@ -3341,16 +2918,13 @@ function saveEdit() {
         tasks
     );
 
-    analytics(
-        "edit_task"
-    );
+    analytics("edit_task");
 
     closeEdit();
 
     render();
 
 }
-
 
 function closeEdit() {
 
@@ -3368,7 +2942,6 @@ function closeEdit() {
 
 }
 
-
 /* =========================================================
    ACTION CARD
 ========================================================= */
@@ -3379,9 +2952,7 @@ function openAction(id) {
         findTask(id);
 
     if (!task) {
-
         return;
-
     }
 
     selectedTaskId =
@@ -3389,6 +2960,19 @@ function openAction(id) {
 
     actionTaskTitle.textContent =
         task.text;
+
+    completeLabel.textContent =
+        task.completed
+            ? (
+                settings.language === "en"
+                    ? "Mark incomplete"
+                    : "إلغاء الإنجاز"
+            )
+            : (
+                settings.language === "en"
+                    ? "Complete"
+                    : "تمت"
+            );
 
     actionOverlay.classList.add(
         "show"
@@ -3400,7 +2984,6 @@ function openAction(id) {
     );
 
 }
-
 
 function closeAction() {
 
@@ -3415,6 +2998,111 @@ function closeAction() {
 
 }
 
+/* =========================================================
+   MAIN MENU
+========================================================= */
+
+function openMenu() {
+
+    menuOverlay.classList.add(
+        "show"
+    );
+
+    menuOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+function closeMenu() {
+
+    menuOverlay.classList.remove(
+        "show"
+    );
+
+    menuOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+function setView(view) {
+
+    currentView =
+        view;
+
+    closeMenu();
+
+    render();
+
+}
+
+/* =========================================================
+   MENU EVENTS
+========================================================= */
+
+menuBtn.addEventListener(
+    "click",
+    () => {
+
+        if (
+            menuOverlay.classList.contains("show")
+        ) {
+
+            closeMenu();
+
+        } else {
+
+            openMenu();
+
+        }
+
+    }
+);
+
+menuToday.addEventListener(
+    "click",
+    () => setView("today")
+);
+
+menuAll.addEventListener(
+    "click",
+    () => setView("all")
+);
+
+menuCompleted.addEventListener(
+    "click",
+    () => setView("completed")
+);
+
+menuSettings.addEventListener(
+    "click",
+    () => {
+
+        closeMenu();
+
+        openSettings();
+
+    }
+);
+
+menuOverlay.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            menuOverlay
+        ) {
+
+            closeMenu();
+
+        }
+
+    }
+);
 
 /* =========================================================
    ACTION EVENTS
@@ -3437,7 +3125,6 @@ actionComplete.addEventListener(
     }
 );
 
-
 actionEdit.addEventListener(
     "click",
     () => {
@@ -3452,7 +3139,6 @@ actionEdit.addEventListener(
 
     }
 );
-
 
 actionDelete.addEventListener(
     "click",
@@ -3472,7 +3158,6 @@ actionDelete.addEventListener(
     }
 );
 
-
 actionOverlay.addEventListener(
     "click",
     event => {
@@ -3488,168 +3173,6 @@ actionOverlay.addEventListener(
 
     }
 );
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render() {
-
-    updateProgress();
-
-    tasksContainer.innerHTML =
-        "";
-
-    const today =
-        getDateKey();
-
-    const todayTasks =
-        tasks
-            .filter(
-                task =>
-                    !task.completed &&
-                    task.taskDay === today
-            )
-            .sort(sortActive);
-
-    const carriedTasks =
-        tasks
-            .filter(
-                task =>
-                    !task.completed &&
-                    task.taskDay !== today
-            )
-            .sort(sortActive);
-
-    const completedTasks =
-        tasks
-            .filter(
-                task =>
-                    task.completed
-            )
-            .sort(sortCompleted);
-
-    let content =
-        false;
-
-
-    if (todayTasks.length) {
-
-        appendSection(
-            settings.language === "en"
-                ? "Today"
-                : "نوايا اليوم"
-        );
-
-        todayTasks.forEach(
-            task => {
-
-                tasksContainer.appendChild(
-                    createTaskElement(
-                        task
-                    )
-                );
-
-            }
-        );
-
-        content = true;
-
-    }
-
-
-    if (carriedTasks.length) {
-
-        appendSection(
-            settings.language === "en"
-                ? "Carried over"
-                : "مستمرة من قبل"
-        );
-
-        carriedTasks.forEach(
-            task => {
-
-                tasksContainer.appendChild(
-                    createTaskElement(
-                        task,
-                        true
-                    )
-                );
-
-            }
-        );
-
-        content = true;
-
-    }
-
-
-    if (completedTasks.length) {
-
-        appendSection(
-            settings.language === "en"
-                ? "Completed"
-                : "النوايا المحققة"
-        );
-
-        completedTasks.forEach(
-            task => {
-
-                tasksContainer.appendChild(
-                    createTaskElement(
-                        task
-                    )
-                );
-
-            }
-        );
-
-        content = true;
-
-    }
-
-
-    if (!content) {
-
-        const emptyText =
-            settings.language === "en"
-                ? [
-                    "Nothing here yet",
-                    "Write the first thing you intend to do."
-                ]
-                : [
-                    "مفيش نوايا هنا",
-                    "اكتب أول حاجة ناوي تعملها."
-                ];
-
-        tasksContainer.innerHTML = `
-
-            <div class="empty">
-
-                <div
-                    class="empty-icon"
-                    aria-hidden="true"
-                >
-                    🌱
-                </div>
-
-                <strong>
-                    ${emptyText[0]}
-                </strong>
-
-                <span>
-                    ${emptyText[1]}
-                </span>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
 
 /* =========================================================
    SORT
@@ -3676,7 +3199,6 @@ function sortActive(a, b) {
 
 }
 
-
 function sortCompleted(a, b) {
 
     return (
@@ -3691,7 +3213,6 @@ function sortCompleted(a, b) {
     );
 
 }
-
 
 /* =========================================================
    SECTION
@@ -3725,7 +3246,6 @@ function appendSection(label) {
 
 }
 
-
 /* =========================================================
    TASK ELEMENT
 ========================================================= */
@@ -3753,7 +3273,6 @@ function createTaskElement(
 
     article.dataset.taskId =
         String(task.id);
-
 
     /* CHECK */
 
@@ -3786,7 +3305,6 @@ function createTaskElement(
             )
     );
 
-
     const check =
         document.createElement(
             "span"
@@ -3796,24 +3314,19 @@ function createTaskElement(
         "check";
 
     check.innerHTML = `
-
         <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
         >
-            <path
-                d="M5 12.5l4.2 4.2L19 7"
-            ></path>
+            <path d="M5 12.5l4.2 4.2L19 7"></path>
         </svg>
-
     `;
 
     checkHit.appendChild(
         check
     );
 
-
-    /* MAIN */
+    /* MAIN TEXT */
 
     const main =
         document.createElement(
@@ -3825,7 +3338,6 @@ function createTaskElement(
 
     main.dataset.action =
         "menu";
-
 
     const title =
         document.createElement(
@@ -3841,7 +3353,6 @@ function createTaskElement(
     main.appendChild(
         title
     );
-
 
     if (
         carried &&
@@ -3866,7 +3377,6 @@ function createTaskElement(
         );
 
     }
-
 
     /* STAR */
 
@@ -3895,8 +3405,16 @@ function createTaskElement(
     star.setAttribute(
         "aria-label",
         task.starred
-            ? "إلغاء التمييز"
-            : "تمييز النية"
+            ? (
+                settings.language === "en"
+                    ? "Remove star"
+                    : "إلغاء التمييز"
+            )
+            : (
+                settings.language === "en"
+                    ? "Star task"
+                    : "تمييز النية"
+            )
     );
 
     star.setAttribute(
@@ -3909,7 +3427,6 @@ function createTaskElement(
             ? "★"
             : "☆";
 
-
     article.append(
         checkHit,
         main,
@@ -3920,6 +3437,345 @@ function createTaskElement(
 
 }
 
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    updateProgress();
+
+    tasksContainer.innerHTML =
+        "";
+
+    const today =
+        getDateKey();
+
+    let visibleTasks = [];
+
+    if (currentView === "today") {
+
+        visibleTasks =
+            tasks
+                .filter(
+                    task =>
+                        task.taskDay === today
+                )
+                .sort(
+                    (a, b) => {
+
+                        if (
+                            a.completed !==
+                            b.completed
+                        ) {
+
+                            return (
+                                Number(a.completed) -
+                                Number(b.completed)
+                            );
+
+                        }
+
+                        if (
+                            a.starred !==
+                            b.starred
+                        ) {
+
+                            return (
+                                Number(b.starred) -
+                                Number(a.starred)
+                            );
+
+                        }
+
+                        return (
+                            new Date(b.createdAt) -
+                            new Date(a.createdAt)
+                        );
+
+                    }
+                );
+
+    } else if (currentView === "completed") {
+
+        visibleTasks =
+            tasks
+                .filter(
+                    task =>
+                        task.completed
+                )
+                .sort(sortCompleted);
+
+    } else {
+
+        visibleTasks =
+            tasks
+                .slice()
+                .sort(
+                    (a, b) => {
+
+                        if (
+                            a.completed !==
+                            b.completed
+                        ) {
+
+                            return (
+                                Number(a.completed) -
+                                Number(b.completed)
+                            );
+
+                        }
+
+                        return sortActive(a, b);
+
+                    }
+                );
+
+    }
+
+    if (!visibleTasks.length) {
+
+        const emptyText =
+            getEmptyText();
+
+        tasksContainer.innerHTML = `
+
+            <div class="empty">
+
+                <div
+                    class="empty-icon"
+                    aria-hidden="true"
+                >
+                    🌱
+                </div>
+
+                <strong>
+                    ${emptyText[0]}
+                </strong>
+
+                <span>
+                    ${emptyText[1]}
+                </span>
+
+            </div>
+
+        `;
+
+        updateMenuState();
+
+        return;
+
+    }
+
+    if (currentView === "today") {
+
+        const active =
+            visibleTasks.filter(
+                task =>
+                    !task.completed
+            );
+
+        const completed =
+            visibleTasks.filter(
+                task =>
+                    task.completed
+            );
+
+        if (active.length) {
+
+            appendSection(
+                settings.language === "en"
+                    ? "Today"
+                    : "نوايا اليوم"
+            );
+
+            active.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+        }
+
+        if (completed.length) {
+
+            appendSection(
+                settings.language === "en"
+                    ? "Completed"
+                    : "النوايا المحققة"
+            );
+
+            completed.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+        }
+
+    } else if (currentView === "all") {
+
+        const active =
+            visibleTasks.filter(
+                task =>
+                    !task.completed
+            );
+
+        const completed =
+            visibleTasks.filter(
+                task =>
+                    task.completed
+            );
+
+        if (active.length) {
+
+            appendSection(
+                settings.language === "en"
+                    ? "All intentions"
+                    : "كل النوايا"
+            );
+
+            active.forEach(
+                task => {
+
+                    const carried =
+                        task.taskDay !== today;
+
+                    tasksContainer.appendChild(
+                        createTaskElement(
+                            task,
+                            carried
+                        )
+                    );
+
+                }
+            );
+
+        }
+
+        if (completed.length) {
+
+            appendSection(
+                settings.language === "en"
+                    ? "Completed"
+                    : "النوايا المحققة"
+            );
+
+            completed.forEach(
+                task => {
+
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+        }
+
+    } else {
+
+        appendSection(
+            settings.language === "en"
+                ? "Completed"
+                : "النوايا المحققة"
+        );
+
+        visibleTasks.forEach(
+            task => {
+
+                tasksContainer.appendChild(
+                    createTaskElement(task)
+                );
+
+            }
+        );
+
+    }
+
+    updateMenuState();
+
+}
+
+/* =========================================================
+   EMPTY TEXT
+========================================================= */
+
+function getEmptyText() {
+
+    const en =
+        settings.language === "en";
+
+    if (currentView === "completed") {
+
+        return en
+            ? [
+                "Nothing completed yet",
+                "Completed intentions will appear here."
+            ]
+            : [
+                "مفيش نوايا مكتملة",
+                "النوايا اللي أنجزتها هتظهر هنا."
+            ];
+
+    }
+
+    if (currentView === "all") {
+
+        return en
+            ? [
+                "Nothing here yet",
+                "Write the first thing you intend to do."
+            ]
+            : [
+                "مفيش نوايا هنا",
+                "اكتب أول حاجة ناوي تعملها."
+            ];
+
+    }
+
+    return en
+        ? [
+            "Nothing planned for today",
+            "Write the first thing you intend to do."
+        ]
+        : [
+            "مفيش حاجة لليوم",
+            "اكتب أول حاجة ناوي تعملها."
+        ];
+
+}
+
+/* =========================================================
+   MENU STATE
+========================================================= */
+
+function updateMenuState() {
+
+    menuToday.classList.toggle(
+        "active",
+        currentView === "today"
+    );
+
+    menuAll.classList.toggle(
+        "active",
+        currentView === "all"
+    );
+
+    menuCompleted.classList.toggle(
+        "active",
+        currentView === "completed"
+    );
+
+}
 
 /* =========================================================
    TASK EVENTS
@@ -3942,62 +3798,40 @@ tasksContainer.addEventListener(
             event.target;
 
         const taskElement =
-            target.closest(
-                ".task"
-            );
+            target.closest(".task");
 
         if (!taskElement) {
-
             return;
-
         }
 
         const id =
             taskElement.dataset.taskId;
 
         const actionElement =
-            target.closest(
-                "[data-action]"
-            );
+            target.closest("[data-action]");
 
         if (!actionElement) {
-
             return;
-
         }
 
         const action =
             actionElement.dataset.action;
 
-
-        if (
-            action ===
-            "complete"
-        ) {
+        if (action === "complete") {
 
             completeTask(id);
-
             return;
 
         }
 
-
-        if (
-            action ===
-            "star"
-        ) {
+        if (action === "star") {
 
             toggleStar(id);
-
             return;
 
         }
 
-
-        if (
-            action ===
-            "menu"
-        ) {
+        if (action === "menu") {
 
             openAction(id);
 
@@ -4005,7 +3839,6 @@ tasksContainer.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    LONG PRESS
@@ -4021,29 +3854,21 @@ tasksContainer.addEventListener(
             );
 
         if (!main) {
-
             return;
-
         }
 
         if (
             event.pointerType ===
             "mouse"
         ) {
-
             return;
-
         }
 
         const task =
-            main.closest(
-                ".task"
-            );
+            main.closest(".task");
 
         if (!task) {
-
             return;
-
         }
 
         const id =
@@ -4069,13 +3894,15 @@ tasksContainer.addEventListener(
     }
 );
 
-
-["pointerup", "pointercancel", "pointerleave"]
-.forEach(type => {
+[
+    "pointerup",
+    "pointercancel",
+    "pointerleave"
+].forEach(type => {
 
     tasksContainer.addEventListener(
         type,
-        event => {
+        () => {
 
             clearTimeout(
                 longPressTimer
@@ -4085,7 +3912,6 @@ tasksContainer.addEventListener(
     );
 
 });
-
 
 /* =========================================================
    RIGHT CLICK
@@ -4101,9 +3927,7 @@ tasksContainer.addEventListener(
             );
 
         if (!taskElement) {
-
             return;
-
         }
 
         const main =
@@ -4112,9 +3936,7 @@ tasksContainer.addEventListener(
             );
 
         if (!main) {
-
             return;
-
         }
 
         event.preventDefault();
@@ -4125,7 +3947,6 @@ tasksContainer.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    INPUT
@@ -4144,7 +3965,6 @@ function resizeInput() {
 
 }
 
-
 function updateSubmitButton() {
 
     const hasText =
@@ -4162,18 +3982,15 @@ function updateSubmitButton() {
 
 }
 
-
 taskInput.addEventListener(
     "input",
     () => {
 
         resizeInput();
-
         updateSubmitButton();
 
     }
 );
-
 
 function handleSend() {
 
@@ -4181,9 +3998,7 @@ function handleSend() {
         taskInput.value.trim();
 
     if (!text) {
-
         return;
-
     }
 
     if (
@@ -4207,20 +4022,17 @@ function handleSend() {
 
 }
 
-
 submitBtn.addEventListener(
     "click",
     handleSend
 );
-
 
 taskInput.addEventListener(
     "keydown",
     event => {
 
         if (
-            event.key ===
-            "Enter" &&
+            event.key === "Enter" &&
             !event.shiftKey
         ) {
 
@@ -4232,7 +4044,6 @@ taskInput.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    PROGRESS
@@ -4297,7 +4108,6 @@ function updateProgress() {
 
 }
 
-
 /* =========================================================
    TOAST
 ========================================================= */
@@ -4313,7 +4123,6 @@ function showToast(message) {
 
 }
 
-
 function hideToast() {
 
     toast.classList.remove(
@@ -4322,12 +4131,10 @@ function hideToast() {
 
 }
 
-
 toastUndo.addEventListener(
     "click",
     undoDelete
 );
-
 
 /* =========================================================
    SETTINGS
@@ -4346,7 +4153,6 @@ function openSettings() {
 
 }
 
-
 function closeSettings() {
 
     settingsPanel.classList.remove(
@@ -4360,18 +4166,10 @@ function closeSettings() {
 
 }
 
-
-settingsBtn.addEventListener(
-    "click",
-    openSettings
-);
-
-
 settingsClose.addEventListener(
     "click",
     closeSettings
 );
-
 
 settingsPanel.addEventListener(
     "click",
@@ -4388,7 +4186,6 @@ settingsPanel.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    LANGUAGE
@@ -4424,7 +4221,6 @@ document.querySelectorAll(
     }
 );
 
-
 /* =========================================================
    THEME
 ========================================================= */
@@ -4458,7 +4254,6 @@ document.querySelectorAll(
 
     }
 );
-
 
 /* =========================================================
    ACCENT
@@ -4494,7 +4289,6 @@ document.querySelectorAll(
     }
 );
 
-
 /* =========================================================
    SAVE SETTINGS
 ========================================================= */
@@ -4508,18 +4302,20 @@ function saveSettings() {
 
 }
 
-
 /* =========================================================
    APPLY SETTINGS
 ========================================================= */
 
 function applySettings() {
 
+    const en =
+        settings.language === "en";
+
     document.documentElement.lang =
         settings.language;
 
     document.documentElement.dir =
-        settings.language === "en"
+        en
             ? "ltr"
             : "rtl";
 
@@ -4531,6 +4327,44 @@ function applySettings() {
         settings.theme === "light"
     );
 
+    /* BRAND */
+
+    brandName.textContent =
+        en
+            ? "NAWY"
+            : "ناوي";
+
+    document.title =
+        en
+            ? "NAWY — What are you up to today?"
+            : "ناوي — على إيه النهارده؟";
+
+    document.querySelector(
+        'meta[name="apple-mobile-web-app-title"]'
+    ).setAttribute(
+        "content",
+        en ? "NAWY" : "ناوي"
+    );
+
+    document.querySelector(
+        'meta[name="description"]'
+    ).setAttribute(
+        "content",
+        en
+            ? "NAWY — Write your intention. Get it done."
+            : "ناوي — اكتب نيتك وأنجزها."
+    );
+
+    /* SETTINGS BUTTON */
+
+    menuBtn.setAttribute(
+        "aria-label",
+        en
+            ? "Menu"
+            : "القائمة"
+    );
+
+    /* LANGUAGE */
 
     document.querySelectorAll(
         "[data-language]"
@@ -4546,6 +4380,7 @@ function applySettings() {
         }
     );
 
+    /* THEME */
 
     document.querySelectorAll(
         "[data-theme]"
@@ -4561,6 +4396,7 @@ function applySettings() {
         }
     );
 
+    /* ACCENT */
 
     document.querySelectorAll(
         "[data-accent-choice]"
@@ -4576,7 +4412,6 @@ function applySettings() {
         }
     );
 
-
     updateStaticText();
 
     updateDate();
@@ -4585,9 +4420,8 @@ function applySettings() {
 
 }
 
-
 /* =========================================================
-   STATIC TEXT
+   STATIC TRANSLATIONS
 ========================================================= */
 
 function updateStaticText() {
@@ -4595,9 +4429,7 @@ function updateStaticText() {
     const en =
         settings.language === "en";
 
-    document.getElementById(
-        "greetingTitle"
-    ).textContent =
+    greetingTitle.textContent =
         en
             ? "What are you up to today?"
             : "ناوي على إيه النهارده؟";
@@ -4606,6 +4438,13 @@ function updateStaticText() {
         en
             ? "Write what you intend to do..."
             : "اكتب اللي ناوي عليه...";
+
+    taskInput.setAttribute(
+        "aria-label",
+        en
+            ? "New intention"
+            : "نية جديدة"
+    );
 
     settingsTitle.textContent =
         en
@@ -4632,32 +4471,29 @@ function updateStaticText() {
             ? "Trash"
             : "سلة المحذوفات";
 
-    document.getElementById(
-        "completeLabel"
-    ).textContent =
+    trashTitle.textContent =
+        en
+            ? "Trash"
+            : "سلة المحذوفات";
+
+    completeLabel.textContent =
         en
             ? "Complete"
             : "تمت";
 
-    document.getElementById(
-        "editLabel"
-    ).textContent =
+    editLabel.textContent =
         en
             ? "Edit"
             : "تعديل";
 
-    document.getElementById(
-        "deleteLabel"
-    ).textContent =
+    deleteLabel.textContent =
         en
             ? "Delete"
             : "حذف";
 
-    document.getElementById(
-        "editTitle"
-    ).textContent =
+    editTitle.textContent =
         en
-            ? "Edit task"
+            ? "Edit intention"
             : "تعديل النية";
 
     editCancel.textContent =
@@ -4670,15 +4506,100 @@ function updateStaticText() {
             ? "Save"
             : "حفظ";
 
-    document.getElementById(
-        "trashTitle"
-    ).textContent =
+    openTrash.textContent =
         en
-            ? "Trash"
-            : "سلة المحذوفات";
+            ? "🗑 Trash"
+            : "🗑 سلة المحذوفات";
+
+    /* MENU */
+
+    menuTodayLabel.textContent =
+        en
+            ? "Today"
+            : "اليوم";
+
+    menuAllLabel.textContent =
+        en
+            ? "All intentions"
+            : "كل النوايا";
+
+    menuCompletedLabel.textContent =
+        en
+            ? "Completed"
+            : "المكتملة";
+
+    menuSettingsLabel.textContent =
+        en
+            ? "Settings"
+            : "الإعدادات";
+
+    /* THEME */
+
+    const themeButtons =
+        document.querySelectorAll(
+            "[data-theme]"
+        );
+
+    themeButtons.forEach(
+        button => {
+
+            if (
+                button.dataset.theme ===
+                "dark"
+            ) {
+
+                button.textContent =
+                    en
+                        ? "◐ Dark"
+                        : "◐ داكن";
+
+            } else {
+
+                button.textContent =
+                    en
+                        ? "○ Light"
+                        : "○ نهاري";
+
+            }
+
+        }
+    );
+
+    /* ACCENTS */
+
+    const accentNames = {
+
+        green:
+            en ? "Green" : "أخضر",
+
+        blue:
+            en ? "Blue" : "أزرق",
+
+        purple:
+            en ? "Purple" : "بنفسجي",
+
+        orange:
+            en ? "Orange" : "برتقالي",
+
+        pink:
+            en ? "Pink" : "وردي"
+
+    };
+
+    document.querySelectorAll(
+        "[data-accent-text]"
+    ).forEach(
+        span => {
+
+            span.textContent =
+                accentNames[
+                    span.dataset.accentText
+                ];
+
+        }
+    );
 
 }
-
 
 /* =========================================================
    TRASH
@@ -4701,7 +4622,6 @@ function openTrashPanel() {
 
 }
 
-
 function closeTrashPanel() {
 
     trashPanel.classList.remove(
@@ -4715,18 +4635,15 @@ function closeTrashPanel() {
 
 }
 
-
 openTrash.addEventListener(
     "click",
     openTrashPanel
 );
 
-
 trashClose.addEventListener(
     "click",
     closeTrashPanel
 );
-
 
 trashPanel.addEventListener(
     "click",
@@ -4743,7 +4660,6 @@ trashPanel.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    RENDER TRASH
@@ -4772,7 +4688,6 @@ function renderTrash() {
 
     }
 
-
     trash.forEach(
         item => {
 
@@ -4783,7 +4698,6 @@ function renderTrash() {
 
             row.className =
                 "trash-item";
-
 
             const text =
                 document.createElement(
@@ -4796,7 +4710,6 @@ function renderTrash() {
             text.textContent =
                 item.text;
 
-
             const actions =
                 document.createElement(
                     "div"
@@ -4804,7 +4717,6 @@ function renderTrash() {
 
             actions.className =
                 "trash-actions";
-
 
             const restore =
                 document.createElement(
@@ -4829,7 +4741,6 @@ function renderTrash() {
 
                 }
             );
-
 
             const permanent =
                 document.createElement(
@@ -4858,7 +4769,6 @@ function renderTrash() {
                 }
             );
 
-
             actions.append(
                 restore,
                 permanent
@@ -4878,9 +4788,8 @@ function renderTrash() {
 
 }
 
-
 /* =========================================================
-   RESTORE TRASH
+   RESTORE
 ========================================================= */
 
 function restoreTrashItem(id) {
@@ -4893,9 +4802,7 @@ function restoreTrashItem(id) {
         );
 
     if (index === -1) {
-
         return;
-
     }
 
     const task =
@@ -4932,7 +4839,6 @@ function restoreTrashItem(id) {
 
 }
 
-
 /* =========================================================
    PERMANENT DELETE
 ========================================================= */
@@ -4959,7 +4865,6 @@ function permanentlyDelete(id) {
 
 }
 
-
 /* =========================================================
    EDIT EVENTS
 ========================================================= */
@@ -4969,12 +4874,10 @@ editSave.addEventListener(
     saveEdit
 );
 
-
 editCancel.addEventListener(
     "click",
     closeEdit
 );
-
 
 editOverlay.addEventListener(
     "click",
@@ -4992,7 +4895,6 @@ editOverlay.addEventListener(
     }
 );
 
-
 /* =========================================================
    ESC
 ========================================================= */
@@ -5002,25 +4904,19 @@ document.addEventListener(
     event => {
 
         if (
-            event.key !==
-            "Escape"
+            event.key !== "Escape"
         ) {
-
             return;
-
         }
 
+        closeMenu();
         closeAction();
-
         closeEdit();
-
         closeSettings();
-
         closeTrashPanel();
 
     }
 );
-
 
 /* =========================================================
    VISIBILITY
@@ -5033,7 +4929,6 @@ document.addEventListener(
         if (!document.hidden) {
 
             updateDate();
-
             render();
 
         }
@@ -5041,9 +4936,8 @@ document.addEventListener(
     }
 );
 
-
 /* =========================================================
-   PWA SERVICE WORKER
+   SERVICE WORKER
 ========================================================= */
 
 if (
@@ -5076,7 +4970,6 @@ if (
     );
 
 }
-
 
 /* =========================================================
    START
