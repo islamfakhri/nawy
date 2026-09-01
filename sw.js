@@ -1,5 +1,5 @@
 ```javascript
-const CACHE_NAME = "nawy-cache-v6";
+const CACHE_NAME = "nawy-shell-v1";
 
 const APP_FILES = [
     "./",
@@ -10,13 +10,16 @@ const APP_FILES = [
 ];
 
 
-/* تثبيت النسخة الجديدة */
+/* =========================================================
+   INSTALL
+========================================================= */
 
 self.addEventListener("install", event => {
 
     event.waitUntil(
 
-        caches.open(CACHE_NAME)
+        caches
+            .open(CACHE_NAME)
             .then(cache =>
                 cache.addAll(APP_FILES)
             )
@@ -28,7 +31,9 @@ self.addEventListener("install", event => {
 });
 
 
-/* تفعيل النسخة الجديدة وحذف الكاش القديم */
+/* =========================================================
+   ACTIVATE
+========================================================= */
 
 self.addEventListener("activate", event => {
 
@@ -39,12 +44,14 @@ self.addEventListener("activate", event => {
                 Promise.all(
 
                     keys
-                        .filter(key =>
-                            key.startsWith("nawy-cache-") &&
-                            key !== CACHE_NAME
+                        .filter(
+                            key =>
+                                key !== CACHE_NAME &&
+                                key.startsWith("nawy-shell-")
                         )
-                        .map(key =>
-                            caches.delete(key)
+                        .map(
+                            key =>
+                                caches.delete(key)
                         )
 
                 )
@@ -57,57 +64,64 @@ self.addEventListener("activate", event => {
 });
 
 
-/*
-   الاستراتيجية:
-
-   HTML:
-   الشبكة أولاً حتى تحصل على آخر نسخة.
-
-   باقي الملفات:
-   الكاش أولاً ثم الشبكة.
-*/
+/* =========================================================
+   FETCH
+========================================================= */
 
 self.addEventListener("fetch", event => {
 
-    const request = event.request;
+    const request =
+        event.request;
 
-    if (request.method !== "GET") {
+
+    if (
+        request.method !== "GET"
+    ) {
         return;
     }
 
 
-    const isHTML =
-        request.mode === "navigate" ||
-        request.destination === "document";
+    /*
+       عند فتح الصفحة:
+       نحاول الشبكة أولًا للحصول على آخر نسخة،
+       ثم نرجع للكاش عند انقطاع الإنترنت.
+    */
 
-
-    if (isHTML) {
+    if (
+        request.mode === "navigate"
+    ) {
 
         event.respondWith(
 
             fetch(request)
+
                 .then(response => {
 
                     const copy =
                         response.clone();
 
-                    caches.open(CACHE_NAME)
-                        .then(cache =>
-                            cache.put(
-                                request,
-                                copy
-                            )
-                        );
+                    caches.open(
+                        CACHE_NAME
+                    )
+                    .then(cache =>
+
+                        cache.put(
+                            request,
+                            copy
+                        )
+
+                    );
 
                     return response;
+
                 })
 
                 .catch(() =>
-                    caches.match(request)
-                        .then(cached =>
-                            cached ||
-                            caches.match("./index.html")
-                        )
+
+                    caches.match(
+                        "./index.html"
+                    )
+
                 )
 
         );
@@ -115,6 +129,11 @@ self.addEventListener("fetch", event => {
         return;
     }
 
+
+    /*
+       باقي الملفات:
+       Cache First
+    */
 
     event.respondWith(
 
@@ -125,6 +144,7 @@ self.addEventListener("fetch", event => {
                     return cached;
                 }
 
+
                 return fetch(request)
                     .then(response => {
 
@@ -132,21 +152,30 @@ self.addEventListener("fetch", event => {
                             !response ||
                             response.status !== 200
                         ) {
+
                             return response;
                         }
+
 
                         const copy =
                             response.clone();
 
-                        caches.open(CACHE_NAME)
-                            .then(cache =>
-                                cache.put(
-                                    request,
-                                    copy
-                                )
-                            );
+
+                        caches.open(
+                            CACHE_NAME
+                        )
+                        .then(cache =>
+
+                            cache.put(
+                                request,
+                                copy
+                            )
+
+                        );
+
 
                         return response;
+
                     });
 
             })
