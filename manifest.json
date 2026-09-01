@@ -1,21 +1,28 @@
 {
-  "name": "ناوي | دوّن اللي ناوي عليه",
+  "name": "ناوي — على إيه النهارده؟",
   "short_name": "ناوي",
-  "description": "تطبيق بسيط لتدوين النوايا والأهداف",
-  "start_url": "./index.html",
+  "description": "ناوي — اكتب نيتك، أنجزها، وخلّي يومك أوضح.",
+  "lang": "ar",
+  "dir": "rtl",
+
+  "start_url": "./",
+  "scope": "./",
+
   "display": "standalone",
-  "background_color": "#10b981",
-  "theme_color": "#10b981",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
+
+  "background_color": "#0d1210",
+  "theme_color": "#0d1210",
+
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
