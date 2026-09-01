@@ -1,1225 +1,1604 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
 
-    <meta name="theme-color" content="#0d0d0d">
-    <meta name="color-scheme" content="dark">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta
-        name="apple-mobile-web-app-status-bar-style"
-        content="black-translucent"
-    >
-    <meta name="apple-mobile-web-app-title" content="ناوي">
+<meta
+    name="theme-color"
+    content="#0d0d0d"
+>
 
-    <meta
-        name="description"
-        content="ناوي — اكتب نيتك وأنجزها."
-    >
+<meta
+    name="color-scheme"
+    content="dark"
+>
 
-    <title>ناوي — على إيه النهارده؟</title>
+<meta
+    name="mobile-web-app-capable"
+    content="yes"
+>
 
-    <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-    <link rel="apple-touch-icon" href="./icon-192.png">
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
 
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+>
 
-    <style>
-        /* =====================================================
-           NAWY — ONE FILE APP
-           Clean / Modern / Dark / Arabic
-        ===================================================== */
+<meta
+    name="apple-mobile-web-app-title"
+    content="ناوي"
+>
 
-        :root {
-            --bg: #0d0d0d;
-            --surface: #191919;
-            --surface-hover: #1d1d1d;
+<meta
+    name="description"
+    content="ناوي — اكتب نيتك وأنجزها."
+>
 
-            --text: #f4f4f4;
-            --text-soft: #e5e5e5;
+<title>ناوي — على إيه النهارده؟</title>
 
-            --muted: #888;
-            --muted-soft: #666;
+<link rel="manifest" href="./manifest.json">
 
-            --green: #19c58b;
-            --green-soft: rgba(25, 197, 139, 0.10);
+<link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="./icon-192.png"
+>
 
-            --yellow: #e7bd45;
-            --danger: #ff6666;
+<link
+    rel="apple-touch-icon"
+    href="./icon-192.png"
+>
 
-            --line: rgba(255, 255, 255, 0.075);
 
-            --content-width: 760px;
-            --composer-max-width: 760px;
-        }
+<style>
 
+/* =========================================================
+   NAWY
+   Clean Arabic To-Do
+   ========================================================= */
 
-        /* =====================================================
-           RESET
-        ===================================================== */
+:root {
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+    --bg: #0d0d0d;
 
-            -webkit-tap-highlight-color: transparent;
-        }
+    --surface: #181818;
+    --surface-2: #202020;
 
-        html {
-            width: 100%;
-            min-height: 100%;
+    --text: #f3f3f3;
+    --text-soft: #e6e6e6;
 
-            background: var(--bg);
+    --muted: #898989;
+    --muted-dark: #626262;
 
-            color-scheme: dark;
-        }
+    --green: #19c58b;
+    --green-soft: rgba(25,197,139,.10);
 
-        body {
-            width: 100%;
-            min-height: 100dvh;
+    --yellow: #e8bf48;
+    --danger: #ff6666;
 
-            background: var(--bg);
-            color: var(--text);
+    --border: rgba(255,255,255,.075);
 
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                "Noto Sans Arabic",
-                "Noto Kufi Arabic",
-                Tahoma,
-                Arial,
-                sans-serif;
+    --content-width: 760px;
 
-            overflow: hidden;
+}
 
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
-        }
 
-        button,
-        textarea {
-            font: inherit;
-        }
+/* =========================================================
+   RESET
+   ========================================================= */
 
-        button {
-            border: 0;
-            outline: 0;
+* {
 
-            cursor: pointer;
+    box-sizing: border-box;
 
-            touch-action: manipulation;
-            -webkit-user-select: none;
-            user-select: none;
-        }
+    margin: 0;
+    padding: 0;
 
+    -webkit-tap-highlight-color: transparent;
 
-        /* =====================================================
-           APP
-        ===================================================== */
+}
 
-        .app {
-            position: relative;
 
-            width: 100%;
-            height: 100dvh;
-            min-height: 100dvh;
+html {
 
-            display: flex;
-            flex-direction: column;
+    width: 100%;
+    min-height: 100%;
 
-            background:
-                radial-gradient(
-                    circle at 86% -12%,
-                    rgba(25, 197, 139, 0.07),
-                    transparent 28%
-                ),
-                var(--bg);
-        }
+    background: var(--bg);
 
+    color-scheme: dark;
 
-        /* =====================================================
-           HEADER
-        ===================================================== */
+}
 
-        .header {
-            width: 100%;
-            max-width: var(--content-width);
 
-            margin: 0 auto;
+body {
 
-            padding:
-                calc(24px + env(safe-area-inset-top))
-                22px
-                10px;
+    width: 100%;
+    min-height: 100dvh;
 
-            flex-shrink: 0;
-        }
+    margin: 0;
 
-        .brand {
-            display: flex;
-            align-items: center;
-        }
+    background: var(--bg);
 
-        .brand-name {
-            font-size: 24px;
-            line-height: 1;
+    color: var(--text);
 
-            font-weight: 800;
-            letter-spacing: -0.8px;
-        }
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Noto Sans Arabic",
+        Tahoma,
+        Arial,
+        sans-serif;
 
-        .greeting {
-            margin-top: 20px;
-        }
+    overflow: hidden;
 
-        .greeting h1 {
-            color: var(--text);
+    -webkit-font-smoothing: antialiased;
 
-            font-size: clamp(24px, 5vw, 29px);
-            line-height: 1.25;
+    text-rendering: optimizeLegibility;
 
-            font-weight: 800;
-            letter-spacing: -0.9px;
-        }
+}
 
-        .greeting p {
-            margin-top: 6px;
 
-            color: var(--muted);
+button,
+textarea {
 
-            font-size: 13px;
-        }
+    font: inherit;
 
+}
 
-        /* =====================================================
-           PROGRESS
-        ===================================================== */
 
-        .progress {
-            display: flex;
-            align-items: center;
+button {
 
-            gap: 10px;
+    border: 0;
+    outline: 0;
 
-            margin-top: 17px;
-        }
+    cursor: pointer;
 
-        .progress-bar {
-            flex: 1;
+    touch-action: manipulation;
 
-            height: 5px;
+    user-select: none;
 
-            overflow: hidden;
+}
 
-            border-radius: 99px;
 
-            background:
-                rgba(255, 255, 255, 0.065);
-        }
+/* =========================================================
+   APP
+   ========================================================= */
 
-        .progress-fill {
-            width: 0;
-            height: 100%;
+.app {
 
-            background: var(--green);
+    width: 100%;
+    height: 100dvh;
 
-            border-radius: inherit;
+    min-height: 100dvh;
 
-            transition:
-                width 0.35s cubic-bezier(.2, .8, .2, 1);
-        }
+    display: flex;
+    flex-direction: column;
 
-        .progress-text {
-            min-width: max-content;
+    position: relative;
 
-            color: var(--muted);
+    background:
+        radial-gradient(
+            circle at 84% -12%,
+            rgba(25,197,139,.065),
+            transparent 28%
+        ),
+        var(--bg);
 
-            font-size: 11px;
+}
 
-            white-space: nowrap;
-        }
 
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-        /* =====================================================
-           TASKS
-        ===================================================== */
+.header {
 
-        .tasks {
-            width: 100%;
-            max-width: var(--content-width);
+    width: 100%;
+    max-width: var(--content-width);
 
-            margin: 0 auto;
+    margin: 0 auto;
 
-            flex: 1;
-            min-height: 0;
+    padding:
+        calc(24px + env(safe-area-inset-top))
+        22px
+        11px;
 
-            overflow-y: auto;
+    flex-shrink: 0;
 
-            padding:
-                7px
-                22px
-                175px;
+}
 
-            scrollbar-width: none;
 
-            overscroll-behavior: contain;
-        }
+.brand {
 
-        .tasks::-webkit-scrollbar {
-            display: none;
-        }
+    display: flex;
+    align-items: center;
 
+}
 
-        /* =====================================================
-           SECTION LABEL
-        ===================================================== */
 
-        .section-label {
-            display: flex;
-            align-items: center;
+.brand-name {
 
-            gap: 10px;
+    font-size: 24px;
 
-            margin:
-                17px 0
-                4px;
+    line-height: 1;
 
-            color: var(--muted);
+    font-weight: 800;
 
-            font-size: 11px;
-            font-weight: 700;
-        }
+    letter-spacing: -.8px;
 
-        .section-label:first-child {
-            margin-top: 5px;
-        }
+}
 
-        .section-label::before,
-        .section-label::after {
-            content: "";
 
-            height: 1px;
+.greeting {
 
-            flex: 1;
+    margin-top: 20px;
 
-            background: var(--line);
-        }
+}
 
-        .section-label span {
-            white-space: nowrap;
-        }
 
+.greeting h1 {
 
-        /* =====================================================
-           TASK
-        ===================================================== */
+    font-size:
+        clamp(24px, 5vw, 29px);
 
-        .task {
-            width: 100%;
+    line-height: 1.25;
 
-            min-height: 63px;
+    font-weight: 800;
 
-            display: flex;
-            align-items: center;
+    letter-spacing: -.9px;
 
-            gap: 13px;
+}
 
-            padding: 9px 2px;
 
-            border-bottom:
-                1px solid var(--line);
+.greeting p {
 
-            cursor: pointer;
+    margin-top: 6px;
 
-            transition:
-                opacity 0.2s ease,
-                transform 0.15s ease;
-        }
+    color: var(--muted);
 
-        .task:last-child {
-            border-bottom-color: transparent;
-        }
+    font-size: 13px;
 
-        .task:active {
-            transform: scale(.995);
-        }
+}
 
 
-        /* =====================================================
-           CHECK
-        ===================================================== */
+/* =========================================================
+   PROGRESS
+   ========================================================= */
 
-        .check {
-            position: relative;
+.progress {
 
-            width: 24px;
-            height: 24px;
+    margin-top: 17px;
 
-            flex: 0 0 24px;
+    display: flex;
+    align-items: center;
 
-            display: grid;
-            place-items: center;
+    gap: 10px;
 
-            border:
-                1.8px solid #68716d;
+}
 
-            border-radius: 50%;
 
-            background: transparent;
+.progress-bar {
 
-            transition:
-                background .18s ease,
-                border-color .18s ease,
-                transform .18s cubic-bezier(.18, .9, .3, 1.3),
-                box-shadow .18s ease;
-        }
+    flex: 1;
 
-        .check::after {
-            content: "✓";
+    height: 5px;
 
-            position: absolute;
+    overflow: hidden;
 
-            color: var(--green);
+    border-radius: 999px;
 
-            font-size: 14px;
-            font-weight: 900;
+    background:
+        rgba(255,255,255,.065);
 
-            line-height: 1;
+}
 
-            opacity: 0;
 
-            transform: scale(.5);
+.progress-fill {
 
-            transition:
-                opacity .16s ease,
-                transform .18s cubic-bezier(.18, .9, .3, 1.3);
-        }
+    width: 0;
 
+    height: 100%;
 
-        /* Preview before click */
+    background: var(--green);
 
-        .task:not(.completed):hover .check {
-            background:
-                var(--green-soft);
+    border-radius: inherit;
 
-            border-color:
-                var(--green);
+    transition:
+        width .35s cubic-bezier(.2,.8,.2,1);
 
-            transform:
-                scale(1.07);
+}
 
-            box-shadow:
-                0 0 0 4px
-                rgba(25, 197, 139, .055);
-        }
 
-        .task:not(.completed):hover .check::after {
-            opacity: .9;
+.progress-text {
 
-            transform:
-                scale(1);
-        }
+    min-width: max-content;
 
+    color: var(--muted);
 
-        /* Completed */
+    font-size: 11px;
 
-        .task.completed .check {
-            background:
-                var(--green);
+    white-space: nowrap;
 
-            border-color:
-                var(--green);
-        }
+}
 
-        .task.completed .check::after {
-            opacity: 1;
 
-            color: #07130f;
+/* =========================================================
+   TASK LIST
+   ========================================================= */
 
-            transform:
-                scale(1);
-        }
+.tasks {
 
+    width: 100%;
+    max-width: var(--content-width);
 
-        /* =====================================================
-           COMPLETION ANIMATION
-        ===================================================== */
+    margin: 0 auto;
 
-        .task.just-completed .check {
-            animation:
-                check-pop
-                .5s
-                cubic-bezier(.18, .9, .3, 1.3);
-        }
+    flex: 1;
 
-        @keyframes check-pop {
-            0% {
-                transform: scale(1);
-                box-shadow:
-                    0 0 0 0
-                    rgba(25, 197, 139, .0);
-            }
+    min-height: 0;
 
-            40% {
-                transform: scale(1.28);
-                box-shadow:
-                    0 0 0 8px
-                    rgba(25, 197, 139, .11);
-            }
+    overflow-y: auto;
 
-            72% {
-                transform: scale(.94);
-            }
+    padding:
+        7px
+        22px
+        175px;
 
-            100% {
-                transform: scale(1);
-                box-shadow:
-                    0 0 0 0
-                    rgba(25, 197, 139, .0);
-            }
-        }
+    scrollbar-width: none;
 
+    overscroll-behavior: contain;
 
-        /* =====================================================
-           TASK TEXT
-        ===================================================== */
+}
 
-        .task-main {
-            min-width: 0;
 
-            flex: 1;
-        }
+.tasks::-webkit-scrollbar {
 
-        .task-title {
-            color: #ededed;
+    display: none;
 
-            font-size: 16px;
-            line-height: 1.5;
+}
 
-            overflow-wrap: anywhere;
 
-            transition:
-                color .2s ease;
-        }
+/* =========================================================
+   SECTION LABEL
+   ========================================================= */
 
-        .task.completed .task-title {
-            color: var(--muted-soft);
+.section-label {
 
-            text-decoration:
-                line-through;
+    display: flex;
 
-            text-decoration-thickness:
-                1px;
-        }
+    align-items: center;
 
+    gap: 10px;
 
-        /* =====================================================
-           CARRIED TASK
-        ===================================================== */
+    margin:
+        20px
+        0
+        4px;
 
-        .task-carried {
-            margin-top: 3px;
+    color: var(--muted);
 
-            color: #555d59;
+    font-size: 11px;
 
-            font-size: 10px;
-        }
+    font-weight: 700;
 
+}
 
-        /* =====================================================
-           ACTIONS
-        ===================================================== */
 
-        .task-actions {
-            display: flex;
-            align-items: center;
+.section-label:first-child {
 
-            gap: 1px;
+    margin-top: 5px;
 
-            flex-shrink: 0;
+}
 
-            opacity: .62;
 
-            transition:
-                opacity .15s ease;
-        }
+.section-label::before,
+.section-label::after {
 
-        .task:hover .task-actions {
-            opacity: 1;
-        }
+    content: "";
 
-        .icon-btn {
-            width: 34px;
-            height: 34px;
+    height: 1px;
 
-            display: grid;
-            place-items: center;
+    flex: 1;
 
-            border-radius: 10px;
+    background: var(--border);
 
-            background: transparent;
+}
 
-            color: #737d78;
 
-            font-size: 18px;
+.section-label span {
 
-            transition:
-                background .15s ease,
-                color .15s ease,
-                transform .15s ease;
-        }
+    white-space: nowrap;
 
-        .icon-btn:hover {
-            background:
-                rgba(255,255,255,.05);
+}
 
-            color: #afb7b3;
-        }
 
-        .icon-btn:active {
-            transform: scale(.92);
-        }
+/* =========================================================
+   TASK
+   ========================================================= */
 
-        .icon-btn.starred {
-            color: var(--yellow);
-        }
+.task {
 
-        .icon-btn.delete:hover {
-            color: var(--danger);
-        }
+    width: 100%;
 
+    min-height: 64px;
 
-        /* =====================================================
-           EMPTY
-        ===================================================== */
+    display: flex;
 
-        .empty {
-            padding:
-                82px 20px;
+    align-items: center;
 
-            text-align: center;
-        }
+    gap: 13px;
 
-        .empty-icon {
-            margin-bottom: 14px;
+    padding:
+        10px
+        2px;
 
-            font-size: 29px;
-        }
+    border-bottom:
+        1px solid var(--border);
 
-        .empty strong {
-            display: block;
+    cursor: pointer;
 
-            color: var(--text-soft);
+    transition:
+        opacity .2s ease,
+        transform .15s ease;
 
-            font-size: 16px;
+}
 
-            margin-bottom: 5px;
-        }
 
-        .empty span {
-            color: var(--muted);
+.task:last-child {
 
-            font-size: 13px;
-        }
+    border-bottom-color:
+        transparent;
 
+}
 
-        /* =====================================================
-           COMPOSER
-        ===================================================== */
 
-        .composer-area {
-            position: absolute;
+.task:active {
 
-            left: 0;
-            right: 0;
-            bottom: 0;
+    transform:
+        scale(.995);
 
-            z-index: 20;
+}
 
-            padding:
-                14px
-                18px
-                calc(12px + env(safe-area-inset-bottom));
 
-            background:
-                linear-gradient(
-                    to top,
-                    var(--bg) 35%,
-                    rgba(13,13,13,.94) 70%,
-                    transparent
-                );
+/* =========================================================
+   CHECK
+   ========================================================= */
 
-            pointer-events: none;
-        }
+.check {
 
-        .composer-shell {
-            width: 100%;
-            max-width: var(--composer-max-width);
+    width: 24px;
+    height: 24px;
 
-            margin: 0 auto;
+    flex: 0 0 24px;
 
-            pointer-events: auto;
-        }
+    display: grid;
+    place-items: center;
 
-        .composer {
-            width: 100%;
+    padding: 0;
 
-            min-height: 56px;
+    border:
+        1.8px solid #68716d;
 
-            display: flex;
-            align-items: flex-end;
+    border-radius: 50%;
 
-            gap: 8px;
+    background: transparent;
 
-            padding:
-                7px
-                7px
-                7px
-                15px;
+    color: var(--green);
 
-            background:
-                #1a1a1a;
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s cubic-bezier(.18,.9,.3,1.3),
+        box-shadow .18s ease;
 
-            border:
-                1px solid
-                rgba(255,255,255,.085);
+}
 
-            border-radius: 28px;
 
-            box-shadow:
-                0 9px 32px
-                rgba(0,0,0,.28);
-        }
+/* SVG check */
 
-        .composer:focus-within {
-            border-color:
-                rgba(255,255,255,.12);
+.check svg {
 
-            box-shadow:
-                0 10px 35px
-                rgba(0,0,0,.32);
-        }
+    width: 14px;
+    height: 14px;
 
-        #taskInput {
-            flex: 1;
+    fill: none;
 
-            min-width: 0;
+    stroke: currentColor;
 
-            width: 100%;
+    stroke-width: 2.7;
 
-            min-height: 42px;
-            max-height: 120px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 
-            margin: 0;
-            padding:
-                10px
-                0;
+    opacity: 0;
 
-            resize: none;
+    transform:
+        scale(.5);
 
-            overflow-y: auto;
+    transition:
+        opacity .16s ease,
+        transform .18s cubic-bezier(.18,.9,.3,1.3);
 
-            border: 0 !important;
-            outline: 0 !important;
+}
 
-            background: transparent !important;
 
-            color: var(--text);
+/* Hover preview */
 
-            font-size: 16px;
-            line-height: 1.45;
+.task:not(.completed):hover .check {
 
-            box-shadow: none !important;
+    background:
+        var(--green-soft);
 
-            scrollbar-width: none;
-        }
+    border-color:
+        var(--green);
 
-        #taskInput::-webkit-scrollbar {
-            width: 0;
-        }
+    transform:
+        scale(1.07);
 
-        #taskInput::placeholder {
-            color: #747a77;
-        }
+    box-shadow:
+        0 0 0 4px
+        rgba(25,197,139,.055);
 
+}
 
-        /* =====================================================
-           SEND BUTTON
-        ===================================================== */
 
-        .submit {
-            width: 42px;
-            height: 42px;
+.task:not(.completed):hover .check svg {
 
-            flex: 0 0 42px;
+    opacity: .9;
 
-            display: grid;
-            place-items: center;
+    transform:
+        scale(1);
 
-            border-radius: 50%;
+}
 
-            background:
-                #2c302e;
 
-            color:
-                #777d7a;
+/* Keyboard focus */
 
-            font-size: 22px;
-            font-weight: 700;
+.check:focus-visible {
 
-            transition:
-                background .18s ease,
-                color .18s ease,
-                transform .14s ease,
-                box-shadow .18s ease;
-        }
+    border-color:
+        var(--green);
 
-        .submit.active {
-            background:
-                var(--green);
+    box-shadow:
+        0 0 0 4px
+        rgba(25,197,139,.12);
 
-            color:
-                #06130e;
+}
 
-            box-shadow:
-                0 5px 18px
-                rgba(25,197,139,.20);
-        }
 
-        .submit.active:hover {
-            transform: scale(1.04);
-        }
+/* Completed */
 
-        .submit.active:active {
-            transform: scale(.92);
-        }
+.task.completed .check {
 
-        .submit:disabled {
-            cursor: default;
-        }
+    background:
+        var(--green);
 
-        .send-arrow {
-            display: block;
+    border-color:
+        var(--green);
 
-            line-height: 1;
+    color:
+        #06130e;
 
-            transform:
-                translateY(-1px);
+}
 
-            pointer-events: none;
-        }
 
+.task.completed .check svg {
 
-        /* =====================================================
-           COMPOSER HINT
-        ===================================================== */
+    opacity: 1;
 
-        .hint {
-            margin-top: 6px;
+    transform:
+        scale(1);
 
-            text-align: center;
+}
 
-            color: #515a56;
 
-            font-size: 10px;
-        }
+/* =========================================================
+   COMPLETION ANIMATION
+   ========================================================= */
 
+.task.just-completed .check {
 
-        /* =====================================================
-           TOAST / UNDO
-        ===================================================== */
+    animation:
+        check-pop
+        .5s
+        cubic-bezier(.18,.9,.3,1.3);
 
-        .toast {
-            position: fixed;
+}
 
-            left: 50%;
 
-            bottom:
-                calc(86px + env(safe-area-inset-bottom));
+@keyframes check-pop {
 
-            z-index: 300;
+    0% {
 
-            display: flex;
-            align-items: center;
+        transform: scale(1);
 
-            gap: 15px;
+        box-shadow:
+            0 0 0 0
+            rgba(25,197,139,0);
 
-            min-width: 235px;
+    }
 
-            padding:
-                10px
-                11px
-                10px
-                14px;
+    40% {
 
-            border:
-                1px solid
-                rgba(255,255,255,.08);
+        transform: scale(1.28);
 
-            border-radius: 14px;
+        box-shadow:
+            0 0 0 8px
+            rgba(25,197,139,.12);
 
-            background:
-                #181818;
+    }
 
-            box-shadow:
-                0 18px 45px
-                rgba(0,0,0,.38);
+    70% {
 
-            transform:
-                translate(-50%, 16px);
+        transform: scale(.94);
 
-            opacity: 0;
+    }
 
-            visibility: hidden;
+    100% {
 
-            pointer-events: none;
+        transform: scale(1);
 
-            transition:
-                opacity .2s ease,
-                transform .2s ease,
-                visibility .2s ease;
-        }
+        box-shadow:
+            0 0 0 0
+            rgba(25,197,139,0);
 
-        .toast.show {
-            opacity: 1;
+    }
 
-            visibility: visible;
+}
 
-            pointer-events: auto;
 
-            transform:
-                translate(-50%, 0);
-        }
+/* =========================================================
+   TASK CONTENT
+   ========================================================= */
 
-        .toast-message {
-            color: #e7e7e7;
+.task-main {
 
-            font-size: 12px;
-        }
+    min-width: 0;
 
-        .toast-undo {
-            padding:
-                5px
-                8px;
+    flex: 1;
 
-            border-radius: 8px;
+}
 
-            background:
-                rgba(25,197,139,.10);
 
-            color:
-                var(--green);
+.task-title {
 
-            font-size: 11px;
-            font-weight: 800;
-        }
+    color: #ededed;
 
+    font-size: 16px;
 
-        /* =====================================================
-           INSTALL
-        ===================================================== */
+    line-height: 1.5;
 
-        .install-overlay,
-        .install-guide {
-            position: fixed;
+    overflow-wrap: anywhere;
 
-            inset: 0;
+    transition:
+        color .2s ease;
 
-            z-index: 1000;
+}
 
-            display: flex;
 
-            align-items: flex-end;
-            justify-content: center;
+.task.completed .task-title {
 
-            padding: 16px;
+    color:
+        var(--muted-dark);
 
-            background:
-                rgba(0,0,0,.28);
+    text-decoration:
+        line-through;
 
-            backdrop-filter:
-                blur(3px);
+    text-decoration-thickness:
+        1px;
 
-            opacity: 0;
-            visibility: hidden;
+}
 
-            pointer-events: none;
 
-            transition:
-                opacity .22s ease,
-                visibility .22s ease;
-        }
+.task-carried {
 
-        .install-overlay.show,
-        .install-guide.show {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-        }
+    margin-top: 3px;
 
-        .install-guide {
-            align-items: center;
-        }
+    color: #555d59;
 
-        .install-sheet,
-        .guide-box {
-            width: 100%;
+    font-size: 10px;
 
-            max-width: 620px;
+}
 
-            background:
-                #181818;
 
-            border:
-                1px solid
-                var(--border);
+/* =========================================================
+   TASK ACTIONS
+   ========================================================= */
 
-            box-shadow:
-                0 25px 70px
-                rgba(0,0,0,.42);
-        }
+.task-actions {
 
-        .install-sheet {
-            display: flex;
-            align-items: center;
+    display: flex;
 
-            gap: 11px;
+    align-items: center;
 
-            padding: 13px;
+    gap: 2px;
 
-            border-radius: 19px;
-        }
+    flex-shrink: 0;
 
-        .install-icon {
-            width: 43px;
-            height: 43px;
+    opacity: .62;
 
-            flex: 0 0 43px;
+    transition:
+        opacity .15s ease;
 
-            display: grid;
-            place-items: center;
+}
 
-            border-radius: 13px;
 
-            background:
-                rgba(25,197,139,.10);
-        }
+.task:hover .task-actions {
 
-        .install-copy {
-            min-width: 0;
+    opacity: 1;
 
-            flex: 1;
-        }
+}
 
-        .install-title {
-            font-size: 14px;
-            font-weight: 800;
-        }
 
-        .install-subtitle {
-            margin-top: 3px;
+.icon-btn {
 
-            color: var(--muted);
+    width: 34px;
+    height: 34px;
 
-            font-size: 10px;
-        }
+    display: grid;
+    place-items: center;
 
-        .install-btn {
-            flex-shrink: 0;
+    border-radius: 10px;
 
-            padding:
-                9px
-                13px;
+    background: transparent;
 
-            border-radius: 11px;
+    color: #737d78;
 
-            background:
-                var(--green);
+    font-size: 18px;
 
-            color:
-                #06130e;
+    transition:
+        background .15s ease,
+        color .15s ease,
+        transform .15s ease;
 
-            font-size: 11px;
-            font-weight: 900;
-        }
+}
 
-        .install-close {
-            width: 30px;
-            height: 30px;
 
-            flex: 0 0 30px;
+.icon-btn:hover {
 
-            display: grid;
-            place-items: center;
+    background:
+        rgba(255,255,255,.05);
 
-            border-radius: 50%;
+    color: #afb7b3;
 
-            background:
-                rgba(255,255,255,.05);
+}
 
-            color:
-                #777;
 
-            font-size: 18px;
-        }
+.icon-btn:active {
 
-        .guide-box {
-            max-width: 380px;
+    transform:
+        scale(.92);
 
-            padding: 23px;
+}
 
-            border-radius: 21px;
 
-            text-align: center;
-        }
+.icon-btn.starred {
 
-        .guide-box h2 {
-            font-size: 19px;
+    color:
+        var(--yellow);
 
-            margin-bottom: 9px;
-        }
+}
 
-        .guide-box p {
-            color: var(--muted);
 
-            font-size: 13px;
+.icon-btn.delete:hover {
 
-            line-height: 1.7;
-        }
+    color:
+        var(--danger);
 
-        .guide-close {
-            width: 100%;
+}
 
-            margin-top: 18px;
 
-            padding: 11px;
+/* =========================================================
+   EMPTY
+   ========================================================= */
 
-            border-radius: 13px;
+.empty {
 
-            background:
-                rgba(255,255,255,.06);
+    padding:
+        86px 20px;
 
-            color:
-                var(--text);
+    text-align: center;
 
-            font-size: 13px;
-        }
+}
 
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
+.empty-icon {
 
-        @media (max-width: 600px) {
+    margin-bottom: 14px;
 
-            .header {
-                padding-left: 17px;
-                padding-right: 17px;
-            }
+    font-size: 29px;
 
-            .tasks {
-                padding-left: 17px;
-                padding-right: 17px;
-            }
+}
 
-            .greeting h1 {
-                font-size: 23px;
-            }
 
-            .composer-area {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
+.empty strong {
 
-            .hint {
-                display: none;
-            }
+    display: block;
 
-            .task-title {
-                font-size: 15px;
-            }
-        }
+    color:
+        var(--text-soft);
 
+    font-size: 16px;
 
-        /* =====================================================
-           SMALL PHONES
-        ===================================================== */
+    margin-bottom: 5px;
 
-        @media (max-width: 380px) {
+}
 
-            .header {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
 
-            .tasks {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
+.empty span {
 
-            .brand-name {
-                font-size: 22px;
-            }
+    color:
+        var(--muted);
 
-            .greeting h1 {
-                font-size: 22px;
-            }
+    font-size: 13px;
 
-            .task {
-                gap: 11px;
-            }
+}
 
-            .task-actions {
-                gap: 0;
-            }
 
-            .icon-btn {
-                width: 31px;
-                height: 31px;
-            }
+/* =========================================================
+   COMPOSER
+   ========================================================= */
 
-            .composer-area {
-                padding-left: 9px;
-                padding-right: 9px;
-            }
+.composer-wrap {
 
-            .composer {
-                padding-left: 12px;
-            }
+    position: absolute;
 
-            .submit {
-                width: 40px;
-                height: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-                flex-basis: 40px;
-            }
-        }
+    z-index: 50;
 
+    padding:
+        15px
+        18px
+        calc(11px + env(safe-area-inset-bottom));
 
-        /* =====================================================
-           REDUCED MOTION
-        ===================================================== */
+    pointer-events: none;
 
-        @media (prefers-reduced-motion: reduce) {
+    background:
+        linear-gradient(
+            to top,
+            var(--bg) 34%,
+            rgba(13,13,13,.93) 70%,
+            transparent 100%
+        );
 
-            *,
-            *::before,
-            *::after {
-                animation-duration: .01ms !important;
-                transition-duration: .01ms !important;
-            }
-        }
-    </style>
+}
+
+
+.composer-inner {
+
+    width: 100%;
+
+    max-width:
+        var(--content-width);
+
+    margin: 0 auto;
+
+    pointer-events: auto;
+
+}
+
+
+.composer {
+
+    width: 100%;
+
+    min-height: 56px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 8px;
+
+    padding:
+        7px
+        7px
+        7px
+        15px;
+
+    background:
+        #1a1a1a;
+
+    border:
+        1px solid
+        rgba(255,255,255,.085);
+
+    border-radius:
+        28px;
+
+    box-shadow:
+        0 9px 32px
+        rgba(0,0,0,.28);
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.composer:focus-within {
+
+    border-color:
+        rgba(255,255,255,.12);
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.34);
+
+}
+
+
+/* =========================================================
+   TEXT INPUT
+   ========================================================= */
+
+#taskInput {
+
+    flex: 1;
+
+    min-width: 0;
+
+    width: 100%;
+
+    min-height: 42px;
+
+    max-height: 120px;
+
+    margin: 0;
+
+    padding:
+        10px
+        0;
+
+    resize: none;
+
+    overflow-y: auto;
+
+    border: 0 !important;
+
+    outline: 0 !important;
+
+    background:
+        transparent !important;
+
+    color:
+        var(--text);
+
+    font-size: 16px;
+
+    line-height: 1.45;
+
+    box-shadow:
+        none !important;
+
+    scrollbar-width: none;
+
+}
+
+
+#taskInput::-webkit-scrollbar {
+
+    display: none;
+
+}
+
+
+#taskInput::placeholder {
+
+    color:
+        #747a77;
+
+}
+
+
+/* =========================================================
+   SEND BUTTON
+   ========================================================= */
+
+.submit {
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        #2d302f;
+
+    color:
+        #737977;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .15s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.submit.active {
+
+    background:
+        #f2f2f2;
+
+    color:
+        #111;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,.2);
+
+}
+
+
+.submit:active {
+
+    transform:
+        scale(.92);
+
+}
+
+
+.submit:focus-visible {
+
+    box-shadow:
+        0 0 0 4px
+        rgba(25,197,139,.13);
+
+}
+
+
+.send-arrow {
+
+    display: block;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    transform:
+        translateY(-1px);
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.hint {
+
+    margin-top: 6px;
+
+    text-align: center;
+
+    color:
+        #515956;
+
+    font-size: 10px;
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom:
+        calc(
+            88px +
+            env(safe-area-inset-bottom)
+        );
+
+    z-index: 400;
+
+    min-width: 235px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    padding:
+        10px
+        12px
+        10px
+        14px;
+
+    background:
+        #191919;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 18px 48px
+        rgba(0,0,0,.38);
+
+    transform:
+        translate(-50%, 15px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
+
+}
+
+
+.toast.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translate(-50%, 0);
+
+}
+
+
+.toast-message {
+
+    color:
+        #e9e9e9;
+
+    font-size: 12px;
+
+}
+
+
+.toast-undo {
+
+    padding:
+        5px
+        8px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(25,197,139,.10);
+
+    color:
+        var(--green);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   INSTALL
+   ========================================================= */
+
+.install-overlay,
+.install-guide {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: center;
+
+    padding: 16px;
+
+    background:
+        rgba(0,0,0,.28);
+
+    backdrop-filter:
+        blur(4px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .22s ease,
+        visibility .22s ease;
+
+}
+
+
+.install-overlay.show,
+.install-guide.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+.install-guide {
+
+    align-items: center;
+
+}
+
+
+.install-sheet {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 13px;
+
+    background:
+        #181818;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 19px;
+
+    box-shadow:
+        0 22px 60px
+        rgba(0,0,0,.42);
+
+}
+
+
+.install-icon {
+
+    width: 43px;
+    height: 43px;
+
+    flex: 0 0 43px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    background:
+        rgba(25,197,139,.10);
+
+}
+
+
+.install-copy {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.install-title {
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+}
+
+
+.install-subtitle {
+
+    margin-top: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+.install-btn {
+
+    flex-shrink: 0;
+
+    padding:
+        9px
+        13px;
+
+    border-radius: 11px;
+
+    background:
+        var(--green);
+
+    color:
+        #06130e;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+}
+
+
+.install-close {
+
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:
+        #777;
+
+    font-size: 18px;
+
+}
+
+
+.guide-box {
+
+    width: 100%;
+
+    max-width: 380px;
+
+    padding: 23px;
+
+    background:
+        #181818;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 21px;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,.45);
+
+}
+
+
+.guide-box h2 {
+
+    font-size: 19px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.guide-box p {
+
+    color:
+        var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+.guide-close {
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 11px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    color:
+        var(--text);
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+
+        padding-left: 17px;
+        padding-right: 17px;
+
+    }
+
+    .tasks {
+
+        padding-left: 17px;
+        padding-right: 17px;
+
+    }
+
+    .greeting h1 {
+
+        font-size: 23px;
+
+    }
+
+    .task-title {
+
+        font-size: 15px;
+
+    }
+
+    .composer-wrap {
+
+        padding-left: 12px;
+        padding-right: 12px;
+
+    }
+
+    .hint {
+
+        display: none;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .header {
+
+        padding-left: 14px;
+        padding-right: 14px;
+
+    }
+
+    .tasks {
+
+        padding-left: 14px;
+        padding-right: 14px;
+
+    }
+
+    .brand-name {
+
+        font-size: 22px;
+
+    }
+
+    .greeting h1 {
+
+        font-size: 22px;
+
+    }
+
+    .task {
+
+        gap: 10px;
+
+    }
+
+    .task-title {
+
+        font-size: 14px;
+
+    }
+
+    .icon-btn {
+
+        width: 31px;
+        height: 31px;
+
+    }
+
+    .composer-wrap {
+
+        padding-left: 9px;
+        padding-right: 9px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+    }
+
+}
+
+</style>
 </head>
 
 
@@ -1235,10 +1614,13 @@
     <header class="header">
 
         <div class="brand">
+
             <div class="brand-name">
                 ناوي
             </div>
+
         </div>
+
 
         <div class="greeting">
 
@@ -1252,14 +1634,28 @@
 
         </div>
 
-        <div class="progress">
 
-            <div class="progress-bar">
+        <div
+            class="progress"
+            aria-label="نسبة إنجاز نوايا اليوم"
+        >
+
+            <div
+                class="progress-bar"
+                role="progressbar"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                aria-label="نسبة الإنجاز"
+            >
+
                 <div
                     class="progress-fill"
                     id="progressFill"
                 ></div>
+
             </div>
+
 
             <div
                 class="progress-text"
@@ -1281,6 +1677,7 @@
         class="tasks"
         id="tasksContainer"
         aria-live="polite"
+        aria-label="قائمة النوايا"
     ></main>
 
 
@@ -1288,9 +1685,9 @@
          COMPOSER
     ========================== -->
 
-    <div class="composer-area">
+    <div class="composer-wrap">
 
-        <div class="composer-shell">
+        <div class="composer-inner">
 
             <div class="composer">
 
@@ -1301,9 +1698,9 @@
                     placeholder="اكتب اللي ناوي عليه..."
                     enterkeyhint="send"
                     autocomplete="off"
-                    spellcheck="true"
                     aria-label="نية جديدة"
                 ></textarea>
+
 
                 <button
                     type="button"
@@ -1322,6 +1719,7 @@
 
             </div>
 
+
             <div class="hint">
                 اضغط Enter لإضافة نية جديدة
             </div>
@@ -1329,7 +1727,6 @@
         </div>
 
     </div>
-
 
 </div>
 
@@ -1362,7 +1759,7 @@
 
 
 <!-- =========================
-     INSTALL
+     INSTALL PROMPT
 ========================== -->
 
 <div
@@ -1370,6 +1767,7 @@
     id="installOverlay"
     aria-hidden="true"
 >
+
     <div class="install-sheet">
 
         <div class="install-icon">
@@ -1388,6 +1786,7 @@
 
         </div>
 
+
         <button
             type="button"
             class="install-btn"
@@ -1395,6 +1794,7 @@
         >
             تثبيت
         </button>
+
 
         <button
             type="button"
@@ -1406,6 +1806,7 @@
         </button>
 
     </div>
+
 </div>
 
 
@@ -1418,6 +1819,7 @@
     id="installGuide"
     aria-hidden="true"
 >
+
     <div class="guide-box">
 
         <h2>
@@ -1430,6 +1832,7 @@
             لاستخدام ناوي كتطبيق.
         </p>
 
+
         <button
             type="button"
             class="guide-close"
@@ -1439,13 +1842,15 @@
         </button>
 
     </div>
+
 </div>
 
 
 <script>
+
 /* =========================================================
-   NAWY — APPLICATION LOGIC
-========================================================= */
+   NAWY — CORE
+   ========================================================= */
 
 (() => {
 
@@ -1453,70 +1858,103 @@
 
 
     /* =====================================================
-       CONSTANTS
+       STORAGE
     ===================================================== */
 
     const STORAGE_KEY =
-        "nawy_tasks_v6";
+        "nawy_tasks_v7";
 
-    const OLD_KEYS = [
+    const LEGACY_KEYS = [
+        "nawy_tasks_v6",
         "nawy_tasks_v5",
         "nawy_tasks_v4",
         "nawy_tasks_v3"
     ];
 
-    const DELETED_TTL =
-        5000;
-
 
     /* =====================================================
-       ELEMENTS
+       DOM
     ===================================================== */
 
     const taskInput =
-        document.getElementById("taskInput");
+        document.getElementById(
+            "taskInput"
+        );
 
     const submitBtn =
-        document.getElementById("submitBtn");
+        document.getElementById(
+            "submitBtn"
+        );
 
     const tasksContainer =
-        document.getElementById("tasksContainer");
+        document.getElementById(
+            "tasksContainer"
+        );
 
     const progressFill =
-        document.getElementById("progressFill");
+        document.getElementById(
+            "progressFill"
+        );
 
     const progressText =
-        document.getElementById("progressText");
+        document.getElementById(
+            "progressText"
+        );
+
+    const progressBar =
+        document.querySelector(
+            ".progress-bar"
+        );
 
     const currentDate =
-        document.getElementById("currentDate");
+        document.getElementById(
+            "currentDate"
+        );
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
     const toastMessage =
-        document.getElementById("toastMessage");
+        document.getElementById(
+            "toastMessage"
+        );
 
     const toastUndo =
-        document.getElementById("toastUndo");
+        document.getElementById(
+            "toastUndo"
+        );
 
     const installOverlay =
-        document.getElementById("installOverlay");
+        document.getElementById(
+            "installOverlay"
+        );
 
     const installBtn =
-        document.getElementById("installBtn");
+        document.getElementById(
+            "installBtn"
+        );
 
     const installClose =
-        document.getElementById("installClose");
+        document.getElementById(
+            "installClose"
+        );
 
     const installGuide =
-        document.getElementById("installGuide");
+        document.getElementById(
+            "installGuide"
+        );
 
     const guideClose =
-        document.getElementById("guideClose");
+        document.getElementById(
+            "guideClose"
+        );
 
     const guideText =
-        document.getElementById("guideText");
+        document.getElementById(
+            "guideText"
+        );
 
 
     /* =====================================================
@@ -1526,20 +1964,26 @@
     let tasks =
         loadTasks();
 
-    let deletedTask = null;
+    let deletedTask =
+        null;
 
-    let deleteTimer = null;
+    let deleteTimer =
+        null;
 
-    let deferredInstallPrompt = null;
+    let deferredInstallPrompt =
+        null;
 
-    let audioContext = null;
+    let audioContext =
+        null;
 
 
     /* =====================================================
-       DATE HELPERS
+       DATE
     ===================================================== */
 
-    function getDateKey(date = new Date()) {
+    function getDateKey(
+        date = new Date()
+    ) {
 
         const year =
             date.getFullYear();
@@ -1554,15 +1998,15 @@
                 date.getDate()
             ).padStart(2, "0");
 
-        return `${year}-${month}-${day}`;
+        return (
+            `${year}-${month}-${day}`
+        );
     }
 
 
-    const TODAY =
-        getDateKey();
-
-
-    function formatDate(date = new Date()) {
+    function formatDate(
+        date = new Date()
+    ) {
 
         return new Intl.DateTimeFormat(
             "ar-EG",
@@ -1575,27 +2019,40 @@
     }
 
 
-    currentDate.textContent =
-        formatDate();
+    function updateDate() {
+
+        currentDate.textContent =
+            formatDate();
+
+    }
+
+
+    updateDate();
 
 
     /* =====================================================
-       NORMALIZE TASKS
+       STORAGE
     ===================================================== */
 
-    function normalizeTask(raw) {
+    function normalizeTask(
+        raw
+    ) {
 
         if (
             !raw ||
             typeof raw !== "object"
         ) {
+
             return null;
+
         }
+
 
         const text =
             String(
                 raw.text || ""
             ).trim();
+
 
         if (!text) {
             return null;
@@ -1615,7 +2072,8 @@
                     `${Date.now()}-${Math.random()}`
                 ),
 
-            text,
+            text:
+                text.slice(0, 500),
 
             completed:
                 Boolean(
@@ -1629,111 +2087,102 @@
 
             createdAt,
 
-            /*
-               taskDay هو يوم إنشاء النية.
-               القديم بدون taskDay يأخذ يوم createdAt.
-            */
-
             taskDay:
                 raw.taskDay ||
                 getDateKey(
                     new Date(createdAt)
-                )
+                ),
+
+            completedAt:
+                raw.completedAt || null
+
         };
+
     }
 
 
-    function normalizeTaskList(list) {
+    function normalizeTasks(
+        list
+    ) {
 
         return list
             .map(normalizeTask)
             .filter(Boolean);
+
     }
 
 
-    /* =====================================================
-       LOAD
-    ===================================================== */
-
-    function loadTasks() {
+    function readTasks(
+        key
+    ) {
 
         try {
 
-            const current =
+            const value =
                 JSON.parse(
-                    localStorage.getItem(
-                        STORAGE_KEY
-                    )
+                    localStorage.getItem(key)
                 );
 
+            return Array.isArray(value)
+                ? normalizeTasks(value)
+                : null;
 
-            if (
-                Array.isArray(current)
-            ) {
+        } catch {
 
-                return normalizeTaskList(
-                    current
-                );
-            }
+            return null;
 
-
-            for (
-                const key
-                of OLD_KEYS
-            ) {
-
-                const old =
-                    JSON.parse(
-                        localStorage.getItem(
-                            key
-                        )
-                    );
+        }
+    }
 
 
-                if (
-                    Array.isArray(old)
-                ) {
+    function loadTasks() {
 
-                    const migrated =
-                        normalizeTaskList(
-                            old
-                        );
+        const current =
+            readTasks(
+                STORAGE_KEY
+            );
 
 
-                    /*
-                       نحفظ النسخة المطورة
-                    */
+        if (current) {
+            return current;
+        }
+
+
+        for (
+            const key of LEGACY_KEYS
+        ) {
+
+            const old =
+                readTasks(key);
+
+
+            if (old) {
+
+                /*
+                   حفظ نسخة مطورة
+                   بدون حذف القديمة.
+                */
+
+                try {
 
                     localStorage.setItem(
                         STORAGE_KEY,
-                        JSON.stringify(
-                            migrated
-                        )
+                        JSON.stringify(old)
                     );
 
+                } catch {}
 
-                    return migrated;
-                }
+                return old;
             }
-
-        } catch (error) {
-
-            console.warn(
-                "NAWY storage:",
-                error
-            );
         }
 
 
         return [];
+
     }
 
 
-    /* =====================================================
-       SAVE
-    ===================================================== */
-
-    function save() {
+    function saveTasks() {
 
         try {
 
@@ -1745,10 +2194,12 @@
         } catch (error) {
 
             console.warn(
-                "NAWY save:",
+                "NAWY storage error:",
                 error
             );
+
         }
+
     }
 
 
@@ -1788,6 +2239,7 @@
                 audioContext
                     .resume()
                     .catch(() => {});
+
             }
 
 
@@ -1797,6 +2249,7 @@
 
             return null;
         }
+
     }
 
 
@@ -1804,6 +2257,7 @@
 
         const ctx =
             getAudioContext();
+
 
         if (!ctx) {
             return;
@@ -1817,29 +2271,33 @@
 
 
             /*
-               Chime قصير وناعم.
+               Chime قصير:
+               نغمة أساسية ثم نغمة أعلى.
             */
 
             const notes = [
+
                 {
                     frequency: 783.99,
-                    offset: 0,
-                    duration: 0.16,
-                    volume: 0.035
+                    start: 0,
+                    duration: .16,
+                    volume: .035
                 },
+
                 {
                     frequency: 987.77,
-                    offset: 0.065,
-                    duration: 0.24,
-                    volume: 0.042
+                    start: .06,
+                    duration: .24,
+                    volume: .042
                 }
+
             ];
 
 
             notes.forEach(
                 note => {
 
-                    const osc =
+                    const oscillator =
                         ctx.createOscillator();
 
                     const gain =
@@ -1847,19 +2305,17 @@
 
 
                     const start =
-                        now +
-                        note.offset;
+                        now + note.start;
 
                     const end =
-                        start +
-                        note.duration;
+                        start + note.duration;
 
 
-                    osc.type =
+                    oscillator.type =
                         "sine";
 
 
-                    osc.frequency.setValueAtTime(
+                    oscillator.frequency.setValueAtTime(
                         note.frequency,
                         start
                     );
@@ -1873,7 +2329,7 @@
 
                     gain.gain.exponentialRampToValueAtTime(
                         note.volume,
-                        start + 0.012
+                        start + .012
                     );
 
 
@@ -1883,34 +2339,39 @@
                     );
 
 
-                    osc.connect(gain);
+                    oscillator.connect(
+                        gain
+                    );
 
                     gain.connect(
                         ctx.destination
                     );
 
 
-                    osc.start(start);
-
-                    osc.stop(
-                        end + 0.015
+                    oscillator.start(
+                        start
                     );
+
+                    oscillator.stop(
+                        end + .015
+                    );
+
                 }
             );
 
-        } catch (error) {
+        } catch {
 
-            console.warn(
-                "NAWY audio:",
-                error
-            );
+            /*
+               الصوت اختياري ولا يعطل التطبيق.
+            */
+
         }
+
     }
 
 
     /* =====================================================
        ADD TASK
-       اسم الدالة محفوظ كما هو
     ===================================================== */
 
     function addTask(text) {
@@ -1930,7 +2391,7 @@
             id:
                 `${Date.now()}-${Math.random()
                     .toString(36)
-                    .slice(2, 7)}`,
+                    .slice(2, 8)}`,
 
             text:
                 clean.slice(0, 500),
@@ -1945,17 +2406,23 @@
                 new Date().toISOString(),
 
             taskDay:
-                getDateKey()
+                getDateKey(),
+
+            completedAt:
+                null
+
         };
 
 
         tasks.unshift(task);
 
-        save();
+        saveTasks();
 
         render();
 
+
         return true;
+
     }
 
 
@@ -1982,20 +2449,25 @@
             !task.completed;
 
 
-        save();
-
-        render();
-
-
         if (
             task.completed
         ) {
 
+            task.completedAt =
+                new Date().toISOString();
+
+            saveTasks();
+
+            render();
+
+
             /*
-               الصوت + التأثير بعد الرسم
+               المستخدم ضغط بنفسه على المهمة،
+               لذلك تشغيل الصوت هنا منطقي.
             */
 
             playCompletionChime();
+
 
             requestAnimationFrame(
                 () => {
@@ -2006,7 +2478,20 @@
 
                 }
             );
+
+
+            return;
         }
+
+
+        task.completedAt =
+            null;
+
+
+        saveTasks();
+
+        render();
+
     }
 
 
@@ -2033,14 +2518,15 @@
             !task.starred;
 
 
-        save();
+        saveTasks();
 
         render();
+
     }
 
 
     /* =====================================================
-       DELETE + UNDO
+       DELETE
     ===================================================== */
 
     function deleteTask(id) {
@@ -2059,10 +2545,12 @@
 
 
         deletedTask = {
+
             task:
                 tasks[index],
 
             index
+
         };
 
 
@@ -2072,7 +2560,7 @@
         );
 
 
-        save();
+        saveTasks();
 
         render();
 
@@ -2096,8 +2584,9 @@
                     hideToast();
 
                 },
-                DELETED_TTL
+                5000
             );
+
     }
 
 
@@ -2133,11 +2622,12 @@
         );
 
 
-        save();
+        saveTasks();
 
         render();
 
         hideToast();
+
     }
 
 
@@ -2145,14 +2635,18 @@
        TOAST
     ===================================================== */
 
-    function showToast(message) {
+    function showToast(
+        message
+    ) {
 
         toastMessage.textContent =
             message;
 
+
         toast.classList.add(
             "show"
         );
+
     }
 
 
@@ -2161,6 +2655,7 @@
         toast.classList.remove(
             "show"
         );
+
     }
 
 
@@ -2172,17 +2667,21 @@
 
     /* =====================================================
        DAILY PROGRESS
-       فقط مهام اليوم تدخل في النسبة.
-       المهام القديمة خارج النسبة.
+       مهم:
+       فقط نوايا اليوم تدخل النسبة.
     ===================================================== */
 
     function updateProgress() {
+
+        const today =
+            getDateKey();
+
 
         const todayTasks =
             tasks.filter(
                 task =>
                     task.taskDay ===
-                    TODAY
+                    today
             );
 
 
@@ -2202,8 +2701,16 @@
             progressFill.style.width =
                 "0%";
 
+
             progressText.textContent =
                 "ابدأ أول نية";
+
+
+            progressBar.setAttribute(
+                "aria-valuenow",
+                "0"
+            );
+
 
             return;
         }
@@ -2219,18 +2726,15 @@
             `${percentage}%`;
 
 
-        if (
-            percentage === 100
-        ) {
+        progressBar.setAttribute(
+            "aria-valuenow",
+            String(percentage)
+        );
 
-            progressText.textContent =
-                `${done} من ${total} · 100%`;
 
-        } else {
+        progressText.textContent =
+            `${done} من ${total} · ${percentage}%`;
 
-            progressText.textContent =
-                `${done} من ${total} · ${percentage}%`;
-        }
     }
 
 
@@ -2238,7 +2742,10 @@
        SORT
     ===================================================== */
 
-    function sortActive(a, b) {
+    function sortActive(
+        a,
+        b
+    ) {
 
         if (
             a.starred !==
@@ -2249,6 +2756,7 @@
                 Number(b.starred) -
                 Number(a.starred)
             );
+
         }
 
 
@@ -2256,15 +2764,26 @@
             new Date(b.createdAt) -
             new Date(a.createdAt)
         );
+
     }
 
 
-    function sortCompleted(a, b) {
+    function sortCompleted(
+        a,
+        b
+    ) {
 
         return (
-            new Date(b.createdAt) -
-            new Date(a.createdAt)
+            new Date(
+                b.completedAt ||
+                b.createdAt
+            ) -
+            new Date(
+                a.completedAt ||
+                a.createdAt
+            )
         );
+
     }
 
 
@@ -2276,31 +2795,36 @@
 
         updateProgress();
 
+
         tasksContainer.innerHTML =
             "";
 
 
-        const todayActive =
+        const today =
+            getDateKey();
+
+
+        const todayTasks =
             tasks
                 .filter(
                     task =>
                         !task.completed &&
-                        task.taskDay === TODAY
+                        task.taskDay === today
                 )
                 .sort(sortActive);
 
 
-        const carriedActive =
+        const carriedTasks =
             tasks
                 .filter(
                     task =>
                         !task.completed &&
-                        task.taskDay !== TODAY
+                        task.taskDay !== today
                 )
                 .sort(sortActive);
 
 
-        const completed =
+        const completedTasks =
             tasks
                 .filter(
                     task =>
@@ -2309,52 +2833,55 @@
                 .sort(sortCompleted);
 
 
-        let renderedSomething =
+        let hasContent =
             false;
 
 
-        /*
-           نوايا اليوم
-        */
+        /* -------------------------
+           TODAY
+        -------------------------- */
 
         if (
-            todayActive.length
+            todayTasks.length
         ) {
 
-            appendSectionTitle(
+            appendSection(
                 "نوايا اليوم"
             );
 
-            todayActive.forEach(
+
+            todayTasks.forEach(
                 task => {
 
                     tasksContainer.appendChild(
-                        createTaskElement(task)
+                        createTaskElement(
+                            task
+                        )
                     );
 
                 }
             );
 
-            renderedSomething =
-                true;
+
+            hasContent = true;
+
         }
 
 
-        /*
-           النوايا المستمرة من أيام سابقة
-           لا تدخل في النسبة.
-        */
+        /* -------------------------
+           CARRIED TASKS
+        -------------------------- */
 
         if (
-            carriedActive.length
+            carriedTasks.length
         ) {
 
-            appendSectionTitle(
+            appendSection(
                 "مستمرة من قبل"
             );
 
 
-            carriedActive.forEach(
+            carriedTasks.forEach(
                 task => {
 
                     tasksContainer.appendChild(
@@ -2367,47 +2894,53 @@
                 }
             );
 
-            renderedSomething =
-                true;
+
+            hasContent = true;
+
         }
 
 
-        /*
-           النوايا المحققة
-        */
+        /* -------------------------
+           COMPLETED
+        -------------------------- */
 
         if (
-            completed.length
+            completedTasks.length
         ) {
 
-            appendSectionTitle(
+            appendSection(
                 "النوايا المحققة"
             );
 
 
-            completed.forEach(
+            completedTasks.forEach(
                 task => {
 
                     tasksContainer.appendChild(
-                        createTaskElement(task)
+                        createTaskElement(
+                            task
+                        )
                     );
 
                 }
             );
 
 
-            renderedSomething =
-                true;
+            hasContent = true;
+
         }
 
 
-        if (
-            !renderedSomething
-        ) {
+        if (!hasContent) {
 
             tasksContainer.innerHTML = `
+
                 <div class="empty">
-                    <div class="empty-icon">
+
+                    <div
+                        class="empty-icon"
+                        aria-hidden="true"
+                    >
                         🌱
                     </div>
 
@@ -2418,32 +2951,42 @@
                     <span>
                         اكتب أول حاجة ناوي تعملها النهارده.
                     </span>
+
                 </div>
+
             `;
+
         }
+
     }
 
 
     /* =====================================================
-       SECTION TITLE
+       SECTION
     ===================================================== */
 
-    function appendSectionTitle(label) {
+    function appendSection(
+        label
+    ) {
 
-        const divider =
+        const section =
             document.createElement(
                 "div"
             );
 
-        divider.className =
+
+        section.className =
             "section-label";
 
-        divider.innerHTML =
+
+        section.innerHTML =
             `<span>${label}</span>`;
 
+
         tasksContainer.appendChild(
-            divider
+            section
         );
+
     }
 
 
@@ -2453,16 +2996,16 @@
 
     function createTaskElement(
         task,
-        isCarried = false
+        carried = false
     ) {
 
-        const element =
+        const article =
             document.createElement(
                 "article"
             );
 
 
-        element.className =
+        article.className =
             `task ${
                 task.completed
                     ? "completed"
@@ -2470,28 +3013,55 @@
             }`;
 
 
-        element.dataset.taskId =
+        article.dataset.taskId =
             task.id;
 
 
+        /* CHECK BUTTON */
+
         const check =
             document.createElement(
-                "div"
+                "button"
             );
+
+
+        check.type =
+            "button";
+
 
         check.className =
             "check";
 
+
+        check.dataset.action =
+            "toggle";
+
+
         check.setAttribute(
-            "aria-hidden",
-            "true"
+            "aria-label",
+            task.completed
+                ? "إلغاء إنجاز النية"
+                : "إنجاز النية"
         );
 
+
+        check.innerHTML = `
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <path d="M5 12.5l4.2 4.2L19 7"></path>
+            </svg>
+        `;
+
+
+        /* MAIN */
 
         const main =
             document.createElement(
                 "div"
             );
+
 
         main.className =
             "task-main";
@@ -2502,8 +3072,10 @@
                 "div"
             );
 
+
         title.className =
             "task-title";
+
 
         title.textContent =
             task.text;
@@ -2515,31 +3087,38 @@
 
 
         if (
-            isCarried &&
+            carried &&
             !task.completed
         ) {
 
-            const carried =
+            const label =
                 document.createElement(
                     "div"
                 );
 
-            carried.className =
+
+            label.className =
                 "task-carried";
 
-            carried.textContent =
+
+            label.textContent =
                 "من يوم سابق";
 
+
             main.appendChild(
-                carried
+                label
             );
+
         }
 
+
+        /* ACTIONS */
 
         const actions =
             document.createElement(
                 "div"
             );
+
 
         actions.className =
             "task-actions";
@@ -2550,8 +3129,10 @@
                 "button"
             );
 
+
         star.type =
             "button";
+
 
         star.className =
             `icon-btn ${
@@ -2560,15 +3141,26 @@
                     : ""
             }`;
 
+
         star.dataset.action =
             "star";
+
 
         star.setAttribute(
             "aria-label",
             task.starred
-                ? "إلغاء التمييز"
+                ? "إلغاء تمييز النية"
                 : "تمييز النية"
         );
+
+
+        star.setAttribute(
+            "aria-pressed",
+            String(
+                task.starred
+            )
+        );
+
 
         star.textContent =
             task.starred
@@ -2581,19 +3173,24 @@
                 "button"
             );
 
+
         remove.type =
             "button";
+
 
         remove.className =
             "icon-btn delete";
 
+
         remove.dataset.action =
             "delete";
+
 
         remove.setAttribute(
             "aria-label",
             "حذف النية"
         );
+
 
         remove.textContent =
             "×";
@@ -2605,183 +3202,181 @@
         );
 
 
-        element.append(
+        article.append(
             check,
             main,
             actions
         );
 
 
-        return element;
+        return article;
+
     }
 
 
     /* =====================================================
-       COMPLETION FEEDBACK
+       TASK CLICK
     ===================================================== */
 
-    function showCompletionFeedback(id) {
+    tasksContainer.addEventListener(
+        "click",
+        event => {
 
-        const taskElement =
-            tasksContainer.querySelector(
-                `[data-task-id="${CSS.escape(String(id))}"]`
-            );
-
-
-        if (!taskElement) {
-            return;
-        }
-
-
-        taskElement.classList.add(
-            "just-completed"
-        );
-
-
-        setTimeout(
-            () => {
-
-                taskElement.classList.remove(
-                    "just-completed"
-                );
-
-            },
-            600
-        );
-
-
-        /*
-           لا نعرض burst إذا المستخدم يقلل الحركة.
-        */
-
-        if (
-            window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
-            ).matches
-        ) {
-            return;
-        }
-
-
-        const check =
-            taskElement.querySelector(
-                ".check"
-            );
-
-
-        if (!check) {
-            return;
-        }
-
-
-        const rect =
-            check.getBoundingClientRect();
-
-
-        const burst =
-            document.createElement(
-                "div"
-            );
-
-
-        burst.className =
-            "completion-burst";
-
-
-        burst.style.left =
-            `${rect.left + rect.width / 2}px`;
-
-
-        burst.style.top =
-            `${rect.top + rect.height / 2}px`;
-
-
-        const colors = [
-            "#19c58b",
-            "#f4c84d",
-            "#f4f5f4"
-        ];
-
-
-        for (
-            let i = 0;
-            i < 10;
-            i++
-        ) {
-
-            const dot =
-                document.createElement(
-                    "span"
+            const actionButton =
+                event.target.closest(
+                    "[data-action]"
                 );
 
 
-            dot.style.setProperty(
-                "--angle",
-                `${i * 36}deg`
-            );
+            const taskElement =
+                event.target.closest(
+                    ".task"
+                );
 
 
-            dot.style.setProperty(
-                "--distance",
-                `${25 + (i % 3) * 7}px`
-            );
+            if (!taskElement) {
+                return;
+            }
 
 
-            dot.style.setProperty(
-                "--size",
-                `${4 + (i % 2)}px`
-            );
+            const id =
+                taskElement.dataset.taskId;
 
 
-            dot.style.setProperty(
-                "--color",
-                colors[
-                    i % colors.length
-                ]
-            );
+            if (!id) {
+                return;
+            }
 
 
-            burst.appendChild(
-                dot
-            );
+            if (
+                actionButton
+            ) {
+
+                const action =
+                    actionButton.dataset.action;
+
+
+                if (
+                    action ===
+                    "toggle"
+                ) {
+
+                    toggleTask(id);
+
+                    return;
+                }
+
+
+                if (
+                    action ===
+                    "star"
+                ) {
+
+                    toggleStar(id);
+
+                    return;
+                }
+
+
+                if (
+                    action ===
+                    "delete"
+                ) {
+
+                    deleteTask(id);
+
+                    return;
+                }
+
+            }
+
+
+            /*
+               الضغط على النص أو أي مساحة
+               من المهمة = إنجاز.
+            */
+
+            toggleTask(id);
+
         }
+    );
 
 
-        document.body.appendChild(
-            burst
-        );
+    /* =====================================================
+       KEYBOARD SUPPORT
+    ===================================================== */
+
+    tasksContainer.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !==
+                "Enter" &&
+                event.key !==
+                " "
+            ) {
+
+                return;
+            }
 
 
-        setTimeout(
-            () => {
+            const button =
+                event.target.closest(
+                    ".check"
+                );
 
-                burst.remove();
 
-            },
-            600
-        );
-    }
+            if (!button) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+            const taskElement =
+                button.closest(
+                    ".task"
+                );
+
+
+            if (!taskElement) {
+                return;
+            }
+
+
+            toggleTask(
+                taskElement.dataset.taskId
+            );
+
+        }
+    );
 
 
     /* =====================================================
        INPUT
     ===================================================== */
 
-    function updateInput() {
+    function resizeInput() {
 
         taskInput.style.height =
             "auto";
 
 
         taskInput.style.height =
-            Math.min(
+            `${Math.min(
                 taskInput.scrollHeight,
                 120
-            ) + "px";
+            )}px`;
 
+    }
+
+
+    function updateSubmitButton() {
 
         const hasText =
-            taskInput.value.trim()
+            taskInput.value
+                .trim()
                 .length > 0;
 
 
@@ -2793,37 +3388,25 @@
             "active",
             hasText
         );
+
     }
 
 
     taskInput.addEventListener(
         "input",
-        updateInput
-    );
+        () => {
 
+            resizeInput();
 
-    taskInput.addEventListener(
-        "keydown",
-        event => {
+            updateSubmitButton();
 
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
-
-                event.preventDefault();
-
-                handleSend();
-            }
         }
     );
 
 
-    submitBtn.addEventListener(
-        "click",
-        handleSend
-    );
-
+    /* =====================================================
+       SEND
+    ===================================================== */
 
     function handleSend() {
 
@@ -2843,97 +3426,52 @@
             taskInput.value =
                 "";
 
+
             taskInput.style.height =
                 "42px";
 
-            updateInput();
+
+            updateSubmitButton();
+
 
             taskInput.focus();
+
 
             tasksContainer.scrollTop =
                 0;
         }
+
     }
 
 
-    /* =====================================================
-       TASK CLICK
-    ===================================================== */
-
-    tasksContainer.addEventListener(
+    submitBtn.addEventListener(
         "click",
+        handleSend
+    );
+
+
+    taskInput.addEventListener(
+        "keydown",
         event => {
 
-            const actionButton =
-                event.target.closest(
-                    ".icon-btn"
-                );
+            if (
+                event.key ===
+                    "Enter" &&
+                !event.shiftKey
+            ) {
 
+                event.preventDefault();
 
-            if (actionButton) {
+                handleSend();
 
-                const taskElement =
-                    actionButton.closest(
-                        ".task"
-                    );
-
-
-                if (!taskElement) {
-                    return;
-                }
-
-
-                const id =
-                    taskElement.dataset.taskId;
-
-
-                const action =
-                    actionButton.dataset.action;
-
-
-                if (
-                    action === "star"
-                ) {
-
-                    toggleStar(id);
-
-                    return;
-                }
-
-
-                if (
-                    action === "delete"
-                ) {
-
-                    deleteTask(id);
-
-                    return;
-                }
             }
 
-
-            const taskElement =
-                event.target.closest(
-                    ".task"
-                );
-
-
-            if (!taskElement) {
-                return;
-            }
-
-
-            const id =
-                taskElement.dataset.taskId;
-
-
-            toggleTask(id);
         }
     );
 
 
     /* =====================================================
-       INSTALL
+       PWA INSTALL
     ===================================================== */
 
     window.addEventListener(
@@ -2962,11 +3500,13 @@
                             "aria-hidden",
                             "false"
                         );
+
                     }
 
                 },
                 8000
             );
+
         }
     );
 
@@ -2990,22 +3530,14 @@
                 deferredInstallPrompt =
                     null;
 
-                installOverlay.classList.remove(
-                    "show"
-                );
-
-                installOverlay.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
+                closeInstall();
 
                 return;
+
             }
 
 
-            installOverlay.classList.remove(
-                "show"
-            );
+            closeInstall();
 
             installGuide.classList.add(
                 "show"
@@ -3030,24 +3562,30 @@
 
                 guideText.textContent =
                     "من قائمة المتصفح اختَر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية.";
+
             }
+
         }
     );
 
 
+    function closeInstall() {
+
+        installOverlay.classList.remove(
+            "show"
+        );
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+
     installClose.addEventListener(
         "click",
-        () => {
-
-            installOverlay.classList.remove(
-                "show"
-            );
-
-            installOverlay.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-        }
+        closeInstall
     );
 
 
@@ -3063,9 +3601,33 @@
                 "aria-hidden",
                 "true"
             );
+
         }
     );
 
+
+    installGuide.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                installGuide
+            ) {
+
+                installGuide.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       STANDALONE
+    ===================================================== */
 
     function isStandalone() {
 
@@ -3073,9 +3635,34 @@
             window.matchMedia(
                 "(display-mode: standalone)"
             ).matches ||
+
             window.navigator.standalone === true
         );
+
     }
+
+
+    /* =====================================================
+       MIDNIGHT REFRESH
+       لو التطبيق ظل مفتوحًا حتى يوم جديد
+    ===================================================== */
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                !document.hidden
+            ) {
+
+                updateDate();
+
+                render();
+
+            }
+
+        }
+    );
 
 
     /* =====================================================
@@ -3097,10 +3684,13 @@
                             scope: "./"
                         }
                     )
-                    .catch(() => {});
+                    .catch(
+                        () => {}
+                    );
 
             }
         );
+
     }
 
 
@@ -3108,13 +3698,13 @@
        START
     ===================================================== */
 
-    updateInput();
+    updateSubmitButton();
 
     render();
 
 })();
+
 </script>
 
 </body>
 </html>
-```
