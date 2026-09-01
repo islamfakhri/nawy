@@ -218,7 +218,7 @@
         display: grid;
         place-items: center;
         transition: all .2s ease;
-        pointer-events: none; /* نجعل النقر يمر إلى المهمة */
+        pointer-events: none; /* نمرر النقر إلى المهمة */
     }
 
     .task.completed .check {
@@ -321,7 +321,7 @@
     .task-main {
         min-width: 0;
         flex: 1;
-        pointer-events: none; /* نجعل النقر يمر إلى المهمة */
+        pointer-events: none; /* نمرر النقر إلى المهمة */
     }
 
     .task-title {
@@ -695,8 +695,7 @@
 
 <script>
     /* =====================================================
-       NAWY - CORE APP LOGIC
-       التعديل: الضغط على المهمة يبدل حالتها بسلاسة
+       NAWY - CORE APP LOGIC (يعمل مع كل المهام)
     ===================================================== */
     const STORAGE_KEY = "nawy_tasks_v4";
 
@@ -956,7 +955,7 @@
         const el = document.createElement("div");
         el.className = `task ${task.completed ? "completed" : ""}`;
         el.setAttribute("data-task-id", task.id);
-        el.setAttribute("data-action", "toggle"); // المهمة نفسها تستمع للنقر
+        // لا نحتاج data-action على المهمة لأننا سنعتمد على النقر على أي جزء منها
 
         el.innerHTML = `
             <div class="check"></div>
@@ -982,10 +981,10 @@
     }
 
     /* =====================================================
-       EVENTS - باستخدام Event Delegation
+       EVENTS - باستخدام Event Delegation (يعمل مع كل المهام)
     ===================================================== */
     tasksContainer.addEventListener('click', (e) => {
-        // إذا كان النقر على زر (نجمة أو حذف) نتعامل معه بشكل منفصل
+        // 1. إذا كان النقر على زر (نجمة أو حذف)
         const iconBtn = e.target.closest('.icon-btn');
         if (iconBtn) {
             const action = iconBtn.dataset.action;
@@ -1001,19 +1000,17 @@
                     deleteTask(id);
                 }
             }
-            return; // منع التعامل معها كـ toggle
+            return; // نمنع تنفيذ أي إجراء آخر
         }
 
-        // النقر على المهمة نفسها (أي مكان آخر)
+        // 2. النقر على أي جزء آخر من المهمة (بما في ذلك check والنص)
         const taskEl = e.target.closest('.task');
         if (!taskEl) return;
         const id = taskEl.dataset.taskId;
         if (!id) return;
 
-        // تأكد من أن العنصر له data-action="toggle" (جميع المهام لها)
-        if (taskEl.dataset.action === 'toggle') {
-            toggleTask(id);
-        }
+        // تبديل الحالة (إنجاز / إلغاء إنجاز)
+        toggleTask(id);
     });
 
     // باقي الأحداث (الإدخال، الإرسال، التثبيت)
