@@ -1,12 +1,13 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-<meta name="theme-color" content="#0d0d0d">
+<meta name="theme-color" content="#0d0f0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <title>ناوي — على إيه النهارده؟</title>
 
@@ -14,7 +15,768 @@
 <link rel="icon" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
-<link rel="stylesheet" href="./css/app.css">
+<style>
+:root {
+    --bg: #0d0f0e;
+    --surface: #171a18;
+    --surface-2: #202421;
+    --text: #f3f5f4;
+    --muted: #8c9691;
+    --muted-2: #626b66;
+    --green: #19c58b;
+    --danger: #ff6868;
+    --yellow: #f3c84b;
+    --border: rgba(255,255,255,.075);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    width: 100%;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans Arabic",
+        Tahoma,
+        Arial,
+        sans-serif;
+    overflow: hidden;
+}
+
+button,
+textarea {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding:
+        calc(22px + env(safe-area-inset-top))
+        22px
+        12px;
+    flex-shrink: 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-name {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.greeting {
+    margin-top: 20px;
+}
+
+.greeting h1 {
+    font-size: clamp(24px, 5vw, 29px);
+    line-height: 1.25;
+    font-weight: 800;
+    letter-spacing: -.9px;
+}
+
+.greeting p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.progress {
+    margin-top: 17px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 5px;
+    background: rgba(255,255,255,.07);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+    background: var(--green);
+    border-radius: inherit;
+    transition: width .35s ease;
+}
+
+.progress-text {
+    min-width: max-content;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* =========================
+   TASKS
+========================= */
+
+.tasks {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 8px 22px 170px;
+    scrollbar-width: none;
+}
+
+.tasks::-webkit-scrollbar {
+    display: none;
+}
+
+.task {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition:
+        opacity .2s ease,
+        transform .15s ease;
+}
+
+.task:active {
+    transform: scale(.995);
+}
+
+/* =========================
+   CHECK
+========================= */
+
+.check {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border: 1.8px solid #68736e;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--green);
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+/* علامة الصح تظهر عند الوقوف */
+
+.task:not(.completed):hover .check {
+    border-color: var(--green);
+    background: rgba(25,197,139,.10);
+    transform: scale(1.06);
+}
+
+.check::after {
+    content: "✓";
+    font-size: 14px;
+    font-weight: 900;
+    opacity: 0;
+    transform: scale(.5);
+    transition: opacity .15s ease, transform .15s ease;
+}
+
+.task:not(.completed):hover .check::after {
+    opacity: .9;
+    transform: scale(1);
+}
+
+.task.completed .check {
+    background: var(--green);
+    border-color: var(--green);
+    color: #07130e;
+}
+
+.task.completed .check::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Animation الإنجاز */
+
+.task.just-completed .check {
+    animation: checkPop .45s cubic-bezier(.2,.9,.3,1.3);
+    box-shadow: 0 0 0 8px rgba(25,197,139,.10);
+}
+
+@keyframes checkPop {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.28); }
+    100% { transform: scale(1); }
+}
+
+/* =========================
+   TASK TEXT
+========================= */
+
+.task-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.task-title {
+    color: #edf1ef;
+    font-size: 16px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.task.completed .task-title {
+    color: var(--muted-2);
+    text-decoration: line-through;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.icon-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: transparent;
+    color: #68736e;
+    font-size: 18px;
+    transition: background .15s ease, color .15s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,.05);
+}
+
+.icon-btn.starred {
+    color: var(--yellow);
+}
+
+.icon-btn.delete:hover {
+    color: var(--danger);
+}
+
+/* =========================
+   COMPLETED DIVIDER
+========================= */
+
+.completed-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 22px 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.completed-divider::before,
+.completed-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--border);
+}
+
+.completed-divider span {
+    white-space: nowrap;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+    padding: 85px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 30px;
+    margin-bottom: 14px;
+}
+
+.empty strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.empty span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   COMPOSER
+========================= */
+
+.composer-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    padding:
+        20px 18px
+        calc(12px + env(safe-area-inset-bottom));
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(13,15,14,.82) 28%,
+            var(--bg) 58%
+        );
+    pointer-events: none;
+}
+
+.composer-inner {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    pointer-events: auto;
+}
+
+/*
+   صندوق الكتابة
+   بدون border مربع داخلي
+*/
+
+.composer {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 7px 7px 7px 14px;
+
+    background: #1b1f1d;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.30);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.composer:focus-within {
+    border-color: rgba(25,197,139,.28);
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.34),
+        0 0 0 3px rgba(25,197,139,.05);
+}
+
+#taskInput {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+
+    min-height: 42px;
+    max-height: 120px;
+
+    resize: none;
+    overflow-y: auto;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent !important;
+
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.45;
+
+    padding: 10px 2px;
+
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}
+
+#taskInput::placeholder {
+    color: #737d78;
+}
+
+#taskInput::-webkit-scrollbar {
+    width: 0;
+}
+
+/* =========================
+   SEND BUTTON
+========================= */
+
+.submit {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #2a302d;
+    color: #737d78;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    transition:
+        transform .15s ease,
+        background .18s ease,
+        color .18s ease,
+        box-shadow .18s ease;
+}
+
+.submit.active {
+    background: var(--green);
+    color: #06130e;
+    box-shadow: 0 6px 18px rgba(25,197,139,.22);
+}
+
+.submit:active {
+    transform: scale(.91);
+}
+
+/* سهم لفوق حقيقي */
+
+.submit span {
+    display: block;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   HINT
+========================= */
+
+.hint {
+    text-align: center;
+    margin-top: 7px;
+    color: #56605b;
+    font-size: 10px;
+}
+
+/* =========================
+   COMPLETION BURST
+========================= */
+
+.completion-burst {
+    position: fixed;
+    width: 46px;
+    height: 46px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 100;
+}
+
+.completion-burst::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 2px solid rgba(25,197,139,.75);
+    border-radius: 50%;
+    animation: ring .48s ease-out forwards;
+}
+
+.completion-burst i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: var(--color);
+    animation: particle .55s cubic-bezier(.2,.8,.3,1) forwards;
+}
+
+@keyframes ring {
+    from {
+        transform: scale(.5);
+        opacity: .9;
+    }
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@keyframes particle {
+    from {
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--angle))
+            translateY(-7px)
+            scale(.6);
+        opacity: 1;
+    }
+    to {
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--angle))
+            translateY(calc(var(--distance) * -1))
+            scale(0);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   INSTALL
+========================= */
+
+.install-overlay,
+.install-guide {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 16px;
+
+    background: rgba(0,0,0,.38);
+    backdrop-filter: blur(5px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity .25s ease, visibility .25s ease;
+}
+
+.install-overlay.show,
+.install-guide.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.install-sheet {
+    width: 100%;
+    max-width: 620px;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 13px;
+
+    background: #191d1b;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+}
+
+.install-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+    background: rgba(25,197,139,.10);
+}
+
+.install-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.install-title {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.install-subtitle {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.install-btn {
+    padding: 10px 13px;
+    border-radius: 12px;
+
+    background: var(--green);
+    color: #06130e;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.install-close {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+
+    border-radius: 50%;
+    background: rgba(255,255,255,.05);
+    color: var(--muted);
+    font-size: 18px;
+}
+
+.install-guide {
+    align-items: center;
+}
+
+.guide-box {
+    width: 100%;
+    max-width: 380px;
+
+    padding: 23px;
+
+    background: #191d1b;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    text-align: center;
+}
+
+.guide-box h2 {
+    font-size: 19px;
+    margin-bottom: 9px;
+}
+
+.guide-box p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.guide-close {
+    width: 100%;
+    margin-top: 18px;
+    padding: 11px;
+
+    border-radius: 13px;
+
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+/* =========================
+   SMALL SCREENS
+========================= */
+
+@media (max-width: 420px) {
+
+    .header {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .tasks {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .greeting {
+        margin-top: 18px;
+    }
+
+    .task-title {
+        font-size: 15px;
+    }
+
+    .task-actions {
+        gap: 0;
+    }
+
+    .icon-btn {
+        width: 31px;
+        height: 31px;
+    }
+
+    .composer-wrap {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .hint {
+        display: none;
+    }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -24,10 +786,7 @@
     <header class="header">
 
         <div class="brand">
-            <div class="brand-main">
-                <div class="brand-mark">🎯</div>
-                <div class="brand-name">ناوي</div>
-            </div>
+            <div class="brand-name">ناوي</div>
         </div>
 
         <div class="greeting">
@@ -39,7 +798,6 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-
             <div class="progress-text" id="progressText">
                 ابدأ أول نية
             </div>
@@ -47,44 +805,44 @@
 
     </header>
 
-
     <main class="tasks" id="tasksContainer"></main>
-
 
     <div class="composer-wrap">
 
-        <div class="composer">
+        <div class="composer-inner">
 
-            <textarea
-                id="taskInput"
-                rows="1"
-                maxlength="500"
-                placeholder="اكتب اللي ناوي عليه..."
-                enterkeyhint="send"
-                autocomplete="off"
-                spellcheck="false"
-            ></textarea>
+            <div class="composer">
 
-            <button
-                type="button"
-                class="submit"
-                id="submitBtn"
-                aria-label="إضافة نية"
-                title="إضافة نية"
-            >
-                <span class="send-arrow">↑</span>
-            </button>
+                <textarea
+                    id="taskInput"
+                    rows="1"
+                    maxlength="500"
+                    placeholder="اكتب اللي ناوي عليه..."
+                    enterkeyhint="send"
+                    autocomplete="off"
+                    spellcheck="true"
+                ></textarea>
 
-        </div>
+                <button
+                    type="button"
+                    class="submit"
+                    id="submitBtn"
+                    aria-label="إضافة نية"
+                >
+                    <span>↑</span>
+                </button>
 
-        <div class="hint">
-            اضغط Enter لإضافة نية جديدة
+            </div>
+
+            <div class="hint">
+                اضغط Enter لإضافة نية جديدة
+            </div>
+
         </div>
 
     </div>
 
 </div>
-
 
 <!-- INSTALL -->
 
@@ -127,7 +885,6 @@
     </div>
 </div>
 
-
 <!-- INSTALL GUIDE -->
 
 <div
@@ -135,7 +892,6 @@
     id="installGuide"
     aria-hidden="true"
 >
-
     <div class="guide-box">
 
         <h2>خلّي ناوي معاك 📱</h2>
@@ -155,11 +911,850 @@
         </button>
 
     </div>
-
 </div>
 
+<script>
 
-<script src="./js/app.js"></script>
+/* =========================================================
+   NAWY
+   نسخة بسيطة: كل المنطق هنا داخل index.html
+========================================================= */
+
+const STORAGE_KEY = "nawy_tasks_v5";
+
+const taskInput = document.getElementById("taskInput");
+const submitBtn = document.getElementById("submitBtn");
+const tasksContainer = document.getElementById("tasksContainer");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+const currentDate = document.getElementById("currentDate");
+
+const installOverlay = document.getElementById("installOverlay");
+const installBtn = document.getElementById("installBtn");
+const installClose = document.getElementById("installClose");
+
+const installGuide = document.getElementById("installGuide");
+const guideClose = document.getElementById("guideClose");
+
+let tasks = loadTasks();
+let deferredInstallPrompt = null;
+let audioContext = null;
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+currentDate.textContent =
+    new Intl.DateTimeFormat("ar-EG", {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+    }).format(new Date());
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function loadTasks() {
+
+    try {
+
+        const current =
+            JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+        if (Array.isArray(current)) {
+            return current;
+        }
+
+        const old =
+            JSON.parse(localStorage.getItem("nawy_tasks_v4"));
+
+        if (Array.isArray(old)) {
+            return old;
+        }
+
+        const older =
+            JSON.parse(localStorage.getItem("nawy_tasks_v3"));
+
+        return Array.isArray(older) ? older : [];
+
+    } catch {
+
+        return [];
+    }
+}
+
+function saveTasks() {
+
+    try {
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(tasks)
+        );
+    } catch (error) {
+        console.warn("Nawy storage error:", error);
+    }
+}
+
+
+/* =========================================================
+   AUDIO
+   صوت خفيف فقط
+========================================================= */
+
+function getAudioContext() {
+
+    try {
+
+        if (!audioContext) {
+
+            const AudioContext =
+                window.AudioContext ||
+                window.webkitAudioContext;
+
+            if (!AudioContext) {
+                return null;
+            }
+
+            audioContext = new AudioContext();
+        }
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        return audioContext;
+
+    } catch {
+
+        return null;
+    }
+}
+
+
+/* صوت إضافة النية */
+
+function playAddSound() {
+
+    const ctx = getAudioContext();
+
+    if (!ctx) return;
+
+    try {
+
+        const now = ctx.currentTime;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(
+            650,
+            now + .07
+        );
+
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(
+            .025,
+            now + .01
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            now + .09
+        );
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + .1);
+
+    } catch {}
+}
+
+
+/* صوت إنجاز — Chime خفيف */
+
+function playCompletionSound() {
+
+    const ctx = getAudioContext();
+
+    if (!ctx) return;
+
+    try {
+
+        const now = ctx.currentTime;
+
+        const notes = [
+            { freq: 784, time: 0, volume: .045 },
+            { freq: 988, time: .075, volume: .038 },
+            { freq: 1175, time: .15, volume: .028 }
+        ];
+
+        notes.forEach(note => {
+
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sine";
+
+            osc.frequency.setValueAtTime(
+                note.freq,
+                now + note.time
+            );
+
+            gain.gain.setValueAtTime(
+                .0001,
+                now + note.time
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                note.volume,
+                now + note.time + .008
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .0001,
+                now + note.time + .24
+            );
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(now + note.time);
+            osc.stop(now + note.time + .25);
+
+        });
+
+    } catch {}
+}
+
+
+/* =========================================================
+   TASKS
+========================================================= */
+
+function addTask(text) {
+
+    const clean = text.trim();
+
+    if (!clean) return;
+
+    const task = {
+
+        id:
+            Date.now().toString() +
+            Math.random().toString(36).slice(2, 7),
+
+        text: clean,
+
+        completed: false,
+
+        starred: false,
+
+        createdAt: new Date().toISOString()
+    };
+
+    tasks.unshift(task);
+
+    saveTasks();
+
+    playAddSound();
+
+    render();
+}
+
+
+function toggleTask(id) {
+
+    const task =
+        tasks.find(item => item.id === id);
+
+    if (!task) return;
+
+    task.completed = !task.completed;
+
+    if (task.completed) {
+
+        playCompletionSound();
+
+        render();
+
+        showCompletionFeedback(id);
+
+    } else {
+
+        render();
+    }
+
+    saveTasks();
+}
+
+
+function toggleStar(id) {
+
+    const task =
+        tasks.find(item => item.id === id);
+
+    if (!task) return;
+
+    task.starred = !task.starred;
+
+    saveTasks();
+
+    render();
+}
+
+
+function deleteTask(id) {
+
+    tasks =
+        tasks.filter(item => item.id !== id);
+
+    saveTasks();
+
+    render();
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateProgress() {
+
+    const total = tasks.length;
+
+    const done =
+        tasks.filter(task => task.completed).length;
+
+    if (!total) {
+
+        progressFill.style.width = "0%";
+
+        progressText.textContent =
+            "ابدأ أول نية";
+
+        return;
+    }
+
+    const percentage =
+        Math.round((done / total) * 100);
+
+    progressFill.style.width =
+        percentage + "%";
+
+    if (percentage === 100) {
+
+        progressText.textContent =
+            "ما شاء الله! كملت كل نواياك 🎉";
+
+    } else {
+
+        progressText.textContent =
+            `${done} من ${total} أُنجزت`;
+    }
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+    updateProgress();
+
+    tasksContainer.innerHTML = "";
+
+    if (!tasks.length) {
+
+        tasksContainer.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">🌱</div>
+                <strong>مفيش نوايا هنا</strong>
+                <span>اكتب أول حاجة ناوي تعملها.</span>
+            </div>
+        `;
+
+        return;
+    }
+
+    const activeTasks =
+        tasks
+        .filter(task => !task.completed)
+        .sort((a, b) =>
+            Number(b.starred) - Number(a.starred)
+        );
+
+    const completedTasks =
+        tasks.filter(task => task.completed);
+
+    activeTasks.forEach(task => {
+
+        tasksContainer.appendChild(
+            createTaskElement(task)
+        );
+
+    });
+
+
+    if (completedTasks.length) {
+
+        const divider =
+            document.createElement("div");
+
+        divider.className =
+            "completed-divider";
+
+        divider.innerHTML =
+            `<span>النوايا المحققة (${completedTasks.length})</span>`;
+
+        tasksContainer.appendChild(divider);
+
+
+        completedTasks.forEach(task => {
+
+            tasksContainer.appendChild(
+                createTaskElement(task)
+            );
+
+        });
+    }
+}
+
+
+/* =========================================================
+   CREATE TASK
+========================================================= */
+
+function createTaskElement(task) {
+
+    const element =
+        document.createElement("div");
+
+    element.className =
+        "task" +
+        (task.completed ? " completed" : "");
+
+    element.dataset.taskId =
+        task.id;
+
+    element.innerHTML = `
+
+        <div class="check" aria-hidden="true"></div>
+
+        <div class="task-main">
+            <div class="task-title">
+                ${escapeHtml(task.text)}
+            </div>
+        </div>
+
+        <div class="task-actions">
+
+            <button
+                type="button"
+                class="icon-btn ${task.starred ? "starred" : ""}"
+                data-action="star"
+                aria-label="تمييز"
+            >
+                ${task.starred ? "★" : "☆"}
+            </button>
+
+            <button
+                type="button"
+                class="icon-btn delete"
+                data-action="delete"
+                aria-label="حذف"
+            >
+                ×
+            </button>
+
+        </div>
+    `;
+
+    return element;
+}
+
+
+/* =========================================================
+   SECURITY
+========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value).replace(
+        /[&<>"']/g,
+        character => ({
+
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+
+        })[character]
+    );
+}
+
+
+/* =========================================================
+   COMPLETION ANIMATION
+========================================================= */
+
+function showCompletionFeedback(id) {
+
+    if (
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches
+    ) {
+        return;
+    }
+
+    const taskElement =
+        document.querySelector(
+            `[data-task-id="${CSS.escape(id)}"]`
+        );
+
+    if (!taskElement) return;
+
+    taskElement.classList.add("just-completed");
+
+    setTimeout(() => {
+
+        taskElement.classList.remove(
+            "just-completed"
+        );
+
+    }, 500);
+
+    const check =
+        taskElement.querySelector(".check");
+
+    if (!check) return;
+
+    const rect =
+        check.getBoundingClientRect();
+
+    const burst =
+        document.createElement("div");
+
+    burst.className =
+        "completion-burst";
+
+    burst.style.left =
+        (rect.left + rect.width / 2) + "px";
+
+    burst.style.top =
+        (rect.top + rect.height / 2) + "px";
+
+    const particles = 10;
+
+    const fragment =
+        document.createDocumentFragment();
+
+    const colors = [
+        "#19c58b",
+        "#f3c84b",
+        "#f3f5f4"
+    ];
+
+    for (let i = 0; i < particles; i++) {
+
+        const particle =
+            document.createElement("i");
+
+        particle.style.setProperty(
+            "--angle",
+            `${i * (360 / particles)}deg`
+        );
+
+        particle.style.setProperty(
+            "--distance",
+            `${28 + (i % 3) * 7}px`
+        );
+
+        particle.style.setProperty(
+            "--size",
+            `${4 + (i % 2)}px`
+        );
+
+        particle.style.setProperty(
+            "--color",
+            colors[i % colors.length]
+        );
+
+        fragment.appendChild(particle);
+    }
+
+    burst.appendChild(fragment);
+
+    document.body.appendChild(burst);
+
+    setTimeout(() => {
+        burst.remove();
+    }, 600);
+}
+
+
+/* =========================================================
+   TASK EVENTS
+========================================================= */
+
+tasksContainer.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(".icon-btn");
+
+        if (button) {
+
+            const taskElement =
+                button.closest(".task");
+
+            if (!taskElement) return;
+
+            const id =
+                taskElement.dataset.taskId;
+
+            const action =
+                button.dataset.action;
+
+            if (action === "star") {
+
+                toggleStar(id);
+
+            }
+
+            if (action === "delete") {
+
+                if (
+                    confirm(
+                        "هل أنت متأكد من حذف هذه النية؟"
+                    )
+                ) {
+
+                    deleteTask(id);
+                }
+            }
+
+            return;
+        }
+
+
+        const taskElement =
+            event.target.closest(".task");
+
+        if (!taskElement) return;
+
+        toggleTask(
+            taskElement.dataset.taskId
+        );
+    }
+);
+
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+function resizeInput() {
+
+    taskInput.style.height = "auto";
+
+    taskInput.style.height =
+        Math.min(
+            taskInput.scrollHeight,
+            120
+        ) + "px";
+}
+
+
+function updateSendButton() {
+
+    submitBtn.classList.toggle(
+        "active",
+        taskInput.value.trim().length > 0
+    );
+}
+
+
+taskInput.addEventListener(
+    "input",
+    () => {
+
+        resizeInput();
+
+        updateSendButton();
+    }
+);
+
+
+taskInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            handleSend();
+        }
+    }
+);
+
+
+submitBtn.addEventListener(
+    "click",
+    handleSend
+);
+
+
+function handleSend() {
+
+    const text =
+        taskInput.value.trim();
+
+    if (!text) {
+
+        taskInput.focus();
+
+        return;
+    }
+
+    addTask(text);
+
+    taskInput.value = "";
+
+    taskInput.style.height = "42px";
+
+    updateSendButton();
+
+    taskInput.focus();
+}
+
+
+/* =========================================================
+   PWA INSTALL
+========================================================= */
+
+window.addEventListener(
+    "beforeinstallprompt",
+    event => {
+
+        event.preventDefault();
+
+        deferredInstallPrompt = event;
+
+        installOverlay.classList.add("show");
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+    }
+);
+
+
+installBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (!deferredInstallPrompt) {
+
+            installOverlay.classList.remove("show");
+
+            installGuide.classList.add("show");
+
+            return;
+        }
+
+        deferredInstallPrompt.prompt();
+
+        try {
+
+            await deferredInstallPrompt.userChoice;
+
+        } catch {}
+
+        deferredInstallPrompt = null;
+
+        installOverlay.classList.remove("show");
+    }
+);
+
+
+installClose.addEventListener(
+    "click",
+    () => {
+
+        installOverlay.classList.remove("show");
+
+        installOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+    }
+);
+
+
+guideClose.addEventListener(
+    "click",
+    () => {
+
+        installGuide.classList.remove("show");
+
+        installGuide.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+    }
+);
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener(
+        "load",
+        () => {
+
+            navigator.serviceWorker
+                .register("./sw.js")
+                .catch(error => {
+                    console.warn(
+                        "Nawy SW error:",
+                        error
+                    );
+                });
+        }
+    );
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+render();
+
+updateSendButton();
+
+</script>
 
 </body>
 </html>
+```
