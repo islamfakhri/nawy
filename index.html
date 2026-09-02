@@ -62,7 +62,7 @@
       --radius-lg: 18px;
       --radius-md: 14px;
 
-      --header-height: 76px;
+      --header-height: 118px;
       --bottom-space: 120px;
     }
 
@@ -178,23 +178,31 @@
     .header {
       min-height: var(--header-height);
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-
       position: sticky;
       top: 0;
       z-index: 20;
+
+      padding-top: 8px;
 
       background:
         linear-gradient(
           to bottom,
           var(--bg) 72%,
-          rgba(0,0,0,0)
+          rgba(0, 0, 0, 0)
         );
 
-      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .header-main {
+      min-height: 54px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
     }
 
     .brand {
@@ -257,6 +265,98 @@
 
     .menu-btn:active {
       transform: scale(.92);
+    }
+
+    /* =========================
+       HEADER NAV
+    ========================= */
+
+    .header-nav {
+      margin-top: 8px;
+
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      width: 100%;
+
+      padding: 4px;
+
+      border-radius: 17px;
+
+      background: color-mix(
+        in srgb,
+        var(--surface) 88%,
+        transparent
+      );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 5px 22px rgba(0, 0, 0, .045);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .header-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .header-tab {
+      min-height: 42px;
+
+      flex: 1 1 0;
+
+      padding: 0 13px;
+
+      border-radius: 13px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      white-space: nowrap;
+
+      background: transparent;
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 750;
+
+      transition:
+        background .18s ease,
+        color .18s ease,
+        transform .12s ease;
+    }
+
+    .header-tab:active {
+      transform: scale(.97);
+    }
+
+    .header-tab.active {
+      background: var(--accent);
+      color: #fff;
+
+      box-shadow:
+        0 6px 16px color-mix(
+          in srgb,
+          var(--accent) 20%,
+          transparent
+        );
+    }
+
+    .header-tab-star {
+      font-size: 21px;
+      line-height: 1;
+    }
+
+    .header-tab.active .header-tab-star {
+      color: #fff;
     }
 
     /* =========================
@@ -435,6 +535,99 @@
 
       font-size: 11px;
       font-weight: 800;
+    }
+
+    /* =========================
+       COMPLETED COLLAPSIBLE
+    ========================= */
+
+    .completed-toggle {
+      width: 100%;
+
+      min-height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      padding: 0 8px;
+
+      border-radius: 14px;
+
+      background: transparent;
+
+      text-align: start;
+
+      transition:
+        background .16s ease;
+    }
+
+    .completed-toggle:hover,
+    .completed-toggle:active {
+      background: var(--surface-2);
+    }
+
+    .completed-toggle-main {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      min-width: 0;
+    }
+
+    .completed-toggle-title {
+      color: var(--muted);
+
+      font-size: 13px;
+      font-weight: 780;
+    }
+
+    .completed-toggle-chevron {
+      width: 28px;
+      height: 28px;
+
+      border-radius: 9px;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--surface-2);
+      color: var(--muted);
+
+      font-size: 16px;
+      font-weight: 900;
+
+      transition:
+        transform .2s ease,
+        color .18s ease,
+        background .18s ease;
+    }
+
+    .completed-toggle.open
+    .completed-toggle-chevron {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .completed-list-wrap {
+      overflow: hidden;
+
+      max-height: 0;
+      opacity: 0;
+
+      transition:
+        max-height .28s cubic-bezier(.2,.8,.2,1),
+        opacity .2s ease,
+        margin-top .2s ease;
+    }
+
+    .completed-list-wrap.open {
+      max-height: 3000px;
+      opacity: 1;
+
+      margin-top: 4px;
     }
 
     /* =========================
@@ -916,35 +1109,6 @@
     .menu-text {
       flex: 1;
       font-weight: 650;
-    }
-
-    .menu-item.active .menu-text {
-      color: var(--accent);
-    }
-
-    /*
-      المفضلة تظهر كنجمة فقط.
-    */
-    .menu-favorites {
-      justify-content: center;
-    }
-
-    .menu-favorites .menu-icon {
-      width: 42px;
-      height: 42px;
-
-      background: transparent;
-
-      font-size: 24px;
-    }
-
-    .menu-favorites .menu-text {
-      display: none;
-    }
-
-    .menu-favorites.active .menu-icon {
-      color: var(--warning);
-      background: rgba(232,163,23,.1);
     }
 
     /* =========================
@@ -1465,6 +1629,15 @@
 
     @media (max-width: 480px) {
 
+      .header-tab {
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .header-tab-star {
+        font-size: 20px;
+      }
+
       .install-banner {
         align-items: flex-start;
         gap: 9px;
@@ -1531,25 +1704,70 @@
     <!-- HEADER -->
     <header class="header">
 
-      <div class="brand">
+      <div class="header-main">
 
-        <div class="brand-mark">ن</div>
+        <div class="brand">
 
-        <div class="brand-name">
-          ناوي
+          <div class="brand-mark">ن</div>
+
+          <div class="brand-name">
+            ناوي
+          </div>
+
         </div>
+
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          type="button"
+          aria-label="القائمة"
+          data-i18n-aria="menu"
+        >
+          ⋯
+        </button>
 
       </div>
 
-      <button
-        class="menu-btn"
-        id="menuBtn"
-        type="button"
-        aria-label="القائمة"
-        data-i18n-aria="menu"
+      <!-- PRIMARY NAV -->
+      <nav
+        class="header-nav"
+        aria-label="التنقل الرئيسي"
+        data-i18n-aria="mainNavigation"
       >
-        ⋯
-      </button>
+
+        <button
+          class="header-tab active"
+          data-view="today"
+          id="headerToday"
+          type="button"
+          aria-current="page"
+          data-i18n="today"
+        >
+          اليوم
+        </button>
+
+        <button
+          class="header-tab"
+          data-view="all"
+          id="headerAll"
+          type="button"
+          data-i18n="all"
+        >
+          نواياي
+        </button>
+
+        <button
+          class="header-tab"
+          data-view="favorites"
+          id="headerFavorites"
+          type="button"
+          aria-label="مفضلاتي"
+          data-i18n-aria="favorites"
+        >
+          <span class="header-tab-star">★</span>
+        </button>
+
+      </nav>
 
     </header>
 
@@ -1665,75 +1883,35 @@
         NAWY
       </div>
 
-      <button
-        class="menu-item active"
-        data-view="today"
-        type="button"
-      >
-        <span class="menu-icon">☀</span>
-        <span
-          class="menu-text"
-          data-i18n="today"
-        >
-          اليوم
-        </span>
-      </button>
-
-      <button
-        class="menu-item"
-        data-view="all"
-        type="button"
-      >
-        <span class="menu-icon">☷</span>
-        <span
-          class="menu-text"
-          data-i18n="all"
-        >
-          نواياي
-        </span>
-      </button>
-
-      <button
-        class="menu-item menu-favorites"
-        data-view="favorites"
-        type="button"
-        aria-label="مفضلاتي"
-        data-i18n-aria="favorites"
-      >
-        <span class="menu-icon">★</span>
-        <span
-          class="menu-text"
-          data-i18n="favorites"
-        >
-          مفضلاتي
-        </span>
-      </button>
-
-      <button
-        class="menu-item"
-        data-view="completed"
-        type="button"
-      >
-        <span class="menu-icon">✓</span>
-        <span
-          class="menu-text"
-          data-i18n="completed"
-        >
-          المكتملة
-        </span>
-      </button>
-
+      <!-- SETTINGS ONLY -->
       <button
         class="menu-item"
         id="settingsBtn"
         type="button"
       >
         <span class="menu-icon">⚙</span>
+
         <span
           class="menu-text"
           data-i18n="settings"
         >
           الإعدادات
+        </span>
+      </button>
+
+      <!-- TRASH ONLY -->
+      <button
+        class="menu-item"
+        id="menuTrashBtn"
+        type="button"
+      >
+        <span class="menu-icon">⌫</span>
+
+        <span
+          class="menu-text"
+          data-i18n="trash"
+        >
+          سلة المحذوفات
         </span>
       </button>
 
@@ -1764,6 +1942,7 @@
         type="button"
       >
         <span>✓</span>
+
         <span data-i18n="done">
           تمت
         </span>
@@ -1775,6 +1954,7 @@
         type="button"
       >
         <span>📅</span>
+
         <span
           id="actionDateText"
           data-i18n="setDate"
@@ -1789,6 +1969,7 @@
         type="button"
       >
         <span>✎</span>
+
         <span data-i18n="edit">
           تعديل
         </span>
@@ -1800,6 +1981,7 @@
         type="button"
       >
         <span>⌫</span>
+
         <span data-i18n="delete">
           حذف
         </span>
@@ -2140,6 +2322,7 @@
             id="trashBtn"
             type="button"
           >
+
             <span
               class="setting-name"
               data-i18n="trash"
@@ -2336,6 +2519,8 @@
         favorites: "مفضلاتي",
         completed: "المكتملة",
 
+        mainNavigation: "التنقل الرئيسي",
+
         heroToday:
           "ناوي على إيه النهارده؟",
 
@@ -2431,7 +2616,7 @@
           "من أيام سابقة",
 
         doneToday:
-          "المنجز اليوم",
+          "المنجز",
 
         currentIntentions:
           "نواياي",
@@ -2525,6 +2710,8 @@
         all: "My intentions",
         favorites: "My favorites",
         completed: "Completed",
+
+        mainNavigation: "Main navigation",
 
         heroToday:
           "What are you up to today?",
@@ -2621,7 +2808,7 @@
           "Previous days",
 
         doneToday:
-          "Done today",
+          "Completed",
 
         currentIntentions:
           "My intentions",
@@ -2727,6 +2914,7 @@
         );
 
       return value;
+
     }
 
 
@@ -2755,6 +2943,8 @@
     let currentView = "today";
     let selectedTaskId = null;
 
+    let completedExpanded = false;
+
     let undoTimer = null;
     let undoAction = null;
 
@@ -2765,14 +2955,16 @@
 
 
     /*
-      ترتيب التنقل بالسحب.
-      لا تشمل الإعدادات لأنها ليست View داخل المحتوى.
+      التصفح الأساسي أصبح:
+      اليوم → نواياي → المفضلة
+
+      المنجز لم يعد View مستقل،
+      بل أصبح قسمًا قابلًا للطي داخل اليوم.
     */
     const SWIPE_VIEWS = [
       "today",
       "all",
-      "favorites",
-      "completed"
+      "favorites"
     ];
 
 
@@ -3649,6 +3841,7 @@
 
         playCompleteSound();
 
+
         requestAnimationFrame(() => {
 
           const element =
@@ -3789,6 +3982,7 @@
       if (!task) {
         return;
       }
+
 
       selectedTaskId =
         id;
@@ -4047,6 +4241,7 @@
             item.id === id
         );
 
+
       if (index === -1) {
         return;
       }
@@ -4061,12 +4256,15 @@
 
       delete task.deletedAt;
 
+
       tasks.unshift(task);
+
 
       saveTasks();
       saveTrash();
 
       renderTrash();
+
 
       showToast(
         t("restored")
@@ -4082,6 +4280,7 @@
           item =>
             item.id !== id
         );
+
 
       saveTrash();
 
@@ -4283,16 +4482,10 @@
 
         renderFavorites();
 
-      } else if (
-        currentView === "completed"
-      ) {
-
-        renderCompleted();
-
       }
 
 
-      updateMenuState();
+      updateHeaderNavState();
 
       updateDynamicLanguageText();
 
@@ -4357,10 +4550,7 @@
           t("all"),
 
         favorites:
-          t("favorites"),
-
-        completed:
-          t("completed")
+          t("favorites")
 
       };
 
@@ -4417,11 +4607,8 @@
       if (completed.length > 0) {
 
         content.appendChild(
-          createSection(
-            t("doneToday"),
-            completed,
-            false,
-            true
+          createCompletedTodaySection(
+            completed
           )
         );
 
@@ -4527,38 +4714,167 @@
 
 
     /* =========================
-       COMPLETED
+       COMPLETED TODAY
+       COLLAPSIBLE
     ========================= */
 
-    function renderCompleted() {
+    function createCompletedTodaySection(
+      taskArray
+    ) {
 
-      const completed =
-        getAllCompleted();
-
-
-      if (
-        completed.length === 0
-      ) {
-
-        content.appendChild(
-          createEmptyState(
-            "✓",
-            t("noAchievements"),
-            t("achievementHint")
-          )
+      const section =
+        document.createElement(
+          "section"
         );
 
-        return;
-      }
+      section.className =
+        "section";
 
 
-      content.appendChild(
-        createSection(
-          t("allDoneSection"),
-          completed,
-          true
-        )
+      const toggle =
+        document.createElement(
+          "button"
+        );
+
+      toggle.type =
+        "button";
+
+      toggle.className =
+        "completed-toggle" +
+        (
+          completedExpanded
+            ? " open"
+            : ""
+        );
+
+      toggle.setAttribute(
+        "aria-expanded",
+        String(completedExpanded)
       );
+
+
+      const main =
+        document.createElement(
+          "span"
+        );
+
+      main.className =
+        "completed-toggle-main";
+
+
+      const title =
+        document.createElement(
+          "span"
+        );
+
+      title.className =
+        "completed-toggle-title";
+
+      title.textContent =
+        t("doneToday");
+
+
+      const count =
+        document.createElement(
+          "span"
+        );
+
+      count.className =
+        "section-count";
+
+      count.textContent =
+        taskArray.length;
+
+
+      main.append(
+        title,
+        count
+      );
+
+
+      const chevron =
+        document.createElement(
+          "span"
+        );
+
+      chevron.className =
+        "completed-toggle-chevron";
+
+      chevron.textContent =
+        completedExpanded
+          ? "⌃"
+          : "⌄";
+
+
+      toggle.append(
+        main,
+        chevron
+      );
+
+
+      const listWrap =
+        document.createElement(
+          "div"
+        );
+
+      listWrap.className =
+        "completed-list-wrap" +
+        (
+          completedExpanded
+            ? " open"
+            : ""
+        );
+
+
+      const list =
+        document.createElement(
+          "div"
+        );
+
+      list.className =
+        "task-list";
+
+
+      taskArray.forEach(
+        task => {
+
+          list.appendChild(
+            createTaskElement(
+              task,
+              false,
+              true
+            )
+          );
+
+        }
+      );
+
+
+      listWrap.appendChild(
+        list
+      );
+
+
+      toggle.addEventListener(
+        "click",
+        () => {
+
+          completedExpanded =
+            !completedExpanded;
+
+          render();
+
+        }
+      );
+
+
+      section.append(
+        toggle,
+        listWrap
+      );
+
+
+      return section;
 
     }
 
@@ -4672,6 +4988,7 @@
           "article"
         );
 
+
       article.className =
         "task" +
         (
@@ -4679,6 +4996,7 @@
             ? " completed"
             : ""
         );
+
 
       article.dataset.taskId =
         task.id;
@@ -4688,6 +5006,7 @@
         document.createElement(
           "button"
         );
+
 
       checkbox.type =
         "button";
@@ -4755,7 +5074,9 @@
         task.text;
 
 
-      main.appendChild(text);
+      main.appendChild(
+        text
+      );
 
 
       const displayDate =
@@ -4835,7 +5156,9 @@
         }
 
 
-        main.appendChild(meta);
+        main.appendChild(
+          meta
+        );
 
       }
 
@@ -4866,8 +5189,10 @@
           "button"
         );
 
+
       star.type =
         "button";
+
 
       star.className =
         "task-star" +
@@ -4876,6 +5201,7 @@
             ? " active"
             : ""
         );
+
 
       star.innerHTML =
         task.starred
@@ -5001,6 +5327,7 @@
           "div"
         );
 
+
       box.className =
         "task-empty";
 
@@ -5060,6 +5387,7 @@
       const total =
         today.length;
 
+
       const completed =
         today.filter(
           task =>
@@ -5084,6 +5412,7 @@
 
       progressBar.style.width =
         `${percentage}%`;
+
 
       progressValue.textContent =
         `${percentage}%`;
@@ -5112,19 +5441,38 @@
 
 
     /* =========================
-       MENU
+       HEADER NAV
     ========================= */
 
-    function updateMenuState() {
+    function updateHeaderNavState() {
 
-      $$("[data-view]")
+      $$(".header-tab")
         .forEach(button => {
+
+          const active =
+            button.dataset.view ===
+            currentView;
 
           button.classList.toggle(
             "active",
-            button.dataset.view ===
-            currentView
+            active
           );
+
+
+          if (active) {
+
+            button.setAttribute(
+              "aria-current",
+              "page"
+            );
+
+          } else {
+
+            button.removeAttribute(
+              "aria-current"
+            );
+
+          }
 
         });
 
@@ -5148,7 +5496,9 @@
       if (
         currentIndex === -1
       ) {
+
         return;
+
       }
 
 
@@ -5163,6 +5513,7 @@
           Loop:
           الأخيرة → الأولى
         */
+
         nextIndex =
           (
             currentIndex + 1
@@ -5175,6 +5526,7 @@
           Loop:
           الأولى → الأخيرة
         */
+
         nextIndex =
           (
             currentIndex - 1 +
@@ -5281,8 +5633,10 @@
       swipeStartX =
         touch.clientX;
 
+
       swipeStartY =
         touch.clientY;
+
 
       swipeTracking =
         true;
@@ -5295,7 +5649,9 @@
       if (
         !swipeTracking
       ) {
+
         return;
+
       }
 
 
@@ -5307,7 +5663,9 @@
         event.changedTouches &&
         event.changedTouches.length !== 1
       ) {
+
         return;
+
       }
 
 
@@ -5319,6 +5677,7 @@
         touch.clientX -
         swipeStartX;
 
+
       const dy =
         touch.clientY -
         swipeStartY;
@@ -5326,6 +5685,7 @@
 
       const absX =
         Math.abs(dx);
+
 
       const absY =
         Math.abs(dy);
@@ -5424,8 +5784,10 @@
       swipeStartX =
         event.clientX;
 
+
       swipeStartY =
         event.clientY;
+
 
       swipeTracking =
         true;
@@ -5438,7 +5800,9 @@
       if (
         !swipeTracking
       ) {
+
         return;
+
       }
 
 
@@ -5450,6 +5814,7 @@
         event.clientX -
         swipeStartX;
 
+
       const dy =
         event.clientY -
         swipeStartY;
@@ -5457,6 +5822,7 @@
 
       const absX =
         Math.abs(dx);
+
 
       const absY =
         Math.abs(dy);
@@ -5528,8 +5894,10 @@
           return;
         }
 
+
         event.preventDefault();
         event.stopPropagation();
+
 
         swipeSuppressClick =
           false;
@@ -5551,6 +5919,7 @@
             item.id === id
         );
 
+
       if (!task) {
         return;
       }
@@ -5558,6 +5927,7 @@
 
       selectedTaskId =
         id;
+
 
       actionTaskPreview.textContent =
         task.text;
@@ -5596,14 +5966,18 @@
             return;
           }
 
+
           const id =
             selectedTaskId;
 
+
           completeTask(id);
+
 
           closeOverlay(
             actionOverlay
           );
+
 
           selectedTaskId =
             null;
@@ -5620,6 +5994,7 @@
           if (!selectedTaskId) {
             return;
           }
+
 
           openTaskDate(
             selectedTaskId
@@ -5638,6 +6013,7 @@
             return;
           }
 
+
           openEdit(
             selectedTaskId
           );
@@ -5655,15 +6031,19 @@
             return;
           }
 
+
           const id =
             selectedTaskId;
+
 
           closeOverlay(
             actionOverlay
           );
 
+
           selectedTaskId =
             null;
+
 
           deleteTask(id);
 
@@ -5698,6 +6078,7 @@
             dateOverlay
           );
 
+
           selectedTaskId =
             null;
 
@@ -5717,10 +6098,12 @@
         "show"
       );
 
+
       overlay.setAttribute(
         "aria-hidden",
         "false"
       );
+
 
       document.body.classList.add(
         "no-scroll"
@@ -5736,6 +6119,7 @@
       overlay.classList.remove(
         "show"
       );
+
 
       overlay.setAttribute(
         "aria-hidden",
@@ -5765,6 +6149,7 @@
           closeOverlay
         );
 
+
       selectedTaskId =
         null;
 
@@ -5787,6 +6172,7 @@
                 closeOverlay(
                   overlay
                 );
+
 
                 selectedTaskId =
                   null;
@@ -5817,7 +6203,11 @@
       );
 
 
-    $$("[data-view]")
+    /* =========================
+       HEADER NAV
+    ========================= */
+
+    $$(".header-tab")
       .forEach(
         button => {
 
@@ -5836,6 +6226,10 @@
       );
 
 
+    /* =========================
+       SETTINGS
+    ========================= */
+
     $("#settingsBtn")
       .addEventListener(
         "click",
@@ -5845,10 +6239,37 @@
             menuOverlay
           );
 
+
           renderSettings();
+
 
           openOverlay(
             settingsOverlay
+          );
+
+        }
+      );
+
+
+    /* =========================
+       DIRECT TRASH FROM MENU
+    ========================= */
+
+    $("#menuTrashBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          renderTrash();
+
+
+          closeOverlay(
+            menuOverlay
+          );
+
+
+          openOverlay(
+            trashOverlay
           );
 
         }
@@ -5869,6 +6290,7 @@
 
               settings.theme =
                 button.dataset.themeChoice;
+
 
               saveSettings();
 
@@ -5895,6 +6317,7 @@
 
               settings.accent =
                 button.dataset.accentChoice;
+
 
               saveSettings();
 
@@ -5965,6 +6388,7 @@
       trashCount.textContent =
         trash.length;
 
+
       applySettings();
 
     }
@@ -5977,9 +6401,11 @@
 
           renderTrash();
 
+
           closeOverlay(
             settingsOverlay
           );
+
 
           openOverlay(
             trashOverlay
@@ -5997,6 +6423,7 @@
 
       trashCount.textContent =
         trash.length;
+
 
       trashList.innerHTML =
         "";
@@ -6027,6 +6454,7 @@
               "div"
             );
 
+
           item.className =
             "trash-item";
 
@@ -6036,8 +6464,10 @@
               "div"
             );
 
+
           text.className =
             "trash-text";
+
 
           text.textContent =
             task.text;
@@ -6048,11 +6478,14 @@
               "button"
             );
 
+
           restore.type =
             "button";
 
+
           restore.className =
             "small-btn";
+
 
           restore.textContent =
             t("restore");
@@ -6075,11 +6508,14 @@
               "button"
             );
 
+
           forever.type =
             "button";
 
+
           forever.className =
             "small-btn danger trash-delete-button";
+
 
           forever.textContent =
             t("delete");
@@ -6133,6 +6569,7 @@
           closeOverlay(
             editOverlay
           );
+
 
           selectedTaskId =
             null;
@@ -6208,6 +6645,7 @@
 
             event.preventDefault();
 
+
             document
               .getElementById(
                 "composer"
@@ -6244,6 +6682,7 @@
             taskInput.value =
               "";
 
+
             autoResizeTextarea();
 
             updateComposer();
@@ -6260,6 +6699,7 @@
 
       taskInput.style.height =
         "auto";
+
 
       taskInput.style.height =
         Math.min(
@@ -6326,22 +6766,28 @@
         undoTimer
       );
 
+
       undoAction =
         null;
 
+
       toastMessage.textContent =
         t("updateAvailable");
+
 
       toastUndo.classList.add(
         "hidden"
       );
 
+
       toastUpdate.classList.remove(
         "hidden"
       );
 
+
       toastUpdate.textContent =
         t("update");
+
 
       toast.classList.add(
         "show"
@@ -6356,8 +6802,10 @@
         "show"
       );
 
+
       undoAction =
         null;
+
 
       toastUpdate.classList.add(
         "hidden"
@@ -6380,6 +6828,7 @@
 
           }
 
+
           hideToast();
 
         }
@@ -6400,9 +6849,11 @@
           window.AudioContext ||
           window.webkitAudioContext;
 
+
         if (!AudioContext) {
           return null;
         }
+
 
         typingAudioContext =
           new AudioContext();
@@ -6439,6 +6890,7 @@
       const ctx =
         getAudioContext();
 
+
       if (!ctx) {
         return;
       }
@@ -6449,12 +6901,14 @@
         const oscillator =
           ctx.createOscillator();
 
+
         const gain =
           ctx.createGain();
 
 
         oscillator.type =
           type;
+
 
         oscillator.frequency.value =
           frequency;
@@ -6481,7 +6935,10 @@
         );
 
 
-        oscillator.connect(gain);
+        oscillator.connect(
+          gain
+        );
+
 
         gain.connect(
           ctx.destination
@@ -6489,6 +6946,7 @@
 
 
         oscillator.start();
+
 
         oscillator.stop(
           ctx.currentTime +
@@ -6513,7 +6971,9 @@
         now - lastTypingSound <
         55
       ) {
+
         return;
+
       }
 
 
@@ -6552,6 +7012,7 @@
 
       const ctx =
         getAudioContext();
+
 
       if (!ctx) {
         return;
@@ -6646,7 +7107,9 @@
         isStandalone() ||
         installBannerDismissed
       ) {
+
         return;
+
       }
 
 
@@ -6671,6 +7134,7 @@
 
       installAction.textContent =
         t("install");
+
 
       installDismiss.textContent =
         t("continue");
@@ -6742,8 +7206,10 @@
         const promptEvent =
           deferredInstallPrompt;
 
+
         deferredInstallPrompt =
           null;
+
 
         hideInstallBanner();
 
@@ -6766,6 +7232,7 @@
 
         installBannerDismissed =
           true;
+
 
         hideInstallBanner();
 
@@ -6815,6 +7282,9 @@
 
         lastKnownDay =
           today;
+
+        completedExpanded =
+          false;
 
         render();
 
@@ -6893,6 +7363,7 @@
         return;
       }
 
+
       registration.update()
         .catch(
           () => {}
@@ -6933,6 +7404,7 @@
                 const worker =
                   registration.installing;
 
+
                 if (!worker) {
                   return;
                 }
@@ -6953,11 +7425,15 @@
                       if (
                         swUpdatePending
                       ) {
+
                         return;
+
                       }
+
 
                       swUpdatePending =
                         true;
+
 
                       showUpdateToast();
 
@@ -6977,6 +7453,7 @@
                 const waiting =
                   registration.waiting;
 
+
                 if (!waiting) {
 
                   requestServiceWorkerUpdate(
@@ -6990,6 +7467,7 @@
 
                 toastUpdate.disabled =
                   true;
+
 
                 toastUpdate.textContent =
                   t("update");
@@ -7056,8 +7534,10 @@
               return;
             }
 
+
             swReloading =
               true;
+
 
             window.location.reload();
 
