@@ -25,7 +25,10 @@ const CACHE_NAME = CACHE_VERSION;
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./favicon.ico",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 
@@ -38,14 +41,12 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(APP_SHELL);
+        return Promise.allSettled(
+          APP_SHELL.map((url) => cache.add(url))
+        );
       })
       .then(() => {
         console.log("NAWY SW: Installed", CACHE_VERSION);
-      })
-      .catch((error) => {
-        console.error("NAWY SW: Install failed:", error);
-        throw error;
       })
   );
 
@@ -170,7 +171,7 @@ self.addEventListener("fetch", (event) => {
               }
 
               return new Response(
-                "<h1>NAWY</h1><p>أنت غير متصل بالإنترنت.</p>",
+                "<h1>ناوي</h1><p>أنت غير متصل بالإنترنت.</p>",
                 {
                   status: 503,
                   statusText: "Offline",
