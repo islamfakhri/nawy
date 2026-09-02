@@ -1,3 +1,2062 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<meta name="theme-color" content="#101111">
+<meta name="color-scheme" content="dark light">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ناوي">
+
+<meta name="description"
+      content="ناوي — اكتب نيتك وأنجزها.">
+
+<title>ناوي — على إيه النهارده؟</title>
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+
+<script async
+src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
+
+<script>
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){
+    dataLayer.push(arguments);
+}
+
+gtag('js', new Date());
+
+gtag('config', 'G-3612TKY0RT', {
+    anonymize_ip: true
+});
+</script>
+
+<style>
+
+:root {
+    --bg: #101111;
+    --surface: #181a19;
+    --surface-2: #202321;
+    --surface-3: #292c2a;
+
+    --text: #f4f5f4;
+    --text-soft: #d8dbd9;
+
+    --muted: #8b918e;
+    --muted-dark: #5d6460;
+
+    --accent: #19c58b;
+    --accent-soft: rgba(25,197,139,.12);
+    --accent-glow: rgba(25,197,139,.22);
+
+    --yellow: #e8c34f;
+    --danger: #ff6868;
+
+    --border: rgba(255,255,255,.075);
+
+    --content-width: 760px;
+
+    --task-font: 16px;
+
+    --radius: 18px;
+}
+
+body[data-accent="blue"] {
+    --accent: #5b9cff;
+    --accent-soft: rgba(91,156,255,.12);
+    --accent-glow: rgba(91,156,255,.22);
+}
+
+body[data-accent="purple"] {
+    --accent: #a879ff;
+    --accent-soft: rgba(168,121,255,.12);
+    --accent-glow: rgba(168,121,255,.22);
+}
+
+body[data-accent="orange"] {
+    --accent: #ff9b52;
+    --accent-soft: rgba(255,155,82,.12);
+    --accent-glow: rgba(255,155,82,.22);
+}
+
+body[data-accent="pink"] {
+    --accent: #f278b4;
+    --accent-soft: rgba(242,120,180,.12);
+    --accent-glow: rgba(242,120,180,.22);
+}
+
+body.light {
+    --bg: #f5f6f5;
+    --surface: #ffffff;
+    --surface-2: #f0f2f1;
+    --surface-3: #e8ebe9;
+
+    --text: #171918;
+    --text-soft: #343937;
+
+    --muted: #737a76;
+    --muted-dark: #a0a6a3;
+
+    --border: rgba(0,0,0,.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    width: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans Arabic",
+        "Noto Sans",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+textarea,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.app {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 85% -15%,
+            var(--accent-soft),
+            transparent 28%
+        ),
+        var(--bg);
+}
+
+.header {
+    width: 100%;
+    max-width: var(--content-width);
+
+    margin: 0 auto;
+
+    padding:
+        calc(20px + env(safe-area-inset-top))
+        22px
+        10px;
+
+    flex-shrink: 0;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.logo {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: var(--accent);
+    color: #07130e;
+
+    font-size: 16px;
+    font-weight: 900;
+
+    box-shadow:
+        0 5px 18px var(--accent-glow);
+}
+
+.brand-name {
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -.8px;
+}
+
+.settings-btn {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    background: transparent;
+    color: var(--muted);
+
+    font-size: 25px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .15s ease;
+}
+
+.settings-btn:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.settings-btn:active {
+    transform: scale(.9);
+}
+
+.greeting {
+    margin-top: 21px;
+}
+
+.greeting h1 {
+    font-size: clamp(24px, 5vw, 29px);
+    line-height: 1.25;
+    font-weight: 850;
+    letter-spacing: -.8px;
+}
+
+.greeting p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.progress {
+    margin-top: 17px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 5px;
+
+    overflow: hidden;
+    border-radius: 999px;
+
+    background: rgba(127,127,127,.16);
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+    background: var(--accent);
+
+    transition:
+        width .35s cubic-bezier(.2,.8,.2,1);
+}
+
+.progress-text {
+    min-width: max-content;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.tasks {
+    width: 100%;
+    max-width: var(--content-width);
+
+    margin: 0 auto;
+
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding:
+        6px
+        22px
+        155px;
+
+    scrollbar-width: none;
+    overscroll-behavior: contain;
+}
+
+.tasks::-webkit-scrollbar {
+    display: none;
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin:
+        21px
+        0
+        4px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.section-label:first-child {
+    margin-top: 5px;
+}
+
+.section-label::before,
+.section-label::after {
+    content: "";
+
+    height: 1px;
+    flex: 1;
+
+    background: var(--border);
+}
+
+.task {
+    position: relative;
+
+    width: 100%;
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        8px
+        0;
+
+    border-bottom:
+        1px solid var(--border);
+
+    user-select: none;
+}
+
+.task:last-child {
+    border-bottom-color: transparent;
+}
+
+.task-main {
+    flex: 1;
+    min-width: 0;
+
+    cursor: pointer;
+
+    padding: 8px 2px;
+
+    border-radius: 8px;
+}
+
+.task-title {
+    color: var(--text);
+
+    font-size: var(--task-font);
+    line-height: 1.5;
+
+    font-weight: 500;
+
+    overflow-wrap: anywhere;
+
+    transition:
+        color .25s ease,
+        opacity .25s ease;
+}
+
+.task.completed .task-title {
+    color: var(--muted-dark);
+
+    text-decoration-line: line-through;
+    text-decoration-color: var(--muted-dark);
+    text-decoration-thickness: 1px;
+}
+
+.task-carried {
+    margin-top: 3px;
+
+    color: var(--muted-dark);
+
+    font-size: 10px;
+}
+
+.check-hit {
+    width: 46px;
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    display: grid;
+    place-items: center;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.check {
+    width: 27px;
+    height: 27px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        2px solid #66706b;
+
+    border-radius: 50%;
+
+    background: transparent;
+    color: #07130e;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s cubic-bezier(.18,.9,.3,1.3),
+        box-shadow .2s ease;
+}
+
+.check svg {
+    width: 15px;
+    height: 15px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 2.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    opacity: 0;
+
+    transform: scale(.45);
+
+    transition:
+        opacity .18s ease,
+        transform .2s cubic-bezier(.18,.9,.3,1.3);
+}
+
+.check-hit:hover .check {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.task.completed .check {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.task.completed .check svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.task.just-completed .check {
+    animation:
+        complete-pop .55s cubic-bezier(.18,.9,.3,1.3);
+}
+
+@keyframes complete-pop {
+
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 transparent;
+    }
+
+    35% {
+        transform: scale(1.32);
+        box-shadow:
+            0 0 0 8px
+            var(--accent-soft);
+    }
+
+    70% {
+        transform: scale(.94);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
+.star-btn {
+    width: 46px;
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    display: grid;
+    place-items: center;
+
+    background: transparent;
+
+    color: var(--muted-dark);
+
+    font-size: 26px;
+    line-height: 1;
+
+    border-radius: 12px;
+
+    transition:
+        color .18s ease,
+        transform .18s ease,
+        background .18s ease;
+}
+
+.star-btn:hover {
+    background: var(--surface-2);
+    color: var(--yellow);
+}
+
+.star-btn:active {
+    transform: scale(.84);
+}
+
+.star-btn.starred {
+    color: var(--yellow);
+}
+
+.empty {
+    padding: 82px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    margin-bottom: 14px;
+    font-size: 31px;
+}
+
+.empty strong {
+    display: block;
+
+    color: var(--text-soft);
+
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.empty span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.composer-wrap {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 50;
+
+    padding:
+        10px
+        18px
+        calc(17px + env(safe-area-inset-bottom));
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to top,
+            var(--bg) 38%,
+            color-mix(
+                in srgb,
+                var(--bg) 88%,
+                transparent
+            ) 72%,
+            transparent 100%
+        );
+}
+
+.composer-inner {
+    width: 100%;
+    max-width: var(--content-width);
+
+    margin: 0 auto;
+
+    pointer-events: auto;
+}
+
+.composer {
+    width: 100%;
+
+    min-height: 58px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 8px;
+
+    padding:
+        7px
+        7px
+        7px
+        16px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 29px;
+
+    box-shadow:
+        0 10px 34px rgba(0,0,0,.28);
+}
+
+#taskInput {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+
+    min-height: 42px;
+    max-height: 115px;
+
+    resize: none;
+
+    overflow-y: auto;
+
+    padding:
+        10px
+        0;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+    color: var(--text);
+
+    font-size: 16px;
+    line-height: 1.45;
+
+    scrollbar-width: none;
+}
+
+#taskInput::-webkit-scrollbar {
+    display: none;
+}
+
+#taskInput::placeholder {
+    color: var(--muted);
+}
+
+.submit {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--surface-3);
+    color: var(--muted-dark);
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .15s ease;
+}
+
+.submit.active {
+    background: var(--accent);
+    color: #07130e;
+
+    box-shadow:
+        0 5px 18px var(--accent-glow);
+}
+
+.submit:active {
+    transform: scale(.91);
+}
+
+.send-arrow {
+    font-size: 23px;
+    line-height: 1;
+    font-weight: 850;
+
+    transform: translateY(-1px);
+}
+
+.action-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 500;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(0,0,0,.42);
+
+    backdrop-filter: blur(7px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.action-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.action-card {
+    width: min(390px, 100%);
+
+    padding: 9px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 21px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45);
+
+    transform:
+        translateY(8px)
+        scale(.97);
+
+    transition:
+        transform .2s cubic-bezier(.18,.9,.3,1.1);
+}
+
+.action-overlay.show .action-card {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.action-title {
+    padding:
+        13px
+        13px
+        10px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 750;
+
+    overflow-wrap: anywhere;
+}
+
+.action-button {
+    width: 100%;
+
+    min-height: 53px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding:
+        10px
+        13px;
+
+    border-radius: 14px;
+
+    background: transparent;
+    color: var(--text);
+
+    text-align: start;
+
+    font-size: 15px;
+    font-weight: 650;
+
+    transition:
+        background .15s ease;
+}
+
+.action-button:hover {
+    background: var(--surface-2);
+}
+
+.action-icon {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: var(--surface-2);
+    color: var(--text-soft);
+
+    font-size: 17px;
+}
+
+.action-button.complete .action-icon {
+    color: var(--accent);
+}
+
+.action-button.delete {
+    color: var(--danger);
+}
+
+.action-button.delete .action-icon {
+    color: var(--danger);
+}
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 550;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+
+    padding:
+        calc(68px + env(safe-area-inset-top))
+        18px
+        18px;
+
+    background: transparent;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu-card {
+    width: min(270px, calc(100vw - 36px));
+
+    padding: 8px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.38);
+
+    transform:
+        translateY(-5px)
+        scale(.97);
+
+    transition:
+        transform .18s ease;
+}
+
+.menu-overlay.show .menu-card {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.menu-button {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        8px
+        10px;
+
+    border-radius: 12px;
+
+    background: transparent;
+    color: var(--text);
+
+    text-align: start;
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.menu-button:hover {
+    background: var(--surface-2);
+}
+
+.menu-button.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.menu-icon {
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: var(--surface-2);
+
+    font-size: 15px;
+}
+
+.menu-divider {
+    height: 1px;
+    margin: 5px 8px;
+
+    background: var(--border);
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(0,0,0,.48);
+
+    backdrop-filter: blur(8px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.modal {
+    width: min(430px, 100%);
+
+    padding: 18px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 21px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45);
+}
+
+.modal h2 {
+    font-size: 19px;
+    font-weight: 800;
+
+    margin-bottom: 13px;
+}
+
+.modal textarea {
+    width: 100%;
+    min-height: 110px;
+
+    resize: vertical;
+
+    padding: 13px;
+
+    border:
+        1px solid var(--border);
+
+    outline: 0;
+
+    border-radius: 14px;
+
+    background: var(--surface-2);
+    color: var(--text);
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.modal textarea:focus {
+    border-color: var(--accent);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.modal-actions button {
+    flex: 1;
+
+    min-height: 46px;
+
+    border-radius: 13px;
+
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.modal-save {
+    background: var(--accent);
+    color: #07130e;
+}
+
+.modal-cancel {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.settings-panel {
+    position: fixed;
+    inset: 0;
+
+    z-index: 700;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 12px;
+
+    background: rgba(0,0,0,.4);
+
+    backdrop-filter: blur(7px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease;
+}
+
+.settings-panel.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.settings-box {
+    width: min(620px, 100%);
+
+    max-height: 88dvh;
+
+    overflow-y: auto;
+
+    padding: 18px;
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45);
+}
+
+.settings-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+.settings-head h2 {
+    font-size: 20px;
+    font-weight: 850;
+}
+
+.close-settings {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: var(--surface-2);
+    color: var(--muted);
+
+    font-size: 20px;
+}
+
+.setting-group {
+    padding: 14px 0;
+
+    border-top:
+        1px solid var(--border);
+}
+
+.setting-label {
+    margin-bottom: 10px;
+
+    color: var(--text-soft);
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.setting-options {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.setting-option {
+    min-height: 40px;
+
+    padding:
+        8px
+        13px;
+
+    border-radius: 11px;
+
+    background: var(--surface-2);
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.setting-option.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+
+    box-shadow:
+        inset 0 0 0 1px var(--accent);
+}
+
+.accent-dot {
+    width: 18px;
+    height: 18px;
+
+    display: inline-block;
+
+    margin-right: 5px;
+
+    vertical-align: -4px;
+
+    border-radius: 50%;
+}
+
+[dir="rtl"] .accent-dot {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+.dot-green {
+    background: #19c58b;
+}
+
+.dot-blue {
+    background: #5b9cff;
+}
+
+.dot-purple {
+    background: #a879ff;
+}
+
+.dot-orange {
+    background: #ff9b52;
+}
+
+.dot-pink {
+    background: #f278b4;
+}
+
+.trash-open {
+    width: 100%;
+
+    min-height: 46px;
+
+    padding: 10px;
+
+    border-radius: 13px;
+
+    background: var(--surface-2);
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.trash-panel {
+    position: fixed;
+    inset: 0;
+
+    z-index: 800;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(0,0,0,.45);
+
+    backdrop-filter: blur(8px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.trash-panel.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.trash-box {
+    width: min(560px, 100%);
+
+    max-height: 82dvh;
+
+    overflow-y: auto;
+
+    padding: 18px;
+
+    background: var(--surface);
+
+    border-radius: 22px;
+
+    border:
+        1px solid var(--border);
+}
+
+.trash-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 13px;
+}
+
+.trash-head h2 {
+    font-size: 19px;
+    font-weight: 850;
+}
+
+.trash-empty {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.trash-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 0;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.trash-text {
+    flex: 1;
+    min-width: 0;
+
+    color: var(--text-soft);
+
+    font-size: 14px;
+
+    overflow-wrap: anywhere;
+}
+
+.trash-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.trash-actions button {
+    min-height: 36px;
+
+    padding:
+        7px
+        10px;
+
+    border-radius: 9px;
+
+    background: var(--surface-2);
+    color: var(--text);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.trash-actions .permanent {
+    color: var(--danger);
+}
+
+.toast {
+    position: fixed;
+
+    left: 50%;
+
+    bottom:
+        calc(
+            104px +
+            env(safe-area-inset-bottom)
+        );
+
+    z-index: 900;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        10px
+        12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 13px;
+
+    background: var(--surface);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.4);
+
+    transform:
+        translate(-50%, 15px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform:
+        translate(-50%, 0);
+}
+
+.toast-message {
+    color: var(--text);
+    font-size: 12px;
+}
+
+.toast-undo {
+    padding:
+        6px
+        9px;
+
+    border-radius: 8px;
+
+    background: var(--accent-soft);
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .tasks {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+    .brand-name {
+        font-size: 23px;
+    }
+
+    .greeting h1 {
+        font-size: 24px;
+    }
+
+    .task-title {
+        font-size: 16px;
+    }
+
+    .composer-wrap {
+        padding-left: 11px;
+        padding-right: 11px;
+
+        padding-bottom:
+            calc(
+                13px +
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    .action-card {
+        width: 100%;
+        max-width: 390px;
+    }
+
+    .menu-overlay {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .header {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .tasks {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .brand-name {
+        font-size: 22px;
+    }
+
+    .greeting h1 {
+        font-size: 22px;
+    }
+
+    .task {
+        gap: 7px;
+    }
+
+    .task-title {
+        font-size: 15px;
+    }
+
+    .check-hit,
+    .star-btn {
+        width: 42px;
+        flex-basis: 42px;
+    }
+
+    .check {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+</style>
+</head>
+
+<body data-accent="green">
+
+<div class="app">
+
+<header class="header">
+
+    <div class="header-top">
+
+        <div class="brand">
+
+            <div class="logo" aria-hidden="true">
+                ن
+            </div>
+
+            <div class="brand-name" id="brandName">
+                ناوي
+            </div>
+
+        </div>
+
+        <button
+            class="settings-btn"
+            id="menuBtn"
+            aria-label="القائمة"
+            type="button"
+        >
+            ⋯
+        </button>
+
+    </div>
+
+    <div class="greeting">
+
+        <h1 id="greetingTitle">
+            ناوي على إيه النهارده؟
+        </h1>
+
+        <p id="currentDate">—</p>
+
+    </div>
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-label="نسبة الإنجاز"
+        >
+            <div
+                class="progress-fill"
+                id="progressFill"
+            ></div>
+        </div>
+
+        <div
+            class="progress-text"
+            id="progressText"
+        >
+            ابدأ أول نية
+        </div>
+
+    </div>
+
+</header>
+
+<main
+    class="tasks"
+    id="tasksContainer"
+    aria-live="polite"
+    aria-label="قائمة النوايا"
+></main>
+
+<div class="composer-wrap">
+
+    <div class="composer-inner">
+
+        <div class="composer">
+
+            <textarea
+                id="taskInput"
+                rows="1"
+                maxlength="500"
+                placeholder="اكتب اللي ناوي عليه..."
+                enterkeyhint="send"
+                autocomplete="off"
+                aria-label="نية جديدة"
+            ></textarea>
+
+            <button
+                class="submit"
+                id="submitBtn"
+                type="button"
+                aria-label="إضافة نية"
+                disabled
+            >
+                <span
+                    class="send-arrow"
+                    aria-hidden="true"
+                >
+                    ↑
+                </span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+    aria-hidden="true"
+>
+
+    <div
+        class="menu-card"
+        role="menu"
+    >
+
+        <button
+            class="menu-button active"
+            id="menuToday"
+            type="button"
+        >
+            <span class="menu-icon">☀</span>
+            <span id="menuTodayLabel">اليوم</span>
+        </button>
+
+        <button
+            class="menu-button"
+            id="menuAll"
+            type="button"
+        >
+            <span class="menu-icon">☷</span>
+            <span id="menuAllLabel">كل النوايا</span>
+        </button>
+
+        <button
+            class="menu-button"
+            id="menuCompleted"
+            type="button"
+        >
+            <span class="menu-icon">✓</span>
+            <span id="menuCompletedLabel">المكتملة</span>
+        </button>
+
+        <div class="menu-divider"></div>
+
+        <button
+            class="menu-button"
+            id="menuSettings"
+            type="button"
+        >
+            <span class="menu-icon">⚙</span>
+            <span id="menuSettingsLabel">الإعدادات</span>
+        </button>
+
+    </div>
+
+</div>
+
+<div
+    class="action-overlay"
+    id="actionOverlay"
+    aria-hidden="true"
+>
+
+    <div
+        class="action-card"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div
+            class="action-title"
+            id="actionTaskTitle"
+        >
+            النية
+        </div>
+
+        <button
+            class="action-button complete"
+            id="actionComplete"
+            type="button"
+        >
+            <span class="action-icon">✓</span>
+            <span id="completeLabel">تمت</span>
+        </button>
+
+        <button
+            class="action-button"
+            id="actionEdit"
+            type="button"
+        >
+            <span class="action-icon">✦</span>
+            <span id="editLabel">تعديل</span>
+        </button>
+
+        <button
+            class="action-button delete"
+            id="actionDelete"
+            type="button"
+        >
+            <span class="action-icon">×</span>
+            <span id="deleteLabel">حذف</span>
+        </button>
+
+    </div>
+
+</div>
+
+<div
+    class="modal-overlay"
+    id="editOverlay"
+    aria-hidden="true"
+>
+
+    <div class="modal">
+
+        <h2 id="editTitle">
+            تعديل النية
+        </h2>
+
+        <textarea
+            id="editInput"
+            maxlength="500"
+        ></textarea>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-cancel"
+                id="editCancel"
+                type="button"
+            >
+                إلغاء
+            </button>
+
+            <button
+                class="modal-save"
+                id="editSave"
+                type="button"
+            >
+                حفظ
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    class="settings-panel"
+    id="settingsPanel"
+    aria-hidden="true"
+>
+
+    <div class="settings-box">
+
+        <div class="settings-head">
+
+            <h2 id="settingsTitle">
+                الإعدادات
+            </h2>
+
+            <button
+                class="close-settings"
+                id="settingsClose"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="setting-group">
+
+            <div
+                class="setting-label"
+                id="languageLabel"
+            >
+                اللغة
+            </div>
+
+            <div class="setting-options">
+
+                <button
+                    class="setting-option active"
+                    data-language="ar"
+                    type="button"
+                >
+                    العربية
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-language="en"
+                    type="button"
+                >
+                    English
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="setting-group">
+
+            <div
+                class="setting-label"
+                id="themeLabel"
+            >
+                المظهر
+            </div>
+
+            <div class="setting-options">
+
+                <button
+                    class="setting-option active"
+                    data-theme="dark"
+                    type="button"
+                >
+                    ◐ داكن
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-theme="light"
+                    type="button"
+                >
+                    ○ نهاري
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="setting-group">
+
+            <div
+                class="setting-label"
+                id="accentLabel"
+            >
+                اللون
+            </div>
+
+            <div class="setting-options">
+
+                <button
+                    class="setting-option active"
+                    data-accent-choice="green"
+                    type="button"
+                >
+                    <span class="accent-dot dot-green"></span>
+                    <span data-accent-text="green">أخضر</span>
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-accent-choice="blue"
+                    type="button"
+                >
+                    <span class="accent-dot dot-blue"></span>
+                    <span data-accent-text="blue">أزرق</span>
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-accent-choice="purple"
+                    type="button"
+                >
+                    <span class="accent-dot dot-purple"></span>
+                    <span data-accent-text="purple">بنفسجي</span>
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-accent-choice="orange"
+                    type="button"
+                >
+                    <span class="accent-dot dot-orange"></span>
+                    <span data-accent-text="orange">برتقالي</span>
+                </button>
+
+                <button
+                    class="setting-option"
+                    data-accent-choice="pink"
+                    type="button"
+                >
+                    <span class="accent-dot dot-pink"></span>
+                    <span data-accent-text="pink">وردي</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="setting-group">
+
+            <div
+                class="setting-label"
+                id="trashLabel"
+            >
+                سلة المحذوفات
+            </div>
+
+            <button
+                class="trash-open"
+                id="openTrash"
+                type="button"
+            >
+                🗑 سلة المحذوفات
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    class="trash-panel"
+    id="trashPanel"
+    aria-hidden="true"
+>
+
+    <div class="trash-box">
+
+        <div class="trash-head">
+
+            <h2 id="trashTitle">
+                سلة المحذوفات
+            </h2>
+
+            <button
+                class="close-settings"
+                id="trashClose"
+                type="button"
+                aria-label="إغلاق"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div id="trashContainer"></div>
+
+    </div>
+
+</div>
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+>
+
+    <span
+        class="toast-message"
+        id="toastMessage"
+    >
+        تم حذف النية
+    </span>
+
+    <button
+        class="toast-undo"
+        id="toastUndo"
+        type="button"
+    >
+        تراجع
+    </button>
+
+</div>
+
 <script>
 
 (() => {
@@ -5,30 +2064,12 @@
 "use strict";
 
 /* =========================================================
-   NAWY — PERMANENT MEMORY ENGINE
-   =========================================================
-
-   القاعدة الأساسية:
-
-   1. النوايا لا تُحذف عند تغيير اليوم.
-   2. taskDay = تاريخ إنشاء النية فقط.
-   3. اليوم مجرد "فلتر عرض" وليس مخزنًا منفصلًا.
-   4. النية غير المكتملة من يوم سابق تستمر في "اليوم".
-   5. كل النوايا محفوظة دائمًا في localStorage.
-   6. يوجد Backup محلي إضافي للمهام.
-========================================================= */
-
-
-/* =========================================================
    STORAGE
 ========================================================= */
 
 const STORAGE_KEY = "nawy_tasks_v8";
-const BACKUP_STORAGE_KEY = "nawy_tasks_backup_v1";
-
 const TRASH_KEY = "nawy_trash_v1";
 const SETTINGS_KEY = "nawy_settings_v1";
-
 
 /* =========================================================
    DOM
@@ -175,7 +2216,6 @@ const menuCompletedLabel =
 const menuSettingsLabel =
     document.getElementById("menuSettingsLabel");
 
-
 /* =========================================================
    COMPLETION SOUND
 ========================================================= */
@@ -207,9 +2247,147 @@ function playCompleteSound() {
 
 }
 
+/* =========================================================
+   TYPING SOUND
+   صوت خفيف أثناء الكتابة
+========================================================= */
+
+let typingAudioContext = null;
+let lastTypingSound = 0;
+
+function playTypingSound() {
+
+    const now = performance.now();
+
+    /*
+     * منع الصوت من التكرار بسرعة شديدة
+     * حتى يظل خفيفًا ولا يتحول لإزعاج.
+     */
+    if (
+        now - lastTypingSound < 45
+    ) {
+        return;
+    }
+
+    lastTypingSound = now;
+
+    try {
+
+        if (!typingAudioContext) {
+
+            const AudioContext =
+                window.AudioContext ||
+                window.webkitAudioContext;
+
+            if (!AudioContext) {
+                return;
+            }
+
+            typingAudioContext =
+                new AudioContext();
+
+        }
+
+        if (
+            typingAudioContext.state ===
+            "suspended"
+        ) {
+
+            typingAudioContext.resume()
+                .catch(() => {});
+
+        }
+
+        const oscillator =
+            typingAudioContext.createOscillator();
+
+        const gain =
+            typingAudioContext.createGain();
+
+        oscillator.type =
+            "sine";
+
+        /*
+         * نغمة قصيرة جدًا وهادية.
+         */
+        oscillator.frequency.value =
+            145 + Math.random() * 35;
+
+        gain.gain.setValueAtTime(
+            0.0001,
+            typingAudioContext.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.018,
+            typingAudioContext.currentTime + 0.004
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            typingAudioContext.currentTime + 0.035
+        );
+
+        oscillator.connect(gain);
+        gain.connect(
+            typingAudioContext.destination
+        );
+
+        oscillator.start();
+
+        oscillator.stop(
+            typingAudioContext.currentTime + 0.04
+        );
+
+    } catch {}
+
+}
 
 /* =========================================================
-   SAFE JSON STORAGE
+   STATE
+========================================================= */
+
+let tasks = loadJSON(
+    STORAGE_KEY,
+    []
+);
+
+let trash = loadJSON(
+    TRASH_KEY,
+    []
+);
+
+let settings = loadJSON(
+    SETTINGS_KEY,
+    {
+        language: "ar",
+        theme: "dark",
+        accent: "green"
+    }
+);
+
+let currentView = "today";
+
+let selectedTaskId = null;
+
+let deletedTask = null;
+
+let deleteTimer = null;
+
+let longPressTimer = null;
+
+let longPressTriggered = false;
+
+/*
+ * مهم:
+ * نحتفظ بتاريخ آخر يوم ظهر فيه التطبيق.
+ * لا نستخدمه أبدًا لحذف البيانات.
+ */
+let lastKnownDay =
+    getDateKey();
+
+/* =========================================================
+   STORAGE
 ========================================================= */
 
 function loadJSON(key, fallback) {
@@ -223,10 +2401,10 @@ function loadJSON(key, fallback) {
             return fallback;
         }
 
-        const parsed =
+        const value =
             JSON.parse(raw);
 
-        return parsed ?? fallback;
+        return value ?? fallback;
 
     } catch {
 
@@ -235,7 +2413,6 @@ function loadJSON(key, fallback) {
     }
 
 }
-
 
 function saveJSON(key, value) {
 
@@ -248,11 +2425,10 @@ function saveJSON(key, value) {
 
         return true;
 
-    } catch (error) {
+    } catch {
 
         console.warn(
-            "NAWY storage error:",
-            error
+            "NAWY storage unavailable"
         );
 
         return false;
@@ -261,148 +2437,11 @@ function saveJSON(key, value) {
 
 }
 
-
-/* =========================================================
-   LOAD TASKS
-========================================================= */
-
-/*
-   الأولوية:
-
-   1. التخزين الأساسي
-   2. النسخة الاحتياطية
-
-   لا يوجد أي حذف تلقائي هنا.
-*/
-
-function loadTasks() {
-
-    const primary =
-        loadJSON(
-            STORAGE_KEY,
-            null
-        );
-
-    if (
-        Array.isArray(primary)
-    ) {
-
-        return primary;
-
-    }
-
-    const backup =
-        loadJSON(
-            BACKUP_STORAGE_KEY,
-            []
-        );
-
-    if (
-        Array.isArray(backup)
-    ) {
-
-        /*
-         * لو اضطرينا للـ backup،
-         * نرجعه فورًا للتخزين الأساسي.
-         */
-
-        saveJSON(
-            STORAGE_KEY,
-            backup
-        );
-
-        return backup;
-
-    }
-
-    return [];
-
-}
-
-
-let tasks =
-    loadTasks();
-
-
-let trash =
-    loadJSON(
-        TRASH_KEY,
-        []
-    );
-
-if (!Array.isArray(trash)) {
-    trash = [];
-}
-
-
-let settings =
-    loadJSON(
-        SETTINGS_KEY,
-        {
-            language: "ar",
-            theme: "dark",
-            accent: "green"
-        }
-    );
-
-
-if (
-    !settings ||
-    typeof settings !== "object"
-) {
-
-    settings = {
-        language: "ar",
-        theme: "dark",
-        accent: "green"
-    };
-
-}
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentView =
-    "today";
-
-let selectedTaskId =
-    null;
-
-let deletedTask =
-    null;
-
-let deleteTimer =
-    null;
-
-let longPressTimer =
-    null;
-
-let longPressTriggered =
-    false;
-
-
-/*
-   هذا المتغير مهم جدًا.
-
-   نخزن اليوم الذي تم عرضه آخر مرة.
-   لو اليوم تغير، نعيد render فقط.
-
-   لا نحذف أي task.
-*/
-
-let lastKnownDay =
-    getDateKey();
-
-
 /* =========================================================
    DATE
 ========================================================= */
 
-function getDateKey(
-    date = new Date()
-) {
+function getDateKey(date = new Date()) {
 
     const y =
         date.getFullYear();
@@ -410,27 +2449,18 @@ function getDateKey(
     const m =
         String(
             date.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
+        ).padStart(2, "0");
 
     const d =
         String(
             date.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
+        ).padStart(2, "0");
 
     return `${y}-${m}-${d}`;
 
 }
 
-
-function formatDate(
-    date = new Date()
-) {
+function formatDate(date = new Date()) {
 
     const locale =
         settings.language === "en"
@@ -448,7 +2478,6 @@ function formatDate(
 
 }
 
-
 function updateDate() {
 
     currentDate.textContent =
@@ -456,9 +2485,48 @@ function updateDate() {
 
 }
 
+/* =========================================================
+   MIDNIGHT / DAY CHANGE
+========================================================= */
+
+/*
+ * تغيير اليوم لا يعني حذف النوايا.
+ *
+ * الوظيفة الوحيدة هنا:
+ * تحديث التاريخ والواجهة.
+ */
+
+function checkForNewDay() {
+
+    const today =
+        getDateKey();
+
+    if (
+        today !== lastKnownDay
+    ) {
+
+        lastKnownDay =
+            today;
+
+        updateDate();
+
+        render();
+
+    }
+
+}
+
+/*
+ * فحص دوري خفيف جدًا.
+ * لا يلمس localStorage ولا tasks.
+ */
+setInterval(
+    checkForNewDay,
+    30 * 1000
+);
 
 /* =========================================================
-   NORMALIZE TASKS
+   NORMALIZE
 ========================================================= */
 
 function normalizeTask(task) {
@@ -467,20 +2535,13 @@ function normalizeTask(task) {
         !task ||
         typeof task !== "object"
     ) {
-
         return null;
-
     }
 
     const text =
-        String(
-            task.text || ""
-        )
-        .trim()
-        .slice(
-            0,
-            500
-        );
+        String(task.text || "")
+            .trim()
+            .slice(0, 500);
 
     if (!text) {
         return null;
@@ -494,10 +2555,10 @@ function normalizeTask(task) {
         task.taskDay;
 
     /*
-       لو عندنا بيانات قديمة بدون taskDay،
-       نستخرج التاريخ من createdAt.
-    */
-
+     * حماية للبيانات القديمة:
+     * لو taskDay غير موجود، نستخرجه
+     * من تاريخ إنشاء النية.
+     */
     if (!taskDay) {
 
         taskDay =
@@ -518,90 +2579,41 @@ function normalizeTask(task) {
         text,
 
         completed:
-            Boolean(
-                task.completed
-            ),
+            Boolean(task.completed),
 
         starred:
-            Boolean(
-                task.starred
-            ),
+            Boolean(task.starred),
 
         createdAt,
 
         taskDay,
 
         completedAt:
-            task.completedAt ||
-            null
+            task.completedAt || null
 
     };
 
 }
 
-
-/* =========================================================
-   NORMALIZE + SAVE
-========================================================= */
-
-function normalizeAllTasks() {
-
-    const originalLength =
-        Array.isArray(tasks)
-            ? tasks.length
-            : 0;
-
-    tasks =
-        (Array.isArray(tasks)
-            ? tasks
-            : []
-        )
-        .map(
-            normalizeTask
-        )
+tasks =
+    tasks
+        .map(normalizeTask)
         .filter(Boolean);
 
-    /*
-       نحفظ النسخة النظيفة فقط.
-       لا نقوم بحذف المهام الصحيحة.
-    */
-
-    persistTasks();
-
-}
-
-
-function persistTasks() {
-
-    /*
-       نكتب الأساسي والـ backup.
-
-       مهم:
-       الـ backup ليس يوميًا.
-       هو نسخة كاملة من كل النوايا.
-    */
-
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
-
-    saveJSON(
-        BACKUP_STORAGE_KEY,
-        tasks
-    );
-
-}
-
+/*
+ * نحفظ البيانات بعد التطبيع مرة واحدة.
+ * لا يوجد أي حذف حسب التاريخ.
+ */
+saveJSON(
+    STORAGE_KEY,
+    tasks
+);
 
 /* =========================================================
    ANALYTICS
 ========================================================= */
 
-function analytics(
-    event,
-    params = {}
-) {
+function analytics(event, params = {}) {
 
     try {
 
@@ -621,27 +2633,20 @@ function analytics(
 
 }
 
-
 /* =========================================================
-   ADD TASK
+   ADD
 ========================================================= */
 
 function addTask(text) {
 
     const clean =
         String(text || "")
-        .trim()
-        .slice(
-            0,
-            500
-        );
+            .trim()
+            .slice(0, 500);
 
     if (!clean) {
         return false;
     }
-
-    const now =
-        new Date();
 
     const task = {
 
@@ -650,47 +2655,32 @@ function addTask(text) {
                 .toString(36)
                 .slice(2, 9)}`,
 
-        text:
-            clean,
+        text: clean,
 
-        completed:
-            false,
+        completed: false,
 
-        starred:
-            false,
+        starred: false,
 
         createdAt:
-            now.toISOString(),
-
-        /*
-           تاريخ الإنشاء فقط.
-           لا يتم تغييره بعد ذلك.
-        */
+            new Date().toISOString(),
 
         taskDay:
-            getDateKey(now),
+            getDateKey(),
 
-        completedAt:
-            null
+        completedAt: null
 
     };
 
-    tasks.unshift(
-        task
+    tasks.unshift(task);
+
+    saveJSON(
+        STORAGE_KEY,
+        tasks
     );
 
-    /*
-       حفظ فوري في مكانين.
-    */
+    analytics("add_task");
 
-    persistTasks();
-
-    analytics(
-        "add_task"
-    );
-
-    currentView =
-        "today";
+    currentView = "today";
 
     render();
 
@@ -698,9 +2688,8 @@ function addTask(text) {
 
 }
 
-
 /* =========================================================
-   FIND TASK
+   FIND
 ========================================================= */
 
 function findTask(id) {
@@ -712,7 +2701,6 @@ function findTask(id) {
     );
 
 }
-
 
 /* =========================================================
    COMPLETE
@@ -729,33 +2717,26 @@ function completeTask(id) {
 
     if (task.completed) {
 
-        task.completed =
-            false;
-
-        task.completedAt =
-            null;
+        task.completed = false;
+        task.completedAt = null;
 
     } else {
 
-        task.completed =
-            true;
+        task.completed = true;
 
         task.completedAt =
             new Date().toISOString();
 
-        analytics(
-            "complete_task"
-        );
+        analytics("complete_task");
 
         playCompleteSound();
 
     }
 
-    /*
-       لا نغير taskDay عند الإنجاز.
-    */
-
-    persistTasks();
+    saveJSON(
+        STORAGE_KEY,
+        tasks
+    );
 
     render();
 
@@ -765,9 +2746,7 @@ function completeTask(id) {
 
             const element =
                 document.querySelector(
-                    `[data-task-id="${CSS.escape(
-                        String(id)
-                    )}"]`
+                    `[data-task-id="${CSS.escape(String(id))}"]`
                 );
 
             if (element) {
@@ -792,7 +2771,6 @@ function completeTask(id) {
 
 }
 
-
 /* =========================================================
    STAR
 ========================================================= */
@@ -809,7 +2787,10 @@ function toggleStar(id) {
     task.starred =
         !task.starred;
 
-    persistTasks();
+    saveJSON(
+        STORAGE_KEY,
+        tasks
+    );
 
     analytics(
         "star_task",
@@ -822,7 +2803,6 @@ function toggleStar(id) {
     render();
 
 }
-
 
 /* =========================================================
    DELETE
@@ -844,11 +2824,6 @@ function deleteTask(id) {
     const task =
         tasks[index];
 
-    /*
-       الحذف هنا فقط عندما المستخدم
-       يضغط "حذف" صراحة.
-    */
-
     tasks.splice(
         index,
         1
@@ -865,16 +2840,17 @@ function deleteTask(id) {
         index
     };
 
-    persistTasks();
+    saveJSON(
+        STORAGE_KEY,
+        tasks
+    );
 
     saveJSON(
         TRASH_KEY,
         trash
     );
 
-    analytics(
-        "delete_task"
-    );
+    analytics("delete_task");
 
     render();
 
@@ -884,28 +2860,21 @@ function deleteTask(id) {
             : "تم حذف النية"
     );
 
-    clearTimeout(
-        deleteTimer
-    );
+    clearTimeout(deleteTimer);
 
     deleteTimer =
-        setTimeout(
-            () => {
+        setTimeout(() => {
 
-                deletedTask =
-                    null;
+            deletedTask = null;
 
-                hideToast();
+            hideToast();
 
-            },
-            5000
-        );
+        }, 5000);
 
 }
 
-
 /* =========================================================
-   UNDO DELETE
+   UNDO
 ========================================================= */
 
 function undoDelete() {
@@ -944,14 +2913,16 @@ function undoDelete() {
         task
     );
 
-    deletedTask =
-        null;
+    deletedTask = null;
 
     clearTimeout(
         deleteTimer
     );
 
-    persistTasks();
+    saveJSON(
+        STORAGE_KEY,
+        tasks
+    );
 
     saveJSON(
         TRASH_KEY,
@@ -963,7 +2934,6 @@ function undoDelete() {
     render();
 
 }
-
 
 /* =========================================================
    EDIT
@@ -995,18 +2965,14 @@ function openEdit(id) {
         "false"
     );
 
-    setTimeout(
-        () => {
+    setTimeout(() => {
 
-            editInput.focus();
-            editInput.select();
+        editInput.focus();
+        editInput.select();
 
-        },
-        50
-    );
+    }, 50);
 
 }
-
 
 function saveEdit() {
 
@@ -1025,11 +2991,8 @@ function saveEdit() {
 
     const text =
         editInput.value
-        .trim()
-        .slice(
-            0,
-            500
-        );
+            .trim()
+            .slice(0, 500);
 
     if (!text) {
         return;
@@ -1038,18 +3001,18 @@ function saveEdit() {
     task.text =
         text;
 
-    persistTasks();
-
-    analytics(
-        "edit_task"
+    saveJSON(
+        STORAGE_KEY,
+        tasks
     );
+
+    analytics("edit_task");
 
     closeEdit();
 
     render();
 
 }
-
 
 function closeEdit() {
 
@@ -1066,7 +3029,6 @@ function closeEdit() {
         null;
 
 }
-
 
 /* =========================================================
    ACTION CARD
@@ -1111,7 +3073,6 @@ function openAction(id) {
 
 }
 
-
 function closeAction() {
 
     actionOverlay.classList.remove(
@@ -1124,7 +3085,6 @@ function closeAction() {
     );
 
 }
-
 
 /* =========================================================
    MAIN MENU
@@ -1143,7 +3103,6 @@ function openMenu() {
 
 }
 
-
 function closeMenu() {
 
     menuOverlay.classList.remove(
@@ -1157,7 +3116,6 @@ function closeMenu() {
 
 }
 
-
 function setView(view) {
 
     currentView =
@@ -1169,7 +3127,6 @@ function setView(view) {
 
 }
 
-
 /* =========================================================
    MENU EVENTS
 ========================================================= */
@@ -1179,9 +3136,7 @@ menuBtn.addEventListener(
     () => {
 
         if (
-            menuOverlay.classList.contains(
-                "show"
-            )
+            menuOverlay.classList.contains("show")
         ) {
 
             closeMenu();
@@ -1195,27 +3150,20 @@ menuBtn.addEventListener(
     }
 );
 
-
 menuToday.addEventListener(
     "click",
-    () =>
-        setView("today")
+    () => setView("today")
 );
-
 
 menuAll.addEventListener(
     "click",
-    () =>
-        setView("all")
+    () => setView("all")
 );
-
 
 menuCompleted.addEventListener(
     "click",
-    () =>
-        setView("completed")
+    () => setView("completed")
 );
-
 
 menuSettings.addEventListener(
     "click",
@@ -1227,7 +3175,6 @@ menuSettings.addEventListener(
 
     }
 );
-
 
 menuOverlay.addEventListener(
     "click",
@@ -1244,7 +3191,6 @@ menuOverlay.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    ACTION EVENTS
@@ -1267,7 +3213,6 @@ actionComplete.addEventListener(
     }
 );
 
-
 actionEdit.addEventListener(
     "click",
     () => {
@@ -1282,7 +3227,6 @@ actionEdit.addEventListener(
 
     }
 );
-
 
 actionDelete.addEventListener(
     "click",
@@ -1302,7 +3246,6 @@ actionDelete.addEventListener(
     }
 );
 
-
 actionOverlay.addEventListener(
     "click",
     event => {
@@ -1318,7 +3261,6 @@ actionOverlay.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    SORT
@@ -1345,7 +3287,6 @@ function sortActive(a, b) {
 
 }
 
-
 function sortCompleted(a, b) {
 
     return (
@@ -1360,7 +3301,6 @@ function sortCompleted(a, b) {
     );
 
 }
-
 
 /* =========================================================
    SECTION
@@ -1394,7 +3334,6 @@ function appendSection(label) {
 
 }
 
-
 /* =========================================================
    TASK ELEMENT
 ========================================================= */
@@ -1422,9 +3361,6 @@ function createTaskElement(
 
     article.dataset.taskId =
         String(task.id);
-
-
-    /* CHECK */
 
     const checkHit =
         document.createElement(
@@ -1455,7 +3391,6 @@ function createTaskElement(
             )
     );
 
-
     const check =
         document.createElement(
             "span"
@@ -1477,9 +3412,6 @@ function createTaskElement(
         check
     );
 
-
-    /* MAIN */
-
     const main =
         document.createElement(
             "div"
@@ -1490,7 +3422,6 @@ function createTaskElement(
 
     main.dataset.action =
         "menu";
-
 
     const title =
         document.createElement(
@@ -1506,12 +3437,6 @@ function createTaskElement(
     main.appendChild(
         title
     );
-
-
-    /*
-       لو النية غير مكتملة ومن يوم سابق،
-       تظهر في "اليوم" مع هذا التوضيح.
-    */
 
     if (
         carried &&
@@ -1536,9 +3461,6 @@ function createTaskElement(
         );
 
     }
-
-
-    /* STAR */
 
     const star =
         document.createElement(
@@ -1579,16 +3501,13 @@ function createTaskElement(
 
     star.setAttribute(
         "aria-pressed",
-        String(
-            task.starred
-        )
+        String(task.starred)
     );
 
     star.textContent =
         task.starred
             ? "★"
             : "☆";
-
 
     article.append(
         checkHit,
@@ -1599,99 +3518,6 @@ function createTaskElement(
     return article;
 
 }
-
-
-/* =========================================================
-   TODAY TASKS
-========================================================= */
-
-/*
-   هذه هي أهم نقطة في الإصلاح.
-
-   "اليوم" لا يعني:
-   taskDay === today
-
-   بل يعني:
-
-   - كل نوايا اليوم
-   +
-   - كل النوايا القديمة غير المكتملة
-
-   أما المكتملة القديمة فتظل محفوظة
-   وتظهر في "المكتملة" و"كل النوايا".
-*/
-
-function getTodayTasks() {
-
-    const today =
-        getDateKey();
-
-    return tasks
-        .filter(
-            task => {
-
-                if (
-                    task.taskDay === today
-                ) {
-
-                    return true;
-
-                }
-
-                /*
-                   النية القديمة تظهر في اليوم
-                   طالما لم يتم إنجازها.
-                */
-
-                if (
-                    !task.completed
-                ) {
-
-                    return true;
-
-                }
-
-                return false;
-
-            }
-        )
-        .sort(
-            (a, b) => {
-
-                if (
-                    a.completed !==
-                    b.completed
-                ) {
-
-                    return (
-                        Number(a.completed) -
-                        Number(b.completed)
-                    );
-
-                }
-
-                if (
-                    a.starred !==
-                    b.starred
-                ) {
-
-                    return (
-                        Number(b.starred) -
-                        Number(a.starred)
-                    );
-
-                }
-
-                return (
-                    new Date(b.createdAt) -
-                    new Date(a.createdAt)
-                );
-
-            }
-        );
-
-}
-
 
 /* =========================================================
    RENDER
@@ -1709,26 +3535,60 @@ function render() {
 
     let visibleTasks = [];
 
+    if (currentView === "today") {
 
-    /* =====================================================
-       TODAY
-    ===================================================== */
-
-    if (
-        currentView === "today"
-    ) {
-
+        /*
+         * IMPORTANT:
+         *
+         * اليوم = نوايا اليوم
+         * + أي نية قديمة غير مكتملة.
+         *
+         * لا نحذف ولا ننقل النية.
+         * فقط نعرضها.
+         */
         visibleTasks =
-            getTodayTasks();
+            tasks
+                .filter(
+                    task =>
+                        task.taskDay === today ||
+                        !task.completed
+                )
+                .sort(
+                    (a, b) => {
 
+                        if (
+                            a.completed !==
+                            b.completed
+                        ) {
 
-    /* =====================================================
-       COMPLETED
-    ===================================================== */
+                            return (
+                                Number(a.completed) -
+                                Number(b.completed)
+                            );
 
-    } else if (
-        currentView === "completed"
-    ) {
+                        }
+
+                        if (
+                            a.starred !==
+                            b.starred
+                        ) {
+
+                            return (
+                                Number(b.starred) -
+                                Number(a.starred)
+                            );
+
+                        }
+
+                        return (
+                            new Date(b.createdAt) -
+                            new Date(a.createdAt)
+                        );
+
+                    }
+                );
+
+    } else if (currentView === "completed") {
 
         visibleTasks =
             tasks
@@ -1736,14 +3596,7 @@ function render() {
                     task =>
                         task.completed
                 )
-                .sort(
-                    sortCompleted
-                );
-
-
-    /* =====================================================
-       ALL
-    ===================================================== */
+                .sort(sortCompleted);
 
     } else {
 
@@ -1765,24 +3618,14 @@ function render() {
 
                         }
 
-                        return sortActive(
-                            a,
-                            b
-                        );
+                        return sortActive(a, b);
 
                     }
                 );
 
     }
 
-
-    /* =====================================================
-       EMPTY
-    ===================================================== */
-
-    if (
-        !visibleTasks.length
-    ) {
+    if (!visibleTasks.length) {
 
         const emptyText =
             getEmptyText();
@@ -1816,14 +3659,7 @@ function render() {
 
     }
 
-
-    /* =====================================================
-       TODAY VIEW
-    ===================================================== */
-
-    if (
-        currentView === "today"
-    ) {
+    if (currentView === "today") {
 
         const active =
             visibleTasks.filter(
@@ -1834,11 +3670,27 @@ function render() {
         const completed =
             visibleTasks.filter(
                 task =>
-                    task.completed
+                    task.completed &&
+                    task.taskDay === today
             );
 
+        /*
+         * النوايا القديمة غير المكتملة
+         * تظهر مع نوايا اليوم.
+         */
+        const carried =
+            active.filter(
+                task =>
+                    task.taskDay !== today
+            );
 
-        if (active.length) {
+        const todayActive =
+            active.filter(
+                task =>
+                    task.taskDay === today
+            );
+
+        if (todayActive.length) {
 
             appendSection(
                 settings.language === "en"
@@ -1846,16 +3698,33 @@ function render() {
                     : "نوايا اليوم"
             );
 
-            active.forEach(
+            todayActive.forEach(
                 task => {
 
-                    const carried =
-                        task.taskDay !== today;
+                    tasksContainer.appendChild(
+                        createTaskElement(task)
+                    );
+
+                }
+            );
+
+        }
+
+        if (carried.length) {
+
+            appendSection(
+                settings.language === "en"
+                    ? "From earlier days"
+                    : "من أيام سابقة"
+            );
+
+            carried.forEach(
+                task => {
 
                     tasksContainer.appendChild(
                         createTaskElement(
                             task,
-                            carried
+                            true
                         )
                     );
 
@@ -1864,22 +3733,7 @@ function render() {
 
         }
 
-
-        /*
-           المكتملة من اليوم فقط تظهر أسفل اليوم.
-           القديمة لا تختفي من الذاكرة،
-           وإنما تظهر في "المكتملة".
-        */
-
-        const completedToday =
-            completed.filter(
-                task =>
-                    task.taskDay === today
-            );
-
-        if (
-            completedToday.length
-        ) {
+        if (completed.length) {
 
             appendSection(
                 settings.language === "en"
@@ -1887,13 +3741,11 @@ function render() {
                     : "النوايا المحققة اليوم"
             );
 
-            completedToday.forEach(
+            completed.forEach(
                 task => {
 
                     tasksContainer.appendChild(
-                        createTaskElement(
-                            task
-                        )
+                        createTaskElement(task)
                     );
 
                 }
@@ -1901,14 +3753,7 @@ function render() {
 
         }
 
-
-    /* =====================================================
-       ALL VIEW
-    ===================================================== */
-
-    } else if (
-        currentView === "all"
-    ) {
+    } else if (currentView === "all") {
 
         const active =
             visibleTasks.filter(
@@ -1921,7 +3766,6 @@ function render() {
                 task =>
                     task.completed
             );
-
 
         if (active.length) {
 
@@ -1949,7 +3793,6 @@ function render() {
 
         }
 
-
         if (completed.length) {
 
             appendSection(
@@ -1962,20 +3805,13 @@ function render() {
                 task => {
 
                     tasksContainer.appendChild(
-                        createTaskElement(
-                            task
-                        )
+                        createTaskElement(task)
                     );
 
                 }
             );
 
         }
-
-
-    /* =====================================================
-       COMPLETED VIEW
-    ===================================================== */
 
     } else {
 
@@ -1989,9 +3825,7 @@ function render() {
             task => {
 
                 tasksContainer.appendChild(
-                    createTaskElement(
-                        task
-                    )
+                    createTaskElement(task)
                 );
 
             }
@@ -1999,11 +3833,9 @@ function render() {
 
     }
 
-
     updateMenuState();
 
 }
-
 
 /* =========================================================
    EMPTY TEXT
@@ -2014,10 +3846,7 @@ function getEmptyText() {
     const en =
         settings.language === "en";
 
-
-    if (
-        currentView === "completed"
-    ) {
+    if (currentView === "completed") {
 
         return en
             ? [
@@ -2031,10 +3860,7 @@ function getEmptyText() {
 
     }
 
-
-    if (
-        currentView === "all"
-    ) {
+    if (currentView === "all") {
 
         return en
             ? [
@@ -2048,19 +3874,17 @@ function getEmptyText() {
 
     }
 
-
     return en
         ? [
-            "Nothing planned for today",
+            "Nothing planned",
             "Write the first thing you intend to do."
         ]
         : [
-            "مفيش حاجة لليوم",
+            "مفيش نوايا لسه",
             "اكتب أول حاجة ناوي تعملها."
         ];
 
 }
-
 
 /* =========================================================
    MENU STATE
@@ -2085,7 +3909,6 @@ function updateMenuState() {
 
 }
 
-
 /* =========================================================
    TASK EVENTS
 ========================================================= */
@@ -2094,9 +3917,7 @@ tasksContainer.addEventListener(
     "click",
     event => {
 
-        if (
-            longPressTriggered
-        ) {
+        if (longPressTriggered) {
 
             longPressTriggered =
                 false;
@@ -2109,9 +3930,7 @@ tasksContainer.addEventListener(
             event.target;
 
         const taskElement =
-            target.closest(
-                ".task"
-            );
+            target.closest(".task");
 
         if (!taskElement) {
             return;
@@ -2121,9 +3940,7 @@ tasksContainer.addEventListener(
             taskElement.dataset.taskId;
 
         const actionElement =
-            target.closest(
-                "[data-action]"
-            );
+            target.closest("[data-action]");
 
         if (!actionElement) {
             return;
@@ -2132,32 +3949,21 @@ tasksContainer.addEventListener(
         const action =
             actionElement.dataset.action;
 
-
-        if (
-            action === "complete"
-        ) {
+        if (action === "complete") {
 
             completeTask(id);
-
             return;
 
         }
 
-
-        if (
-            action === "star"
-        ) {
+        if (action === "star") {
 
             toggleStar(id);
-
             return;
 
         }
 
-
-        if (
-            action === "menu"
-        ) {
+        if (action === "menu") {
 
             openAction(id);
 
@@ -2165,7 +3971,6 @@ tasksContainer.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    LONG PRESS
@@ -2188,15 +3993,11 @@ tasksContainer.addEventListener(
             event.pointerType ===
             "mouse"
         ) {
-
             return;
-
         }
 
         const task =
-            main.closest(
-                ".task"
-            );
+            main.closest(".task");
 
         if (!task) {
             return;
@@ -2213,43 +4014,36 @@ tasksContainer.addEventListener(
         );
 
         longPressTimer =
-            setTimeout(
-                () => {
+            setTimeout(() => {
 
-                    longPressTriggered =
-                        true;
+                longPressTriggered =
+                    true;
 
-                    openAction(id);
+                openAction(id);
 
-                },
-                550
-            );
+            }, 550);
 
     }
 );
-
 
 [
     "pointerup",
     "pointercancel",
     "pointerleave"
-].forEach(
-    type => {
+].forEach(type => {
 
-        tasksContainer.addEventListener(
-            type,
-            () => {
+    tasksContainer.addEventListener(
+        type,
+        () => {
 
-                clearTimeout(
-                    longPressTimer
-                );
+            clearTimeout(
+                longPressTimer
+            );
 
-            }
-        );
+        }
+    );
 
-    }
-);
-
+});
 
 /* =========================================================
    RIGHT CLICK
@@ -2286,7 +4080,6 @@ tasksContainer.addEventListener(
     }
 );
 
-
 /* =========================================================
    INPUT
 ========================================================= */
@@ -2303,7 +4096,6 @@ function resizeInput() {
         )}px`;
 
 }
-
 
 function updateSubmitButton() {
 
@@ -2322,18 +4114,26 @@ function updateSubmitButton() {
 
 }
 
-
 taskInput.addEventListener(
     "input",
     () => {
 
         resizeInput();
-
         updateSubmitButton();
+
+        /*
+         * صوت الكتابة مسموع عادي.
+         */
+        if (
+            taskInput.value.length > 0
+        ) {
+
+            playTypingSound();
+
+        }
 
     }
 );
-
 
 function handleSend() {
 
@@ -2365,12 +4165,10 @@ function handleSend() {
 
 }
 
-
 submitBtn.addEventListener(
     "click",
     handleSend
 );
-
 
 taskInput.addEventListener(
     "keydown",
@@ -2390,7 +4188,6 @@ taskInput.addEventListener(
     }
 );
 
-
 /* =========================================================
    PROGRESS
 ========================================================= */
@@ -2401,19 +4198,13 @@ function updateProgress() {
         getDateKey();
 
     /*
-       نسبة الإنجاز تخص ما يظهر في "اليوم":
-
-       اليوم +
-       النوايا القديمة غير المكتملة.
-
-       لكن لا نحسب النوايا القديمة المكتملة.
-    */
-
+     * نسبة الإنجاز تخص نوايا اليوم فقط.
+     * النوايا القديمة لا تغيّر نسبة اليوم.
+     */
     const todayTasks =
         tasks.filter(
             task =>
-                task.taskDay === today ||
-                !task.completed
+                task.taskDay === today
         );
 
     const total =
@@ -2422,10 +4213,8 @@ function updateProgress() {
     const done =
         todayTasks.filter(
             task =>
-                task.completed &&
-                task.taskDay === today
+                task.completed
         ).length;
-
 
     if (!total) {
 
@@ -2446,14 +4235,10 @@ function updateProgress() {
 
     }
 
-
     const percentage =
         Math.round(
-            done /
-            total *
-            100
+            done / total * 100
         );
-
 
     progressFill.style.width =
         `${percentage}%`;
@@ -2463,14 +4248,12 @@ function updateProgress() {
         String(percentage)
     );
 
-
     progressText.textContent =
         settings.language === "en"
             ? `${done} of ${total} · ${percentage}%`
             : `${done} من ${total} · ${percentage}%`;
 
 }
-
 
 /* =========================================================
    TOAST
@@ -2487,7 +4270,6 @@ function showToast(message) {
 
 }
 
-
 function hideToast() {
 
     toast.classList.remove(
@@ -2496,12 +4278,10 @@ function hideToast() {
 
 }
 
-
 toastUndo.addEventListener(
     "click",
     undoDelete
 );
-
 
 /* =========================================================
    SETTINGS
@@ -2520,7 +4300,6 @@ function openSettings() {
 
 }
 
-
 function closeSettings() {
 
     settingsPanel.classList.remove(
@@ -2534,12 +4313,10 @@ function closeSettings() {
 
 }
 
-
 settingsClose.addEventListener(
     "click",
     closeSettings
 );
-
 
 settingsPanel.addEventListener(
     "click",
@@ -2556,7 +4333,6 @@ settingsPanel.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    LANGUAGE
@@ -2592,7 +4368,6 @@ document.querySelectorAll(
     }
 );
 
-
 /* =========================================================
    THEME
 ========================================================= */
@@ -2626,7 +4401,6 @@ document.querySelectorAll(
 
     }
 );
-
 
 /* =========================================================
    ACCENT
@@ -2662,7 +4436,6 @@ document.querySelectorAll(
     }
 );
 
-
 /* =========================================================
    SAVE SETTINGS
 ========================================================= */
@@ -2676,7 +4449,6 @@ function saveSettings() {
 
 }
 
-
 /* =========================================================
    APPLY SETTINGS
 ========================================================= */
@@ -2686,48 +4458,38 @@ function applySettings() {
     const en =
         settings.language === "en";
 
-
     document.documentElement.lang =
         settings.language;
-
 
     document.documentElement.dir =
         en
             ? "ltr"
             : "rtl";
 
-
     document.body.dataset.accent =
         settings.accent;
-
 
     document.body.classList.toggle(
         "light",
         settings.theme === "light"
     );
 
-
     brandName.textContent =
         en
             ? "NAWY"
             : "ناوي";
-
 
     document.title =
         en
             ? "NAWY — What are you up to today?"
             : "ناوي — على إيه النهارده؟";
 
-
     document.querySelector(
         'meta[name="apple-mobile-web-app-title"]'
     ).setAttribute(
         "content",
-        en
-            ? "NAWY"
-            : "ناوي"
+        en ? "NAWY" : "ناوي"
     );
-
 
     document.querySelector(
         'meta[name="description"]'
@@ -2738,14 +4500,12 @@ function applySettings() {
             : "ناوي — اكتب نيتك وأنجزها."
     );
 
-
     menuBtn.setAttribute(
         "aria-label",
         en
             ? "Menu"
             : "القائمة"
     );
-
 
     document.querySelectorAll(
         "[data-language]"
@@ -2761,7 +4521,6 @@ function applySettings() {
         }
     );
 
-
     document.querySelectorAll(
         "[data-theme]"
     ).forEach(
@@ -2775,7 +4534,6 @@ function applySettings() {
 
         }
     );
-
 
     document.querySelectorAll(
         "[data-accent-choice]"
@@ -2791,7 +4549,6 @@ function applySettings() {
         }
     );
 
-
     updateStaticText();
 
     updateDate();
@@ -2799,7 +4556,6 @@ function applySettings() {
     render();
 
 }
-
 
 /* =========================================================
    STATIC TRANSLATIONS
@@ -2810,18 +4566,15 @@ function updateStaticText() {
     const en =
         settings.language === "en";
 
-
     greetingTitle.textContent =
         en
             ? "What are you up to today?"
             : "ناوي على إيه النهارده؟";
 
-
     taskInput.placeholder =
         en
             ? "Write what you intend to do..."
             : "اكتب اللي ناوي عليه...";
-
 
     taskInput.setAttribute(
         "aria-label",
@@ -2830,114 +4583,95 @@ function updateStaticText() {
             : "نية جديدة"
     );
 
-
     settingsTitle.textContent =
         en
             ? "Settings"
             : "الإعدادات";
-
 
     languageLabel.textContent =
         en
             ? "Language"
             : "اللغة";
 
-
     themeLabel.textContent =
         en
             ? "Appearance"
             : "المظهر";
-
 
     accentLabel.textContent =
         en
             ? "Accent"
             : "اللون";
 
-
     trashLabel.textContent =
         en
             ? "Trash"
             : "سلة المحذوفات";
-
 
     trashTitle.textContent =
         en
             ? "Trash"
             : "سلة المحذوفات";
 
-
     completeLabel.textContent =
         en
             ? "Complete"
             : "تمت";
-
 
     editLabel.textContent =
         en
             ? "Edit"
             : "تعديل";
 
-
     deleteLabel.textContent =
         en
             ? "Delete"
             : "حذف";
-
 
     editTitle.textContent =
         en
             ? "Edit intention"
             : "تعديل النية";
 
-
     editCancel.textContent =
         en
             ? "Cancel"
             : "إلغاء";
-
 
     editSave.textContent =
         en
             ? "Save"
             : "حفظ";
 
-
     openTrash.textContent =
         en
             ? "🗑 Trash"
             : "🗑 سلة المحذوفات";
-
 
     menuTodayLabel.textContent =
         en
             ? "Today"
             : "اليوم";
 
-
     menuAllLabel.textContent =
         en
             ? "All intentions"
             : "كل النوايا";
-
 
     menuCompletedLabel.textContent =
         en
             ? "Completed"
             : "المكتملة";
 
-
     menuSettingsLabel.textContent =
         en
             ? "Settings"
             : "الإعدادات";
 
-
     const themeButtons =
         document.querySelectorAll(
             "[data-theme]"
         );
-
 
     themeButtons.forEach(
         button => {
@@ -2964,36 +4698,24 @@ function updateStaticText() {
         }
     );
 
-
     const accentNames = {
 
         green:
-            en
-                ? "Green"
-                : "أخضر",
+            en ? "Green" : "أخضر",
 
         blue:
-            en
-                ? "Blue"
-                : "أزرق",
+            en ? "Blue" : "أزرق",
 
         purple:
-            en
-                ? "Purple"
-                : "بنفسجي",
+            en ? "Purple" : "بنفسجي",
 
         orange:
-            en
-                ? "Orange"
-                : "برتقالي",
+            en ? "Orange" : "برتقالي",
 
         pink:
-            en
-                ? "Pink"
-                : "وردي"
+            en ? "Pink" : "وردي"
 
     };
-
 
     document.querySelectorAll(
         "[data-accent-text]"
@@ -3009,7 +4731,6 @@ function updateStaticText() {
     );
 
 }
-
 
 /* =========================================================
    TRASH
@@ -3032,7 +4753,6 @@ function openTrashPanel() {
 
 }
 
-
 function closeTrashPanel() {
 
     trashPanel.classList.remove(
@@ -3046,18 +4766,15 @@ function closeTrashPanel() {
 
 }
 
-
 openTrash.addEventListener(
     "click",
     openTrashPanel
 );
 
-
 trashClose.addEventListener(
     "click",
     closeTrashPanel
 );
-
 
 trashPanel.addEventListener(
     "click",
@@ -3075,7 +4792,6 @@ trashPanel.addEventListener(
     }
 );
 
-
 /* =========================================================
    RENDER TRASH
 ========================================================= */
@@ -3084,7 +4800,6 @@ function renderTrash() {
 
     trashContainer.innerHTML =
         "";
-
 
     if (!trash.length) {
 
@@ -3104,7 +4819,6 @@ function renderTrash() {
 
     }
 
-
     trash.forEach(
         item => {
 
@@ -3115,7 +4829,6 @@ function renderTrash() {
 
             row.className =
                 "trash-item";
-
 
             const text =
                 document.createElement(
@@ -3128,7 +4841,6 @@ function renderTrash() {
             text.textContent =
                 item.text;
 
-
             const actions =
                 document.createElement(
                     "div"
@@ -3136,7 +4848,6 @@ function renderTrash() {
 
             actions.className =
                 "trash-actions";
-
 
             const restore =
                 document.createElement(
@@ -3151,7 +4862,6 @@ function renderTrash() {
                     ? "Restore"
                     : "استعادة";
 
-
             restore.addEventListener(
                 "click",
                 () => {
@@ -3162,7 +4872,6 @@ function renderTrash() {
 
                 }
             );
-
 
             const permanent =
                 document.createElement(
@@ -3180,7 +4889,6 @@ function renderTrash() {
                     ? "Delete forever"
                     : "حذف نهائي";
 
-
             permanent.addEventListener(
                 "click",
                 () => {
@@ -3192,18 +4900,15 @@ function renderTrash() {
                 }
             );
 
-
             actions.append(
                 restore,
                 permanent
             );
 
-
             row.append(
                 text,
                 actions
             );
-
 
             trashContainer.appendChild(
                 row
@@ -3213,7 +4918,6 @@ function renderTrash() {
     );
 
 }
-
 
 /* =========================================================
    RESTORE
@@ -3232,51 +4936,39 @@ function restoreTrashItem(id) {
         return;
     }
 
-
     const task =
-        {
-            ...trash[index]
-        };
-
+        trash[index];
 
     delete task.deletedAt;
-
-
-    /*
-       استرجاع النية لا يغير
-       تاريخها الأصلي.
-    */
 
     tasks.unshift(
         task
     );
-
 
     trash.splice(
         index,
         1
     );
 
-
-    persistTasks();
+    saveJSON(
+        STORAGE_KEY,
+        tasks
+    );
 
     saveJSON(
         TRASH_KEY,
         trash
     );
 
-
     analytics(
         "restore_task"
     );
-
 
     renderTrash();
 
     render();
 
 }
-
 
 /* =========================================================
    PERMANENT DELETE
@@ -3291,22 +4983,18 @@ function permanentlyDelete(id) {
                 String(id)
         );
 
-
     saveJSON(
         TRASH_KEY,
         trash
     );
 
-
     analytics(
         "permanent_delete_task"
     );
 
-
     renderTrash();
 
 }
-
 
 /* =========================================================
    EDIT EVENTS
@@ -3317,12 +5005,10 @@ editSave.addEventListener(
     saveEdit
 );
 
-
 editCancel.addEventListener(
     "click",
     closeEdit
 );
-
 
 editOverlay.addEventListener(
     "click",
@@ -3340,7 +5026,6 @@ editOverlay.addEventListener(
     }
 );
 
-
 /* =========================================================
    ESC
 ========================================================= */
@@ -3350,12 +5035,9 @@ document.addEventListener(
     event => {
 
         if (
-            event.key !==
-            "Escape"
+            event.key !== "Escape"
         ) {
-
             return;
-
         }
 
         closeMenu();
@@ -3367,62 +5049,6 @@ document.addEventListener(
     }
 );
 
-
-/* =========================================================
-   DAY CHANGE WATCHER
-========================================================= */
-
-/*
-   مهم جدًا:
-
-   التطبيق يراقب تغيير اليوم.
-
-   عند الانتقال مثلًا:
-
-   2026-09-01
-          ↓
-   2026-09-02
-
-   لا يتم حذف أي شيء.
-
-   فقط:
-   - يتحدث التاريخ
-   - يعاد عرض "اليوم"
-   - النوايا القديمة غير المكتملة تستمر
-*/
-
-function checkDayChange() {
-
-    const currentDay =
-        getDateKey();
-
-    if (
-        currentDay !==
-        lastKnownDay
-    ) {
-
-        lastKnownDay =
-            currentDay;
-
-        updateDate();
-
-        render();
-
-    }
-
-}
-
-
-/*
-   فحص كل 30 ثانية.
-*/
-
-setInterval(
-    checkDayChange,
-    30000
-);
-
-
 /* =========================================================
    VISIBILITY
 ========================================================= */
@@ -3431,11 +5057,15 @@ document.addEventListener(
     "visibilitychange",
     () => {
 
-        if (
-            !document.hidden
-        ) {
+        if (!document.hidden) {
 
-            checkDayChange();
+            /*
+             * عند الرجوع للتطبيق:
+             * لا نحذف أي شيء.
+             * فقط نراجع اليوم الحالي ونعيد الرسم.
+             */
+
+            checkForNewDay();
 
             updateDate();
 
@@ -3446,50 +5076,18 @@ document.addEventListener(
     }
 );
 
-
 /* =========================================================
-   STORAGE EVENT
+   PAGE FOCUS
 ========================================================= */
 
-/*
-   لو المستخدم فتح ناوي في تابين،
-   أي تغيير في واحدة ينعكس في الأخرى.
-*/
-
 window.addEventListener(
-    "storage",
-    event => {
+    "focus",
+    () => {
 
-        if (
-            event.key ===
-                STORAGE_KEY ||
-            event.key ===
-                BACKUP_STORAGE_KEY
-        ) {
-
-            const updated =
-                loadTasks();
-
-            if (
-                Array.isArray(updated)
-            ) {
-
-                tasks =
-                    updated
-                        .map(
-                            normalizeTask
-                        )
-                        .filter(Boolean);
-
-                render();
-
-            }
-
-        }
+        checkForNewDay();
 
     }
 );
-
 
 /* =========================================================
    SERVICE WORKER
@@ -3526,26 +5124,19 @@ if (
 
 }
 
-
 /* =========================================================
    START
 ========================================================= */
-
-/*
-   تنظيف/توحيد البيانات الموجودة
-   مرة واحدة عند فتح التطبيق.
-
-   لا يوجد هنا أي حذف حسب التاريخ.
-*/
-
-normalizeAllTasks();
 
 applySettings();
 
 updateSubmitButton();
 
-checkDayChange();
-
+checkForNewDay();
 
 })();
+
 </script>
+
+</body>
+</html>
