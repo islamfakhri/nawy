@@ -10,13 +10,9 @@
    VERSION
    ---------------------------------------------------------
    غيّر الرقم عند إصدار نسخة جديدة من التطبيق.
-   مثال:
-   nawy-v7
-   nawy-v8
-   nawy-v9
    ========================================================= */
 
-const CACHE_VERSION = "nawy-v7";
+const CACHE_VERSION = "nawy-v8";
 const CACHE_NAME = CACHE_VERSION;
 
 
@@ -35,8 +31,6 @@ const APP_SHELL = [
 
 /* =========================================================
    INSTALL
-   ---------------------------------------------------------
-   تثبيت النسخة الجديدة وتجهيز الملفات الأساسية.
    ========================================================= */
 
 self.addEventListener("install", (event) => {
@@ -55,10 +49,6 @@ self.addEventListener("install", (event) => {
       })
   );
 
-  /*
-    تفعيل النسخة الجديدة فورًا
-    بدل انتظار إغلاق التبويبات القديمة.
-  */
   self.skipWaiting();
 
 });
@@ -81,11 +71,6 @@ self.addEventListener("activate", (event) => {
 
           cacheNames
             .filter((cacheName) => {
-
-              /*
-                نحذف فقط Caches الخاصة بـ NAWY.
-                ولا نلمس أي Cache تابع لتطبيق آخر.
-              */
 
               return (
                 cacheName.startsWith("nawy-") &&
@@ -113,7 +98,6 @@ self.addEventListener("activate", (event) => {
 /* =========================================================
    FETCH
    ---------------------------------------------------------
-   استراتيجية:
    Network First
    ثم Cache عند عدم توفر الإنترنت.
    ========================================================= */
@@ -145,11 +129,6 @@ self.addEventListener("fetch", (event) => {
 
   /* -------------------------------------------------------
      Navigation
-     -------------------------------------------------------
-     طلب فتح صفحة التطبيق.
-
-     نحاول الإنترنت أولًا مع منع استخدام نسخة HTTP Cache
-     قديمة، ثم نخزن النتيجة في Cache.
      ------------------------------------------------------- */
 
   if (request.mode === "navigate") {
@@ -183,21 +162,12 @@ self.addEventListener("fetch", (event) => {
 
         .catch(() => {
 
-          /*
-            Offline:
-            نرجع آخر نسخة محفوظة من index.html.
-          */
-
           return caches.match("./index.html")
             .then((cachedResponse) => {
 
               if (cachedResponse) {
                 return cachedResponse;
               }
-
-              /*
-                fallback أخير.
-              */
 
               return new Response(
                 "<h1>NAWY</h1><p>أنت غير متصل بالإنترنت.</p>",
@@ -222,8 +192,6 @@ self.addEventListener("fetch", (event) => {
 
   /* -------------------------------------------------------
      باقي الملفات
-     -------------------------------------------------------
-     Network First ثم Cache.
      ------------------------------------------------------- */
 
   event.respondWith(
