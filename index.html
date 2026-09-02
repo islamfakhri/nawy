@@ -354,23 +354,11 @@
     .content {
       margin-top: 18px;
 
-      /*
-        يسمح بالتمرير الرأسي الطبيعي،
-        بينما نلتقط السحب الأفقي للتنقل بين القوائم.
-      */
       touch-action: pan-y;
       overscroll-behavior-x: contain;
 
-      /*
-        يحافظ على إحساس التطبيق أثناء الانتقال.
-      */
       will-change: transform, opacity;
     }
-
-    /*
-      انتقال خفيف بين الصفحات.
-      الحركة قصيرة حتى لا تصبح مزعجة.
-    */
 
     .content.view-transition-next {
       animation:
@@ -383,7 +371,6 @@
     }
 
     @keyframes viewSlideNext {
-
       0% {
         opacity: .72;
         transform: translateX(18px);
@@ -393,11 +380,9 @@
         opacity: 1;
         transform: translateX(0);
       }
-
     }
 
     @keyframes viewSlidePrevious {
-
       0% {
         opacity: .72;
         transform: translateX(-18px);
@@ -407,7 +392,6 @@
         opacity: 1;
         transform: translateX(0);
       }
-
     }
 
     .section {
@@ -591,14 +575,34 @@
     }
 
     .task-meta {
-      margin-top: 3px;
+      margin-top: 4px;
 
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 5px;
 
       color: var(--muted);
       font-size: 11px;
+    }
+
+    .task-meta-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+
+      padding: 2px 6px;
+
+      border-radius: 7px;
+
+      background: var(--accent-soft);
+      color: var(--accent);
+
+      font-weight: 700;
+    }
+
+    .task-meta-day {
+      color: var(--muted);
     }
 
     .task-star {
@@ -918,6 +922,31 @@
       color: var(--accent);
     }
 
+    /*
+      المفضلة تظهر كنجمة فقط.
+    */
+    .menu-favorites {
+      justify-content: center;
+    }
+
+    .menu-favorites .menu-icon {
+      width: 42px;
+      height: 42px;
+
+      background: transparent;
+
+      font-size: 24px;
+    }
+
+    .menu-favorites .menu-text {
+      display: none;
+    }
+
+    .menu-favorites.active .menu-icon {
+      color: var(--warning);
+      background: rgba(232,163,23,.1);
+    }
+
     /* =========================
        ACTIONS
     ========================= */
@@ -960,6 +989,10 @@
       color: var(--danger);
     }
 
+    .action-item-date {
+      color: var(--accent);
+    }
+
     /* =========================
        MODAL / INPUT
     ========================= */
@@ -987,6 +1020,26 @@
       border-color: var(--accent);
     }
 
+    .date-input {
+      width: 100%;
+      min-height: 52px;
+
+      padding: 0 13px;
+
+      border-radius: 15px;
+
+      border: 1px solid var(--border);
+
+      background: var(--surface-2);
+      color: var(--text);
+
+      font-size: 16px;
+    }
+
+    .date-input:focus {
+      border-color: var(--accent);
+    }
+
     .modal-actions {
       display: flex;
       gap: 8px;
@@ -1010,6 +1063,11 @@
 
     .modal-btn.secondary {
       background: var(--surface-2);
+    }
+
+    .modal-btn.danger {
+      background: rgba(229,72,77,.1);
+      color: var(--danger);
     }
 
     /* =========================
@@ -1636,9 +1694,11 @@
       </button>
 
       <button
-        class="menu-item"
+        class="menu-item menu-favorites"
         data-view="favorites"
         type="button"
+        aria-label="مفضلاتي"
+        data-i18n-aria="favorites"
       >
         <span class="menu-icon">★</span>
         <span
@@ -1711,6 +1771,20 @@
 
       <button
         class="action-item"
+        id="actionDate"
+        type="button"
+      >
+        <span>📅</span>
+        <span
+          id="actionDateText"
+          data-i18n="setDate"
+        >
+          تحديد موعد
+        </span>
+      </button>
+
+      <button
+        class="action-item"
         id="actionEdit"
         type="button"
       >
@@ -1775,6 +1849,78 @@
         <button
           class="modal-btn primary"
           id="editSave"
+          type="button"
+        >
+          <span data-i18n="save">
+            حفظ
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DATE -->
+  <div
+    class="overlay"
+    id="dateOverlay"
+    aria-hidden="true"
+  >
+
+    <div class="sheet">
+
+      <div class="sheet-handle"></div>
+
+      <div
+        class="sheet-title"
+        data-i18n="dateTitle"
+      >
+        تحديد موعد
+      </div>
+
+      <div
+        class="sheet-subtitle"
+        data-i18n="dateSubtitle"
+      >
+        اختر اليوم الذي تريد أن تظهر فيه النية.
+      </div>
+
+      <input
+        class="date-input"
+        id="taskDateInput"
+        type="date"
+        aria-label="تاريخ المهمة"
+        data-i18n-aria="taskDate"
+      >
+
+      <div class="modal-actions">
+
+        <button
+          class="modal-btn danger"
+          id="dateClear"
+          type="button"
+        >
+          <span data-i18n="removeDate">
+            إزالة الموعد
+          </span>
+        </button>
+
+        <button
+          class="modal-btn secondary"
+          id="dateCancel"
+          type="button"
+        >
+          <span data-i18n="cancel">
+            إلغاء
+          </span>
+        </button>
+
+        <button
+          class="modal-btn primary"
+          id="dateSave"
           type="button"
         >
           <span data-i18n="save">
@@ -2305,6 +2451,30 @@
         restore:
           "استرجاع",
 
+        setDate:
+          "تحديد موعد",
+
+        changeDate:
+          "تغيير الموعد",
+
+        dateTitle:
+          "تحديد موعد",
+
+        dateSubtitle:
+          "اختر اليوم الذي تريد أن تظهر فيه النية.",
+
+        removeDate:
+          "إزالة الموعد",
+
+        taskDate:
+          "تاريخ المهمة",
+
+        dateSet:
+          "تم تحديد الموعد",
+
+        dateRemoved:
+          "تمت إزالة الموعد",
+
         installTitle:
           "ثبّت ناوي على جهازك",
 
@@ -2471,6 +2641,30 @@
         restore:
           "Restore",
 
+        setDate:
+          "Set date",
+
+        changeDate:
+          "Change date",
+
+        dateTitle:
+          "Set date",
+
+        dateSubtitle:
+          "Choose the day you want this intention to appear.",
+
+        removeDate:
+          "Remove date",
+
+        taskDate:
+          "Task date",
+
+        dateSet:
+          "Date set",
+
+        dateRemoved:
+          "Date removed",
+
         installTitle:
           "Install NAWY on your device",
 
@@ -2590,10 +2784,6 @@
     let swipeStartY = 0;
     let swipeTracking = false;
 
-    /*
-      يمنع click الناتج عن Drag بالماوس
-      من فتح مهمة بالخطأ.
-    */
     let swipeSuppressClick = false;
 
 
@@ -2646,6 +2836,9 @@
     const editOverlay =
       $("#editOverlay");
 
+    const dateOverlay =
+      $("#dateOverlay");
+
     const settingsOverlay =
       $("#settingsOverlay");
 
@@ -2655,8 +2848,14 @@
     const actionTaskPreview =
       $("#actionTaskPreview");
 
+    const actionDateText =
+      $("#actionDateText");
+
     const editInput =
       $("#editInput");
+
+    const taskDateInput =
+      $("#taskDateInput");
 
     const trashList =
       $("#trashList");
@@ -2812,6 +3011,8 @@
 
           }
 
+          updateActionDateText(task);
+
         }
 
       }
@@ -2918,6 +3119,40 @@
     }
 
 
+    function formatTaskDate(
+      dateKey
+    ) {
+
+      if (!dateKey) {
+        return "";
+      }
+
+      const date =
+        new Date(
+          `${dateKey}T12:00:00`
+        );
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return new Intl.DateTimeFormat(
+        settings.language === "en"
+          ? "en-US"
+          : "ar-EG",
+        {
+          day: "numeric",
+          month: "short"
+        }
+      ).format(date);
+
+    }
+
+
     function getRelativeDayText(task) {
 
       if (!task.taskDay) {
@@ -2978,6 +3213,67 @@
     }
 
 
+    function getTaskDisplayDate(task) {
+
+      return task.scheduledDate ||
+        task.taskDay ||
+        "";
+
+    }
+
+
+    function getTaskDisplayDay(task) {
+
+      const dateKey =
+        getTaskDisplayDate(task);
+
+      if (!dateKey) {
+        return "";
+      }
+
+      if (dateKey === getDateKey()) {
+        return t("today");
+      }
+
+      const date =
+        new Date(
+          `${dateKey}T12:00:00`
+        );
+
+      const currentDate =
+        new Date();
+
+      currentDate.setHours(
+        12,
+        0,
+        0,
+        0
+      );
+
+      const diff =
+        Math.round(
+          (currentDate - date) /
+          86400000
+        );
+
+      if (diff === 1) {
+        return t("yesterday");
+      }
+
+      if (diff > 1 && diff < 7) {
+        return t(
+          "daysAgo",
+          { n: diff }
+        );
+      }
+
+      return formatTaskDate(
+        dateKey
+      );
+
+    }
+
+
     /* =========================
        NORMALIZE
     ========================= */
@@ -3021,6 +3317,14 @@
           getDateKey(
             new Date(createdAt)
           ),
+
+        scheduledDate:
+          typeof task.scheduledDate === "string" &&
+          /^\d{4}-\d{2}-\d{2}$/.test(
+            task.scheduledDate
+          )
+            ? task.scheduledDate
+            : null,
 
         completedAt:
           task.completedAt
@@ -3284,7 +3588,11 @@
         taskDay:
           getDateKey(),
 
-        completedAt: null
+        scheduledDate:
+          null,
+
+        completedAt:
+          null
 
       };
 
@@ -3566,6 +3874,168 @@
 
 
     /* =========================
+       TASK DATE
+    ========================= */
+
+    function openTaskDate(id) {
+
+      const task =
+        tasks.find(
+          item =>
+            item.id === id
+        );
+
+      if (!task) {
+        return;
+      }
+
+
+      selectedTaskId =
+        id;
+
+
+      taskDateInput.value =
+        task.scheduledDate ||
+        "";
+
+
+      closeOverlay(
+        actionOverlay
+      );
+
+      openOverlay(
+        dateOverlay
+      );
+
+
+      setTimeout(() => {
+
+        taskDateInput.focus();
+
+      }, 100);
+
+    }
+
+
+    function saveTaskDate() {
+
+      if (!selectedTaskId) {
+        return;
+      }
+
+
+      const task =
+        tasks.find(
+          item =>
+            item.id === selectedTaskId
+        );
+
+
+      if (!task) {
+        return;
+      }
+
+
+      const value =
+        taskDateInput.value;
+
+
+      if (
+        !value ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(value)
+      ) {
+
+        return;
+
+      }
+
+
+      task.scheduledDate =
+        value;
+
+
+      saveTasks();
+
+      closeOverlay(
+        dateOverlay
+      );
+
+      render();
+
+      showToast(
+        t("dateSet")
+      );
+
+      selectedTaskId =
+        null;
+
+    }
+
+
+    function clearTaskDate() {
+
+      if (!selectedTaskId) {
+        return;
+      }
+
+
+      const task =
+        tasks.find(
+          item =>
+            item.id === selectedTaskId
+        );
+
+
+      if (!task) {
+        return;
+      }
+
+
+      task.scheduledDate =
+        null;
+
+
+      saveTasks();
+
+      closeOverlay(
+        dateOverlay
+      );
+
+      render();
+
+      showToast(
+        t("dateRemoved")
+      );
+
+      selectedTaskId =
+        null;
+
+    }
+
+
+    function updateActionDateText(task) {
+
+      if (!actionDateText) {
+        return;
+      }
+
+
+      if (task?.scheduledDate) {
+
+        actionDateText.textContent =
+          `${t("changeDate")} · ${formatTaskDate(task.scheduledDate)}`;
+
+      } else {
+
+        actionDateText.textContent =
+          t("setDate");
+
+      }
+
+    }
+
+
+    /* =========================
        TRASH
     ========================= */
 
@@ -3628,7 +4098,10 @@
        VIEWS
     ========================= */
 
-    function setView(view) {
+    function setView(
+      view,
+      transitionDirection = null
+    ) {
 
       if (
         !SWIPE_VIEWS.includes(view)
@@ -3639,39 +4112,39 @@
       }
 
 
-      const previousView =
-        currentView;
+      if (!transitionDirection) {
 
-      const previousIndex =
-        SWIPE_VIEWS.indexOf(
-          previousView
-        );
+        const previousView =
+          currentView;
 
-      const nextIndex =
-        SWIPE_VIEWS.indexOf(
-          view
-        );
+        const previousIndex =
+          SWIPE_VIEWS.indexOf(
+            previousView
+          );
 
-
-      let transitionDirection =
-        null;
+        const nextIndex =
+          SWIPE_VIEWS.indexOf(
+            view
+          );
 
 
-      if (
-        nextIndex >
-        previousIndex
-      ) {
+        if (
+          nextIndex >
+          previousIndex
+        ) {
 
-        transitionDirection =
-          "next";
+          transitionDirection =
+            "next";
 
-      } else if (
-        nextIndex <
-        previousIndex
-      ) {
+        } else if (
+          nextIndex <
+          previousIndex
+        ) {
 
-        transitionDirection =
-          "previous";
+          transitionDirection =
+            "previous";
+
+        }
 
       }
 
@@ -3695,7 +4168,12 @@
 
       return tasks.filter(
         task =>
-          task.taskDay === today
+          !task.completed &&
+          (
+            task.scheduledDate
+              ? task.scheduledDate === today
+              : task.taskDay === today
+          )
       );
 
     }
@@ -3708,8 +4186,12 @@
 
       return tasks.filter(
         task =>
-          task.taskDay !== today &&
-          !task.completed
+          !task.completed &&
+          (
+            task.scheduledDate
+              ? task.scheduledDate !== today
+              : task.taskDay !== today
+          )
       );
 
     }
@@ -3814,10 +4296,6 @@
 
       updateDynamicLanguageText();
 
-
-      /*
-        تشغيل انتقال الصفحة بعد بناء المحتوى.
-      */
       playViewTransition(
         transitionDirection
       );
@@ -3840,10 +4318,6 @@
       }
 
 
-      /*
-        إجبار المتصفح على إعادة بناء animation
-        حتى يعمل كل مرة بدون تكرار مشكلة الكلاس.
-      */
       void content.offsetWidth;
 
 
@@ -3910,15 +4384,6 @@
       const completed =
         getCompletedToday();
 
-
-      /*
-        شاشة اليوم تعرض:
-        1. مهام اليوم
-        2. المنجز اليوم
-
-        المهام القديمة غير المكتملة لا تظهر هنا.
-        تظل محفوظة وتظهر في "نواياي".
-      */
 
       if (
         today.length === 0 &&
@@ -4000,7 +4465,8 @@
         content.appendChild(
           createSection(
             t("currentIntentions"),
-            active
+            active,
+            true
           )
         );
 
@@ -4012,7 +4478,8 @@
         content.appendChild(
           createSection(
             t("completed"),
-            completed
+            completed,
+            true
           )
         );
 
@@ -4088,7 +4555,8 @@
       content.appendChild(
         createSection(
           t("allDoneSection"),
-          completed
+          completed,
+          true
         )
       );
 
@@ -4290,11 +4758,20 @@
       main.appendChild(text);
 
 
-      if (
+      const displayDate =
+        getTaskDisplayDate(task);
+
+      const relativeDay =
+        getTaskDisplayDay(task);
+
+
+      const shouldShowMeta =
         showMeta ||
-        task.taskDay !==
-        getDateKey()
-      ) {
+        task.taskDay !== getDateKey() ||
+        Boolean(task.scheduledDate);
+
+
+      if (shouldShowMeta) {
 
         const meta =
           document.createElement(
@@ -4304,8 +4781,59 @@
         meta.className =
           "task-meta";
 
-        meta.textContent =
-          getRelativeDayText(task);
+
+        if (
+          task.scheduledDate
+        ) {
+
+          const dateBadge =
+            document.createElement(
+              "span"
+            );
+
+          dateBadge.className =
+            "task-meta-date";
+
+          dateBadge.innerHTML =
+            `📅 ${escapeHtml(
+              formatTaskDate(
+                task.scheduledDate
+              )
+            )}`;
+
+          meta.appendChild(
+            dateBadge
+          );
+
+        }
+
+
+        if (
+          relativeDay &&
+          (
+            !task.scheduledDate ||
+            task.scheduledDate !== task.taskDay ||
+            showMeta
+          )
+        ) {
+
+          const dayText =
+            document.createElement(
+              "span"
+            );
+
+          dayText.className =
+            "task-meta-day";
+
+          dayText.textContent =
+            relativeDay;
+
+          meta.appendChild(
+            dayText
+          );
+
+        }
+
 
         main.appendChild(meta);
 
@@ -4503,14 +5031,6 @@
 
     function updateProgress() {
 
-      /*
-        التقدم خاص بصفحة "اليوم" فقط.
-        لا يظهر في:
-        - نواياي
-        - مفضلاتي
-        - المكتملة
-      */
-
       const isToday =
         currentView === "today";
 
@@ -4527,7 +5047,15 @@
 
 
       const today =
-        getTodayTasks();
+        tasks.filter(
+          task =>
+            (
+              task.scheduledDate
+                ? task.scheduledDate === getDateKey()
+                : task.taskDay === getDateKey()
+            )
+        );
+
 
       const total =
         today.length;
@@ -4631,36 +5159,71 @@
         direction === "next"
       ) {
 
+        /*
+          Loop:
+          الأخيرة → الأولى
+        */
         nextIndex =
-          currentIndex + 1;
+          (
+            currentIndex + 1
+          ) %
+          SWIPE_VIEWS.length;
 
       } else {
 
+        /*
+          Loop:
+          الأولى → الأخيرة
+        */
         nextIndex =
-          currentIndex - 1;
-
-      }
-
-
-      /*
-        لا نعمل Loop.
-        عند أول شاشة، السحب للخلف لا يفعل شيئًا.
-        وعند آخر شاشة، السحب للأمام لا يفعل شيئًا.
-      */
-
-      if (
-        nextIndex < 0 ||
-        nextIndex >= SWIPE_VIEWS.length
-      ) {
-
-        return;
+          (
+            currentIndex - 1 +
+            SWIPE_VIEWS.length
+          ) %
+          SWIPE_VIEWS.length;
 
       }
 
 
       setView(
-        SWIPE_VIEWS[nextIndex]
+        SWIPE_VIEWS[nextIndex],
+        direction
       );
+
+    }
+
+
+    function getSwipeDirection(
+      dx
+    ) {
+
+      const isRTL =
+        document.documentElement.dir ===
+        "rtl";
+
+
+      /*
+        RTL:
+        سحب لليسار = Next
+        سحب لليمين = Previous
+
+        LTR:
+        سحب لليمين = Next
+        سحب لليسار = Previous
+      */
+
+      if (isRTL) {
+
+        return dx < 0
+          ? "next"
+          : "previous";
+
+      }
+
+
+      return dx > 0
+        ? "next"
+        : "previous";
 
     }
 
@@ -4787,25 +5350,9 @@
         true;
 
 
-      /*
-        في RTL:
-        السحب لليسار = الانتقال للأمام
-        السحب لليمين = الرجوع للخلف
-      */
-
-      if (dx < 0) {
-
-        navigateBySwipe(
-          "next"
-        );
-
-      } else {
-
-        navigateBySwipe(
-          "previous"
-        );
-
-      }
+      navigateBySwipe(
+        getSwipeDirection(dx)
+      );
 
 
       setTimeout(
@@ -4858,11 +5405,6 @@
     ========================= */
 
     function handleMouseDown(event) {
-
-      /*
-        الماوس فقط.
-        تجاهل أي زر أو input أو overlay.
-      */
 
       if (
         event.button !== 0 ||
@@ -4920,11 +5462,6 @@
         Math.abs(dy);
 
 
-      /*
-        نفس منطق Touch:
-        السحب لازم يكون أفقي بوضوح.
-      */
-
       if (
         absX < 65 ||
         absX <= absY * 1.2
@@ -4939,19 +5476,9 @@
         true;
 
 
-      if (dx < 0) {
-
-        navigateBySwipe(
-          "next"
-        );
-
-      } else {
-
-        navigateBySwipe(
-          "previous"
-        );
-
-      }
+      navigateBySwipe(
+        getSwipeDirection(dx)
+      );
 
 
       setTimeout(
@@ -4993,10 +5520,6 @@
     );
 
 
-    /*
-      لو حصل Drag بالماوس، امنع click الناتج عنه
-      على مستوى المحتوى كله.
-    */
     content.addEventListener(
       "click",
       event => {
@@ -5054,6 +5577,9 @@
             : t("done");
 
 
+      updateActionDateText(task);
+
+
       openOverlay(
         actionOverlay
       );
@@ -5081,6 +5607,23 @@
 
           selectedTaskId =
             null;
+
+        }
+      );
+
+
+    $("#actionDate")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!selectedTaskId) {
+            return;
+          }
+
+          openTaskDate(
+            selectedTaskId
+          );
 
         }
       );
@@ -5123,6 +5666,40 @@
             null;
 
           deleteTask(id);
+
+        }
+      );
+
+
+    /* =========================
+       DATE ACTIONS
+    ========================= */
+
+    $("#dateSave")
+      .addEventListener(
+        "click",
+        saveTaskDate
+      );
+
+
+    $("#dateClear")
+      .addEventListener(
+        "click",
+        clearTaskDate
+      );
+
+
+    $("#dateCancel")
+      .addEventListener(
+        "click",
+        () => {
+
+          closeOverlay(
+            dateOverlay
+          );
+
+          selectedTaskId =
+            null;
 
         }
       );
@@ -5210,6 +5787,9 @@
                 closeOverlay(
                   overlay
                 );
+
+                selectedTaskId =
+                  null;
 
               }
 
