@@ -1139,6 +1139,17 @@
       font-weight: 800;
     }
 
+
+    /* =========================
+       INSTALL BANNER
+    ========================= */
+    .install-banner{position:fixed;z-index:180;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));width:min(calc(100% - 28px),560px);transform:translate(-50%,22px);opacity:0;visibility:hidden;pointer-events:none;display:flex;align-items:center;gap:12px;padding:12px;background:color-mix(in srgb,var(--surface) 96%,transparent);border:1px solid var(--border);border-radius:19px;box-shadow:0 18px 55px rgba(0,0,0,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:opacity .22s ease,transform .22s ease,visibility .22s ease}
+    .install-banner.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
+    .install-icon{width:42px;height:42px;flex:0 0 auto;display:grid;place-items:center;border-radius:14px;background:var(--accent);color:#fff;font-size:21px;font-weight:850}
+    .install-copy{min-width:0;flex:1}.install-title{font-size:14px;font-weight:800}.install-text{margin-top:2px;color:var(--muted);font-size:11px;line-height:1.45}
+    .install-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}.install-btn{min-height:38px;padding:0 11px;border-radius:11px;font-size:11px;font-weight:800;white-space:nowrap}.install-btn.primary{background:var(--accent);color:#fff}.install-btn.secondary{background:var(--surface-2)}
+    @media(max-width:480px){.install-banner{align-items:flex-start;gap:9px;padding:10px}.install-icon{width:38px;height:38px;border-radius:12px}.install-actions{flex-direction:column;align-items:stretch}.install-btn{min-height:34px;padding:0 9px}}
+
     /* =========================
        UTILITIES
     ========================= */
@@ -1199,7 +1210,7 @@
         class="menu-btn"
         id="menuBtn"
         type="button"
-        aria-label="القائمة"
+        aria-label="القائمة" data-i18n-aria="menu"
       >
         ⋯
       </button>
@@ -1210,7 +1221,7 @@
     <!-- HERO -->
     <section class="hero">
 
-      <h1 class="hero-title" id="heroTitle">
+      <h1 class="hero-title" id="heroTitle" data-i18n="heroToday">
         ناوي على إيه النهارده؟
       </h1>
 
@@ -1268,15 +1279,15 @@
         id="taskInput"
         rows="1"
         maxlength="500"
-        placeholder="اكتب اللي ناوي عليه..."
-        aria-label="اكتب نية جديدة"
+        placeholder="اكتب اللي ناوي عليه..." data-i18n-placeholder="taskPlaceholder"
+        aria-label="اكتب نية جديدة" data-i18n-aria="newIntent"
       ></textarea>
 
       <button
         class="send-btn disabled"
         id="sendBtn"
         type="submit"
-        aria-label="إضافة"
+        aria-label="إضافة" data-i18n-aria="add"
       >
         ↑
       </button>
@@ -1298,7 +1309,7 @@
       <div class="sheet-handle"></div>
 
       <div class="sheet-title">
-        ناوي
+        NAWY
       </div>
 
       <button
@@ -1307,7 +1318,7 @@
         type="button"
       >
         <span class="menu-icon">☀</span>
-        <span class="menu-text">اليوم</span>
+        <span class="menu-text" data-i18n="today">اليوم</span>
       </button>
 
       <button
@@ -1316,7 +1327,7 @@
         type="button"
       >
         <span class="menu-icon">☷</span>
-        <span class="menu-text">كل النوايا</span>
+        <span class="menu-text" data-i18n="all">كل النوايا</span>
       </button>
 
       <button
@@ -1325,7 +1336,7 @@
         type="button"
       >
         <span class="menu-icon">✓</span>
-        <span class="menu-text">المكتملة</span>
+        <span class="menu-text" data-i18n="completed">المكتملة</span>
       </button>
 
       <button
@@ -1334,7 +1345,7 @@
         type="button"
       >
         <span class="menu-icon">⚙</span>
-        <span class="menu-text">الإعدادات</span>
+        <span class="menu-text" data-i18n="settings">الإعدادات</span>
       </button>
 
     </div>
@@ -1364,7 +1375,7 @@
         type="button"
       >
         <span>✓</span>
-        <span>تمت</span>
+        <span data-i18n="done">تمت</span>
       </button>
 
       <button
@@ -1373,7 +1384,7 @@
         type="button"
       >
         <span>✎</span>
-        <span>تعديل</span>
+        <span data-i18n="edit">تعديل</span>
       </button>
 
       <button
@@ -1382,7 +1393,7 @@
         type="button"
       >
         <span>⌫</span>
-        <span>حذف</span>
+        <span data-i18n="delete">حذف</span>
       </button>
 
     </div>
@@ -1401,7 +1412,7 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title">
+      <div class="sheet-title" data-i18n="editIntent">
         تعديل النية
       </div>
 
@@ -1418,7 +1429,7 @@
           id="editCancel"
           type="button"
         >
-          إلغاء
+          <span data-i18n="cancel">إلغاء</span>
         </button>
 
         <button
@@ -1426,7 +1437,7 @@
           id="editSave"
           type="button"
         >
-          حفظ
+          <span data-i18n="save">حفظ</span>
         </button>
 
       </div>
@@ -1447,14 +1458,19 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title">
+      <div class="sheet-title" data-i18n="settings">
         الإعدادات
       </div>
 
 
       <div class="setting-group">
+        <div class="setting-label" data-i18n="languageSection">اللغة</div>
+        <div class="setting-box"><div class="setting-row"><div class="setting-name" data-i18n="languageName">لغة ناوي</div><div class="segmented"><button class="segment" data-language-choice="ar" type="button">العربية</button><button class="segment" data-language-choice="en" type="button">English</button></div></div></div>
+      </div>
 
-        <div class="setting-label">
+      <div class="setting-group">
+
+        <div class="setting-label" data-i18n="appearanceSection">
           المظهر
         </div>
 
@@ -1462,7 +1478,7 @@
 
           <div class="setting-row">
 
-            <div class="setting-name">
+            <div class="setting-name" data-i18n="modeName">
               الوضع
             </div>
 
@@ -1495,7 +1511,7 @@
 
       <div class="setting-group">
 
-        <div class="setting-label">
+        <div class="setting-label" data-i18n="colorSection">
           اللون
         </div>
 
@@ -1503,7 +1519,7 @@
 
           <div class="setting-row">
 
-            <div class="setting-name">
+            <div class="setting-name" data-i18n="nawyColor">
               لون ناوي
             </div>
 
@@ -1513,35 +1529,35 @@
                 class="color-btn green"
                 data-accent-choice="green"
                 type="button"
-                aria-label="أخضر"
+                aria-label="أخضر" data-i18n-aria="green"
               ></button>
 
               <button
                 class="color-btn blue"
                 data-accent-choice="blue"
                 type="button"
-                aria-label="أزرق"
+                aria-label="أزرق" data-i18n-aria="blue"
               ></button>
 
               <button
                 class="color-btn purple"
                 data-accent-choice="purple"
                 type="button"
-                aria-label="بنفسجي"
+                aria-label="بنفسجي" data-i18n-aria="purple"
               ></button>
 
               <button
                 class="color-btn orange"
                 data-accent-choice="orange"
                 type="button"
-                aria-label="برتقالي"
+                aria-label="برتقالي" data-i18n-aria="orange"
               ></button>
 
               <button
                 class="color-btn pink"
                 data-accent-choice="pink"
                 type="button"
-                aria-label="وردي"
+                aria-label="وردي" data-i18n-aria="pink"
               ></button>
 
             </div>
@@ -1555,7 +1571,7 @@
 
       <div class="setting-group">
 
-        <div class="setting-label">
+        <div class="setting-label" data-i18n="dataSection">
           البيانات
         </div>
 
@@ -1566,7 +1582,7 @@
             id="trashBtn"
             type="button"
           >
-            <span class="setting-name">
+            <span class="setting-name" data-i18n="trash">
               سلة المحذوفات
             </span>
 
@@ -1598,7 +1614,7 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title">
+      <div class="sheet-title" data-i18n="trash">
         سلة المحذوفات
       </div>
 
@@ -1615,6 +1631,13 @@
 
   </div>
 
+
+
+  <div class="install-banner" id="installBanner" role="dialog" aria-live="polite" aria-label="تثبيت ناوي">
+    <div class="install-icon">ن</div>
+    <div class="install-copy"><div class="install-title" id="installTitle">ثبّت ناوي على جهازك</div><div class="install-text" id="installText">خليه معاك أسرع وأسهل من المتصفح.</div></div>
+    <div class="install-actions"><button class="install-btn secondary" id="installDismiss" type="button">متابعة</button><button class="install-btn primary" id="installAction" type="button">تثبيت</button></div>
+  </div>
 
   <!-- TOAST -->
   <div
@@ -1634,7 +1657,7 @@
       id="toastUndo"
       type="button"
     >
-      تراجع
+      <span data-i18n="undo">تراجع</span>
     </button>
 
   </div>
@@ -1661,12 +1684,23 @@
 
 
     /* =========================
+       I18N
+    ========================= */
+    const TRANSLATIONS = {
+      ar: {languageSection:"اللغة",languageName:"لغة ناوي",appearanceSection:"المظهر",modeName:"الوضع",colorSection:"اللون",dataSection:"البيانات",settings:"الإعدادات",trash:"سلة المحذوفات",trashSubtitle:"يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",today:"اليوم",all:"كل النوايا",completed:"المكتملة",heroToday:"ناوي على إيه النهارده؟",progressToday:"تقدمك اليوم",editIntent:"تعديل النية",done:"تمت",edit:"تعديل",delete:"حذف",cancel:"إلغاء",save:"حفظ",add:"إضافة",newIntent:"اكتب نية جديدة",taskPlaceholder:"اكتب اللي ناوي عليه...",menu:"القائمة",light:"فاتح",dark:"داكن",green:"أخضر",blue:"أزرق",purple:"بنفسجي",orange:"برتقالي",pink:"وردي",nawyColor:"لون ناوي",yesterday:"أمس",daysAgo:"منذ {n} أيام",startFirst:"ابدأ أول نية",allDone:"كل نواياك اتحققت ✨",deleted:"اتحذفت من النوايا",restored:"رجعت للنوايا",deletedForever:"اتحذفت نهائيًا",edited:"اتعدلت بنجاح",writeFirst:"اكتب النية الأول",noIntentions:"مفيش نوايا لسه",firstIntent:"اكتب أول حاجة ناوي تعملها النهارده.",noIntentionsAll:"لسه مفيش نوايا",everyThingStarts:"كل حاجة تبدأ بنية.",noAchievements:"لسه مفيش إنجازات",achievementHint:"أول ما تخلص حاجة هتظهر هنا.",previousDays:"من أيام سابقة",doneToday:"المنجز اليوم",currentIntentions:"النوايا الحالية",allDoneSection:"كل المنجز",trashEmpty:"السلة فاضية",noDeleted:"مفيش نوايا محذوفة.",restore:"استرجاع",installTitle:"ثبّت ناوي على جهازك",installText:"خليه معاك أسرع وأسهل من المتصفح.",install:"تثبيت",continue:"متابعة",installGuideTitle:"أضف ناوي إلى الشاشة الرئيسية",installGuideText:"من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",updateAvailable:"تحديث جديد من ناوي متاح.",update:"تحديث",undo:"تراجع"},
+      en: {languageSection:"Language",languageName:"NAWY language",appearanceSection:"Appearance",modeName:"Mode",colorSection:"Color",dataSection:"Data",settings:"Settings",trash:"Trash",trashSubtitle:"Restore deleted intentions or delete them permanently.",today:"Today",all:"All intentions",completed:"Completed",heroToday:"What are you up to today?",progressToday:"Today's progress",editIntent:"Edit intention",done:"Done",edit:"Edit",delete:"Delete",cancel:"Cancel",save:"Save",add:"Add",newIntent:"Write a new intention",taskPlaceholder:"Write what you intend to do...",menu:"Menu",light:"Light",dark:"Dark",green:"Green",blue:"Blue",purple:"Purple",orange:"Orange",pink:"Pink",nawyColor:"NAWY color",yesterday:"Yesterday",daysAgo:"{n} days ago",startFirst:"Start your first intention",allDone:"All your intentions are done ✨",deleted:"Removed from intentions",restored:"Restored to intentions",deletedForever:"Deleted permanently",edited:"Updated successfully",writeFirst:"Write the intention first",noIntentions:"No intentions yet",firstIntent:"Write the first thing you intend to do today.",noIntentionsAll:"No intentions yet",everyThingStarts:"Everything starts with an intention.",noAchievements:"No achievements yet",achievementHint:"Once you complete something, it will appear here.",previousDays:"Previous days",doneToday:"Done today",currentIntentions:"Current intentions",allDoneSection:"All completed",trashEmpty:"Trash is empty",noDeleted:"No deleted intentions.",restore:"Restore",installTitle:"Install NAWY on your device",installText:"Keep it faster and easier than opening the browser.",install:"Install",continue:"Continue",installGuideTitle:"Add NAWY to your Home Screen",installGuideText:"Open your browser menu and choose Add to Home Screen.",updateAvailable:"A new NAWY update is available.",update:"Update",undo:"Undo"}
+    };
+    function t(key,vars={}){const dict=TRANSLATIONS[settings?.language]||TRANSLATIONS.ar;let value=dict[key]??TRANSLATIONS.ar[key]??key;Object.entries(vars).forEach(([k,v])=>value=value.replaceAll(`{${k}}`,String(v)));return value;}
+    function applyLanguage(){const lang=settings.language==="en"?"en":"ar";document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>el.placeholder=t(el.dataset.i18nPlaceholder));document.querySelectorAll("[data-i18n-aria]").forEach(el=>el.setAttribute("aria-label",t(el.dataset.i18nAria)));$$("[data-language-choice]").forEach(b=>b.classList.toggle("active",b.dataset.languageChoice===lang));}
+
+    /* =========================
        DEFAULT SETTINGS
     ========================= */
 
     const DEFAULT_SETTINGS = {
       theme: "dark",
-      accent: "green"
+      accent: "green",
+      language: "ar"
     };
 
 
@@ -1755,7 +1789,7 @@
     function formatDate(date = new Date()) {
 
       return new Intl.DateTimeFormat(
-        "ar-EG",
+        settings.language === "en" ? "en-US" : "ar-EG",
         {
           weekday: "long",
           day: "numeric",
@@ -1774,7 +1808,7 @@
       const today = getDateKey();
 
       if (task.taskDay === today) {
-        return "اليوم";
+        return t("today");
       }
 
       const taskDate = new Date(
@@ -1792,15 +1826,15 @@
         );
 
       if (diff === 1) {
-        return "أمس";
+        return t("yesterday");
       }
 
       if (diff > 1 && diff < 7) {
-        return `منذ ${diff} أيام`;
+        return t("daysAgo", { n: diff });
       }
 
       return new Intl.DateTimeFormat(
-        "ar-EG",
+        settings.language === "en" ? "en-US" : "ar-EG",
         {
           day: "numeric",
           month: "short"
@@ -1946,6 +1980,10 @@
         ].includes(settings.accent)
       ) {
         settings.accent = "green";
+      }
+
+      if (!["ar", "en"].includes(settings.language)) {
+        settings.language = "ar";
       }
 
     }
@@ -2181,7 +2219,7 @@
       render();
 
       showToast(
-        "اتحذفت من النوايا",
+        t("deleted"),
         true,
         () => {
 
@@ -2257,7 +2295,7 @@
 
       if (!text) {
         showToast(
-          "اكتب النية الأول"
+          t("writeFirst")
         );
         return;
       }
@@ -2283,7 +2321,7 @@
 
       render();
 
-      showToast("اتعدلت بنجاح");
+      showToast(t("edited"));
 
       selectedTaskId = null;
 
@@ -2321,7 +2359,7 @@
       renderTrash();
 
       showToast(
-        "رجعت للنوايا"
+        t("restored")
       );
 
     }
@@ -2339,7 +2377,7 @@
       renderTrash();
 
       showToast(
-        "اتحذفت نهائيًا"
+        t("deletedForever")
       );
 
     }
@@ -2466,13 +2504,13 @@
 
       const titles = {
         today:
-          "ناوي على إيه النهارده؟",
+          t("heroToday"),
 
         all:
-          "كل اللي ناوي عليه",
+          t("all"),
 
         completed:
-          "النوايا اللي اتحققت"
+          t("completed")
       };
 
 
@@ -2508,8 +2546,8 @@
         content.appendChild(
           createEmptyState(
             "ن",
-            "مفيش نوايا لسه",
-            "اكتب أول حاجة ناوي تعملها النهارده."
+            t("noIntentions"),
+            t("firstIntent")
           )
         );
 
@@ -2521,7 +2559,7 @@
 
         content.appendChild(
           createSection(
-            "اليوم",
+            t("today"),
             today
           )
         );
@@ -2533,7 +2571,7 @@
 
         content.appendChild(
           createSection(
-            "من أيام سابقة",
+            t("previousDays"),
             previous,
             true
           )
@@ -2546,7 +2584,7 @@
 
         content.appendChild(
           createSection(
-            "المنجز اليوم",
+            t("doneToday"),
             completed,
             false,
             true
@@ -2579,8 +2617,8 @@
         content.appendChild(
           createEmptyState(
             "✓",
-            "لسه مفيش نوايا",
-            "كل حاجة تبدأ بنية."
+            t("noIntentionsAll"),
+            t("everyThingStarts")
           )
         );
 
@@ -2592,7 +2630,7 @@
 
         content.appendChild(
           createSection(
-            "النوايا الحالية",
+            t("currentIntentions"),
             active
           )
         );
@@ -2604,7 +2642,7 @@
 
         content.appendChild(
           createSection(
-            "المكتملة",
+            t("completed"),
             completed
           )
         );
@@ -2629,8 +2667,8 @@
         content.appendChild(
           createEmptyState(
             "✓",
-            "لسه مفيش إنجازات",
-            "أول ما تخلص حاجة هتظهر هنا."
+            t("noAchievements"),
+            t("achievementHint")
           )
         );
 
@@ -2640,7 +2678,7 @@
 
       content.appendChild(
         createSection(
-          "كل المنجز",
+          t("allDoneSection"),
           completed
         )
       );
@@ -2766,7 +2804,7 @@
         "aria-label",
         task.completed
           ? "إلغاء الإنجاز"
-          : "إنجاز النية"
+          : t("done")
       );
 
 
@@ -2865,8 +2903,8 @@
       star.setAttribute(
         "aria-label",
         task.starred
-          ? "إزالة المفضلة"
-          : "تمييز"
+          ? (settings.language === "en" ? "Remove favorite" : "إزالة المفضلة")
+          : (settings.language === "en" ? "Favorite" : "تمييز")
       );
 
 
@@ -3025,12 +3063,12 @@
       if (total === 0) {
 
         progressLabel.textContent =
-          "ابدأ أول نية";
+          t("startFirst");
 
       } else if (percentage === 100) {
 
         progressLabel.textContent =
-          "كل نواياك اتحققت ✨";
+          t("allDone");
 
       } else {
 
@@ -3344,6 +3382,17 @@
       });
 
 
+    $$('[data-language-choice]').forEach(button => {
+      button.addEventListener("click", () => {
+        settings.language = button.dataset.languageChoice === "en" ? "en" : "ar";
+        saveSettings();
+        applySettings();
+        render();
+        renderSettings();
+        renderTrash();
+      });
+    });
+
     function renderSettings() {
 
       trashCount.textContent =
@@ -3391,8 +3440,8 @@
         trashList.appendChild(
           createEmptyState(
             "⌫",
-            "السلة فاضية",
-            "مفيش نوايا محذوفة."
+            t("trashEmpty"),
+            t("noDeleted")
           )
         );
 
@@ -3428,7 +3477,7 @@
           "small-btn";
 
         restore.textContent =
-          "استرجاع";
+          t("restore");
 
 
         restore.addEventListener(
@@ -3905,6 +3954,31 @@
 
 
     /* =========================
+       INSTALL BANNER
+    ========================= */
+    let deferredInstallPrompt = null;
+    let installBannerDismissed = false;
+    const installBanner = $("#installBanner");
+    const installTitle = $("#installTitle");
+    const installText = $("#installText");
+    const installAction = $("#installAction");
+    const installDismiss = $("#installDismiss");
+    function isStandalone(){return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;}
+    function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+    function showInstallBanner(){
+      if(isStandalone() || installBannerDismissed) return;
+      if(deferredInstallPrompt){installTitle.textContent=t("installTitle");installText.textContent=t("installText");installAction.textContent=t("install");}
+      else {installTitle.textContent=t("installGuideTitle");installText.textContent=t("installGuideText");installAction.textContent=t("install");}
+      installDismiss.textContent=t("continue");installBanner.classList.add("show");
+    }
+    function hideInstallBanner(){installBanner.classList.remove("show");}
+    window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstallPrompt=event;showInstallBanner();});
+    window.addEventListener("appinstalled",()=>{deferredInstallPrompt=null;hideInstallBanner();});
+    installAction.addEventListener("click",async()=>{if(!deferredInstallPrompt){if(isIOS())showToast(t("installGuideText"));return;}const promptEvent=deferredInstallPrompt;deferredInstallPrompt=null;hideInstallBanner();try{await promptEvent.prompt();await promptEvent.userChoice;}catch{}});
+    installDismiss.addEventListener("click",()=>{installBannerDismissed=true;hideInstallBanner();});
+    window.addEventListener("load",()=>setTimeout(showInstallBanner,700));
+
+    /* =========================
        DAY CHANGE
     ========================= */
 
@@ -3996,49 +4070,25 @@
        SERVICE WORKER
     ========================= */
 
-    if (
-      "serviceWorker" in navigator
-    ) {
-
-      window.addEventListener(
-        "load",
-        () => {
-
-          navigator.serviceWorker
-            .register(
-              "./sw.js",
-              {
-                updateViaCache: "none"
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load",()=>{
+        navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).then(registration=>{
+          registration.update().catch(()=>{});
+          registration.addEventListener("updatefound",()=>{
+            const worker=registration.installing; if(!worker)return;
+            worker.addEventListener("statechange",()=>{
+              if(worker.state==="installed" && navigator.serviceWorker.controller){
+                showToast(t("updateAvailable"));
+                const b=document.createElement("button"); b.type="button"; b.className="toast-undo"; b.textContent=t("update");
+                b.addEventListener("click",()=>worker.postMessage({type:"SKIP_WAITING"})); toast.appendChild(b); setTimeout(()=>b.remove(),5000);
               }
-            )
-            .then(registration => {
-
-              registration.update()
-                .catch(() => {});
-
-
-              setInterval(() => {
-
-                registration.update()
-                  .catch(() => {});
-
-              }, 60 * 60 * 1000);
-
-            })
-            .catch(() => {
-
-              /*
-               Service Worker failure
-               must not break the application.
-              */
-
             });
-
-        }
-      );
-
+          });
+          setInterval(()=>registration.update().catch(()=>{}),60*60*1000);
+        }).catch(()=>{});
+      });
+      navigator.serviceWorker.addEventListener("controllerchange",()=>window.location.reload());
     }
-
   </script>
 
 </body>
