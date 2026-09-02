@@ -1,5142 +1,4045 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-<meta name="theme-color" content="#101111">
-<meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#101111">
+  <meta name="color-scheme" content="dark light">
 
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ناوي">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<meta name="description"
-      content="ناوي — اكتب نيتك وأنجزها.">
+  <meta name="description"
+        content="ناوي — مكان بسيط لكل اللي ناوي تعمله.">
 
-<title>ناوي — على إيه النهارده؟</title>
+  <title>ناوي</title>
 
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./favicon.ico">
+  <link rel="apple-touch-icon" href="./icon-192.png">
 
-<script async
-src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-<script>
-window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-function gtag(){
-    dataLayer.push(arguments);
-}
+    gtag('js', new Date());
+    gtag('config', 'G-3612TKY0RT', {
+      anonymize_ip: true
+    });
+  </script>
 
-gtag('js', new Date());
+  <style>
+    :root {
+      --bg: #f5f6f7;
+      --surface: #ffffff;
+      --surface-2: #f0f2f3;
+      --surface-3: #e8ebed;
 
-gtag('config', 'G-3612TKY0RT', {
-    anonymize_ip: true
-});
-</script>
+      --text: #111415;
+      --muted: #747b80;
+      --border: rgba(17, 20, 21, .09);
 
-<style>
+      --accent: #19a974;
+      --accent-soft: rgba(25, 169, 116, .12);
 
-:root {
-    --bg: #101111;
-    --surface: #181a19;
-    --surface-2: #202321;
-    --surface-3: #292c2a;
+      --danger: #e5484d;
+      --warning: #e8a317;
 
-    --text: #f4f5f4;
-    --text-soft: #d8dbd9;
+      --shadow:
+        0 10px 30px rgba(0, 0, 0, .06);
 
-    --muted: #8b918e;
-    --muted-dark: #5d6460;
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
 
-    --accent: #19c58b;
-    --accent-soft: rgba(25,197,139,.12);
-    --accent-glow: rgba(25,197,139,.22);
+      --header-height: 76px;
+      --bottom-space: 120px;
+    }
 
-    --yellow: #e8c34f;
-    --danger: #ff6868;
+    html[data-theme="dark"] {
+      --bg: #101111;
+      --surface: #181a1a;
+      --surface-2: #202222;
+      --surface-3: #292c2c;
 
-    --border: rgba(255,255,255,.075);
+      --text: #f4f5f5;
+      --muted: #939999;
+      --border: rgba(255, 255, 255, .08);
 
-    --content-width: 760px;
+      --shadow:
+        0 14px 40px rgba(0, 0, 0, .30);
+    }
 
-    --task-font: 16px;
+    html[data-accent="blue"] {
+      --accent: #3685ff;
+      --accent-soft: rgba(54, 133, 255, .12);
+    }
 
-    --radius: 18px;
-}
+    html[data-accent="purple"] {
+      --accent: #8b5cf6;
+      --accent-soft: rgba(139, 92, 246, .12);
+    }
 
-body[data-accent="blue"] {
-    --accent: #5b9cff;
-    --accent-soft: rgba(91,156,255,.12);
-    --accent-glow: rgba(91,156,255,.22);
-}
+    html[data-accent="orange"] {
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, .13);
+    }
 
-body[data-accent="purple"] {
-    --accent: #a879ff;
-    --accent-soft: rgba(168,121,255,.12);
-    --accent-glow: rgba(168,121,255,.22);
-}
+    html[data-accent="pink"] {
+      --accent: #e94f9b;
+      --accent-soft: rgba(233, 79, 155, .12);
+    }
 
-body[data-accent="orange"] {
-    --accent: #ff9b52;
-    --accent-soft: rgba(255,155,82,.12);
-    --accent-glow: rgba(255,155,82,.22);
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-body[data-accent="pink"] {
-    --accent: #f278b4;
-    --accent-soft: rgba(242,120,180,.12);
-    --accent-glow: rgba(242,120,180,.22);
-}
+    html {
+      min-height: 100%;
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
 
-body.light {
-    --bg: #f5f6f5;
-    --surface: #ffffff;
-    --surface-2: #f0f2f1;
-    --surface-3: #e8ebe9;
-
-    --text: #171918;
-    --text-soft: #343937;
-
-    --muted: #737a76;
-    --muted-dark: #a0a6a3;
-
-    --border: rgba(0,0,0,.08);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    width: 100%;
-    min-height: 100%;
-    background: var(--bg);
-}
-
-body {
-    width: 100%;
-    min-height: 100dvh;
-    overflow: hidden;
-
-    background: var(--bg);
-    color: var(--text);
-
-    font-family:
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        "Noto Sans Arabic",
-        "Noto Sans",
         Tahoma,
         Arial,
         sans-serif;
 
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-}
-
-button,
-textarea,
-input {
-    font: inherit;
-}
-
-button {
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-    touch-action: manipulation;
-    user-select: none;
-}
-
-.app {
-    width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
-
-    display: flex;
-    flex-direction: column;
-
-    position: relative;
-
-    background:
-        radial-gradient(
-            circle at 85% -15%,
-            var(--accent-soft),
-            transparent 28%
-        ),
-        var(--bg);
-}
-
-.header {
-    width: 100%;
-    max-width: var(--content-width);
-
-    margin: 0 auto;
-
-    padding:
-        calc(20px + env(safe-area-inset-top))
-        22px
-        10px;
-
-    flex-shrink: 0;
-}
-
-.header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.logo {
-    width: 32px;
-    height: 32px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 10px;
-
-    background: var(--accent);
-    color: #07130e;
-
-    font-size: 16px;
-    font-weight: 900;
-
-    box-shadow:
-        0 5px 18px var(--accent-glow);
-}
-
-.brand-name {
-    font-size: 24px;
-    line-height: 1;
-    font-weight: 850;
-    letter-spacing: -.8px;
-}
-
-.settings-btn {
-    width: 42px;
-    height: 42px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 13px;
-
-    background: transparent;
-    color: var(--muted);
-
-    font-size: 25px;
-    font-weight: 800;
-
-    line-height: 1;
-
-    transition:
-        background .18s ease,
-        color .18s ease,
-        transform .15s ease;
-}
-
-.settings-btn:hover {
-    background: var(--surface-2);
-    color: var(--text);
-}
-
-.settings-btn:active {
-    transform: scale(.9);
-}
-
-.greeting {
-    margin-top: 21px;
-}
-
-.greeting h1 {
-    font-size: clamp(24px, 5vw, 29px);
-    line-height: 1.25;
-    font-weight: 850;
-    letter-spacing: -.8px;
-}
-
-.greeting p {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.progress {
-    margin-top: 17px;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.progress-bar {
-    flex: 1;
-    height: 5px;
-
-    overflow: hidden;
-    border-radius: 999px;
-
-    background: rgba(127,127,127,.16);
-}
-
-.progress-fill {
-    width: 0;
-    height: 100%;
-
-    border-radius: inherit;
-    background: var(--accent);
-
-    transition:
-        width .35s cubic-bezier(.2,.8,.2,1);
-}
-
-.progress-text {
-    min-width: max-content;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    white-space: nowrap;
-}
-
-.tasks {
-    width: 100%;
-    max-width: var(--content-width);
-
-    margin: 0 auto;
-
-    flex: 1;
-    min-height: 0;
-
-    overflow-y: auto;
-
-    padding:
-        6px
-        22px
-        155px;
-
-    scrollbar-width: none;
-    overscroll-behavior: contain;
-}
-
-.tasks::-webkit-scrollbar {
-    display: none;
-}
-
-.section-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    margin:
-        21px
-        0
-        4px;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    font-weight: 750;
-}
-
-.section-label:first-child {
-    margin-top: 5px;
-}
-
-.section-label::before,
-.section-label::after {
-    content: "";
-
-    height: 1px;
-    flex: 1;
-
-    background: var(--border);
-}
-
-.task {
-    position: relative;
-
-    width: 100%;
-    min-height: 66px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    padding:
-        8px
-        0;
-
-    border-bottom:
-        1px solid var(--border);
-
-    user-select: none;
-}
-
-.task:last-child {
-    border-bottom-color: transparent;
-}
-
-.task-main {
-    flex: 1;
-    min-width: 0;
-
-    cursor: pointer;
-
-    padding: 8px 2px;
-
-    border-radius: 8px;
-}
-
-.task-title {
-    color: var(--text);
-
-    font-size: var(--task-font);
-    line-height: 1.5;
-
-    font-weight: 500;
-
-    overflow-wrap: anywhere;
-
-    transition:
-        color .25s ease,
-        opacity .25s ease;
-}
-
-.task.completed .task-title {
-    color: var(--muted-dark);
-
-    text-decoration-line: line-through;
-    text-decoration-color: var(--muted-dark);
-    text-decoration-thickness: 1px;
-}
-
-.task-carried {
-    margin-top: 3px;
-
-    color: var(--muted-dark);
-
-    font-size: 10px;
-}
-
-.check-hit {
-    width: 46px;
-    height: 46px;
-
-    flex: 0 0 46px;
-
-    display: grid;
-    place-items: center;
-
-    background: transparent;
-
-    cursor: pointer;
-}
-
-.check {
-    width: 27px;
-    height: 27px;
-
-    display: grid;
-    place-items: center;
-
-    border:
-        2px solid #66706b;
-
-    border-radius: 50%;
-
-    background: transparent;
-    color: #07130e;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s cubic-bezier(.18,.9,.3,1.3),
-        box-shadow .2s ease;
-}
-
-.check svg {
-    width: 15px;
-    height: 15px;
-
-    fill: none;
-
-    stroke: currentColor;
-    stroke-width: 2.8;
-
-    stroke-linecap: round;
-    stroke-linejoin: round;
-
-    opacity: 0;
-
-    transform: scale(.45);
-
-    transition:
-        opacity .18s ease,
-        transform .2s cubic-bezier(.18,.9,.3,1.3);
-}
-
-.check-hit:hover .check {
-    border-color: var(--accent);
-    background: var(--accent-soft);
-}
-
-.task.completed .check {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-.task.completed .check svg {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.task.just-completed .check {
-    animation:
-        complete-pop .55s cubic-bezier(.18,.9,.3,1.3);
-}
-
-@keyframes complete-pop {
-
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 transparent;
+      transition:
+        background .25s ease,
+        color .25s ease;
+
+      overscroll-behavior-y: none;
     }
 
-    35% {
-        transform: scale(1.32);
-        box-shadow:
-            0 0 0 8px
-            var(--accent-soft);
+    button,
+    textarea,
+    input {
+      font: inherit;
     }
 
-    70% {
-        transform: scale(.94);
+    button {
+      border: 0;
+      cursor: pointer;
+      color: inherit;
     }
 
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 transparent;
+    textarea,
+    input {
+      outline: none;
     }
-}
 
-.star-btn {
-    width: 46px;
-    height: 46px;
+    ::selection {
+      background: var(--accent);
+      color: #fff;
+    }
 
-    flex: 0 0 46px;
+    /* =========================
+       APP
+    ========================= */
 
-    display: grid;
-    place-items: center;
-
-    background: transparent;
-
-    color: var(--muted-dark);
-
-    font-size: 26px;
-    line-height: 1;
-
-    border-radius: 12px;
-
-    transition:
-        color .18s ease,
-        transform .18s ease,
-        background .18s ease;
-}
-
-.star-btn:hover {
-    background: var(--surface-2);
-    color: var(--yellow);
-}
-
-.star-btn:active {
-    transform: scale(.84);
-}
-
-.star-btn.starred {
-    color: var(--yellow);
-}
-
-.empty {
-    padding: 82px 20px;
-    text-align: center;
-}
-
-.empty-icon {
-    margin-bottom: 14px;
-    font-size: 31px;
-}
-
-.empty strong {
-    display: block;
-
-    color: var(--text-soft);
-
-    font-size: 16px;
-    font-weight: 750;
-}
-
-.empty span {
-    display: block;
-
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-}
-
-.composer-wrap {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    z-index: 50;
-
-    padding:
-        10px
-        18px
-        calc(17px + env(safe-area-inset-bottom));
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            to top,
-            var(--bg) 38%,
-            color-mix(
-                in srgb,
-                var(--bg) 88%,
-                transparent
-            ) 72%,
-            transparent 100%
-        );
-}
-
-.composer-inner {
-    width: 100%;
-    max-width: var(--content-width);
-
-    margin: 0 auto;
-
-    pointer-events: auto;
-}
-
-.composer {
-    width: 100%;
-
-    min-height: 58px;
-
-    display: flex;
-    align-items: flex-end;
-
-    gap: 8px;
-
-    padding:
-        7px
-        7px
-        7px
+    .app {
+      width: min(100%, 760px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding:
+        env(safe-area-inset-top)
+        16px
+        calc(var(--bottom-space) + env(safe-area-inset-bottom))
         16px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 29px;
-
-    box-shadow:
-        0 10px 34px rgba(0,0,0,.28);
-}
-
-#taskInput {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-
-    min-height: 42px;
-    max-height: 115px;
-
-    resize: none;
-
-    overflow-y: auto;
-
-    padding:
-        10px
-        0;
-
-    border: 0;
-    outline: 0;
-
-    background: transparent;
-    color: var(--text);
-
-    font-size: 16px;
-    line-height: 1.45;
-
-    scrollbar-width: none;
-}
-
-#taskInput::-webkit-scrollbar {
-    display: none;
-}
-
-#taskInput::placeholder {
-    color: var(--muted);
-}
-
-.submit {
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: var(--surface-3);
-    color: var(--muted-dark);
-
-    transition:
-        background .18s ease,
-        color .18s ease,
-        transform .15s ease;
-}
-
-.submit.active {
-    background: var(--accent);
-    color: #07130e;
-
-    box-shadow:
-        0 5px 18px var(--accent-glow);
-}
-
-.submit:active {
-    transform: scale(.91);
-}
-
-.send-arrow {
-    font-size: 23px;
-    line-height: 1;
-    font-weight: 850;
-
-    transform: translateY(-1px);
-}
-
-.action-overlay {
-    position: fixed;
-    inset: 0;
-
-    z-index: 500;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 18px;
-
-    background: rgba(0,0,0,.42);
-
-    backdrop-filter: blur(7px);
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity .18s ease,
-        visibility .18s ease;
-}
-
-.action-overlay.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.action-card {
-    width: min(390px, 100%);
-
-    padding: 9px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 21px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.45);
-
-    transform:
-        translateY(8px)
-        scale(.97);
-
-    transition:
-        transform .2s cubic-bezier(.18,.9,.3,1.1);
-}
-
-.action-overlay.show .action-card {
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-.action-title {
-    padding:
-        13px
-        13px
-        10px;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    font-weight: 750;
-
-    overflow-wrap: anywhere;
-}
-
-.action-button {
-    width: 100%;
-
-    min-height: 53px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 13px;
-
-    padding:
-        10px
-        13px;
-
-    border-radius: 14px;
-
-    background: transparent;
-    color: var(--text);
-
-    text-align: start;
-
-    font-size: 15px;
-    font-weight: 650;
-
-    transition:
-        background .15s ease;
-}
-
-.action-button:hover {
-    background: var(--surface-2);
-}
-
-.action-icon {
-    width: 34px;
-    height: 34px;
-
-    flex: 0 0 34px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 10px;
-
-    background: var(--surface-2);
-    color: var(--text-soft);
-
-    font-size: 17px;
-}
-
-.action-button.complete .action-icon {
-    color: var(--accent);
-}
-
-.action-button.delete {
-    color: var(--danger);
-}
-
-.action-button.delete .action-icon {
-    color: var(--danger);
-}
-
-.menu-overlay {
-    position: fixed;
-    inset: 0;
-
-    z-index: 550;
-
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-
-    padding:
-        calc(68px + env(safe-area-inset-top))
-        18px
-        18px;
-
-    background: transparent;
-
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-
-    transition:
-        opacity .18s ease,
-        visibility .18s ease;
-}
-
-.menu-overlay.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.menu-card {
-    width: min(270px, calc(100vw - 36px));
-
-    padding: 8px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.38);
-
-    transform:
-        translateY(-5px)
-        scale(.97);
-
-    transition:
-        transform .18s ease;
-}
-
-.menu-overlay.show .menu-card {
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-.menu-button {
-    width: 100%;
-    min-height: 48px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    padding:
-        8px
-        10px;
-
-    border-radius: 12px;
-
-    background: transparent;
-    color: var(--text);
-
-    text-align: start;
-
-    font-size: 14px;
-    font-weight: 650;
-}
-
-.menu-button:hover {
-    background: var(--surface-2);
-}
-
-.menu-button.active {
-    color: var(--accent);
-    background: var(--accent-soft);
-}
-
-.menu-icon {
-    width: 30px;
-    height: 30px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 9px;
-
-    background: var(--surface-2);
-
-    font-size: 15px;
-}
-
-.menu-divider {
-    height: 1px;
-    margin: 5px 8px;
-
-    background: var(--border);
-}
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-
-    z-index: 600;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 18px;
-
-    background: rgba(0,0,0,.48);
-
-    backdrop-filter: blur(8px);
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity .18s ease,
-        visibility .18s ease;
-}
-
-.modal-overlay.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.modal {
-    width: min(430px, 100%);
-
-    padding: 18px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 21px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.45);
-}
-
-.modal h2 {
-    font-size: 19px;
-    font-weight: 800;
-
-    margin-bottom: 13px;
-}
-
-.modal textarea {
-    width: 100%;
-    min-height: 110px;
-
-    resize: vertical;
-
-    padding: 13px;
-
-    border:
-        1px solid var(--border);
-
-    outline: 0;
-
-    border-radius: 14px;
-
-    background: var(--surface-2);
-    color: var(--text);
-
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.modal textarea:focus {
-    border-color: var(--accent);
-}
-
-.modal-actions {
-    display: flex;
-    gap: 8px;
-
-    margin-top: 12px;
-}
-
-.modal-actions button {
-    flex: 1;
-
-    min-height: 46px;
-
-    border-radius: 13px;
-
-    font-size: 14px;
-    font-weight: 750;
-}
-
-.modal-save {
-    background: var(--accent);
-    color: #07130e;
-}
-
-.modal-cancel {
-    background: var(--surface-2);
-    color: var(--text);
-}
-
-.settings-panel {
-    position: fixed;
-    inset: 0;
-
-    z-index: 700;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    padding: 12px;
-
-    background: rgba(0,0,0,.4);
-
-    backdrop-filter: blur(7px);
-
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-
-    transition:
-        opacity .2s ease,
-        visibility .2s ease;
-}
-
-.settings-panel.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.settings-box {
-    width: min(620px, 100%);
-
-    max-height: 88dvh;
-
-    overflow-y: auto;
-
-    padding: 18px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 24px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.45);
-}
-
-.settings-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 16px;
-}
-
-.settings-head h2 {
-    font-size: 20px;
-    font-weight: 850;
-}
-
-.close-settings {
-    width: 38px;
-    height: 38px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 11px;
-
-    background: var(--surface-2);
-    color: var(--muted);
-
-    font-size: 20px;
-}
-
-.setting-group {
-    padding: 14px 0;
-
-    border-top:
-        1px solid var(--border);
-}
-
-.setting-label {
-    margin-bottom: 10px;
-
-    color: var(--text-soft);
-
-    font-size: 13px;
-    font-weight: 750;
-}
-
-.setting-options {
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 8px;
-}
-
-.setting-option {
-    min-height: 40px;
-
-    padding:
-        8px
-        13px;
-
-    border-radius: 11px;
-
-    background: var(--surface-2);
-    color: var(--muted);
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.setting-option.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-
-    box-shadow:
-        inset 0 0 0 1px var(--accent);
-}
-
-.accent-dot {
-    width: 18px;
-    height: 18px;
-
-    display: inline-block;
-
-    margin-right: 5px;
-
-    vertical-align: -4px;
-
-    border-radius: 50%;
-}
-
-[dir="rtl"] .accent-dot {
-    margin-right: 0;
-    margin-left: 5px;
-}
-
-.dot-green {
-    background: #19c58b;
-}
-
-.dot-blue {
-    background: #5b9cff;
-}
-
-.dot-purple {
-    background: #a879ff;
-}
-
-.dot-orange {
-    background: #ff9b52;
-}
-
-.dot-pink {
-    background: #f278b4;
-}
-
-.trash-open {
-    width: 100%;
-
-    min-height: 46px;
-
-    padding: 10px;
-
-    border-radius: 13px;
-
-    background: var(--surface-2);
-    color: var(--text);
-
-    font-size: 13px;
-    font-weight: 750;
-}
-
-.trash-panel {
-    position: fixed;
-    inset: 0;
-
-    z-index: 800;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 18px;
-
-    background: rgba(0,0,0,.45);
-
-    backdrop-filter: blur(8px);
-
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.trash-panel.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.trash-box {
-    width: min(560px, 100%);
-
-    max-height: 82dvh;
-
-    overflow-y: auto;
-
-    padding: 18px;
-
-    background: var(--surface);
-
-    border-radius: 22px;
-
-    border:
-        1px solid var(--border);
-}
-
-.trash-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 13px;
-}
-
-.trash-head h2 {
-    font-size: 19px;
-    font-weight: 850;
-}
-
-.trash-empty {
-    padding: 50px 20px;
-
-    text-align: center;
-
-    color: var(--muted);
-
-    font-size: 13px;
-}
-
-.trash-item {
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 11px 0;
-
-    border-bottom:
-        1px solid var(--border);
-}
-
-.trash-text {
-    flex: 1;
-    min-width: 0;
-
-    color: var(--text-soft);
-
-    font-size: 14px;
-
-    overflow-wrap: anywhere;
-}
-
-.trash-actions {
-    display: flex;
-    gap: 5px;
-}
-
-.trash-actions button {
-    min-height: 36px;
-
-    padding:
-        7px
-        10px;
-
-    border-radius: 9px;
-
-    background: var(--surface-2);
-    color: var(--text);
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.trash-actions .permanent {
-    color: var(--danger);
-}
-
-.toast {
-    position: fixed;
-
-    left: 50%;
-
-    bottom:
-        calc(
-            104px +
-            env(safe-area-inset-bottom)
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      background:
+        linear-gradient(
+          to bottom,
+          var(--bg) 72%,
+          rgba(0,0,0,0)
         );
 
-    z-index: 900;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding:
-        10px
-        12px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 13px;
-
-    background: var(--surface);
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,.4);
-
-    transform:
-        translate(-50%, 15px);
-
-    opacity: 0;
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity .2s ease,
-        transform .2s ease;
-}
-
-.toast.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-
-    transform:
-        translate(-50%, 0);
-}
-
-.toast-message {
-    color: var(--text);
-    font-size: 12px;
-}
-
-.toast-undo {
-    padding:
-        6px
-        9px;
-
-    border-radius: 8px;
-
-    background: var(--accent-soft);
-    color: var(--accent);
-
-    font-size: 11px;
-    font-weight: 800;
-}
-
-@media (max-width: 600px) {
-
-    .header {
-        padding-left: 17px;
-        padding-right: 17px;
+      padding-top: 8px;
     }
 
-    .tasks {
-        padding-left: 17px;
-        padding-right: 17px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--accent);
+      color: #fff;
+
+      font-size: 23px;
+      font-weight: 800;
+
+      box-shadow:
+        0 7px 18px color-mix(
+          in srgb,
+          var(--accent) 24%,
+          transparent
+        );
+
+      flex: 0 0 auto;
     }
 
     .brand-name {
-        font-size: 23px;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.4px;
     }
 
-    .greeting h1 {
-        font-size: 24px;
+    .menu-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+
+      display: grid;
+      place-items: center;
+
+      font-size: 24px;
+      line-height: 1;
+
+      transition:
+        transform .15s ease,
+        background .2s ease;
     }
 
-    .task-title {
-        font-size: 16px;
+    .menu-btn:active {
+      transform: scale(.92);
     }
 
-    .composer-wrap {
-        padding-left: 11px;
-        padding-right: 11px;
+    /* =========================
+       HERO
+    ========================= */
 
-        padding-bottom:
-            calc(
-                13px +
-                env(safe-area-inset-bottom)
-            );
+    .hero {
+      padding: 20px 4px 12px;
     }
 
-    .action-card {
-        width: 100%;
-        max-width: 390px;
+    .hero-title {
+      margin: 0;
+      font-size: clamp(27px, 7vw, 38px);
+      line-height: 1.15;
+      letter-spacing: -.9px;
+      font-weight: 850;
     }
 
-    .menu-overlay {
-        padding-right: 12px;
-        padding-left: 12px;
-    }
-}
-
-@media (max-width: 380px) {
-
-    .header {
-        padding-left: 14px;
-        padding-right: 14px;
+    .hero-date {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .tasks {
-        padding-left: 14px;
-        padding-right: 14px;
+    /* =========================
+       PROGRESS
+    ========================= */
+
+    .progress-wrap {
+      margin-top: 22px;
+      padding: 15px 16px;
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
 
-    .brand-name {
-        font-size: 22px;
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      margin-bottom: 9px;
     }
 
-    .greeting h1 {
-        font-size: 22px;
+    .progress-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .progress-value {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .progress-track {
+      height: 7px;
+      background: var(--surface-3);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: var(--accent);
+      transition: width .45s cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* =========================
+       CONTENT
+    ========================= */
+
+    .content {
+      margin-top: 18px;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section:first-child {
+      margin-top: 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      margin-bottom: 9px;
+      padding: 0 4px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    .section-count {
+      min-width: 24px;
+      height: 24px;
+      padding: 0 7px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 999px;
+
+      background: var(--surface-2);
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       TASK
+    ========================= */
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .task {
-        gap: 7px;
+      position: relative;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      min-height: 62px;
+      padding: 9px 12px;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      box-shadow: 0 4px 18px rgba(0,0,0,.025);
+
+      transition:
+        transform .18s ease,
+        opacity .18s ease,
+        background .2s ease,
+        border-color .2s ease;
     }
 
-    .task-title {
-        font-size: 15px;
+    .task:hover {
+      border-color:
+        color-mix(
+          in srgb,
+          var(--accent) 22%,
+          var(--border)
+        );
     }
 
-    .check-hit,
-    .star-btn {
-        width: 42px;
-        flex-basis: 42px;
+    .task.just-completed {
+      animation: completePop .5s ease;
     }
 
-    .check {
-        width: 26px;
-        height: 26px;
+    @keyframes completePop {
+      0% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.025);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
-}
 
-@media (prefers-reduced-motion: reduce) {
+    .task.completed {
+      opacity: .65;
+    }
 
-    *,
-    *::before,
-    *::after {
+    .task-checkbox {
+      width: 27px;
+      height: 27px;
+
+      flex: 0 0 auto;
+
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+
+      background: transparent;
+
+      display: grid;
+      place-items: center;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .15s ease;
+    }
+
+    .task-checkbox:active {
+      transform: scale(.88);
+    }
+
+    .task.completed .task-checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .check-icon {
+      width: 13px;
+      height: 13px;
+      opacity: 0;
+      transform: scale(.5);
+
+      transition:
+        opacity .18s ease,
+        transform .18s ease;
+    }
+
+    .task.completed .check-icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .task-main {
+      min-width: 0;
+      flex: 1;
+
+      padding: 3px 0;
+      cursor: pointer;
+    }
+
+    .task-text {
+      margin: 0;
+
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 570;
+
+      overflow-wrap: anywhere;
+    }
+
+    .task.completed .task-text {
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+      color: var(--muted);
+    }
+
+    .task-meta {
+      margin-top: 3px;
+
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .task-star {
+      width: 34px;
+      height: 34px;
+
+      flex: 0 0 auto;
+
+      border-radius: 50%;
+      background: transparent;
+
+      display: grid;
+      place-items: center;
+
+      color: var(--muted);
+      font-size: 20px;
+
+      transition:
+        color .18s ease,
+        background .18s ease,
+        transform .15s ease;
+    }
+
+    .task-star:active {
+      transform: scale(.86);
+    }
+
+    .task-star.active {
+      color: var(--warning);
+      background: rgba(232,163,23,.1);
+    }
+
+    .task-empty {
+      padding: 42px 18px;
+      text-align: center;
+
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      border: 1px solid var(--border);
+
+      color: var(--muted);
+    }
+
+    .empty-symbol {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 13px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 18px;
+
+      background: var(--accent-soft);
+      color: var(--accent);
+
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .empty-title {
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 750;
+    }
+
+    .empty-text {
+      margin-top: 5px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       COMPOSER
+    ========================= */
+
+    .composer-wrap {
+      position: fixed;
+      z-index: 30;
+
+      left: 50%;
+      bottom: 0;
+
+      width: min(760px, 100%);
+
+      transform: translateX(-50%);
+
+      padding:
+        10px 16px
+        calc(12px + env(safe-area-inset-bottom));
+
+      pointer-events: none;
+    }
+
+    .composer {
+      pointer-events: auto;
+
+      display: flex;
+      align-items: flex-end;
+      gap: 9px;
+
+      padding: 8px 8px 8px 9px;
+
+      background:
+        color-mix(
+          in srgb,
+          var(--surface) 94%,
+          transparent
+        );
+
+      border: 1px solid var(--border);
+      border-radius: 22px;
+
+      box-shadow:
+        0 12px 40px rgba(0,0,0,.13);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-width: 0;
+
+      min-height: 45px;
+      max-height: 130px;
+
+      resize: none;
+      overflow-y: auto;
+
+      padding: 11px 12px 9px;
+
+      border: 0;
+      background: transparent;
+
+      color: var(--text);
+
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .composer textarea::placeholder {
+      color: var(--muted);
+      opacity: .85;
+    }
+
+    .send-btn {
+      width: 46px;
+      height: 46px;
+
+      flex: 0 0 auto;
+
+      border-radius: 50%;
+
+      background: var(--accent);
+      color: #fff;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 22px;
+      font-weight: 800;
+
+      transition:
+        transform .15s ease,
+        opacity .2s ease;
+    }
+
+    .send-btn:active {
+      transform: scale(.9);
+    }
+
+    .send-btn.disabled {
+      opacity: .4;
+    }
+
+    /* =========================
+       OVERLAY
+    ========================= */
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      padding: 16px;
+
+      background: rgba(0,0,0,.42);
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition:
+        opacity .22s ease,
+        visibility .22s ease;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sheet {
+      width: min(100%, 520px);
+      max-height: min(82vh, 680px);
+
+      overflow-y: auto;
+
+      padding: 10px;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 27px;
+
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.25);
+
+      transform: translateY(20px);
+
+      transition: transform .25s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .overlay.show .sheet {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 42px;
+      height: 4px;
+      margin: 3px auto 12px;
+
+      border-radius: 99px;
+      background: var(--surface-3);
+    }
+
+    .sheet-title {
+      padding: 9px 10px 13px;
+
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .sheet-subtitle {
+      padding: 0 10px 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    .menu-item {
+      width: 100%;
+
+      min-height: 54px;
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      border-radius: 15px;
+      background: transparent;
+
+      text-align: right;
+
+      transition: background .15s ease;
+    }
+
+    .menu-item:hover,
+    .menu-item:active {
+      background: var(--surface-2);
+    }
+
+    .menu-icon {
+      width: 35px;
+      height: 35px;
+
+      border-radius: 11px;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--surface-2);
+
+      font-size: 16px;
+    }
+
+    .menu-text {
+      flex: 1;
+      font-weight: 650;
+    }
+
+    .menu-item.active .menu-text {
+      color: var(--accent);
+    }
+
+    /* =========================
+       ACTIONS
+    ========================= */
+
+    .action-task-preview {
+      margin: 4px 4px 10px;
+      padding: 13px;
+
+      border-radius: 15px;
+      background: var(--surface-2);
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .action-item {
+      width: 100%;
+
+      min-height: 53px;
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      border-radius: 15px;
+      background: transparent;
+
+      text-align: right;
+    }
+
+    .action-item:hover {
+      background: var(--surface-2);
+    }
+
+    .action-item.danger {
+      color: var(--danger);
+    }
+
+    /* =========================
+       MODAL / INPUT
+    ========================= */
+
+    .edit-input {
+      width: 100%;
+
+      min-height: 120px;
+
+      padding: 14px;
+
+      border-radius: 17px;
+      border: 1px solid var(--border);
+
+      background: var(--surface-2);
+      color: var(--text);
+
+      resize: vertical;
+
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .edit-input:focus {
+      border-color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+
+      margin-top: 10px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      min-height: 48px;
+
+      border-radius: 15px;
+
+      font-weight: 750;
+    }
+
+    .modal-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .modal-btn.secondary {
+      background: var(--surface-2);
+    }
+
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    .setting-group {
+      margin-bottom: 17px;
+    }
+
+    .setting-label {
+      padding: 0 9px 8px;
+
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .setting-box {
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+      border-radius: 17px;
+
+      background: var(--surface-2);
+    }
+
+    .setting-row {
+      min-height: 53px;
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+    }
+
+    .setting-name {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .segmented {
+      display: flex;
+      gap: 3px;
+
+      padding: 3px;
+
+      border-radius: 11px;
+      background: var(--surface);
+    }
+
+    .segment {
+      min-height: 32px;
+      padding: 0 10px;
+
+      border-radius: 9px;
+
+      background: transparent;
+
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .segment.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .colors {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .color-btn {
+      width: 28px;
+      height: 28px;
+
+      border-radius: 50%;
+
+      border: 3px solid var(--surface-2);
+
+      outline: 1px solid var(--border);
+
+      position: relative;
+    }
+
+    .color-btn.active::after {
+      content: "✓";
+
+      position: absolute;
+      inset: 0;
+
+      display: grid;
+      place-items: center;
+
+      color: #fff;
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .green { background: #19a974; }
+    .blue { background: #3685ff; }
+    .purple { background: #8b5cf6; }
+    .orange { background: #f59e0b; }
+    .pink { background: #e94f9b; }
+
+    /* =========================
+       TRASH
+    ========================= */
+
+    .trash-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .trash-item {
+      padding: 13px;
+
+      border-radius: 15px;
+      background: var(--surface-2);
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .trash-text {
+      flex: 1;
+
+      min-width: 0;
+
+      font-size: 14px;
+      line-height: 1.45;
+
+      overflow-wrap: anywhere;
+    }
+
+    .small-btn {
+      min-height: 36px;
+      padding: 0 10px;
+
+      border-radius: 10px;
+
+      background: var(--surface);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .small-btn.danger {
+      color: var(--danger);
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      z-index: 200;
+
+      left: 50%;
+      bottom:
+        calc(92px + env(safe-area-inset-bottom));
+
+      width: min(
+        calc(100% - 32px),
+        440px
+      );
+
+      transform:
+        translate(-50%, 20px)
+        scale(.96);
+
+      opacity: 0;
+      visibility: hidden;
+
+      padding: 12px 14px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      border-radius: 15px;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+
+      box-shadow: var(--shadow);
+
+      transition:
+        opacity .2s ease,
+        transform .2s ease,
+        visibility .2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+
+      transform:
+        translate(-50%, 0)
+        scale(1);
+    }
+
+    .toast-message {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .toast-undo {
+      padding: 7px 10px;
+
+      border-radius: 9px;
+
+      background: var(--accent-soft);
+      color: var(--accent);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       UTILITIES
+    ========================= */
+
+    .hidden {
+      display: none !important;
+    }
+
+    .no-scroll {
+      overflow: hidden;
+    }
+
+    @media (min-width: 700px) {
+      .app {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .composer-wrap {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .overlay {
+        align-items: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
         animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
+      }
     }
-}
-
-</style>
+  </style>
 </head>
 
-<body data-accent="green">
+<body>
 
-<div class="app">
+  <div class="app">
 
-<header class="header">
+    <!-- HEADER -->
+    <header class="header">
 
-    <div class="header-top">
+      <div class="brand">
+        <div class="brand-mark">ن</div>
 
-        <div class="brand">
+        <div class="brand-name">
+          ناوي
+        </div>
+      </div>
 
-            <div class="logo" aria-hidden="true">
-                ن
-            </div>
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        type="button"
+        aria-label="القائمة"
+      >
+        ⋯
+      </button>
 
-            <div class="brand-name" id="brandName">
-                ناوي
-            </div>
+    </header>
 
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <h1 class="hero-title" id="heroTitle">
+        ناوي على إيه النهارده؟
+      </h1>
+
+      <div class="hero-date" id="heroDate"></div>
+
+      <div class="progress-wrap">
+
+        <div class="progress-top">
+          <span
+            class="progress-label"
+            id="progressLabel"
+          >
+            تقدمك اليوم
+          </span>
+
+          <span
+            class="progress-value"
+            id="progressValue"
+          >
+            0%
+          </span>
         </div>
 
-        <button
-            class="settings-btn"
-            id="menuBtn"
-            aria-label="القائمة"
-            type="button"
-        >
-            ⋯
-        </button>
-
-    </div>
-
-    <div class="greeting">
-
-        <h1 id="greetingTitle">
-            ناوي على إيه النهارده؟
-        </h1>
-
-        <p id="currentDate">—</p>
-
-    </div>
-
-    <div class="progress">
-
-        <div
+        <div class="progress-track">
+          <div
             class="progress-bar"
-            role="progressbar"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-            aria-label="نسبة الإنجاز"
-        >
-            <div
-                class="progress-fill"
-                id="progressFill"
-            ></div>
+            id="progressBar"
+          ></div>
         </div>
 
-        <div
-            class="progress-text"
-            id="progressText"
-        >
-            ابدأ أول نية
-        </div>
+      </div>
 
-    </div>
+    </section>
 
-</header>
 
-<main
-    class="tasks"
-    id="tasksContainer"
-    aria-live="polite"
-    aria-label="قائمة النوايا"
-></main>
+    <!-- TASK CONTENT -->
+    <main
+      class="content"
+      id="content"
+    ></main>
 
-<div class="composer-wrap">
+  </div>
 
-    <div class="composer-inner">
 
-        <div class="composer">
+  <!-- COMPOSER -->
+  <div class="composer-wrap">
 
-            <textarea
-                id="taskInput"
-                rows="1"
-                maxlength="500"
-                placeholder="اكتب اللي ناوي عليه..."
-                enterkeyhint="send"
-                autocomplete="off"
-                aria-label="نية جديدة"
-            ></textarea>
+    <form
+      class="composer"
+      id="composer"
+      autocomplete="off"
+    >
 
-            <button
-                class="submit"
-                id="submitBtn"
-                type="button"
-                aria-label="إضافة نية"
-                disabled
-            >
-                <span
-                    class="send-arrow"
-                    aria-hidden="true"
-                >
-                    ↑
-                </span>
-            </button>
+      <textarea
+        id="taskInput"
+        rows="1"
+        maxlength="500"
+        placeholder="اكتب اللي ناوي عليه..."
+        aria-label="اكتب نية جديدة"
+      ></textarea>
 
-        </div>
+      <button
+        class="send-btn disabled"
+        id="sendBtn"
+        type="submit"
+        aria-label="إضافة"
+      >
+        ↑
+      </button>
 
-    </div>
+    </form>
 
-</div>
+  </div>
 
-</div>
 
-<div
-    class="menu-overlay"
+  <!-- MENU OVERLAY -->
+  <div
+    class="overlay"
     id="menuOverlay"
     aria-hidden="true"
->
+  >
 
-    <div
-        class="menu-card"
-        role="menu"
-    >
+    <div class="sheet">
 
-        <button
-            class="menu-button active"
-            id="menuToday"
-            type="button"
-        >
-            <span class="menu-icon">☀</span>
-            <span id="menuTodayLabel">اليوم</span>
-        </button>
+      <div class="sheet-handle"></div>
 
-        <button
-            class="menu-button"
-            id="menuAll"
-            type="button"
-        >
-            <span class="menu-icon">☷</span>
-            <span id="menuAllLabel">كل النوايا</span>
-        </button>
+      <div class="sheet-title">
+        ناوي
+      </div>
 
-        <button
-            class="menu-button"
-            id="menuCompleted"
-            type="button"
-        >
-            <span class="menu-icon">✓</span>
-            <span id="menuCompletedLabel">المكتملة</span>
-        </button>
+      <button
+        class="menu-item active"
+        data-view="today"
+        type="button"
+      >
+        <span class="menu-icon">☀</span>
+        <span class="menu-text">اليوم</span>
+      </button>
 
-        <div class="menu-divider"></div>
+      <button
+        class="menu-item"
+        data-view="all"
+        type="button"
+      >
+        <span class="menu-icon">☷</span>
+        <span class="menu-text">كل النوايا</span>
+      </button>
 
-        <button
-            class="menu-button"
-            id="menuSettings"
-            type="button"
-        >
-            <span class="menu-icon">⚙</span>
-            <span id="menuSettingsLabel">الإعدادات</span>
-        </button>
+      <button
+        class="menu-item"
+        data-view="completed"
+        type="button"
+      >
+        <span class="menu-icon">✓</span>
+        <span class="menu-text">المكتملة</span>
+      </button>
+
+      <button
+        class="menu-item"
+        id="settingsBtn"
+        type="button"
+      >
+        <span class="menu-icon">⚙</span>
+        <span class="menu-text">الإعدادات</span>
+      </button>
 
     </div>
 
-</div>
+  </div>
 
-<div
-    class="action-overlay"
+
+  <!-- TASK ACTION OVERLAY -->
+  <div
+    class="overlay"
     id="actionOverlay"
     aria-hidden="true"
->
+  >
 
-    <div
-        class="action-card"
-        role="dialog"
-        aria-modal="true"
-    >
+    <div class="sheet">
 
-        <div
-            class="action-title"
-            id="actionTaskTitle"
-        >
-            النية
-        </div>
+      <div class="sheet-handle"></div>
 
-        <button
-            class="action-button complete"
-            id="actionComplete"
-            type="button"
-        >
-            <span class="action-icon">✓</span>
-            <span id="completeLabel">تمت</span>
-        </button>
+      <div
+        class="action-task-preview"
+        id="actionTaskPreview"
+      ></div>
 
-        <button
-            class="action-button"
-            id="actionEdit"
-            type="button"
-        >
-            <span class="action-icon">✦</span>
-            <span id="editLabel">تعديل</span>
-        </button>
+      <button
+        class="action-item"
+        id="actionComplete"
+        type="button"
+      >
+        <span>✓</span>
+        <span>تمت</span>
+      </button>
 
-        <button
-            class="action-button delete"
-            id="actionDelete"
-            type="button"
-        >
-            <span class="action-icon">×</span>
-            <span id="deleteLabel">حذف</span>
-        </button>
+      <button
+        class="action-item"
+        id="actionEdit"
+        type="button"
+      >
+        <span>✎</span>
+        <span>تعديل</span>
+      </button>
+
+      <button
+        class="action-item danger"
+        id="actionDelete"
+        type="button"
+      >
+        <span>⌫</span>
+        <span>حذف</span>
+      </button>
 
     </div>
 
-</div>
+  </div>
 
-<div
-    class="modal-overlay"
+
+  <!-- EDIT OVERLAY -->
+  <div
+    class="overlay"
     id="editOverlay"
     aria-hidden="true"
->
+  >
 
-    <div class="modal">
+    <div class="sheet">
 
-        <h2 id="editTitle">
-            تعديل النية
-        </h2>
+      <div class="sheet-handle"></div>
 
-        <textarea
-            id="editInput"
-            maxlength="500"
-        ></textarea>
+      <div class="sheet-title">
+        تعديل النية
+      </div>
 
-        <div class="modal-actions">
+      <textarea
+        class="edit-input"
+        id="editInput"
+        maxlength="500"
+      ></textarea>
 
-            <button
-                class="modal-cancel"
-                id="editCancel"
-                type="button"
-            >
-                إلغاء
-            </button>
+      <div class="modal-actions">
 
-            <button
-                class="modal-save"
-                id="editSave"
-                type="button"
-            >
-                حفظ
-            </button>
+        <button
+          class="modal-btn secondary"
+          id="editCancel"
+          type="button"
+        >
+          إلغاء
+        </button>
 
-        </div>
+        <button
+          class="modal-btn primary"
+          id="editSave"
+          type="button"
+        >
+          حفظ
+        </button>
+
+      </div>
 
     </div>
 
-</div>
+  </div>
 
-<div
-    class="settings-panel"
-    id="settingsPanel"
+
+  <!-- SETTINGS OVERLAY -->
+  <div
+    class="overlay"
+    id="settingsOverlay"
     aria-hidden="true"
->
+  >
 
-    <div class="settings-box">
+    <div class="sheet">
 
-        <div class="settings-head">
+      <div class="sheet-handle"></div>
 
-            <h2 id="settingsTitle">
-                الإعدادات
-            </h2>
+      <div class="sheet-title">
+        الإعدادات
+      </div>
 
-            <button
-                class="close-settings"
-                id="settingsClose"
+
+      <div class="setting-group">
+
+        <div class="setting-label">
+          المظهر
+        </div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div class="setting-name">
+              الوضع
+            </div>
+
+            <div class="segmented">
+
+              <button
+                class="segment"
+                data-theme-choice="light"
                 type="button"
-                aria-label="إغلاق"
-            >
-                ×
-            </button>
+              >
+                فاتح
+              </button>
 
-        </div>
-
-        <div class="setting-group">
-
-            <div
-                class="setting-label"
-                id="languageLabel"
-            >
-                اللغة
-            </div>
-
-            <div class="setting-options">
-
-                <button
-                    class="setting-option active"
-                    data-language="ar"
-                    type="button"
-                >
-                    العربية
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-language="en"
-                    type="button"
-                >
-                    English
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="setting-group">
-
-            <div
-                class="setting-label"
-                id="themeLabel"
-            >
-                المظهر
-            </div>
-
-            <div class="setting-options">
-
-                <button
-                    class="setting-option active"
-                    data-theme="dark"
-                    type="button"
-                >
-                    ◐ داكن
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-theme="light"
-                    type="button"
-                >
-                    ○ نهاري
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="setting-group">
-
-            <div
-                class="setting-label"
-                id="accentLabel"
-            >
-                اللون
-            </div>
-
-            <div class="setting-options">
-
-                <button
-                    class="setting-option active"
-                    data-accent-choice="green"
-                    type="button"
-                >
-                    <span class="accent-dot dot-green"></span>
-                    <span data-accent-text="green">أخضر</span>
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-accent-choice="blue"
-                    type="button"
-                >
-                    <span class="accent-dot dot-blue"></span>
-                    <span data-accent-text="blue">أزرق</span>
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-accent-choice="purple"
-                    type="button"
-                >
-                    <span class="accent-dot dot-purple"></span>
-                    <span data-accent-text="purple">بنفسجي</span>
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-accent-choice="orange"
-                    type="button"
-                >
-                    <span class="accent-dot dot-orange"></span>
-                    <span data-accent-text="orange">برتقالي</span>
-                </button>
-
-                <button
-                    class="setting-option"
-                    data-accent-choice="pink"
-                    type="button"
-                >
-                    <span class="accent-dot dot-pink"></span>
-                    <span data-accent-text="pink">وردي</span>
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="setting-group">
-
-            <div
-                class="setting-label"
-                id="trashLabel"
-            >
-                سلة المحذوفات
-            </div>
-
-            <button
-                class="trash-open"
-                id="openTrash"
+              <button
+                class="segment"
+                data-theme-choice="dark"
                 type="button"
-            >
-                🗑 سلة المحذوفات
-            </button>
+              >
+                داكن
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
+
+      </div>
+
+
+      <div class="setting-group">
+
+        <div class="setting-label">
+          اللون
+        </div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div class="setting-name">
+              لون ناوي
+            </div>
+
+            <div class="colors">
+
+              <button
+                class="color-btn green"
+                data-accent-choice="green"
+                type="button"
+                aria-label="أخضر"
+              ></button>
+
+              <button
+                class="color-btn blue"
+                data-accent-choice="blue"
+                type="button"
+                aria-label="أزرق"
+              ></button>
+
+              <button
+                class="color-btn purple"
+                data-accent-choice="purple"
+                type="button"
+                aria-label="بنفسجي"
+              ></button>
+
+              <button
+                class="color-btn orange"
+                data-accent-choice="orange"
+                type="button"
+                aria-label="برتقالي"
+              ></button>
+
+              <button
+                class="color-btn pink"
+                data-accent-choice="pink"
+                type="button"
+                aria-label="وردي"
+              ></button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="setting-group">
+
+        <div class="setting-label">
+          البيانات
+        </div>
+
+        <div class="setting-box">
+
+          <button
+            class="setting-row"
+            id="trashBtn"
+            type="button"
+          >
+            <span class="setting-name">
+              سلة المحذوفات
+            </span>
+
+            <span
+              class="section-count"
+              id="trashCount"
+            >
+              0
+            </span>
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
-</div>
+  </div>
 
-<div
-    class="trash-panel"
-    id="trashPanel"
+
+  <!-- TRASH OVERLAY -->
+  <div
+    class="overlay"
+    id="trashOverlay"
     aria-hidden="true"
->
+  >
 
-    <div class="trash-box">
+    <div class="sheet">
 
-        <div class="trash-head">
+      <div class="sheet-handle"></div>
 
-            <h2 id="trashTitle">
-                سلة المحذوفات
-            </h2>
+      <div class="sheet-title">
+        سلة المحذوفات
+      </div>
 
-            <button
-                class="close-settings"
-                id="trashClose"
-                type="button"
-                aria-label="إغلاق"
-            >
-                ×
-            </button>
+      <div class="sheet-subtitle">
+        يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.
+      </div>
 
-        </div>
-
-        <div id="trashContainer"></div>
+      <div
+        class="trash-list"
+        id="trashList"
+      ></div>
 
     </div>
 
-</div>
+  </div>
 
-<div
+
+  <!-- TOAST -->
+  <div
     class="toast"
     id="toast"
     role="status"
     aria-live="polite"
->
+  >
 
-    <span
-        class="toast-message"
-        id="toastMessage"
-    >
-        تم حذف النية
-    </span>
+    <div
+      class="toast-message"
+      id="toastMessage"
+    ></div>
 
     <button
-        class="toast-undo"
-        id="toastUndo"
-        type="button"
+      class="toast-undo hidden"
+      id="toastUndo"
+      type="button"
     >
-        تراجع
+      تراجع
     </button>
 
-</div>
+  </div>
 
-<script>
 
-(() => {
+  <script>
+    /* =========================================================
+       NAWY
+       Simple local-first task / intention app
+       ========================================================= */
 
-"use strict";
+    "use strict";
 
-/* =========================================================
-   STORAGE
-========================================================= */
 
-const STORAGE_KEY = "nawy_tasks_v8";
-const TRASH_KEY = "nawy_trash_v1";
-const SETTINGS_KEY = "nawy_settings_v1";
+    /* =========================
+       STORAGE
+    ========================= */
 
-/* =========================================================
-   DOM
-========================================================= */
+    const STORAGE_KEYS = {
+      tasks: "nawy_tasks_v9",
+      trash: "nawy_trash_v2",
+      settings: "nawy_settings_v2"
+    };
 
-const taskInput =
-    document.getElementById("taskInput");
 
-const submitBtn =
-    document.getElementById("submitBtn");
+    /* =========================
+       DEFAULT SETTINGS
+    ========================= */
 
-const tasksContainer =
-    document.getElementById("tasksContainer");
+    const DEFAULT_SETTINGS = {
+      theme: "dark",
+      accent: "green"
+    };
 
-const progressFill =
-    document.getElementById("progressFill");
 
-const progressText =
-    document.getElementById("progressText");
+    /* =========================
+       STATE
+    ========================= */
 
-const progressBar =
-    document.querySelector(".progress-bar");
+    let tasks = [];
+    let trash = [];
 
-const currentDate =
-    document.getElementById("currentDate");
+    let settings = {
+      ...DEFAULT_SETTINGS
+    };
 
-const brandName =
-    document.getElementById("brandName");
+    let currentView = "today";
+    let selectedTaskId = null;
 
-const greetingTitle =
-    document.getElementById("greetingTitle");
+    let undoTimer = null;
+    let undoAction = null;
 
-const menuBtn =
-    document.getElementById("menuBtn");
+    let typingAudioContext = null;
+    let lastTypingSound = 0;
 
-const menuOverlay =
-    document.getElementById("menuOverlay");
+    let lastKnownDay = null;
 
-const menuToday =
-    document.getElementById("menuToday");
 
-const menuAll =
-    document.getElementById("menuAll");
+    /* =========================
+       DOM
+    ========================= */
 
-const menuCompleted =
-    document.getElementById("menuCompleted");
+    const $ = (selector) =>
+      document.querySelector(selector);
 
-const menuSettings =
-    document.getElementById("menuSettings");
+    const $$ = (selector) =>
+      [...document.querySelectorAll(selector)];
 
-const actionOverlay =
-    document.getElementById("actionOverlay");
 
-const actionTaskTitle =
-    document.getElementById("actionTaskTitle");
+    const content = $("#content");
 
-const actionComplete =
-    document.getElementById("actionComplete");
+    const taskInput = $("#taskInput");
+    const sendBtn = $("#sendBtn");
 
-const actionEdit =
-    document.getElementById("actionEdit");
+    const heroDate = $("#heroDate");
+    const heroTitle = $("#heroTitle");
 
-const actionDelete =
-    document.getElementById("actionDelete");
+    const progressBar = $("#progressBar");
+    const progressValue = $("#progressValue");
+    const progressLabel = $("#progressLabel");
 
-const editOverlay =
-    document.getElementById("editOverlay");
+    const menuOverlay = $("#menuOverlay");
+    const actionOverlay = $("#actionOverlay");
+    const editOverlay = $("#editOverlay");
+    const settingsOverlay = $("#settingsOverlay");
+    const trashOverlay = $("#trashOverlay");
 
-const editInput =
-    document.getElementById("editInput");
+    const actionTaskPreview = $("#actionTaskPreview");
 
-const editSave =
-    document.getElementById("editSave");
+    const editInput = $("#editInput");
 
-const editCancel =
-    document.getElementById("editCancel");
+    const trashList = $("#trashList");
+    const trashCount = $("#trashCount");
 
-const settingsPanel =
-    document.getElementById("settingsPanel");
+    const toast = $("#toast");
+    const toastMessage = $("#toastMessage");
+    const toastUndo = $("#toastUndo");
 
-const settingsClose =
-    document.getElementById("settingsClose");
 
-const openTrash =
-    document.getElementById("openTrash");
+    /* =========================
+       DATE
+    ========================= */
 
-const trashPanel =
-    document.getElementById("trashPanel");
-
-const trashClose =
-    document.getElementById("trashClose");
-
-const trashContainer =
-    document.getElementById("trashContainer");
-
-const toast =
-    document.getElementById("toast");
-
-const toastMessage =
-    document.getElementById("toastMessage");
-
-const toastUndo =
-    document.getElementById("toastUndo");
-
-const settingsTitle =
-    document.getElementById("settingsTitle");
-
-const languageLabel =
-    document.getElementById("languageLabel");
-
-const themeLabel =
-    document.getElementById("themeLabel");
-
-const accentLabel =
-    document.getElementById("accentLabel");
-
-const trashLabel =
-    document.getElementById("trashLabel");
-
-const completeLabel =
-    document.getElementById("completeLabel");
-
-const editLabel =
-    document.getElementById("editLabel");
-
-const deleteLabel =
-    document.getElementById("deleteLabel");
-
-const editTitle =
-    document.getElementById("editTitle");
-
-const trashTitle =
-    document.getElementById("trashTitle");
-
-const menuTodayLabel =
-    document.getElementById("menuTodayLabel");
-
-const menuAllLabel =
-    document.getElementById("menuAllLabel");
-
-const menuCompletedLabel =
-    document.getElementById("menuCompletedLabel");
-
-const menuSettingsLabel =
-    document.getElementById("menuSettingsLabel");
-
-/* =========================================================
-   COMPLETION SOUND
-========================================================= */
-
-const completeSound =
-    new Audio("./sounds/ding.mp3");
-
-completeSound.preload = "auto";
-
-function playCompleteSound() {
-
-    try {
-
-        completeSound.currentTime = 0;
-
-        const playPromise =
-            completeSound.play();
-
-        if (
-            playPromise &&
-            typeof playPromise.catch === "function"
-        ) {
-
-            playPromise.catch(() => {});
-
-        }
-
-    } catch {}
-
-}
-
-/* =========================================================
-   TYPING SOUND
-   صوت خفيف أثناء الكتابة
-========================================================= */
-
-let typingAudioContext = null;
-let lastTypingSound = 0;
-
-function playTypingSound() {
-
-    const now = performance.now();
-
-    /*
-     * منع الصوت من التكرار بسرعة شديدة
-     * حتى يظل خفيفًا ولا يتحول لإزعاج.
-     */
-    if (
-        now - lastTypingSound < 45
-    ) {
-        return;
+    function pad(number) {
+      return String(number).padStart(2, "0");
     }
 
-    lastTypingSound = now;
 
-    try {
-
-        if (!typingAudioContext) {
-
-            const AudioContext =
-                window.AudioContext ||
-                window.webkitAudioContext;
-
-            if (!AudioContext) {
-                return;
-            }
-
-            typingAudioContext =
-                new AudioContext();
-
-        }
-
-        if (
-            typingAudioContext.state ===
-            "suspended"
-        ) {
-
-            typingAudioContext.resume()
-                .catch(() => {});
-
-        }
-
-        const oscillator =
-            typingAudioContext.createOscillator();
-
-        const gain =
-            typingAudioContext.createGain();
-
-        oscillator.type =
-            "sine";
-
-        /*
-         * نغمة قصيرة جدًا وهادية.
-         */
-        oscillator.frequency.value =
-            145 + Math.random() * 35;
-
-        gain.gain.setValueAtTime(
-            0.0001,
-            typingAudioContext.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.018,
-            typingAudioContext.currentTime + 0.004
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            typingAudioContext.currentTime + 0.035
-        );
-
-        oscillator.connect(gain);
-        gain.connect(
-            typingAudioContext.destination
-        );
-
-        oscillator.start();
-
-        oscillator.stop(
-            typingAudioContext.currentTime + 0.04
-        );
-
-    } catch {}
-
-}
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let tasks = loadJSON(
-    STORAGE_KEY,
-    []
-);
-
-let trash = loadJSON(
-    TRASH_KEY,
-    []
-);
-
-let settings = loadJSON(
-    SETTINGS_KEY,
-    {
-        language: "ar",
-        theme: "dark",
-        accent: "green"
-    }
-);
-
-let currentView = "today";
-
-let selectedTaskId = null;
-
-let deletedTask = null;
-
-let deleteTimer = null;
-
-let longPressTimer = null;
-
-let longPressTriggered = false;
-
-/*
- * مهم:
- * نحتفظ بتاريخ آخر يوم ظهر فيه التطبيق.
- * لا نستخدمه أبدًا لحذف البيانات.
- */
-let lastKnownDay =
-    getDateKey();
-
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function loadJSON(key, fallback) {
-
-    try {
-
-        const raw =
-            localStorage.getItem(key);
-
-        if (!raw) {
-            return fallback;
-        }
-
-        const value =
-            JSON.parse(raw);
-
-        return value ?? fallback;
-
-    } catch {
-
-        return fallback;
-
+    function getDateKey(date = new Date()) {
+      return [
+        date.getFullYear(),
+        pad(date.getMonth() + 1),
+        pad(date.getDate())
+      ].join("-");
     }
 
-}
 
-function saveJSON(key, value) {
+    function formatDate(date = new Date()) {
 
-    try {
-
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
-        );
-
-        return true;
-
-    } catch {
-
-        console.warn(
-            "NAWY storage unavailable"
-        );
-
-        return false;
-
-    }
-
-}
-
-/* =========================================================
-   DATE
-========================================================= */
-
-function getDateKey(date = new Date()) {
-
-    const y =
-        date.getFullYear();
-
-    const m =
-        String(
-            date.getMonth() + 1
-        ).padStart(2, "0");
-
-    const d =
-        String(
-            date.getDate()
-        ).padStart(2, "0");
-
-    return `${y}-${m}-${d}`;
-
-}
-
-function formatDate(date = new Date()) {
-
-    const locale =
-        settings.language === "en"
-            ? "en-US"
-            : "ar-EG";
-
-    return new Intl.DateTimeFormat(
-        locale,
+      return new Intl.DateTimeFormat(
+        "ar-EG",
         {
-            weekday: "long",
-            day: "numeric",
-            month: "long"
+          weekday: "long",
+          day: "numeric",
+          month: "long"
         }
-    ).format(date);
-
-}
-
-function updateDate() {
-
-    currentDate.textContent =
-        formatDate();
-
-}
-
-/* =========================================================
-   MIDNIGHT / DAY CHANGE
-========================================================= */
-
-/*
- * تغيير اليوم لا يعني حذف النوايا.
- *
- * الوظيفة الوحيدة هنا:
- * تحديث التاريخ والواجهة.
- */
-
-function checkForNewDay() {
-
-    const today =
-        getDateKey();
-
-    if (
-        today !== lastKnownDay
-    ) {
-
-        lastKnownDay =
-            today;
-
-        updateDate();
-
-        render();
-
+      ).format(date);
     }
 
-}
 
-/*
- * فحص دوري خفيف جدًا.
- * لا يلمس localStorage ولا tasks.
- */
-setInterval(
-    checkForNewDay,
-    30 * 1000
-);
+    function getRelativeDayText(task) {
 
-/* =========================================================
-   NORMALIZE
-========================================================= */
+      if (!task.taskDay) {
+        return "";
+      }
 
-function normalizeTask(task) {
+      const today = getDateKey();
 
-    if (
-        !task ||
-        typeof task !== "object"
-    ) {
+      if (task.taskDay === today) {
+        return "اليوم";
+      }
+
+      const taskDate = new Date(
+        `${task.taskDay}T12:00:00`
+      );
+
+      const currentDate = new Date();
+
+      currentDate.setHours(12, 0, 0, 0);
+
+      const diff =
+        Math.round(
+          (currentDate - taskDate) /
+          86400000
+        );
+
+      if (diff === 1) {
+        return "أمس";
+      }
+
+      if (diff > 1 && diff < 7) {
+        return `منذ ${diff} أيام`;
+      }
+
+      return new Intl.DateTimeFormat(
+        "ar-EG",
+        {
+          day: "numeric",
+          month: "short"
+        }
+      ).format(taskDate);
+    }
+
+
+    /* =========================
+       NORMALIZE
+    ========================= */
+
+    function normalizeTask(task) {
+
+      if (!task || typeof task !== "object") {
         return null;
-    }
+      }
 
-    const text =
-        String(task.text || "")
-            .trim()
-            .slice(0, 500);
+      const createdAt =
+        Number(task.createdAt) || Date.now();
 
-    if (!text) {
-        return null;
-    }
-
-    const createdAt =
-        task.createdAt ||
-        new Date().toISOString();
-
-    let taskDay =
-        task.taskDay;
-
-    /*
-     * حماية للبيانات القديمة:
-     * لو taskDay غير موجود، نستخرجه
-     * من تاريخ إنشاء النية.
-     */
-    if (!taskDay) {
-
-        taskDay =
-            getDateKey(
-                new Date(createdAt)
-            );
-
-    }
-
-    return {
-
+      return {
         id:
-            String(
-                task.id ||
-                `${Date.now()}-${Math.random()}`
-            ),
+          String(task.id || createId()),
 
-        text,
+        text:
+          String(task.text || "").trim(),
 
         completed:
-            Boolean(task.completed),
+          Boolean(task.completed),
 
         starred:
-            Boolean(task.starred),
+          Boolean(task.starred),
 
         createdAt,
 
-        taskDay,
+        taskDay:
+          task.taskDay ||
+          getDateKey(
+            new Date(createdAt)
+          ),
 
         completedAt:
-            task.completedAt || null
-
-    };
-
-}
-
-tasks =
-    tasks
-        .map(normalizeTask)
-        .filter(Boolean);
-
-/*
- * نحفظ البيانات بعد التطبيع مرة واحدة.
- * لا يوجد أي حذف حسب التاريخ.
- */
-saveJSON(
-    STORAGE_KEY,
-    tasks
-);
-
-/* =========================================================
-   ANALYTICS
-========================================================= */
-
-function analytics(event, params = {}) {
-
-    try {
-
-        if (
-            typeof gtag === "function"
-        ) {
-
-            gtag(
-                "event",
-                event,
-                params
-            );
-
-        }
-
-    } catch {}
-
-}
-
-/* =========================================================
-   ADD
-========================================================= */
-
-function addTask(text) {
-
-    const clean =
-        String(text || "")
-            .trim()
-            .slice(0, 500);
-
-    if (!clean) {
-        return false;
+          task.completedAt
+            ? Number(task.completedAt)
+            : null
+      };
     }
 
-    const task = {
 
-        id:
-            `${Date.now()}-${Math.random()
-                .toString(36)
-                .slice(2, 9)}`,
+    function createId() {
 
-        text: clean,
-
-        completed: false,
-
-        starred: false,
-
-        createdAt:
-            new Date().toISOString(),
-
-        taskDay:
-            getDateKey(),
-
-        completedAt: null
-
-    };
-
-    tasks.unshift(task);
-
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
-
-    analytics("add_task");
-
-    currentView = "today";
-
-    render();
-
-    return true;
-
-}
-
-/* =========================================================
-   FIND
-========================================================= */
-
-function findTask(id) {
-
-    return tasks.find(
-        task =>
-            String(task.id) ===
-            String(id)
-    );
-
-}
-
-/* =========================================================
-   COMPLETE
-========================================================= */
-
-function completeTask(id) {
-
-    const task =
-        findTask(id);
-
-    if (!task) {
-        return;
+      return (
+        Date.now().toString(36) +
+        Math.random()
+          .toString(36)
+          .slice(2, 9)
+      );
     }
 
-    if (task.completed) {
 
-        task.completed = false;
-        task.completedAt = null;
+    /* =========================
+       STORAGE HELPERS
+    ========================= */
 
-    } else {
+    function safeParse(value, fallback) {
 
-        task.completed = true;
+      try {
+        const parsed = JSON.parse(value);
 
-        task.completedAt =
-            new Date().toISOString();
+        return parsed ?? fallback;
 
-        analytics("complete_task");
+      } catch {
+        return fallback;
+      }
+    }
 
-        playCompleteSound();
+
+    function loadData() {
+
+      const savedTasks =
+        safeParse(
+          localStorage.getItem(
+            STORAGE_KEYS.tasks
+          ),
+          []
+        );
+
+      const savedTrash =
+        safeParse(
+          localStorage.getItem(
+            STORAGE_KEYS.trash
+          ),
+          []
+        );
+
+      const savedSettings =
+        safeParse(
+          localStorage.getItem(
+            STORAGE_KEYS.settings
+          ),
+          {}
+        );
+
+
+      tasks = Array.isArray(savedTasks)
+        ? savedTasks
+            .map(normalizeTask)
+            .filter(Boolean)
+            .filter(task => task.text)
+        : [];
+
+
+      trash = Array.isArray(savedTrash)
+        ? savedTrash
+            .map(normalizeTask)
+            .filter(Boolean)
+            .filter(task => task.text)
+        : [];
+
+
+      settings = {
+        ...DEFAULT_SETTINGS,
+        ...(savedSettings || {})
+      };
+
+
+      if (
+        !["dark", "light"]
+          .includes(settings.theme)
+      ) {
+        settings.theme = "dark";
+      }
+
+
+      if (
+        ![
+          "green",
+          "blue",
+          "purple",
+          "orange",
+          "pink"
+        ].includes(settings.accent)
+      ) {
+        settings.accent = "green";
+      }
 
     }
 
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
 
-    render();
+    function saveTasks() {
 
-    if (task.completed) {
+      localStorage.setItem(
+        STORAGE_KEYS.tasks,
+        JSON.stringify(tasks)
+      );
+    }
 
-        requestAnimationFrame(() => {
 
-            const element =
-                document.querySelector(
-                    `[data-task-id="${CSS.escape(String(id))}"]`
-                );
+    function saveTrash() {
 
-            if (element) {
+      localStorage.setItem(
+        STORAGE_KEYS.trash,
+        JSON.stringify(trash)
+      );
+    }
 
-                element.classList.add(
-                    "just-completed"
-                );
 
-                setTimeout(() => {
+    function saveSettings() {
 
-                    element.classList.remove(
-                        "just-completed"
-                    );
+      localStorage.setItem(
+        STORAGE_KEYS.settings,
+        JSON.stringify(settings)
+      );
+    }
 
-                }, 650);
 
-            }
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    function applySettings() {
+
+      document.documentElement
+        .setAttribute(
+          "data-theme",
+          settings.theme
+        );
+
+      document.documentElement
+        .setAttribute(
+          "data-accent",
+          settings.accent
+        );
+
+
+      $$("[data-theme-choice]")
+        .forEach(button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.themeChoice ===
+            settings.theme
+          );
+
+        });
+
+
+      $$("[data-accent-choice]")
+        .forEach(button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.accentChoice ===
+            settings.accent
+          );
 
         });
 
     }
 
-}
 
-/* =========================================================
-   STAR
-========================================================= */
+    /* =========================
+       ADD TASK
+       Keep function name: addTask
+    ========================= */
 
-function toggleStar(id) {
+    function addTask(text) {
 
-    const task =
-        findTask(id);
+      const cleanText =
+        String(text || "").trim();
 
-    if (!task) {
-        return;
+      if (!cleanText) {
+        return false;
+      }
+
+
+      const task = {
+        id: createId(),
+        text: cleanText,
+        completed: false,
+        starred: false,
+        createdAt: Date.now(),
+        taskDay: getDateKey(),
+        completedAt: null
+      };
+
+
+      tasks.unshift(task);
+
+      saveTasks();
+
+      currentView = "today";
+
+      render();
+
+      playAddSound();
+
+      return true;
     }
 
-    task.starred =
+
+    /* =========================
+       COMPLETE
+    ========================= */
+
+    function completeTask(id) {
+
+      const task =
+        tasks.find(
+          item => item.id === id
+        );
+
+      if (!task) {
+        return;
+      }
+
+
+      task.completed =
+        !task.completed;
+
+
+      task.completedAt =
+        task.completed
+          ? Date.now()
+          : null;
+
+
+      saveTasks();
+
+      render();
+
+
+      if (task.completed) {
+
+        playCompleteSound();
+
+        requestAnimationFrame(() => {
+
+          const element =
+            document.querySelector(
+              `[data-task-id="${CSS.escape(task.id)}"]`
+            );
+
+          if (element) {
+            element.classList.add(
+              "just-completed"
+            );
+
+            setTimeout(() => {
+              element.classList.remove(
+                "just-completed"
+              );
+            }, 550);
+          }
+
+        });
+
+      }
+
+    }
+
+
+    /* =========================
+       STAR
+    ========================= */
+
+    function toggleStar(id) {
+
+      const task =
+        tasks.find(
+          item => item.id === id
+        );
+
+      if (!task) {
+        return;
+      }
+
+      task.starred =
         !task.starred;
 
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
+      saveTasks();
 
-    analytics(
-        "star_task",
-        {
-            starred:
-                task.starred
-        }
-    );
+      render();
 
-    render();
+    }
 
-}
 
-/* =========================================================
-   DELETE
-========================================================= */
+    /* =========================
+       DELETE
+    ========================= */
 
-function deleteTask(id) {
+    function deleteTask(id) {
 
-    const index =
+      const index =
         tasks.findIndex(
-            task =>
-                String(task.id) ===
-                String(id)
+          item => item.id === id
         );
 
-    if (index === -1) {
+      if (index === -1) {
         return;
+      }
+
+
+      const [deleted] =
+        tasks.splice(index, 1);
+
+
+      trash.unshift({
+        ...deleted,
+        deletedAt: Date.now()
+      });
+
+
+      saveTasks();
+      saveTrash();
+
+      render();
+
+      showToast(
+        "اتحذفت من النوايا",
+        true,
+        () => {
+
+          const trashIndex =
+            trash.findIndex(
+              item =>
+                item.id === deleted.id
+            );
+
+          if (trashIndex !== -1) {
+            trash.splice(
+              trashIndex,
+              1
+            );
+          }
+
+          tasks.unshift(deleted);
+
+          saveTasks();
+          saveTrash();
+
+          render();
+
+        }
+      );
+
     }
 
-    const task =
-        tasks[index];
 
-    tasks.splice(
-        index,
-        1
-    );
+    /* =========================
+       EDIT
+    ========================= */
 
-    trash.unshift({
-        ...task,
-        deletedAt:
-            new Date().toISOString()
-    });
+    function openEdit(id) {
 
-    deletedTask = {
-        task,
-        index
-    };
-
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
-
-    saveJSON(
-        TRASH_KEY,
-        trash
-    );
-
-    analytics("delete_task");
-
-    render();
-
-    showToast(
-        settings.language === "en"
-            ? "Task deleted"
-            : "تم حذف النية"
-    );
-
-    clearTimeout(deleteTimer);
-
-    deleteTimer =
-        setTimeout(() => {
-
-            deletedTask = null;
-
-            hideToast();
-
-        }, 5000);
-
-}
-
-/* =========================================================
-   UNDO
-========================================================= */
-
-function undoDelete() {
-
-    if (!deletedTask) {
-        return;
-    }
-
-    const {
-        task,
-        index
-    } = deletedTask;
-
-    const trashIndex =
-        trash.findIndex(
-            item =>
-                String(item.id) ===
-                String(task.id)
+      const task =
+        tasks.find(
+          item => item.id === id
         );
 
-    if (trashIndex !== -1) {
-
-        trash.splice(
-            trashIndex,
-            1
-        );
-
-    }
-
-    tasks.splice(
-        Math.min(
-            index,
-            tasks.length
-        ),
-        0,
-        task
-    );
-
-    deletedTask = null;
-
-    clearTimeout(
-        deleteTimer
-    );
-
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
-
-    saveJSON(
-        TRASH_KEY,
-        trash
-    );
-
-    hideToast();
-
-    render();
-
-}
-
-/* =========================================================
-   EDIT
-========================================================= */
-
-function openEdit(id) {
-
-    const task =
-        findTask(id);
-
-    if (!task) {
+      if (!task) {
         return;
-    }
+      }
 
-    selectedTaskId =
-        String(id);
+      selectedTaskId = id;
 
-    editInput.value =
-        task.text;
+      editInput.value = task.text;
 
-    closeAction();
+      closeOverlay(actionOverlay);
 
-    editOverlay.classList.add(
-        "show"
-    );
+      openOverlay(editOverlay);
 
-    editOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    setTimeout(() => {
-
+      setTimeout(() => {
         editInput.focus();
-        editInput.select();
+        editInput.setSelectionRange(
+          editInput.value.length,
+          editInput.value.length
+        );
+      }, 100);
 
-    }, 50);
+    }
 
-}
 
-function saveEdit() {
+    function saveEdit() {
 
-    if (!selectedTaskId) {
+      if (!selectedTaskId) {
         return;
-    }
+      }
 
-    const task =
-        findTask(
-            selectedTaskId
+
+      const text =
+        editInput.value.trim();
+
+      if (!text) {
+        showToast(
+          "اكتب النية الأول"
         );
-
-    if (!task) {
         return;
-    }
+      }
 
-    const text =
-        editInput.value
-            .trim()
-            .slice(0, 500);
 
-    if (!text) {
+      const task =
+        tasks.find(
+          item =>
+            item.id === selectedTaskId
+        );
+
+
+      if (!task) {
         return;
+      }
+
+
+      task.text = text;
+
+      saveTasks();
+
+      closeOverlay(editOverlay);
+
+      render();
+
+      showToast("اتعدلت بنجاح");
+
+      selectedTaskId = null;
+
     }
 
-    task.text =
-        text;
 
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
+    /* =========================
+       TRASH
+    ========================= */
 
-    analytics("edit_task");
+    function restoreTask(id) {
 
-    closeEdit();
+      const index =
+        trash.findIndex(
+          item => item.id === id
+        );
 
-    render();
-
-}
-
-function closeEdit() {
-
-    editOverlay.classList.remove(
-        "show"
-    );
-
-    editOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    selectedTaskId =
-        null;
-
-}
-
-/* =========================================================
-   ACTION CARD
-========================================================= */
-
-function openAction(id) {
-
-    const task =
-        findTask(id);
-
-    if (!task) {
+      if (index === -1) {
         return;
-    }
+      }
 
-    selectedTaskId =
-        String(id);
 
-    actionTaskTitle.textContent =
-        task.text;
+      const [task] =
+        trash.splice(index, 1);
 
-    completeLabel.textContent =
-        task.completed
-            ? (
-                settings.language === "en"
-                    ? "Mark incomplete"
-                    : "إلغاء الإنجاز"
-            )
-            : (
-                settings.language === "en"
-                    ? "Complete"
-                    : "تمت"
-            );
 
-    actionOverlay.classList.add(
-        "show"
-    );
+      delete task.deletedAt;
 
-    actionOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+      tasks.unshift(task);
 
-}
 
-function closeAction() {
+      saveTasks();
+      saveTrash();
 
-    actionOverlay.classList.remove(
-        "show"
-    );
+      renderTrash();
 
-    actionOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-/* =========================================================
-   MAIN MENU
-========================================================= */
-
-function openMenu() {
-
-    menuOverlay.classList.add(
-        "show"
-    );
-
-    menuOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-function closeMenu() {
-
-    menuOverlay.classList.remove(
-        "show"
-    );
-
-    menuOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-function setView(view) {
-
-    currentView =
-        view;
-
-    closeMenu();
-
-    render();
-
-}
-
-/* =========================================================
-   MENU EVENTS
-========================================================= */
-
-menuBtn.addEventListener(
-    "click",
-    () => {
-
-        if (
-            menuOverlay.classList.contains("show")
-        ) {
-
-            closeMenu();
-
-        } else {
-
-            openMenu();
-
-        }
+      showToast(
+        "رجعت للنوايا"
+      );
 
     }
-);
 
-menuToday.addEventListener(
-    "click",
-    () => setView("today")
-);
 
-menuAll.addEventListener(
-    "click",
-    () => setView("all")
-);
+    function deleteForever(id) {
 
-menuCompleted.addEventListener(
-    "click",
-    () => setView("completed")
-);
-
-menuSettings.addEventListener(
-    "click",
-    () => {
-
-        closeMenu();
-
-        openSettings();
-
-    }
-);
-
-menuOverlay.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            menuOverlay
-        ) {
-
-            closeMenu();
-
-        }
-
-    }
-);
-
-/* =========================================================
-   ACTION EVENTS
-========================================================= */
-
-actionComplete.addEventListener(
-    "click",
-    () => {
-
-        if (selectedTaskId) {
-
-            completeTask(
-                selectedTaskId
-            );
-
-        }
-
-        closeAction();
-
-    }
-);
-
-actionEdit.addEventListener(
-    "click",
-    () => {
-
-        if (selectedTaskId) {
-
-            openEdit(
-                selectedTaskId
-            );
-
-        }
-
-    }
-);
-
-actionDelete.addEventListener(
-    "click",
-    () => {
-
-        if (selectedTaskId) {
-
-            const id =
-                selectedTaskId;
-
-            closeAction();
-
-            deleteTask(id);
-
-        }
-
-    }
-);
-
-actionOverlay.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            actionOverlay
-        ) {
-
-            closeAction();
-
-        }
-
-    }
-);
-
-/* =========================================================
-   SORT
-========================================================= */
-
-function sortActive(a, b) {
-
-    if (
-        a.starred !==
-        b.starred
-    ) {
-
-        return (
-            Number(b.starred) -
-            Number(a.starred)
+      trash =
+        trash.filter(
+          item => item.id !== id
         );
+
+      saveTrash();
+
+      renderTrash();
+
+      showToast(
+        "اتحذفت نهائيًا"
+      );
 
     }
 
-    return (
-        new Date(b.createdAt) -
-        new Date(a.createdAt)
-    );
 
-}
+    /* =========================
+       VIEWS
+    ========================= */
 
-function sortCompleted(a, b) {
+    function setView(view) {
 
-    return (
-        new Date(
-            b.completedAt ||
-            b.createdAt
-        ) -
-        new Date(
-            a.completedAt ||
-            a.createdAt
-        )
-    );
+      currentView = view;
 
-}
+      closeAllOverlays();
 
-/* =========================================================
-   SECTION
-========================================================= */
-
-function appendSection(label) {
-
-    const section =
-        document.createElement(
-            "div"
-        );
-
-    section.className =
-        "section-label";
-
-    const span =
-        document.createElement(
-            "span"
-        );
-
-    span.textContent =
-        label;
-
-    section.appendChild(
-        span
-    );
-
-    tasksContainer.appendChild(
-        section
-    );
-
-}
-
-/* =========================================================
-   TASK ELEMENT
-========================================================= */
-
-function createTaskElement(
-    task,
-    carried = false
-) {
-
-    const article =
-        document.createElement(
-            "article"
-        );
-
-    article.className =
-        "task";
-
-    if (task.completed) {
-
-        article.classList.add(
-            "completed"
-        );
+      render();
 
     }
 
-    article.dataset.taskId =
-        String(task.id);
 
-    const checkHit =
-        document.createElement(
-            "button"
-        );
+    function getTodayTasks() {
 
-    checkHit.type =
-        "button";
-
-    checkHit.className =
-        "check-hit";
-
-    checkHit.dataset.action =
-        "complete";
-
-    checkHit.setAttribute(
-        "aria-label",
-        task.completed
-            ? (
-                settings.language === "en"
-                    ? "Mark incomplete"
-                    : "إلغاء الإنجاز"
-            )
-            : (
-                settings.language === "en"
-                    ? "Complete task"
-                    : "إنجاز النية"
-            )
-    );
-
-    const check =
-        document.createElement(
-            "span"
-        );
-
-    check.className =
-        "check";
-
-    check.innerHTML = `
-        <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-        >
-            <path d="M5 12.5l4.2 4.2L19 7"></path>
-        </svg>
-    `;
-
-    checkHit.appendChild(
-        check
-    );
-
-    const main =
-        document.createElement(
-            "div"
-        );
-
-    main.className =
-        "task-main";
-
-    main.dataset.action =
-        "menu";
-
-    const title =
-        document.createElement(
-            "div"
-        );
-
-    title.className =
-        "task-title";
-
-    title.textContent =
-        task.text;
-
-    main.appendChild(
-        title
-    );
-
-    if (
-        carried &&
-        !task.completed
-    ) {
-
-        const carriedLabel =
-            document.createElement(
-                "div"
-            );
-
-        carriedLabel.className =
-            "task-carried";
-
-        carriedLabel.textContent =
-            settings.language === "en"
-                ? "From an earlier day"
-                : "من يوم سابق";
-
-        main.appendChild(
-            carriedLabel
-        );
-
-    }
-
-    const star =
-        document.createElement(
-            "button"
-        );
-
-    star.type =
-        "button";
-
-    star.className =
-        "star-btn";
-
-    if (task.starred) {
-
-        star.classList.add(
-            "starred"
-        );
-
-    }
-
-    star.dataset.action =
-        "star";
-
-    star.setAttribute(
-        "aria-label",
-        task.starred
-            ? (
-                settings.language === "en"
-                    ? "Remove star"
-                    : "إلغاء التمييز"
-            )
-            : (
-                settings.language === "en"
-                    ? "Star task"
-                    : "تمييز النية"
-            )
-    );
-
-    star.setAttribute(
-        "aria-pressed",
-        String(task.starred)
-    );
-
-    star.textContent =
-        task.starred
-            ? "★"
-            : "☆";
-
-    article.append(
-        checkHit,
-        main,
-        star
-    );
-
-    return article;
-
-}
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function render() {
-
-    updateProgress();
-
-    tasksContainer.innerHTML =
-        "";
-
-    const today =
+      const today =
         getDateKey();
 
-    let visibleTasks = [];
-
-    if (currentView === "today") {
-
-        /*
-         * IMPORTANT:
-         *
-         * اليوم = نوايا اليوم
-         * + أي نية قديمة غير مكتملة.
-         *
-         * لا نحذف ولا ننقل النية.
-         * فقط نعرضها.
-         */
-        visibleTasks =
-            tasks
-                .filter(
-                    task =>
-                        task.taskDay === today ||
-                        !task.completed
-                )
-                .sort(
-                    (a, b) => {
-
-                        if (
-                            a.completed !==
-                            b.completed
-                        ) {
-
-                            return (
-                                Number(a.completed) -
-                                Number(b.completed)
-                            );
-
-                        }
-
-                        if (
-                            a.starred !==
-                            b.starred
-                        ) {
-
-                            return (
-                                Number(b.starred) -
-                                Number(a.starred)
-                            );
-
-                        }
-
-                        return (
-                            new Date(b.createdAt) -
-                            new Date(a.createdAt)
-                        );
-
-                    }
-                );
-
-    } else if (currentView === "completed") {
-
-        visibleTasks =
-            tasks
-                .filter(
-                    task =>
-                        task.completed
-                )
-                .sort(sortCompleted);
-
-    } else {
-
-        visibleTasks =
-            tasks
-                .slice()
-                .sort(
-                    (a, b) => {
-
-                        if (
-                            a.completed !==
-                            b.completed
-                        ) {
-
-                            return (
-                                Number(a.completed) -
-                                Number(b.completed)
-                            );
-
-                        }
-
-                        return sortActive(a, b);
-
-                    }
-                );
+      return tasks.filter(
+        task =>
+          task.taskDay === today
+      );
 
     }
 
-    if (!visibleTasks.length) {
 
-        const emptyText =
-            getEmptyText();
+    function getPreviousActiveTasks() {
 
-        tasksContainer.innerHTML = `
+      const today =
+        getDateKey();
 
-            <div class="empty">
+      return tasks.filter(
+        task =>
+          task.taskDay !== today &&
+          !task.completed
+      );
 
-                <div
-                    class="empty-icon"
-                    aria-hidden="true"
-                >
-                    🌱
-                </div>
+    }
 
-                <strong>
-                    ${emptyText[0]}
-                </strong>
 
-                <span>
-                    ${emptyText[1]}
-                </span>
+    function getCompletedToday() {
 
-            </div>
+      const today =
+        getDateKey();
 
-        `;
+      return tasks.filter(
+        task =>
+          task.completed &&
+          task.completedAt &&
+          getDateKey(
+            new Date(task.completedAt)
+          ) === today
+      );
 
-        updateMenuState();
+    }
+
+
+    function getAllActive() {
+
+      return tasks.filter(
+        task =>
+          !task.completed
+      );
+
+    }
+
+
+    function getAllCompleted() {
+
+      return tasks.filter(
+        task =>
+          task.completed
+      );
+    }
+
+
+    /* =========================
+       RENDER
+    ========================= */
+
+    function render() {
+
+      heroDate.textContent =
+        formatDate();
+
+
+      updateHero();
+
+
+      updateProgress();
+
+
+      content.innerHTML = "";
+
+
+      if (currentView === "today") {
+
+        renderToday();
+
+      } else if (currentView === "all") {
+
+        renderAll();
+
+      } else if (currentView === "completed") {
+
+        renderCompleted();
+
+      }
+
+
+      updateMenuState();
+
+    }
+
+
+    function updateHero() {
+
+      const titles = {
+        today:
+          "ناوي على إيه النهارده؟",
+
+        all:
+          "كل اللي ناوي عليه",
+
+        completed:
+          "النوايا اللي اتحققت"
+      };
+
+
+      heroTitle.textContent =
+        titles[currentView] ||
+        titles.today;
+
+    }
+
+
+    /* =========================
+       TODAY
+    ========================= */
+
+    function renderToday() {
+
+      const today =
+        getTodayTasks();
+
+      const previous =
+        getPreviousActiveTasks();
+
+      const completed =
+        getCompletedToday();
+
+
+      if (
+        today.length === 0 &&
+        previous.length === 0 &&
+        completed.length === 0
+      ) {
+
+        content.appendChild(
+          createEmptyState(
+            "ن",
+            "مفيش نوايا لسه",
+            "اكتب أول حاجة ناوي تعملها النهارده."
+          )
+        );
 
         return;
+      }
 
-    }
 
-    if (currentView === "today") {
+      if (today.length > 0) {
 
-        const active =
-            visibleTasks.filter(
-                task =>
-                    !task.completed
-            );
-
-        const completed =
-            visibleTasks.filter(
-                task =>
-                    task.completed &&
-                    task.taskDay === today
-            );
-
-        /*
-         * النوايا القديمة غير المكتملة
-         * تظهر مع نوايا اليوم.
-         */
-        const carried =
-            active.filter(
-                task =>
-                    task.taskDay !== today
-            );
-
-        const todayActive =
-            active.filter(
-                task =>
-                    task.taskDay === today
-            );
-
-        if (todayActive.length) {
-
-            appendSection(
-                settings.language === "en"
-                    ? "Today"
-                    : "نوايا اليوم"
-            );
-
-            todayActive.forEach(
-                task => {
-
-                    tasksContainer.appendChild(
-                        createTaskElement(task)
-                    );
-
-                }
-            );
-
-        }
-
-        if (carried.length) {
-
-            appendSection(
-                settings.language === "en"
-                    ? "From earlier days"
-                    : "من أيام سابقة"
-            );
-
-            carried.forEach(
-                task => {
-
-                    tasksContainer.appendChild(
-                        createTaskElement(
-                            task,
-                            true
-                        )
-                    );
-
-                }
-            );
-
-        }
-
-        if (completed.length) {
-
-            appendSection(
-                settings.language === "en"
-                    ? "Completed today"
-                    : "النوايا المحققة اليوم"
-            );
-
-            completed.forEach(
-                task => {
-
-                    tasksContainer.appendChild(
-                        createTaskElement(task)
-                    );
-
-                }
-            );
-
-        }
-
-    } else if (currentView === "all") {
-
-        const active =
-            visibleTasks.filter(
-                task =>
-                    !task.completed
-            );
-
-        const completed =
-            visibleTasks.filter(
-                task =>
-                    task.completed
-            );
-
-        if (active.length) {
-
-            appendSection(
-                settings.language === "en"
-                    ? "All intentions"
-                    : "كل النوايا"
-            );
-
-            active.forEach(
-                task => {
-
-                    const carried =
-                        task.taskDay !== today;
-
-                    tasksContainer.appendChild(
-                        createTaskElement(
-                            task,
-                            carried
-                        )
-                    );
-
-                }
-            );
-
-        }
-
-        if (completed.length) {
-
-            appendSection(
-                settings.language === "en"
-                    ? "Completed"
-                    : "النوايا المحققة"
-            );
-
-            completed.forEach(
-                task => {
-
-                    tasksContainer.appendChild(
-                        createTaskElement(task)
-                    );
-
-                }
-            );
-
-        }
-
-    } else {
-
-        appendSection(
-            settings.language === "en"
-                ? "Completed"
-                : "النوايا المحققة"
+        content.appendChild(
+          createSection(
+            "اليوم",
+            today
+          )
         );
 
-        visibleTasks.forEach(
-            task => {
+      }
 
-                tasksContainer.appendChild(
-                    createTaskElement(task)
-                );
 
-            }
+      if (previous.length > 0) {
+
+        content.appendChild(
+          createSection(
+            "من أيام سابقة",
+            previous,
+            true
+          )
         );
 
-    }
+      }
 
-    updateMenuState();
 
-}
+      if (completed.length > 0) {
 
-/* =========================================================
-   EMPTY TEXT
-========================================================= */
+        content.appendChild(
+          createSection(
+            "المنجز اليوم",
+            completed,
+            false,
+            true
+          )
+        );
 
-function getEmptyText() {
-
-    const en =
-        settings.language === "en";
-
-    if (currentView === "completed") {
-
-        return en
-            ? [
-                "Nothing completed yet",
-                "Completed intentions will appear here."
-            ]
-            : [
-                "مفيش نوايا مكتملة",
-                "النوايا اللي أنجزتها هتظهر هنا."
-            ];
+      }
 
     }
 
-    if (currentView === "all") {
 
-        return en
-            ? [
-                "Nothing here yet",
-                "Write the first thing you intend to do."
-            ]
-            : [
-                "مفيش نوايا هنا",
-                "اكتب أول حاجة ناوي تعملها."
-            ];
+    /* =========================
+       ALL
+    ========================= */
+
+    function renderAll() {
+
+      const active =
+        getAllActive();
+
+      const completed =
+        getAllCompleted();
+
+
+      if (
+        active.length === 0 &&
+        completed.length === 0
+      ) {
+
+        content.appendChild(
+          createEmptyState(
+            "✓",
+            "لسه مفيش نوايا",
+            "كل حاجة تبدأ بنية."
+          )
+        );
+
+        return;
+      }
+
+
+      if (active.length > 0) {
+
+        content.appendChild(
+          createSection(
+            "النوايا الحالية",
+            active
+          )
+        );
+
+      }
+
+
+      if (completed.length > 0) {
+
+        content.appendChild(
+          createSection(
+            "المكتملة",
+            completed
+          )
+        );
+
+      }
+
+    }
+
+
+    /* =========================
+       COMPLETED
+    ========================= */
+
+    function renderCompleted() {
+
+      const completed =
+        getAllCompleted();
+
+
+      if (completed.length === 0) {
+
+        content.appendChild(
+          createEmptyState(
+            "✓",
+            "لسه مفيش إنجازات",
+            "أول ما تخلص حاجة هتظهر هنا."
+          )
+        );
+
+        return;
+      }
+
+
+      content.appendChild(
+        createSection(
+          "كل المنجز",
+          completed
+        )
+      );
 
     }
 
-    return en
-        ? [
-            "Nothing planned",
-            "Write the first thing you intend to do."
-        ]
-        : [
-            "مفيش نوايا لسه",
-            "اكتب أول حاجة ناوي تعملها."
-        ];
 
-}
+    /* =========================
+       SECTION
+    ========================= */
 
-/* =========================================================
-   MENU STATE
-========================================================= */
+    function createSection(
+      title,
+      taskArray,
+      showMeta = false,
+      completedSection = false
+    ) {
 
-function updateMenuState() {
+      const section =
+        document.createElement("section");
 
-    menuToday.classList.toggle(
-        "active",
-        currentView === "today"
-    );
+      section.className =
+        "section";
 
-    menuAll.classList.toggle(
-        "active",
-        currentView === "all"
-    );
 
-    menuCompleted.classList.toggle(
-        "active",
-        currentView === "completed"
-    );
+      const head =
+        document.createElement("div");
 
-}
+      head.className =
+        "section-head";
 
-/* =========================================================
-   TASK EVENTS
-========================================================= */
 
-tasksContainer.addEventListener(
-    "click",
-    event => {
+      const titleEl =
+        document.createElement("div");
 
-        if (longPressTriggered) {
+      titleEl.className =
+        "section-title";
 
-            longPressTriggered =
-                false;
+      titleEl.textContent =
+        title;
 
-            return;
 
-        }
+      const count =
+        document.createElement("span");
 
-        const target =
-            event.target;
+      count.className =
+        "section-count";
 
-        const taskElement =
-            target.closest(".task");
+      count.textContent =
+        taskArray.length;
 
-        if (!taskElement) {
-            return;
-        }
 
-        const id =
-            taskElement.dataset.taskId;
+      head.append(
+        titleEl,
+        count
+      );
 
-        const actionElement =
-            target.closest("[data-action]");
 
-        if (!actionElement) {
-            return;
-        }
+      const list =
+        document.createElement("div");
 
-        const action =
-            actionElement.dataset.action;
+      list.className =
+        "task-list";
 
-        if (action === "complete") {
 
-            completeTask(id);
-            return;
+      taskArray.forEach(task => {
 
-        }
+        list.appendChild(
+          createTaskElement(
+            task,
+            showMeta,
+            completedSection
+          )
+        );
 
-        if (action === "star") {
+      });
 
-            toggleStar(id);
-            return;
 
-        }
+      section.append(
+        head,
+        list
+      );
 
-        if (action === "menu") {
 
-            openAction(id);
-
-        }
-
+      return section;
     }
-);
 
-/* =========================================================
-   LONG PRESS
-========================================================= */
 
-tasksContainer.addEventListener(
-    "pointerdown",
-    event => {
+    /* =========================
+       TASK ELEMENT
+    ========================= */
 
-        const main =
+    function createTaskElement(
+      task,
+      showMeta = false,
+      completedSection = false
+    ) {
+
+      const article =
+        document.createElement("article");
+
+      article.className =
+        "task" +
+        (task.completed
+          ? " completed"
+          : "");
+
+      article.dataset.taskId =
+        task.id;
+
+
+      /* Checkbox */
+
+      const checkbox =
+        document.createElement("button");
+
+      checkbox.type = "button";
+
+      checkbox.className =
+        "task-checkbox";
+
+      checkbox.setAttribute(
+        "aria-label",
+        task.completed
+          ? "إلغاء الإنجاز"
+          : "إنجاز النية"
+      );
+
+
+      checkbox.innerHTML = `
+        <svg
+          class="check-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12.5l4 4L19 7"></path>
+        </svg>
+      `;
+
+
+      checkbox.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          completeTask(task.id);
+
+        }
+      );
+
+
+      /* Main */
+
+      const main =
+        document.createElement("div");
+
+      main.className =
+        "task-main";
+
+
+      const text =
+        document.createElement("p");
+
+      text.className =
+        "task-text";
+
+      text.textContent =
+        task.text;
+
+
+      main.appendChild(text);
+
+
+      if (
+        showMeta ||
+        task.taskDay !== getDateKey()
+      ) {
+
+        const meta =
+          document.createElement("div");
+
+        meta.className =
+          "task-meta";
+
+        meta.textContent =
+          getRelativeDayText(task);
+
+        main.appendChild(meta);
+
+      }
+
+
+      main.addEventListener(
+        "click",
+        () => openAction(task.id)
+      );
+
+
+      /* Star */
+
+      const star =
+        document.createElement("button");
+
+      star.type = "button";
+
+      star.className =
+        "task-star" +
+        (task.starred
+          ? " active"
+          : "");
+
+      star.innerHTML =
+        task.starred
+          ? "★"
+          : "☆";
+
+      star.setAttribute(
+        "aria-label",
+        task.starred
+          ? "إزالة المفضلة"
+          : "تمييز"
+      );
+
+
+      star.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          toggleStar(task.id);
+
+        }
+      );
+
+
+      article.append(
+        checkbox,
+        main,
+        star
+      );
+
+
+      /* Long press */
+
+      let pressTimer = null;
+      let longPressed = false;
+
+
+      article.addEventListener(
+        "pointerdown",
+        event => {
+
+          if (
             event.target.closest(
-                ".task-main"
-            );
-
-        if (!main) {
+              "button"
+            )
+          ) {
             return;
-        }
+          }
 
-        if (
-            event.pointerType ===
-            "mouse"
-        ) {
-            return;
-        }
 
-        const task =
-            main.closest(".task");
+          longPressed = false;
 
-        if (!task) {
-            return;
-        }
 
-        const id =
-            task.dataset.taskId;
-
-        longPressTriggered =
-            false;
-
-        clearTimeout(
-            longPressTimer
-        );
-
-        longPressTimer =
+          pressTimer =
             setTimeout(() => {
 
-                longPressTriggered =
-                    true;
+              longPressed = true;
 
-                openAction(id);
+              openAction(task.id);
 
             }, 550);
 
-    }
-);
+        }
+      );
 
-[
-    "pointerup",
-    "pointercancel",
-    "pointerleave"
-].forEach(type => {
 
-    tasksContainer.addEventListener(
-        type,
-        () => {
+      [
+        "pointerup",
+        "pointercancel",
+        "pointerleave"
+      ].forEach(type => {
+
+        article.addEventListener(
+          type,
+          () => {
 
             clearTimeout(
-                longPressTimer
+              pressTimer
             );
 
-        }
-    );
-
-});
-
-/* =========================================================
-   RIGHT CLICK
-========================================================= */
-
-tasksContainer.addEventListener(
-    "contextmenu",
-    event => {
-
-        const taskElement =
-            event.target.closest(
-                ".task"
-            );
-
-        if (!taskElement) {
-            return;
-        }
-
-        const main =
-            event.target.closest(
-                ".task-main"
-            );
-
-        if (!main) {
-            return;
-        }
-
-        event.preventDefault();
-
-        openAction(
-            taskElement.dataset.taskId
+          }
         );
 
-    }
-);
+      });
 
-/* =========================================================
-   INPUT
-========================================================= */
 
-function resizeInput() {
-
-    taskInput.style.height =
-        "auto";
-
-    taskInput.style.height =
-        `${Math.min(
-            taskInput.scrollHeight,
-            115
-        )}px`;
-
-}
-
-function updateSubmitButton() {
-
-    const hasText =
-        taskInput.value
-            .trim()
-            .length > 0;
-
-    submitBtn.disabled =
-        !hasText;
-
-    submitBtn.classList.toggle(
-        "active",
-        hasText
-    );
-
-}
-
-taskInput.addEventListener(
-    "input",
-    () => {
-
-        resizeInput();
-        updateSubmitButton();
-
-        /*
-         * صوت الكتابة مسموع عادي.
-         */
-        if (
-            taskInput.value.length > 0
-        ) {
-
-            playTypingSound();
-
-        }
-
-    }
-);
-
-function handleSend() {
-
-    const text =
-        taskInput.value.trim();
-
-    if (!text) {
-        return;
+      return article;
     }
 
-    if (
-        addTask(text)
+
+    /* =========================
+       EMPTY
+    ========================= */
+
+    function createEmptyState(
+      symbol,
+      title,
+      message
     ) {
 
-        taskInput.value =
-            "";
+      const box =
+        document.createElement("div");
 
-        taskInput.style.height =
-            "42px";
+      box.className =
+        "task-empty";
 
-        updateSubmitButton();
 
-        taskInput.focus();
+      box.innerHTML = `
+        <div class="empty-symbol">
+          ${escapeHtml(symbol)}
+        </div>
 
-        tasksContainer.scrollTop =
-            0;
+        <div class="empty-title">
+          ${escapeHtml(title)}
+        </div>
+
+        <div class="empty-text">
+          ${escapeHtml(message)}
+        </div>
+      `;
+
+
+      return box;
+    }
+
+
+    /* =========================
+       PROGRESS
+    ========================= */
+
+    function updateProgress() {
+
+      const today =
+        getTodayTasks();
+
+      const total =
+        today.length;
+
+      const completed =
+        today.filter(
+          task => task.completed
+        ).length;
+
+
+      let percentage = 0;
+
+
+      if (total > 0) {
+
+        percentage =
+          Math.round(
+            (completed / total) * 100
+          );
+
+      }
+
+
+      progressBar.style.width =
+        `${percentage}%`;
+
+      progressValue.textContent =
+        `${percentage}%`;
+
+
+      if (total === 0) {
+
+        progressLabel.textContent =
+          "ابدأ أول نية";
+
+      } else if (percentage === 100) {
+
+        progressLabel.textContent =
+          "كل نواياك اتحققت ✨";
+
+      } else {
+
+        progressLabel.textContent =
+          "تقدمك اليوم";
+
+      }
 
     }
 
-}
 
-submitBtn.addEventListener(
-    "click",
-    handleSend
-);
+    /* =========================
+       MENU
+    ========================= */
 
-taskInput.addEventListener(
-    "keydown",
-    event => {
+    function updateMenuState() {
 
-        if (
+      $$("[data-view]")
+        .forEach(button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.view ===
+            currentView
+          );
+
+        });
+
+    }
+
+
+    /* =========================
+       ACTION SHEET
+    ========================= */
+
+    function openAction(id) {
+
+      const task =
+        tasks.find(
+          item => item.id === id
+        );
+
+      if (!task) {
+        return;
+      }
+
+
+      selectedTaskId = id;
+
+      actionTaskPreview.textContent =
+        task.text;
+
+
+      $("#actionComplete")
+        .querySelector("span:last-child")
+        .textContent =
+          task.completed
+            ? "إلغاء الإنجاز"
+            : "تمت";
+
+
+      openOverlay(
+        actionOverlay
+      );
+
+    }
+
+
+    $("#actionComplete")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!selectedTaskId) {
+            return;
+          }
+
+          completeTask(
+            selectedTaskId
+          );
+
+          closeOverlay(
+            actionOverlay
+          );
+
+          selectedTaskId = null;
+
+        }
+      );
+
+
+    $("#actionEdit")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!selectedTaskId) {
+            return;
+          }
+
+          openEdit(
+            selectedTaskId
+          );
+
+        }
+      );
+
+
+    $("#actionDelete")
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!selectedTaskId) {
+            return;
+          }
+
+          const id =
+            selectedTaskId;
+
+          closeOverlay(
+            actionOverlay
+          );
+
+          selectedTaskId = null;
+
+          deleteTask(id);
+
+        }
+      );
+
+
+    /* =========================
+       OVERLAYS
+    ========================= */
+
+    function openOverlay(overlay) {
+
+      overlay.classList.add(
+        "show"
+      );
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.classList.add(
+        "no-scroll"
+      );
+
+    }
+
+
+    function closeOverlay(overlay) {
+
+      overlay.classList.remove(
+        "show"
+      );
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      if (
+        !document.querySelector(
+          ".overlay.show"
+        )
+      ) {
+
+        document.body.classList.remove(
+          "no-scroll"
+        );
+
+      }
+
+    }
+
+
+    function closeAllOverlays() {
+
+      $$(".overlay.show")
+        .forEach(
+          closeOverlay
+        );
+
+      selectedTaskId = null;
+
+    }
+
+
+    $$(".overlay")
+      .forEach(overlay => {
+
+        overlay.addEventListener(
+          "click",
+          event => {
+
+            if (
+              event.target === overlay
+            ) {
+
+              closeOverlay(
+                overlay
+              );
+
+            }
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       MENU
+    ========================= */
+
+    $("#menuBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          openOverlay(
+            menuOverlay
+          );
+
+        }
+      );
+
+
+    $$("[data-view]")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            setView(
+              button.dataset.view
+            );
+
+          }
+        );
+
+      });
+
+
+    $("#settingsBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          closeOverlay(
+            menuOverlay
+          );
+
+          renderSettings();
+
+          openOverlay(
+            settingsOverlay
+          );
+
+        }
+      );
+
+
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    $$("[data-theme-choice]")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            settings.theme =
+              button.dataset.themeChoice;
+
+            saveSettings();
+
+            applySettings();
+
+          }
+        );
+
+      });
+
+
+    $$("[data-accent-choice]")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            settings.accent =
+              button.dataset.accentChoice;
+
+            saveSettings();
+
+            applySettings();
+
+          }
+        );
+
+      });
+
+
+    function renderSettings() {
+
+      trashCount.textContent =
+        trash.length;
+
+      applySettings();
+
+    }
+
+
+    $("#trashBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          renderTrash();
+
+          closeOverlay(
+            settingsOverlay
+          );
+
+          openOverlay(
+            trashOverlay
+          );
+
+        }
+      );
+
+
+    /* =========================
+       TRASH RENDER
+    ========================= */
+
+    function renderTrash() {
+
+      trashCount.textContent =
+        trash.length;
+
+
+      trashList.innerHTML = "";
+
+
+      if (trash.length === 0) {
+
+        trashList.appendChild(
+          createEmptyState(
+            "⌫",
+            "السلة فاضية",
+            "مفيش نوايا محذوفة."
+          )
+        );
+
+        return;
+      }
+
+
+      trash.forEach(task => {
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "trash-item";
+
+
+        const text =
+          document.createElement("div");
+
+        text.className =
+          "trash-text";
+
+        text.textContent =
+          task.text;
+
+
+        const restore =
+          document.createElement("button");
+
+        restore.type = "button";
+
+        restore.className =
+          "small-btn";
+
+        restore.textContent =
+          "استرجاع";
+
+
+        restore.addEventListener(
+          "click",
+          () => {
+
+            restoreTask(
+              task.id
+            );
+
+          }
+        );
+
+
+        const forever =
+          document.createElement("button");
+
+        forever.type = "button";
+
+        forever.className =
+          "small-btn danger";
+
+        forever.textContent =
+          "حذف";
+
+
+        forever.addEventListener(
+          "click",
+          () => {
+
+            deleteForever(
+              task.id
+            );
+
+          }
+        );
+
+
+        item.append(
+          text,
+          restore,
+          forever
+        );
+
+
+        trashList.appendChild(
+          item
+        );
+
+      });
+
+    }
+
+
+    /* =========================
+       EDIT
+    ========================= */
+
+    $("#editSave")
+      .addEventListener(
+        "click",
+        saveEdit
+      );
+
+
+    $("#editCancel")
+      .addEventListener(
+        "click",
+        () => {
+
+          closeOverlay(
+            editOverlay
+          );
+
+          selectedTaskId = null;
+
+        }
+      );
+
+
+    editInput
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
             event.key === "Enter" &&
             !event.shiftKey
-        ) {
+          ) {
 
             event.preventDefault();
 
-            handleSend();
+            saveEdit();
+
+          }
 
         }
+      );
 
-    }
-);
 
-/* =========================================================
-   PROGRESS
-========================================================= */
+    /* =========================
+       COMPOSER
+    ========================= */
 
-function updateProgress() {
+    function updateComposer() {
 
-    const today =
-        getDateKey();
+      const hasText =
+        taskInput.value.trim().length > 0;
 
-    /*
-     * نسبة الإنجاز تخص نوايا اليوم فقط.
-     * النوايا القديمة لا تغيّر نسبة اليوم.
-     */
-    const todayTasks =
-        tasks.filter(
-            task =>
-                task.taskDay === today
-        );
 
-    const total =
-        todayTasks.length;
-
-    const done =
-        todayTasks.filter(
-            task =>
-                task.completed
-        ).length;
-
-    if (!total) {
-
-        progressFill.style.width =
-            "0%";
-
-        progressText.textContent =
-            settings.language === "en"
-                ? "Start your first task"
-                : "ابدأ أول نية";
-
-        progressBar.setAttribute(
-            "aria-valuenow",
-            "0"
-        );
-
-        return;
+      sendBtn.classList.toggle(
+        "disabled",
+        !hasText
+      );
 
     }
 
-    const percentage =
-        Math.round(
-            done / total * 100
-        );
 
-    progressFill.style.width =
-        `${percentage}%`;
+    taskInput
+      .addEventListener(
+        "input",
+        () => {
 
-    progressBar.setAttribute(
-        "aria-valuenow",
-        String(percentage)
-    );
+          autoResizeTextarea();
 
-    progressText.textContent =
-        settings.language === "en"
-            ? `${done} of ${total} · ${percentage}%`
-            : `${done} من ${total} · ${percentage}%`;
+          updateComposer();
 
-}
+          playTypingSound();
 
-/* =========================================================
-   TOAST
-========================================================= */
+        }
+      );
 
-function showToast(message) {
 
-    toastMessage.textContent =
+    taskInput
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter" &&
+            !event.shiftKey
+          ) {
+
+            event.preventDefault();
+
+            document
+              .getElementById("composer")
+              .requestSubmit();
+
+          }
+
+        }
+      );
+
+
+    $("#composer")
+      .addEventListener(
+        "submit",
+        event => {
+
+          event.preventDefault();
+
+
+          const text =
+            taskInput.value.trim();
+
+
+          if (!text) {
+            return;
+          }
+
+
+          if (addTask(text)) {
+
+            taskInput.value = "";
+
+            autoResizeTextarea();
+
+            updateComposer();
+
+            taskInput.focus();
+
+          }
+
+        }
+      );
+
+
+    function autoResizeTextarea() {
+
+      taskInput.style.height =
+        "auto";
+
+      taskInput.style.height =
+        Math.min(
+          taskInput.scrollHeight,
+          130
+        ) + "px";
+
+    }
+
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    function showToast(
+      message,
+      canUndo = false,
+      undoCallback = null
+    ) {
+
+      clearTimeout(
+        undoTimer
+      );
+
+
+      undoAction =
+        canUndo
+          ? undoCallback
+          : null;
+
+
+      toastMessage.textContent =
         message;
 
-    toast.classList.add(
+
+      toastUndo.classList.toggle(
+        "hidden",
+        !canUndo
+      );
+
+
+      toast.classList.add(
         "show"
-    );
+      );
 
-}
 
-function hideToast() {
-
-    toast.classList.remove(
-        "show"
-    );
-
-}
-
-toastUndo.addEventListener(
-    "click",
-    undoDelete
-);
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-function openSettings() {
-
-    settingsPanel.classList.add(
-        "show"
-    );
-
-    settingsPanel.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-function closeSettings() {
-
-    settingsPanel.classList.remove(
-        "show"
-    );
-
-    settingsPanel.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-settingsClose.addEventListener(
-    "click",
-    closeSettings
-);
-
-settingsPanel.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            settingsPanel
-        ) {
-
-            closeSettings();
-
-        }
-
-    }
-);
-
-/* =========================================================
-   LANGUAGE
-========================================================= */
-
-document.querySelectorAll(
-    "[data-language]"
-).forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                settings.language =
-                    button.dataset.language;
-
-                saveSettings();
-
-                applySettings();
-
-                analytics(
-                    "change_language",
-                    {
-                        language:
-                            settings.language
-                    }
-                );
-
-            }
+      undoTimer =
+        setTimeout(
+          hideToast,
+          4500
         );
 
     }
-);
 
-/* =========================================================
-   THEME
-========================================================= */
 
-document.querySelectorAll(
-    "[data-theme]"
-).forEach(
-    button => {
+    function hideToast() {
 
-        button.addEventListener(
-            "click",
-            () => {
-
-                settings.theme =
-                    button.dataset.theme;
-
-                saveSettings();
-
-                applySettings();
-
-                analytics(
-                    "change_theme",
-                    {
-                        theme:
-                            settings.theme
-                    }
-                );
-
-            }
-        );
-
-    }
-);
-
-/* =========================================================
-   ACCENT
-========================================================= */
-
-document.querySelectorAll(
-    "[data-accent-choice]"
-).forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                settings.accent =
-                    button.dataset.accentChoice;
-
-                saveSettings();
-
-                applySettings();
-
-                analytics(
-                    "change_accent",
-                    {
-                        accent:
-                            settings.accent
-                    }
-                );
-
-            }
-        );
-
-    }
-);
-
-/* =========================================================
-   SAVE SETTINGS
-========================================================= */
-
-function saveSettings() {
-
-    saveJSON(
-        SETTINGS_KEY,
-        settings
-    );
-
-}
-
-/* =========================================================
-   APPLY SETTINGS
-========================================================= */
-
-function applySettings() {
-
-    const en =
-        settings.language === "en";
-
-    document.documentElement.lang =
-        settings.language;
-
-    document.documentElement.dir =
-        en
-            ? "ltr"
-            : "rtl";
-
-    document.body.dataset.accent =
-        settings.accent;
-
-    document.body.classList.toggle(
-        "light",
-        settings.theme === "light"
-    );
-
-    brandName.textContent =
-        en
-            ? "NAWY"
-            : "ناوي";
-
-    document.title =
-        en
-            ? "NAWY — What are you up to today?"
-            : "ناوي — على إيه النهارده؟";
-
-    document.querySelector(
-        'meta[name="apple-mobile-web-app-title"]'
-    ).setAttribute(
-        "content",
-        en ? "NAWY" : "ناوي"
-    );
-
-    document.querySelector(
-        'meta[name="description"]'
-    ).setAttribute(
-        "content",
-        en
-            ? "NAWY — Write your intention. Get it done."
-            : "ناوي — اكتب نيتك وأنجزها."
-    );
-
-    menuBtn.setAttribute(
-        "aria-label",
-        en
-            ? "Menu"
-            : "القائمة"
-    );
-
-    document.querySelectorAll(
-        "[data-language]"
-    ).forEach(
-        button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.language ===
-                settings.language
-            );
-
-        }
-    );
-
-    document.querySelectorAll(
-        "[data-theme]"
-    ).forEach(
-        button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.theme ===
-                settings.theme
-            );
-
-        }
-    );
-
-    document.querySelectorAll(
-        "[data-accent-choice]"
-    ).forEach(
-        button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.accentChoice ===
-                settings.accent
-            );
-
-        }
-    );
-
-    updateStaticText();
-
-    updateDate();
-
-    render();
-
-}
-
-/* =========================================================
-   STATIC TRANSLATIONS
-========================================================= */
-
-function updateStaticText() {
-
-    const en =
-        settings.language === "en";
-
-    greetingTitle.textContent =
-        en
-            ? "What are you up to today?"
-            : "ناوي على إيه النهارده؟";
-
-    taskInput.placeholder =
-        en
-            ? "Write what you intend to do..."
-            : "اكتب اللي ناوي عليه...";
-
-    taskInput.setAttribute(
-        "aria-label",
-        en
-            ? "New intention"
-            : "نية جديدة"
-    );
-
-    settingsTitle.textContent =
-        en
-            ? "Settings"
-            : "الإعدادات";
-
-    languageLabel.textContent =
-        en
-            ? "Language"
-            : "اللغة";
-
-    themeLabel.textContent =
-        en
-            ? "Appearance"
-            : "المظهر";
-
-    accentLabel.textContent =
-        en
-            ? "Accent"
-            : "اللون";
-
-    trashLabel.textContent =
-        en
-            ? "Trash"
-            : "سلة المحذوفات";
-
-    trashTitle.textContent =
-        en
-            ? "Trash"
-            : "سلة المحذوفات";
-
-    completeLabel.textContent =
-        en
-            ? "Complete"
-            : "تمت";
-
-    editLabel.textContent =
-        en
-            ? "Edit"
-            : "تعديل";
-
-    deleteLabel.textContent =
-        en
-            ? "Delete"
-            : "حذف";
-
-    editTitle.textContent =
-        en
-            ? "Edit intention"
-            : "تعديل النية";
-
-    editCancel.textContent =
-        en
-            ? "Cancel"
-            : "إلغاء";
-
-    editSave.textContent =
-        en
-            ? "Save"
-            : "حفظ";
-
-    openTrash.textContent =
-        en
-            ? "🗑 Trash"
-            : "🗑 سلة المحذوفات";
-
-    menuTodayLabel.textContent =
-        en
-            ? "Today"
-            : "اليوم";
-
-    menuAllLabel.textContent =
-        en
-            ? "All intentions"
-            : "كل النوايا";
-
-    menuCompletedLabel.textContent =
-        en
-            ? "Completed"
-            : "المكتملة";
-
-    menuSettingsLabel.textContent =
-        en
-            ? "Settings"
-            : "الإعدادات";
-
-    const themeButtons =
-        document.querySelectorAll(
-            "[data-theme]"
-        );
-
-    themeButtons.forEach(
-        button => {
-
-            if (
-                button.dataset.theme ===
-                "dark"
-            ) {
-
-                button.textContent =
-                    en
-                        ? "◐ Dark"
-                        : "◐ داكن";
-
-            } else {
-
-                button.textContent =
-                    en
-                        ? "○ Light"
-                        : "○ نهاري";
-
-            }
-
-        }
-    );
-
-    const accentNames = {
-
-        green:
-            en ? "Green" : "أخضر",
-
-        blue:
-            en ? "Blue" : "أزرق",
-
-        purple:
-            en ? "Purple" : "بنفسجي",
-
-        orange:
-            en ? "Orange" : "برتقالي",
-
-        pink:
-            en ? "Pink" : "وردي"
-
-    };
-
-    document.querySelectorAll(
-        "[data-accent-text]"
-    ).forEach(
-        span => {
-
-            span.textContent =
-                accentNames[
-                    span.dataset.accentText
-                ];
-
-        }
-    );
-
-}
-
-/* =========================================================
-   TRASH
-========================================================= */
-
-function openTrashPanel() {
-
-    closeSettings();
-
-    renderTrash();
-
-    trashPanel.classList.add(
+      toast.classList.remove(
         "show"
-    );
+      );
 
-    trashPanel.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-function closeTrashPanel() {
-
-    trashPanel.classList.remove(
-        "show"
-    );
-
-    trashPanel.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-openTrash.addEventListener(
-    "click",
-    openTrashPanel
-);
-
-trashClose.addEventListener(
-    "click",
-    closeTrashPanel
-);
-
-trashPanel.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            trashPanel
-        ) {
-
-            closeTrashPanel();
-
-        }
+      undoAction = null;
 
     }
-);
 
-/* =========================================================
-   RENDER TRASH
-========================================================= */
 
-function renderTrash() {
+    toastUndo
+      .addEventListener(
+        "click",
+        () => {
 
-    trashContainer.innerHTML =
-        "";
+          if (
+            typeof undoAction ===
+            "function"
+          ) {
 
-    if (!trash.length) {
+            undoAction();
 
-        trashContainer.innerHTML = `
+          }
 
-            <div class="trash-empty">
-                ${
-                    settings.language === "en"
-                        ? "Trash is empty."
-                        : "سلة المحذوفات فارغة."
-                }
-            </div>
+          hideToast();
 
-        `;
+        }
+      );
+
+
+    /* =========================
+       SOUND
+    ========================= */
+
+    function getAudioContext() {
+
+      if (!typingAudioContext) {
+
+        const AudioContext =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+        if (!AudioContext) {
+          return null;
+        }
+
+        typingAudioContext =
+          new AudioContext();
+
+      }
+
+
+      if (
+        typingAudioContext.state ===
+        "suspended"
+      ) {
+
+        typingAudioContext.resume()
+          .catch(() => {});
+
+      }
+
+
+      return typingAudioContext;
+
+    }
+
+
+    function playTone(
+      frequency,
+      duration,
+      volume,
+      type = "sine"
+    ) {
+
+      const ctx =
+        getAudioContext();
+
+      if (!ctx) {
+        return;
+      }
+
+
+      try {
+
+        const oscillator =
+          ctx.createOscillator();
+
+        const gain =
+          ctx.createGain();
+
+
+        oscillator.type =
+          type;
+
+        oscillator.frequency.value =
+          frequency;
+
+
+        gain.gain.setValueAtTime(
+          0.0001,
+          ctx.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          Math.max(volume, 0.0002),
+          ctx.currentTime + .008
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.0001,
+          ctx.currentTime + duration
+        );
+
+
+        oscillator.connect(gain);
+
+        gain.connect(ctx.destination);
+
+
+        oscillator.start();
+
+        oscillator.stop(
+          ctx.currentTime + duration + .01
+        );
+
+      } catch {
+        /* Audio should never break the app. */
+      }
+
+    }
+
+
+    function playTypingSound() {
+
+      const now =
+        performance.now();
+
+
+      if (
+        now - lastTypingSound < 55
+      ) {
+        return;
+      }
+
+
+      lastTypingSound =
+        now;
+
+
+      const frequency =
+        145 +
+        Math.random() * 40;
+
+
+      playTone(
+        frequency,
+        .035,
+        .018,
+        "sine"
+      );
+
+    }
+
+
+    function playAddSound() {
+
+      playTone(
+        230,
+        .055,
+        .025,
+        "sine"
+      );
+
+    }
+
+
+    function playCompleteSound() {
+
+      const ctx =
+        getAudioContext();
+
+      if (!ctx) {
+        return;
+      }
+
+
+      playTone(
+        520,
+        .09,
+        .045,
+        "sine"
+      );
+
+
+      setTimeout(() => {
+
+        playTone(
+          700,
+          .12,
+          .035,
+          "sine"
+        );
+
+      }, 55);
+
+    }
+
+
+    /* =========================
+       SAFE HTML
+    ========================= */
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    /* =========================
+       DAY CHANGE
+    ========================= */
+
+    function checkDayChange() {
+
+      const today =
+        getDateKey();
+
+
+      if (
+        lastKnownDay === null
+      ) {
+
+        lastKnownDay =
+          today;
 
         return;
 
+      }
+
+
+      if (
+        today !== lastKnownDay
+      ) {
+
+        lastKnownDay =
+          today;
+
+        render();
+
+      }
+
     }
 
-    trash.forEach(
-        item => {
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+    setInterval(
+      checkDayChange,
+      30000
+    );
 
-            row.className =
-                "trash-item";
 
-            const text =
-                document.createElement(
-                    "div"
-                );
+    /* =========================
+       KEYBOARD
+    ========================= */
 
-            text.className =
-                "trash-text";
+    document
+      .addEventListener(
+        "keydown",
+        event => {
 
-            text.textContent =
-                item.text;
+          if (
+            event.key === "Escape"
+          ) {
 
-            const actions =
-                document.createElement(
-                    "div"
-                );
+            closeAllOverlays();
 
-            actions.className =
-                "trash-actions";
-
-            const restore =
-                document.createElement(
-                    "button"
-                );
-
-            restore.type =
-                "button";
-
-            restore.textContent =
-                settings.language === "en"
-                    ? "Restore"
-                    : "استعادة";
-
-            restore.addEventListener(
-                "click",
-                () => {
-
-                    restoreTrashItem(
-                        item.id
-                    );
-
-                }
-            );
-
-            const permanent =
-                document.createElement(
-                    "button"
-                );
-
-            permanent.type =
-                "button";
-
-            permanent.className =
-                "permanent";
-
-            permanent.textContent =
-                settings.language === "en"
-                    ? "Delete forever"
-                    : "حذف نهائي";
-
-            permanent.addEventListener(
-                "click",
-                () => {
-
-                    permanentlyDelete(
-                        item.id
-                    );
-
-                }
-            );
-
-            actions.append(
-                restore,
-                permanent
-            );
-
-            row.append(
-                text,
-                actions
-            );
-
-            trashContainer.appendChild(
-                row
-            );
+          }
 
         }
-    );
+      );
 
-}
 
-/* =========================================================
-   RESTORE
-========================================================= */
+    /* =========================
+       INIT
+    ========================= */
 
-function restoreTrashItem(id) {
+    function init() {
 
-    const index =
-        trash.findIndex(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
+      loadData();
 
-    if (index === -1) {
-        return;
-    }
+      applySettings();
 
-    const task =
-        trash[index];
+      lastKnownDay =
+        getDateKey();
 
-    delete task.deletedAt;
+      render();
 
-    tasks.unshift(
-        task
-    );
+      updateComposer();
 
-    trash.splice(
-        index,
-        1
-    );
-
-    saveJSON(
-        STORAGE_KEY,
-        tasks
-    );
-
-    saveJSON(
-        TRASH_KEY,
-        trash
-    );
-
-    analytics(
-        "restore_task"
-    );
-
-    renderTrash();
-
-    render();
-
-}
-
-/* =========================================================
-   PERMANENT DELETE
-========================================================= */
-
-function permanentlyDelete(id) {
-
-    trash =
-        trash.filter(
-            item =>
-                String(item.id) !==
-                String(id)
-        );
-
-    saveJSON(
-        TRASH_KEY,
-        trash
-    );
-
-    analytics(
-        "permanent_delete_task"
-    );
-
-    renderTrash();
-
-}
-
-/* =========================================================
-   EDIT EVENTS
-========================================================= */
-
-editSave.addEventListener(
-    "click",
-    saveEdit
-);
-
-editCancel.addEventListener(
-    "click",
-    closeEdit
-);
-
-editOverlay.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            editOverlay
-        ) {
-
-            closeEdit();
-
-        }
+      autoResizeTextarea();
 
     }
-);
 
-/* =========================================================
-   ESC
-========================================================= */
 
-document.addEventListener(
-    "keydown",
-    event => {
+    init();
 
-        if (
-            event.key !== "Escape"
-        ) {
-            return;
-        }
 
-        closeMenu();
-        closeAction();
-        closeEdit();
-        closeSettings();
-        closeTrashPanel();
+    /* =========================
+       SERVICE WORKER
+    ========================= */
 
-    }
-);
+    if (
+      "serviceWorker" in navigator
+    ) {
 
-/* =========================================================
-   VISIBILITY
-========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    () => {
-
-        if (!document.hidden) {
-
-            /*
-             * عند الرجوع للتطبيق:
-             * لا نحذف أي شيء.
-             * فقط نراجع اليوم الحالي ونعيد الرسم.
-             */
-
-            checkForNewDay();
-
-            updateDate();
-
-            render();
-
-        }
-
-    }
-);
-
-/* =========================================================
-   PAGE FOCUS
-========================================================= */
-
-window.addEventListener(
-    "focus",
-    () => {
-
-        checkForNewDay();
-
-    }
-);
-
-/* =========================================================
-   SERVICE WORKER
-========================================================= */
-
-if (
-    "serviceWorker" in navigator
-) {
-
-    window.addEventListener(
+      window.addEventListener(
         "load",
         () => {
 
-            navigator.serviceWorker
-                .register(
-                    "./sw.js",
-                    {
-                        scope: "./"
-                    }
-                )
-                .catch(
-                    error => {
+          navigator.serviceWorker
+            .register(
+              "./sw.js",
+              {
+                updateViaCache: "none"
+              }
+            )
+            .then(registration => {
 
-                        console.warn(
-                            "NAWY SW:",
-                            error
-                        );
+              registration.update()
+                .catch(() => {});
 
-                    }
-                );
+
+              setInterval(() => {
+
+                registration.update()
+                  .catch(() => {});
+
+              }, 60 * 60 * 1000);
+
+            })
+            .catch(() => {
+
+              /*
+               Service Worker failure
+               must not break the application.
+              */
+
+            });
 
         }
-    );
+      );
 
-}
+    }
 
-/* =========================================================
-   START
-========================================================= */
-
-applySettings();
-
-updateSubmitButton();
-
-checkForNewDay();
-
-})();
-
-</script>
+  </script>
 
 </body>
 </html>
