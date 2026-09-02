@@ -3656,16 +3656,21 @@
       const today =
         getTodayTasks();
 
-      const previous =
-        getPreviousActiveTasks();
-
       const completed =
         getCompletedToday();
 
 
+      /*
+        شاشة اليوم تعرض:
+        1. مهام اليوم
+        2. المنجز اليوم
+
+        المهام القديمة غير المكتملة لا تظهر هنا.
+        تظل محفوظة وتظهر في "كل النوايا".
+      */
+
       if (
         today.length === 0 &&
-        previous.length === 0 &&
         completed.length === 0
       ) {
 
@@ -3687,19 +3692,6 @@
           createSection(
             t("today"),
             today
-          )
-        );
-
-      }
-
-
-      if (previous.length > 0) {
-
-        content.appendChild(
-          createSection(
-            t("previousDays"),
-            previous,
-            true
           )
         );
 
