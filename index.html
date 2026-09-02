@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -349,6 +350,13 @@
 
     .content {
       margin-top: 18px;
+
+      /*
+        يسمح بالتمرير الرأسي الطبيعي،
+        بينما نلتقط السحب الأفقي للتنقل بين القوائم.
+      */
+      touch-action: pan-y;
+      overscroll-behavior-x: contain;
     }
 
     .section {
@@ -686,6 +694,8 @@
 
       font-size: 16px;
       line-height: 1.45;
+
+      touch-action: auto;
     }
 
     .composer textarea::placeholder {
@@ -1567,7 +1577,21 @@
           class="menu-text"
           data-i18n="all"
         >
-          كل النوايا
+          نواياي
+        </span>
+      </button>
+
+      <button
+        class="menu-item"
+        data-view="favorites"
+        type="button"
+      >
+        <span class="menu-icon">★</span>
+        <span
+          class="menu-text"
+          data-i18n="favorites"
+        >
+          مفضلاتي
         </span>
       </button>
 
@@ -2053,7 +2077,6 @@
       </span>
     </button>
 
-    <!-- Update button -->
     <button
       class="toast-update hidden"
       id="toastUpdate"
@@ -2109,7 +2132,8 @@
           "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
 
         today: "اليوم",
-        all: "كل النوايا",
+        all: "نواياي",
+        favorites: "مفضلاتي",
         completed: "المكتملة",
 
         heroToday:
@@ -2191,6 +2215,12 @@
         everyThingStarts:
           "كل حاجة تبدأ بنية.",
 
+        noFavorites:
+          "مفيش مفضلات لسه",
+
+        favoriteHint:
+          "علّم أي نية بنجمة وهتظهر هنا.",
+
         noAchievements:
           "لسه مفيش إنجازات",
 
@@ -2204,7 +2234,10 @@
           "المنجز اليوم",
 
         currentIntentions:
-          "النوايا الحالية",
+          "نواياي",
+
+        favoriteSection:
+          "مفضلاتي",
 
         allDoneSection:
           "كل المنجز",
@@ -2265,7 +2298,8 @@
           "Restore deleted intentions or delete them permanently.",
 
         today: "Today",
-        all: "All intentions",
+        all: "My intentions",
+        favorites: "My favorites",
         completed: "Completed",
 
         heroToday:
@@ -2347,6 +2381,12 @@
         everyThingStarts:
           "Everything starts with an intention.",
 
+        noFavorites:
+          "No favorites yet",
+
+        favoriteHint:
+          "Star an intention and it will appear here.",
+
         noAchievements:
           "No achievements yet",
 
@@ -2360,7 +2400,10 @@
           "Done today",
 
         currentIntentions:
-          "Current intentions",
+          "My intentions",
+
+        favoriteSection:
+          "My favorites",
 
         allDoneSection:
           "All completed",
@@ -2471,6 +2514,27 @@
     let lastTypingSound = 0;
 
     let lastKnownDay = null;
+
+
+    /*
+      ترتيب التنقل بالسحب.
+      لا تشمل الإعدادات لأنها ليست View داخل المحتوى.
+    */
+    const SWIPE_VIEWS = [
+      "today",
+      "all",
+      "favorites",
+      "completed"
+    ];
+
+
+    /* =========================
+       SWIPE STATE
+    ========================= */
+
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeTracking = false;
 
 
     /* =========================
@@ -3503,6 +3567,15 @@
 
     function setView(view) {
 
+      if (
+        !SWIPE_VIEWS.includes(view)
+      ) {
+
+        return;
+
+      }
+
+
       currentView =
         view;
 
@@ -3579,6 +3652,16 @@
     }
 
 
+    function getFavorites() {
+
+      return tasks.filter(
+        task =>
+          task.starred
+      );
+
+    }
+
+
     /* =========================
        RENDER
     ========================= */
@@ -3609,6 +3692,12 @@
         renderAll();
 
       } else if (
+        currentView === "favorites"
+      ) {
+
+        renderFavorites();
+
+      } else if (
         currentView === "completed"
       ) {
 
@@ -3633,6 +3722,9 @@
 
         all:
           t("all"),
+
+        favorites:
+          t("favorites"),
 
         completed:
           t("completed")
@@ -3666,7 +3758,7 @@
         2. المنجز اليوم
 
         المهام القديمة غير المكتملة لا تظهر هنا.
-        تظل محفوظة وتظهر في "كل النوايا".
+        تظل محفوظة وتظهر في "نواياي".
       */
 
       if (
@@ -3715,7 +3807,7 @@
 
 
     /* =========================
-       ALL
+       ALL / MY INTENTIONS
     ========================= */
 
     function renderAll() {
@@ -3766,6 +3858,44 @@
         );
 
       }
+
+    }
+
+
+    /* =========================
+       FAVORITES
+    ========================= */
+
+    function renderFavorites() {
+
+      const favorites =
+        getFavorites();
+
+
+      if (
+        favorites.length === 0
+      ) {
+
+        content.appendChild(
+          createEmptyState(
+            "★",
+            t("noFavorites"),
+            t("favoriteHint")
+          )
+        );
+
+        return;
+
+      }
+
+
+      content.appendChild(
+        createSection(
+          t("favoriteSection"),
+          favorites,
+          true
+        )
+      );
 
     }
 
@@ -4058,13 +4188,19 @@
           ? (
               settings.language === "en"
                 ? "Remove favorite"
-                : "إزالة المفضلة"
+                : "إزالة من المفضلة"
             )
           : (
               settings.language === "en"
                 ? "Favorite"
-                : "تمييز"
+                : "إضافة للمفضلة"
             )
+      );
+
+
+      star.setAttribute(
+        "aria-pressed",
+        String(task.starred)
       );
 
 
@@ -4269,6 +4405,230 @@
         });
 
     }
+
+
+    /* =========================
+       SWIPE NAVIGATION
+    ========================= */
+
+    function navigateBySwipe(
+      direction
+    ) {
+
+      const currentIndex =
+        SWIPE_VIEWS.indexOf(
+          currentView
+        );
+
+
+      if (
+        currentIndex === -1
+      ) {
+        return;
+      }
+
+
+      let nextIndex;
+
+
+      if (
+        direction === "next"
+      ) {
+
+        nextIndex =
+          currentIndex + 1;
+
+      } else {
+
+        nextIndex =
+          currentIndex - 1;
+
+      }
+
+
+      /*
+        لا نعمل Loop.
+        عند أول شاشة، السحب للخلف لا يفعل شيئًا.
+        وعند آخر شاشة، السحب للأمام لا يفعل شيئًا.
+        ده أوضح للمستخدم من الانتقال الدائري.
+      */
+
+      if (
+        nextIndex < 0 ||
+        nextIndex >= SWIPE_VIEWS.length
+      ) {
+
+        return;
+
+      }
+
+
+      setView(
+        SWIPE_VIEWS[nextIndex]
+      );
+
+    }
+
+
+    function handleSwipeStart(event) {
+
+      /*
+        لا نلتقط السحب من عناصر الإدخال
+        أو الأزرار حتى لا نؤثر على التفاعل الطبيعي.
+      */
+
+      if (
+        event.target.closest(
+          "textarea, input, button, .overlay"
+        )
+      ) {
+
+        swipeTracking =
+          false;
+
+        return;
+
+      }
+
+
+      if (
+        event.touches &&
+        event.touches.length !== 1
+      ) {
+
+        swipeTracking =
+          false;
+
+        return;
+
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      swipeStartX =
+        touch.clientX;
+
+      swipeStartY =
+        touch.clientY;
+
+      swipeTracking =
+        true;
+
+    }
+
+
+    function handleSwipeEnd(event) {
+
+      if (
+        !swipeTracking
+      ) {
+        return;
+      }
+
+
+      swipeTracking =
+        false;
+
+
+      if (
+        event.changedTouches &&
+        event.changedTouches.length !== 1
+      ) {
+        return;
+      }
+
+
+      const touch =
+        event.changedTouches[0];
+
+
+      const dx =
+        touch.clientX -
+        swipeStartX;
+
+      const dy =
+        touch.clientY -
+        swipeStartY;
+
+
+      const absX =
+        Math.abs(dx);
+
+      const absY =
+        Math.abs(dy);
+
+
+      /*
+        لازم يكون السحب أفقي بوضوح.
+        ده يمنع تحريك القائمة أثناء التمرير الرأسي.
+      */
+
+      if (
+        absX < 55 ||
+        absX <= absY * 1.2
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+        في RTL:
+        السحب لليسار = الانتقال للأمام
+        السحب لليمين = الرجوع للخلف
+      */
+
+      if (dx < 0) {
+
+        navigateBySwipe(
+          "next"
+        );
+
+      } else {
+
+        navigateBySwipe(
+          "previous"
+        );
+
+      }
+
+    }
+
+
+    content.addEventListener(
+      "touchstart",
+      handleSwipeStart,
+      {
+        passive: true
+      }
+    );
+
+
+    content.addEventListener(
+      "touchend",
+      handleSwipeEnd,
+      {
+        passive: true
+      }
+    );
+
+
+    content.addEventListener(
+      "touchcancel",
+      () => {
+
+        swipeTracking =
+          false;
+
+      },
+      {
+        passive: true
+      }
+    );
 
 
     /* =========================
@@ -4976,11 +5336,6 @@
       );
 
 
-      /*
-        مهم:
-        إخفاء زر التحديث عند كل Toast عادي.
-      */
-
       toastUpdate.classList.add(
         "hidden"
       );
@@ -5601,18 +5956,10 @@
               );
 
 
-            /*
-              فحص فوري بعد التسجيل.
-            */
-
             requestServiceWorkerUpdate(
               registration
             );
 
-
-            /*
-              اكتشاف نسخة جديدة.
-            */
 
             registration.addEventListener(
               "updatefound",
@@ -5629,12 +5976,6 @@
                 worker.addEventListener(
                   "statechange",
                   () => {
-
-                    /*
-                      installed + controller
-                      = تحديث حقيقي
-                      وليس أول تثبيت.
-                    */
 
                     if (
                       worker.state ===
@@ -5663,10 +6004,6 @@
               }
             );
 
-
-            /*
-              زر تحديث النسخة.
-            */
 
             toastUpdate.addEventListener(
               "click",
@@ -5702,10 +6039,6 @@
             );
 
 
-            /*
-              فحص دوري كل ساعة.
-            */
-
             setInterval(
               () => {
 
@@ -5717,11 +6050,6 @@
               60 * 60 * 1000
             );
 
-
-            /*
-              عند رجوع التطبيق للواجهة:
-              افحص وجود تحديث جديد.
-            */
 
             document.addEventListener(
               "visibilitychange",
@@ -5754,13 +6082,6 @@
       );
 
 
-      /*
-        أهم جزء في نظام التحديث.
-
-        يمنع Reload أكثر من مرة لنفس
-        عملية تغيير الـ controller.
-      */
-
       navigator.serviceWorker
         .addEventListener(
           "controllerchange",
@@ -5784,3 +6105,4 @@
 
 </body>
 </html>
+```
