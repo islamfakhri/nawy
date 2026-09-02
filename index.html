@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -784,7 +785,7 @@
       border-radius: 15px;
       background: transparent;
 
-      text-align: right;
+      text-align: start;
 
       transition: background .15s ease;
     }
@@ -845,7 +846,7 @@
       border-radius: 15px;
       background: transparent;
 
-      text-align: right;
+      text-align: start;
     }
 
     .action-item:hover {
@@ -975,6 +976,15 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
+
+      transition:
+        background .18s ease,
+        color .18s ease,
+        transform .12s ease;
+    }
+
+    .segment:active {
+      transform: scale(.96);
     }
 
     .segment.active {
@@ -1139,16 +1149,94 @@
       font-weight: 800;
     }
 
-
     /* =========================
        INSTALL BANNER
     ========================= */
-    .install-banner{position:fixed;z-index:180;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));width:min(calc(100% - 28px),560px);transform:translate(-50%,22px);opacity:0;visibility:hidden;pointer-events:none;display:flex;align-items:center;gap:12px;padding:12px;background:color-mix(in srgb,var(--surface) 96%,transparent);border:1px solid var(--border);border-radius:19px;box-shadow:0 18px 55px rgba(0,0,0,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:opacity .22s ease,transform .22s ease,visibility .22s ease}
-    .install-banner.show{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto}
-    .install-icon{width:42px;height:42px;flex:0 0 auto;display:grid;place-items:center;border-radius:14px;background:var(--accent);color:#fff;font-size:21px;font-weight:850}
-    .install-copy{min-width:0;flex:1}.install-title{font-size:14px;font-weight:800}.install-text{margin-top:2px;color:var(--muted);font-size:11px;line-height:1.45}
-    .install-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}.install-btn{min-height:38px;padding:0 11px;border-radius:11px;font-size:11px;font-weight:800;white-space:nowrap}.install-btn.primary{background:var(--accent);color:#fff}.install-btn.secondary{background:var(--surface-2)}
-    @media(max-width:480px){.install-banner{align-items:flex-start;gap:9px;padding:10px}.install-icon{width:38px;height:38px;border-radius:12px}.install-actions{flex-direction:column;align-items:stretch}.install-btn{min-height:34px;padding:0 9px}}
+
+    .install-banner {
+      position: fixed;
+      z-index: 180;
+      left: 50%;
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      width: min(calc(100% - 28px), 560px);
+      transform: translate(-50%, 22px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: color-mix(in srgb, var(--surface) 96%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.22);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+    }
+
+    .install-banner.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .install-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 21px;
+      font-weight: 850;
+    }
+
+    .install-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .install-title {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .install-text {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .install-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .install-btn {
+      min-height: 38px;
+      padding: 0 11px;
+      border-radius: 11px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .install-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .install-btn.secondary {
+      background: var(--surface-2);
+    }
 
     /* =========================
        UTILITIES
@@ -1160,6 +1248,30 @@
 
     .no-scroll {
       overflow: hidden;
+    }
+
+    @media (max-width: 480px) {
+      .install-banner {
+        align-items: flex-start;
+        gap: 9px;
+        padding: 10px;
+      }
+
+      .install-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+      }
+
+      .install-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .install-btn {
+        min-height: 34px;
+        padding: 0 9px;
+      }
     }
 
     @media (min-width: 700px) {
@@ -1200,17 +1312,15 @@
 
       <div class="brand">
         <div class="brand-mark">ن</div>
-
-        <div class="brand-name">
-          ناوي
-        </div>
+        <div class="brand-name">ناوي</div>
       </div>
 
       <button
         class="menu-btn"
         id="menuBtn"
         type="button"
-        aria-label="القائمة" data-i18n-aria="menu"
+        aria-label="القائمة"
+        data-i18n-aria="menu"
       >
         ⋯
       </button>
@@ -1221,7 +1331,11 @@
     <!-- HERO -->
     <section class="hero">
 
-      <h1 class="hero-title" id="heroTitle" data-i18n="heroToday">
+      <h1
+        class="hero-title"
+        id="heroTitle"
+        data-i18n="heroToday"
+      >
         ناوي على إيه النهارده؟
       </h1>
 
@@ -1230,6 +1344,7 @@
       <div class="progress-wrap">
 
         <div class="progress-top">
+
           <span
             class="progress-label"
             id="progressLabel"
@@ -1243,6 +1358,7 @@
           >
             0%
           </span>
+
         </div>
 
         <div class="progress-track">
@@ -1279,15 +1395,18 @@
         id="taskInput"
         rows="1"
         maxlength="500"
-        placeholder="اكتب اللي ناوي عليه..." data-i18n-placeholder="taskPlaceholder"
-        aria-label="اكتب نية جديدة" data-i18n-aria="newIntent"
+        placeholder="اكتب اللي ناوي عليه..."
+        data-i18n-placeholder="taskPlaceholder"
+        aria-label="اكتب نية جديدة"
+        data-i18n-aria="newIntent"
       ></textarea>
 
       <button
         class="send-btn disabled"
         id="sendBtn"
         type="submit"
-        aria-label="إضافة" data-i18n-aria="add"
+        aria-label="إضافة"
+        data-i18n-aria="add"
       >
         ↑
       </button>
@@ -1412,7 +1531,10 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="editIntent">
+      <div
+        class="sheet-title"
+        data-i18n="editIntent"
+      >
         تعديل النية
       </div>
 
@@ -1458,19 +1580,69 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="settings">
+      <div
+        class="sheet-title"
+        data-i18n="settings"
+      >
         الإعدادات
       </div>
 
 
+      <!-- LANGUAGE -->
       <div class="setting-group">
-        <div class="setting-label" data-i18n="languageSection">اللغة</div>
-        <div class="setting-box"><div class="setting-row"><div class="setting-name" data-i18n="languageName">لغة ناوي</div><div class="segmented"><button class="segment" data-language-choice="ar" type="button">العربية</button><button class="segment" data-language-choice="en" type="button">English</button></div></div></div>
+
+        <div
+          class="setting-label"
+          data-i18n="languageSection"
+        >
+          اللغة
+        </div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div
+              class="setting-name"
+              data-i18n="languageName"
+            >
+              لغة ناوي
+            </div>
+
+            <div class="segmented">
+
+              <button
+                class="segment"
+                data-language-choice="ar"
+                type="button"
+              >
+                العربية
+              </button>
+
+              <button
+                class="segment"
+                data-language-choice="en"
+                type="button"
+              >
+                English
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
+
+      <!-- APPEARANCE -->
       <div class="setting-group">
 
-        <div class="setting-label" data-i18n="appearanceSection">
+        <div
+          class="setting-label"
+          data-i18n="appearanceSection"
+        >
           المظهر
         </div>
 
@@ -1478,7 +1650,10 @@
 
           <div class="setting-row">
 
-            <div class="setting-name" data-i18n="modeName">
+            <div
+              class="setting-name"
+              data-i18n="modeName"
+            >
               الوضع
             </div>
 
@@ -1488,6 +1663,7 @@
                 class="segment"
                 data-theme-choice="light"
                 type="button"
+                data-i18n="light"
               >
                 فاتح
               </button>
@@ -1496,6 +1672,7 @@
                 class="segment"
                 data-theme-choice="dark"
                 type="button"
+                data-i18n="dark"
               >
                 داكن
               </button>
@@ -1509,9 +1686,13 @@
       </div>
 
 
+      <!-- COLOR -->
       <div class="setting-group">
 
-        <div class="setting-label" data-i18n="colorSection">
+        <div
+          class="setting-label"
+          data-i18n="colorSection"
+        >
           اللون
         </div>
 
@@ -1519,7 +1700,10 @@
 
           <div class="setting-row">
 
-            <div class="setting-name" data-i18n="nawyColor">
+            <div
+              class="setting-name"
+              data-i18n="nawyColor"
+            >
               لون ناوي
             </div>
 
@@ -1529,35 +1713,40 @@
                 class="color-btn green"
                 data-accent-choice="green"
                 type="button"
-                aria-label="أخضر" data-i18n-aria="green"
+                aria-label="أخضر"
+                data-i18n-aria="green"
               ></button>
 
               <button
                 class="color-btn blue"
                 data-accent-choice="blue"
                 type="button"
-                aria-label="أزرق" data-i18n-aria="blue"
+                aria-label="أزرق"
+                data-i18n-aria="blue"
               ></button>
 
               <button
                 class="color-btn purple"
                 data-accent-choice="purple"
                 type="button"
-                aria-label="بنفسجي" data-i18n-aria="purple"
+                aria-label="بنفسجي"
+                data-i18n-aria="purple"
               ></button>
 
               <button
                 class="color-btn orange"
                 data-accent-choice="orange"
                 type="button"
-                aria-label="برتقالي" data-i18n-aria="orange"
+                aria-label="برتقالي"
+                data-i18n-aria="orange"
               ></button>
 
               <button
                 class="color-btn pink"
                 data-accent-choice="pink"
                 type="button"
-                aria-label="وردي" data-i18n-aria="pink"
+                aria-label="وردي"
+                data-i18n-aria="pink"
               ></button>
 
             </div>
@@ -1569,9 +1758,13 @@
       </div>
 
 
+      <!-- DATA -->
       <div class="setting-group">
 
-        <div class="setting-label" data-i18n="dataSection">
+        <div
+          class="setting-label"
+          data-i18n="dataSection"
+        >
           البيانات
         </div>
 
@@ -1582,7 +1775,10 @@
             id="trashBtn"
             type="button"
           >
-            <span class="setting-name" data-i18n="trash">
+            <span
+              class="setting-name"
+              data-i18n="trash"
+            >
               سلة المحذوفات
             </span>
 
@@ -1592,6 +1788,7 @@
             >
               0
             </span>
+
           </button>
 
         </div>
@@ -1614,11 +1811,17 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="trash">
+      <div
+        class="sheet-title"
+        data-i18n="trash"
+      >
         سلة المحذوفات
       </div>
 
-      <div class="sheet-subtitle">
+      <div
+        class="sheet-subtitle"
+        data-i18n="trashSubtitle"
+      >
         يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.
       </div>
 
@@ -1632,12 +1835,57 @@
   </div>
 
 
+  <!-- INSTALL BANNER -->
+  <div
+    class="install-banner"
+    id="installBanner"
+    role="dialog"
+    aria-live="polite"
+    aria-label="تثبيت ناوي"
+  >
 
-  <div class="install-banner" id="installBanner" role="dialog" aria-live="polite" aria-label="تثبيت ناوي">
     <div class="install-icon">ن</div>
-    <div class="install-copy"><div class="install-title" id="installTitle">ثبّت ناوي على جهازك</div><div class="install-text" id="installText">خليه معاك أسرع وأسهل من المتصفح.</div></div>
-    <div class="install-actions"><button class="install-btn secondary" id="installDismiss" type="button">متابعة</button><button class="install-btn primary" id="installAction" type="button">تثبيت</button></div>
+
+    <div class="install-copy">
+
+      <div
+        class="install-title"
+        id="installTitle"
+      >
+        ثبّت ناوي على جهازك
+      </div>
+
+      <div
+        class="install-text"
+        id="installText"
+      >
+        خليه معاك أسرع وأسهل من المتصفح.
+      </div>
+
+    </div>
+
+    <div class="install-actions">
+
+      <button
+        class="install-btn secondary"
+        id="installDismiss"
+        type="button"
+      >
+        متابعة
+      </button>
+
+      <button
+        class="install-btn primary"
+        id="installAction"
+        type="button"
+      >
+        تثبيت
+      </button>
+
+    </div>
+
   </div>
+
 
   <!-- TOAST -->
   <div
@@ -1686,12 +1934,365 @@
     /* =========================
        I18N
     ========================= */
+
     const TRANSLATIONS = {
-      ar: {languageSection:"اللغة",languageName:"لغة ناوي",appearanceSection:"المظهر",modeName:"الوضع",colorSection:"اللون",dataSection:"البيانات",settings:"الإعدادات",trash:"سلة المحذوفات",trashSubtitle:"يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",today:"اليوم",all:"كل النوايا",completed:"المكتملة",heroToday:"ناوي على إيه النهارده؟",progressToday:"تقدمك اليوم",editIntent:"تعديل النية",done:"تمت",edit:"تعديل",delete:"حذف",cancel:"إلغاء",save:"حفظ",add:"إضافة",newIntent:"اكتب نية جديدة",taskPlaceholder:"اكتب اللي ناوي عليه...",menu:"القائمة",light:"فاتح",dark:"داكن",green:"أخضر",blue:"أزرق",purple:"بنفسجي",orange:"برتقالي",pink:"وردي",nawyColor:"لون ناوي",yesterday:"أمس",daysAgo:"منذ {n} أيام",startFirst:"ابدأ أول نية",allDone:"كل نواياك اتحققت ✨",deleted:"اتحذفت من النوايا",restored:"رجعت للنوايا",deletedForever:"اتحذفت نهائيًا",edited:"اتعدلت بنجاح",writeFirst:"اكتب النية الأول",noIntentions:"مفيش نوايا لسه",firstIntent:"اكتب أول حاجة ناوي تعملها النهارده.",noIntentionsAll:"لسه مفيش نوايا",everyThingStarts:"كل حاجة تبدأ بنية.",noAchievements:"لسه مفيش إنجازات",achievementHint:"أول ما تخلص حاجة هتظهر هنا.",previousDays:"من أيام سابقة",doneToday:"المنجز اليوم",currentIntentions:"النوايا الحالية",allDoneSection:"كل المنجز",trashEmpty:"السلة فاضية",noDeleted:"مفيش نوايا محذوفة.",restore:"استرجاع",installTitle:"ثبّت ناوي على جهازك",installText:"خليه معاك أسرع وأسهل من المتصفح.",install:"تثبيت",continue:"متابعة",installGuideTitle:"أضف ناوي إلى الشاشة الرئيسية",installGuideText:"من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",updateAvailable:"تحديث جديد من ناوي متاح.",update:"تحديث",undo:"تراجع"},
-      en: {languageSection:"Language",languageName:"NAWY language",appearanceSection:"Appearance",modeName:"Mode",colorSection:"Color",dataSection:"Data",settings:"Settings",trash:"Trash",trashSubtitle:"Restore deleted intentions or delete them permanently.",today:"Today",all:"All intentions",completed:"Completed",heroToday:"What are you up to today?",progressToday:"Today's progress",editIntent:"Edit intention",done:"Done",edit:"Edit",delete:"Delete",cancel:"Cancel",save:"Save",add:"Add",newIntent:"Write a new intention",taskPlaceholder:"Write what you intend to do...",menu:"Menu",light:"Light",dark:"Dark",green:"Green",blue:"Blue",purple:"Purple",orange:"Orange",pink:"Pink",nawyColor:"NAWY color",yesterday:"Yesterday",daysAgo:"{n} days ago",startFirst:"Start your first intention",allDone:"All your intentions are done ✨",deleted:"Removed from intentions",restored:"Restored to intentions",deletedForever:"Deleted permanently",edited:"Updated successfully",writeFirst:"Write the intention first",noIntentions:"No intentions yet",firstIntent:"Write the first thing you intend to do today.",noIntentionsAll:"No intentions yet",everyThingStarts:"Everything starts with an intention.",noAchievements:"No achievements yet",achievementHint:"Once you complete something, it will appear here.",previousDays:"Previous days",doneToday:"Done today",currentIntentions:"Current intentions",allDoneSection:"All completed",trashEmpty:"Trash is empty",noDeleted:"No deleted intentions.",restore:"Restore",installTitle:"Install NAWY on your device",installText:"Keep it faster and easier than opening the browser.",install:"Install",continue:"Continue",installGuideTitle:"Add NAWY to your Home Screen",installGuideText:"Open your browser menu and choose Add to Home Screen.",updateAvailable:"A new NAWY update is available.",update:"Update",undo:"Undo"}
+
+      ar: {
+        languageSection: "اللغة",
+        languageName: "لغة ناوي",
+        appearanceSection: "المظهر",
+        modeName: "الوضع",
+        colorSection: "اللون",
+        dataSection: "البيانات",
+        settings: "الإعدادات",
+        trash: "سلة المحذوفات",
+        trashSubtitle: "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
+        today: "اليوم",
+        all: "كل النوايا",
+        completed: "المكتملة",
+        heroToday: "ناوي على إيه النهارده؟",
+        progressToday: "تقدمك اليوم",
+        editIntent: "تعديل النية",
+        done: "تمت",
+        cancelDone: "إلغاء الإنجاز",
+        edit: "تعديل",
+        delete: "حذف",
+        cancel: "إلغاء",
+        save: "حفظ",
+        add: "إضافة",
+        newIntent: "اكتب نية جديدة",
+        taskPlaceholder: "اكتب اللي ناوي عليه...",
+        menu: "القائمة",
+        light: "فاتح",
+        dark: "داكن",
+        green: "أخضر",
+        blue: "أزرق",
+        purple: "بنفسجي",
+        orange: "برتقالي",
+        pink: "وردي",
+        nawyColor: "لون ناوي",
+        yesterday: "أمس",
+        daysAgo: "منذ {n} أيام",
+        startFirst: "ابدأ أول نية",
+        allDone: "كل نواياك اتحققت ✨",
+        deleted: "اتحذفت من النوايا",
+        restored: "رجعت للنوايا",
+        deletedForever: "اتحذفت نهائيًا",
+        edited: "اتعدلت بنجاح",
+        writeFirst: "اكتب النية الأول",
+        noIntentions: "مفيش نوايا لسه",
+        firstIntent: "اكتب أول حاجة ناوي تعملها النهارده.",
+        noIntentionsAll: "لسه مفيش نوايا",
+        everyThingStarts: "كل حاجة تبدأ بنية.",
+        noAchievements: "لسه مفيش إنجازات",
+        achievementHint: "أول ما تخلص حاجة هتظهر هنا.",
+        previousDays: "من أيام سابقة",
+        doneToday: "المنجز اليوم",
+        currentIntentions: "النوايا الحالية",
+        allDoneSection: "كل المنجز",
+        trashEmpty: "السلة فاضية",
+        noDeleted: "مفيش نوايا محذوفة.",
+        restore: "استرجاع",
+        installTitle: "ثبّت ناوي على جهازك",
+        installText: "خليه معاك أسرع وأسهل من المتصفح.",
+        install: "تثبيت",
+        continue: "متابعة",
+        installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية",
+        installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
+        updateAvailable: "تحديث جديد من ناوي متاح.",
+        update: "تحديث",
+        undo: "تراجع"
+      },
+
+      en: {
+        languageSection: "Language",
+        languageName: "NAWY language",
+        appearanceSection: "Appearance",
+        modeName: "Mode",
+        colorSection: "Color",
+        dataSection: "Data",
+        settings: "Settings",
+        trash: "Trash",
+        trashSubtitle: "Restore deleted intentions or delete them permanently.",
+        today: "Today",
+        all: "All intentions",
+        completed: "Completed",
+        heroToday: "What are you up to today?",
+        progressToday: "Today's progress",
+        editIntent: "Edit intention",
+        done: "Done",
+        cancelDone: "Undo completion",
+        edit: "Edit",
+        delete: "Delete",
+        cancel: "Cancel",
+        save: "Save",
+        add: "Add",
+        newIntent: "Write a new intention",
+        taskPlaceholder: "Write what you intend to do...",
+        menu: "Menu",
+        light: "Light",
+        dark: "Dark",
+        green: "Green",
+        blue: "Blue",
+        purple: "Purple",
+        orange: "Orange",
+        pink: "Pink",
+        nawyColor: "NAWY color",
+        yesterday: "Yesterday",
+        daysAgo: "{n} days ago",
+        startFirst: "Start your first intention",
+        allDone: "All your intentions are done ✨",
+        deleted: "Removed from intentions",
+        restored: "Restored to intentions",
+        deletedForever: "Deleted permanently",
+        edited: "Updated successfully",
+        writeFirst: "Write the intention first",
+        noIntentions: "No intentions yet",
+        firstIntent: "Write the first thing you intend to do today.",
+        noIntentionsAll: "No intentions yet",
+        everyThingStarts: "Everything starts with an intention.",
+        noAchievements: "No achievements yet",
+        achievementHint: "Once you complete something, it will appear here.",
+        previousDays: "Previous days",
+        doneToday: "Done today",
+        currentIntentions: "Current intentions",
+        allDoneSection: "All completed",
+        trashEmpty: "Trash is empty",
+        noDeleted: "No deleted intentions.",
+        restore: "Restore",
+        installTitle: "Install NAWY on your device",
+        installText: "Keep it faster and easier than opening the browser.",
+        install: "Install",
+        continue: "Continue",
+        installGuideTitle: "Add NAWY to your Home Screen",
+        installGuideText: "Open your browser menu and choose Add to Home Screen.",
+        updateAvailable: "A new NAWY update is available.",
+        update: "Update",
+        undo: "Undo"
+      }
+
     };
-    function t(key,vars={}){const dict=TRANSLATIONS[settings?.language]||TRANSLATIONS.ar;let value=dict[key]??TRANSLATIONS.ar[key]??key;Object.entries(vars).forEach(([k,v])=>value=value.replaceAll(`{${k}}`,String(v)));return value;}
-    function applyLanguage(){const lang=settings.language==="en"?"en":"ar";document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>el.placeholder=t(el.dataset.i18nPlaceholder));document.querySelectorAll("[data-i18n-aria]").forEach(el=>el.setAttribute("aria-label",t(el.dataset.i18nAria)));$$("[data-language-choice]").forEach(b=>b.classList.toggle("active",b.dataset.languageChoice===lang));}
+
+
+    function t(key, vars = {}) {
+
+      const language =
+        settings &&
+        settings.language === "en"
+          ? "en"
+          : "ar";
+
+      const dict =
+        TRANSLATIONS[language];
+
+      let value =
+        dict[key] ??
+        TRANSLATIONS.ar[key] ??
+        key;
+
+      Object.entries(vars).forEach(
+        ([keyName, valueToReplace]) => {
+
+          value =
+            value.replaceAll(
+              `{${keyName}}`,
+              String(valueToReplace)
+            );
+
+        }
+      );
+
+      return value;
+    }
+
+
+    /*
+      تطبيق اللغة بالكامل:
+      - lang
+      - dir
+      - النصوص
+      - placeholders
+      - aria labels
+      - مؤشر اللغة النشط
+    */
+
+    function applyLanguage() {
+
+      const lang =
+        settings.language === "en"
+          ? "en"
+          : "ar";
+
+      document.documentElement.lang =
+        lang;
+
+      document.documentElement.dir =
+        lang === "ar"
+          ? "rtl"
+          : "ltr";
+
+
+      document.documentElement
+        .setAttribute(
+          "data-language",
+          lang
+        );
+
+
+      $$("[data-i18n]")
+        .forEach(element => {
+
+          element.textContent =
+            t(element.dataset.i18n);
+
+        });
+
+
+      $$("[data-i18n-placeholder]")
+        .forEach(element => {
+
+          element.placeholder =
+            t(
+              element.dataset.i18nPlaceholder
+            );
+
+        });
+
+
+      $$("[data-i18n-aria]")
+        .forEach(element => {
+
+          element.setAttribute(
+            "aria-label",
+            t(element.dataset.i18nAria)
+          );
+
+        });
+
+
+      $$("[data-language-choice]")
+        .forEach(button => {
+
+          const active =
+            button.dataset.languageChoice ===
+            lang;
+
+          button.classList.toggle(
+            "active",
+            active
+          );
+
+          button.setAttribute(
+            "aria-pressed",
+            active
+          );
+
+        });
+
+
+      updateDynamicLanguageText();
+
+    }
+
+
+    function updateDynamicLanguageText() {
+
+      /*
+        نص زر إجراء المهمة
+      */
+
+      if (selectedTaskId) {
+
+        const task =
+          tasks.find(
+            item =>
+              item.id === selectedTaskId
+          );
+
+        if (task) {
+
+          const label =
+            task.completed
+              ? t("cancelDone")
+              : t("done");
+
+          const actionButton =
+            $("#actionComplete");
+
+          if (actionButton) {
+
+            const text =
+              actionButton.querySelector(
+                "span:last-child"
+              );
+
+            if (text) {
+              text.textContent = label;
+            }
+
+          }
+
+        }
+
+      }
+
+
+      /*
+        النص الخاص بالتقدم
+      */
+
+      if (typeof updateProgress === "function") {
+        updateProgress();
+      }
+
+
+      /*
+        زر الحذف النهائي في السلة
+      */
+
+      $$(".trash-delete-button")
+        .forEach(button => {
+
+          button.textContent =
+            t("delete");
+
+        });
+
+
+      /*
+        Accessibility للـ install banner
+      */
+
+      if (installTitle) {
+
+        if (deferredInstallPrompt) {
+
+          installTitle.textContent =
+            t("installTitle");
+
+          installText.textContent =
+            t("installText");
+
+        } else {
+
+          installTitle.textContent =
+            t("installGuideTitle");
+
+          installText.textContent =
+            t("installGuideText");
+
+        }
+
+        installAction.textContent =
+          t("install");
+
+        installDismiss.textContent =
+          t("continue");
+
+      }
+
+    }
+
 
     /* =========================
        DEFAULT SETTINGS
@@ -1731,10 +2332,10 @@
        DOM
     ========================= */
 
-    const $ = (selector) =>
+    const $ = selector =>
       document.querySelector(selector);
 
-    const $$ = (selector) =>
+    const $$ = selector =>
       [...document.querySelectorAll(selector)];
 
 
@@ -1756,16 +2357,49 @@
     const settingsOverlay = $("#settingsOverlay");
     const trashOverlay = $("#trashOverlay");
 
-    const actionTaskPreview = $("#actionTaskPreview");
+    const actionTaskPreview =
+      $("#actionTaskPreview");
 
-    const editInput = $("#editInput");
+    const editInput =
+      $("#editInput");
 
-    const trashList = $("#trashList");
-    const trashCount = $("#trashCount");
+    const trashList =
+      $("#trashList");
 
-    const toast = $("#toast");
-    const toastMessage = $("#toastMessage");
-    const toastUndo = $("#toastUndo");
+    const trashCount =
+      $("#trashCount");
+
+    const toast =
+      $("#toast");
+
+    const toastMessage =
+      $("#toastMessage");
+
+    const toastUndo =
+      $("#toastUndo");
+
+
+    /* =========================
+       INSTALL DOM
+    ========================= */
+
+    let deferredInstallPrompt = null;
+    let installBannerDismissed = false;
+
+    const installBanner =
+      $("#installBanner");
+
+    const installTitle =
+      $("#installTitle");
+
+    const installText =
+      $("#installText");
+
+    const installAction =
+      $("#installAction");
+
+    const installDismiss =
+      $("#installDismiss");
 
 
     /* =========================
@@ -1773,29 +2407,39 @@
     ========================= */
 
     function pad(number) {
-      return String(number).padStart(2, "0");
+      return String(number)
+        .padStart(2, "0");
     }
 
 
-    function getDateKey(date = new Date()) {
+    function getDateKey(
+      date = new Date()
+    ) {
+
       return [
         date.getFullYear(),
         pad(date.getMonth() + 1),
         pad(date.getDate())
       ].join("-");
+
     }
 
 
-    function formatDate(date = new Date()) {
+    function formatDate(
+      date = new Date()
+    ) {
 
       return new Intl.DateTimeFormat(
-        settings.language === "en" ? "en-US" : "ar-EG",
+        settings.language === "en"
+          ? "en-US"
+          : "ar-EG",
         {
           weekday: "long",
           day: "numeric",
           month: "long"
         }
       ).format(date);
+
     }
 
 
@@ -1805,19 +2449,27 @@
         return "";
       }
 
-      const today = getDateKey();
+      const today =
+        getDateKey();
 
       if (task.taskDay === today) {
         return t("today");
       }
 
-      const taskDate = new Date(
-        `${task.taskDay}T12:00:00`
+      const taskDate =
+        new Date(
+          `${task.taskDay}T12:00:00`
+        );
+
+      const currentDate =
+        new Date();
+
+      currentDate.setHours(
+        12,
+        0,
+        0,
+        0
       );
-
-      const currentDate = new Date();
-
-      currentDate.setHours(12, 0, 0, 0);
 
       const diff =
         Math.round(
@@ -1830,16 +2482,22 @@
       }
 
       if (diff > 1 && diff < 7) {
-        return t("daysAgo", { n: diff });
+        return t(
+          "daysAgo",
+          { n: diff }
+        );
       }
 
       return new Intl.DateTimeFormat(
-        settings.language === "en" ? "en-US" : "ar-EG",
+        settings.language === "en"
+          ? "en-US"
+          : "ar-EG",
         {
           day: "numeric",
           month: "short"
         }
       ).format(taskDate);
+
     }
 
 
@@ -1849,19 +2507,29 @@
 
     function normalizeTask(task) {
 
-      if (!task || typeof task !== "object") {
+      if (
+        !task ||
+        typeof task !== "object"
+      ) {
         return null;
       }
 
       const createdAt =
-        Number(task.createdAt) || Date.now();
+        Number(task.createdAt) ||
+        Date.now();
 
       return {
+
         id:
-          String(task.id || createId()),
+          String(
+            task.id ||
+            createId()
+          ),
 
         text:
-          String(task.text || "").trim(),
+          String(
+            task.text || ""
+          ).trim(),
 
         completed:
           Boolean(task.completed),
@@ -1881,7 +2549,9 @@
           task.completedAt
             ? Number(task.completedAt)
             : null
+
       };
+
     }
 
 
@@ -1893,23 +2563,32 @@
           .toString(36)
           .slice(2, 9)
       );
+
     }
 
 
     /* =========================
-       STORAGE HELPERS
+       STORAGE
     ========================= */
 
-    function safeParse(value, fallback) {
+    function safeParse(
+      value,
+      fallback
+    ) {
 
       try {
-        const parsed = JSON.parse(value);
+
+        const parsed =
+          JSON.parse(value);
 
         return parsed ?? fallback;
 
       } catch {
+
         return fallback;
+
       }
+
     }
 
 
@@ -1940,20 +2619,26 @@
         );
 
 
-      tasks = Array.isArray(savedTasks)
-        ? savedTasks
-            .map(normalizeTask)
-            .filter(Boolean)
-            .filter(task => task.text)
-        : [];
+      tasks =
+        Array.isArray(savedTasks)
+          ? savedTasks
+              .map(normalizeTask)
+              .filter(Boolean)
+              .filter(
+                task => task.text
+              )
+          : [];
 
 
-      trash = Array.isArray(savedTrash)
-        ? savedTrash
-            .map(normalizeTask)
-            .filter(Boolean)
-            .filter(task => task.text)
-        : [];
+      trash =
+        Array.isArray(savedTrash)
+          ? savedTrash
+              .map(normalizeTask)
+              .filter(Boolean)
+              .filter(
+                task => task.text
+              )
+          : [];
 
 
       settings = {
@@ -1966,7 +2651,10 @@
         !["dark", "light"]
           .includes(settings.theme)
       ) {
-        settings.theme = "dark";
+
+        settings.theme =
+          "dark";
+
       }
 
 
@@ -1979,11 +2667,21 @@
           "pink"
         ].includes(settings.accent)
       ) {
-        settings.accent = "green";
+
+        settings.accent =
+          "green";
+
       }
 
-      if (!["ar", "en"].includes(settings.language)) {
-        settings.language = "ar";
+
+      if (
+        !["ar", "en"]
+          .includes(settings.language)
+      ) {
+
+        settings.language =
+          "ar";
+
       }
 
     }
@@ -1995,6 +2693,7 @@
         STORAGE_KEYS.tasks,
         JSON.stringify(tasks)
       );
+
     }
 
 
@@ -2004,6 +2703,7 @@
         STORAGE_KEYS.trash,
         JSON.stringify(trash)
       );
+
     }
 
 
@@ -2013,6 +2713,7 @@
         STORAGE_KEYS.settings,
         JSON.stringify(settings)
       );
+
     }
 
 
@@ -2038,10 +2739,18 @@
       $$("[data-theme-choice]")
         .forEach(button => {
 
+          const active =
+            button.dataset.themeChoice ===
+            settings.theme;
+
           button.classList.toggle(
             "active",
-            button.dataset.themeChoice ===
-            settings.theme
+            active
+          );
+
+          button.setAttribute(
+            "aria-pressed",
+            active
           );
 
         });
@@ -2050,13 +2759,19 @@
       $$("[data-accent-choice]")
         .forEach(button => {
 
+          const active =
+            button.dataset.accentChoice ===
+            settings.accent;
+
           button.classList.toggle(
             "active",
-            button.dataset.accentChoice ===
-            settings.accent
+            active
           );
 
         });
+
+
+      applyLanguage();
 
     }
 
@@ -2069,7 +2784,8 @@
     function addTask(text) {
 
       const cleanText =
-        String(text || "").trim();
+        String(text || "")
+          .trim();
 
       if (!cleanText) {
         return false;
@@ -2077,13 +2793,22 @@
 
 
       const task = {
+
         id: createId(),
+
         text: cleanText,
+
         completed: false,
+
         starred: false,
+
         createdAt: Date.now(),
-        taskDay: getDateKey(),
+
+        taskDay:
+          getDateKey(),
+
         completedAt: null
+
       };
 
 
@@ -2098,6 +2823,7 @@
       playAddSound();
 
       return true;
+
     }
 
 
@@ -2144,15 +2870,19 @@
             );
 
           if (element) {
+
             element.classList.add(
               "just-completed"
             );
 
             setTimeout(() => {
+
               element.classList.remove(
                 "just-completed"
               );
+
             }, 550);
+
           }
 
         });
@@ -2204,7 +2934,10 @@
 
 
       const [deleted] =
-        tasks.splice(index, 1);
+        tasks.splice(
+          index,
+          1
+        );
 
 
       trash.unshift({
@@ -2218,6 +2951,7 @@
 
       render();
 
+
       showToast(
         t("deleted"),
         true,
@@ -2230,10 +2964,12 @@
             );
 
           if (trashIndex !== -1) {
+
             trash.splice(
               trashIndex,
               1
             );
+
           }
 
           tasks.unshift(deleted);
@@ -2266,18 +3002,27 @@
 
       selectedTaskId = id;
 
-      editInput.value = task.text;
+      editInput.value =
+        task.text;
 
-      closeOverlay(actionOverlay);
+      closeOverlay(
+        actionOverlay
+      );
 
-      openOverlay(editOverlay);
+      openOverlay(
+        editOverlay
+      );
+
 
       setTimeout(() => {
+
         editInput.focus();
+
         editInput.setSelectionRange(
           editInput.value.length,
           editInput.value.length
         );
+
       }, 100);
 
     }
@@ -2294,9 +3039,11 @@
         editInput.value.trim();
 
       if (!text) {
+
         showToast(
           t("writeFirst")
         );
+
         return;
       }
 
@@ -2304,7 +3051,8 @@
       const task =
         tasks.find(
           item =>
-            item.id === selectedTaskId
+            item.id ===
+            selectedTaskId
         );
 
 
@@ -2313,17 +3061,23 @@
       }
 
 
-      task.text = text;
+      task.text =
+        text;
 
       saveTasks();
 
-      closeOverlay(editOverlay);
+      closeOverlay(
+        editOverlay
+      );
 
       render();
 
-      showToast(t("edited"));
+      showToast(
+        t("edited")
+      );
 
-      selectedTaskId = null;
+      selectedTaskId =
+        null;
 
     }
 
@@ -2336,7 +3090,8 @@
 
       const index =
         trash.findIndex(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
       if (index === -1) {
@@ -2345,13 +3100,15 @@
 
 
       const [task] =
-        trash.splice(index, 1);
+        trash.splice(
+          index,
+          1
+        );
 
 
       delete task.deletedAt;
 
       tasks.unshift(task);
-
 
       saveTasks();
       saveTrash();
@@ -2369,7 +3126,8 @@
 
       trash =
         trash.filter(
-          item => item.id !== id
+          item =>
+            item.id !== id
         );
 
       saveTrash();
@@ -2389,7 +3147,8 @@
 
     function setView(view) {
 
-      currentView = view;
+      currentView =
+        view;
 
       closeAllOverlays();
 
@@ -2435,7 +3194,9 @@
           task.completed &&
           task.completedAt &&
           getDateKey(
-            new Date(task.completedAt)
+            new Date(
+              task.completedAt
+            )
           ) === today
       );
 
@@ -2458,6 +3219,7 @@
         task =>
           task.completed
       );
+
     }
 
 
@@ -2470,25 +3232,28 @@
       heroDate.textContent =
         formatDate();
 
-
       updateHero();
 
-
       updateProgress();
-
 
       content.innerHTML = "";
 
 
-      if (currentView === "today") {
+      if (
+        currentView === "today"
+      ) {
 
         renderToday();
 
-      } else if (currentView === "all") {
+      } else if (
+        currentView === "all"
+      ) {
 
         renderAll();
 
-      } else if (currentView === "completed") {
+      } else if (
+        currentView === "completed"
+      ) {
 
         renderCompleted();
 
@@ -2497,12 +3262,15 @@
 
       updateMenuState();
 
+      updateDynamicLanguageText();
+
     }
 
 
     function updateHero() {
 
       const titles = {
+
         today:
           t("heroToday"),
 
@@ -2511,6 +3279,7 @@
 
         completed:
           t("completed")
+
       };
 
 
@@ -2662,7 +3431,9 @@
         getAllCompleted();
 
 
-      if (completed.length === 0) {
+      if (
+        completed.length === 0
+      ) {
 
         content.appendChild(
           createEmptyState(
@@ -2698,21 +3469,27 @@
     ) {
 
       const section =
-        document.createElement("section");
+        document.createElement(
+          "section"
+        );
 
       section.className =
         "section";
 
 
       const head =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       head.className =
         "section-head";
 
 
       const titleEl =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       titleEl.className =
         "section-title";
@@ -2722,7 +3499,9 @@
 
 
       const count =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       count.className =
         "section-count";
@@ -2738,23 +3517,27 @@
 
 
       const list =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       list.className =
         "task-list";
 
 
-      taskArray.forEach(task => {
+      taskArray.forEach(
+        task => {
 
-        list.appendChild(
-          createTaskElement(
-            task,
-            showMeta,
-            completedSection
-          )
-        );
+          list.appendChild(
+            createTaskElement(
+              task,
+              showMeta,
+              completedSection
+            )
+          );
 
-      });
+        }
+      );
 
 
       section.append(
@@ -2764,6 +3547,7 @@
 
 
       return section;
+
     }
 
 
@@ -2778,32 +3562,38 @@
     ) {
 
       const article =
-        document.createElement("article");
+        document.createElement(
+          "article"
+        );
 
       article.className =
         "task" +
-        (task.completed
-          ? " completed"
-          : "");
+        (
+          task.completed
+            ? " completed"
+            : ""
+        );
 
       article.dataset.taskId =
         task.id;
 
 
-      /* Checkbox */
-
       const checkbox =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      checkbox.type = "button";
+      checkbox.type =
+        "button";
 
       checkbox.className =
         "task-checkbox";
 
+
       checkbox.setAttribute(
         "aria-label",
         task.completed
-          ? "إلغاء الإنجاز"
+          ? t("cancelDone")
           : t("done")
       );
 
@@ -2829,23 +3619,27 @@
 
           event.stopPropagation();
 
-          completeTask(task.id);
+          completeTask(
+            task.id
+          );
 
         }
       );
 
 
-      /* Main */
-
       const main =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       main.className =
         "task-main";
 
 
       const text =
-        document.createElement("p");
+        document.createElement(
+          "p"
+        );
 
       text.className =
         "task-text";
@@ -2859,11 +3653,14 @@
 
       if (
         showMeta ||
-        task.taskDay !== getDateKey()
+        task.taskDay !==
+        getDateKey()
       ) {
 
         const meta =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         meta.className =
           "task-meta";
@@ -2878,33 +3675,46 @@
 
       main.addEventListener(
         "click",
-        () => openAction(task.id)
+        () =>
+          openAction(task.id)
       );
 
 
-      /* Star */
-
       const star =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      star.type = "button";
+      star.type =
+        "button";
 
       star.className =
         "task-star" +
-        (task.starred
-          ? " active"
-          : "");
+        (
+          task.starred
+            ? " active"
+            : ""
+        );
 
       star.innerHTML =
         task.starred
           ? "★"
           : "☆";
 
+
       star.setAttribute(
         "aria-label",
         task.starred
-          ? (settings.language === "en" ? "Remove favorite" : "إزالة المفضلة")
-          : (settings.language === "en" ? "Favorite" : "تمييز")
+          ? (
+              settings.language === "en"
+                ? "Remove favorite"
+                : "إزالة المفضلة"
+            )
+          : (
+              settings.language === "en"
+                ? "Favorite"
+                : "تمييز"
+            )
       );
 
 
@@ -2914,7 +3724,9 @@
 
           event.stopPropagation();
 
-          toggleStar(task.id);
+          toggleStar(
+            task.id
+          );
 
         }
       );
@@ -2927,10 +3739,8 @@
       );
 
 
-      /* Long press */
-
-      let pressTimer = null;
-      let longPressed = false;
+      let pressTimer =
+        null;
 
 
       article.addEventListener(
@@ -2946,17 +3756,17 @@
           }
 
 
-          longPressed = false;
-
-
           pressTimer =
-            setTimeout(() => {
+            setTimeout(
+              () => {
 
-              longPressed = true;
+                openAction(
+                  task.id
+                );
 
-              openAction(task.id);
-
-            }, 550);
+              },
+              550
+            );
 
         }
       );
@@ -2966,23 +3776,26 @@
         "pointerup",
         "pointercancel",
         "pointerleave"
-      ].forEach(type => {
+      ].forEach(
+        type => {
 
-        article.addEventListener(
-          type,
-          () => {
+          article.addEventListener(
+            type,
+            () => {
 
-            clearTimeout(
-              pressTimer
-            );
+              clearTimeout(
+                pressTimer
+              );
 
-          }
-        );
+            }
+          );
 
-      });
+        }
+      );
 
 
       return article;
+
     }
 
 
@@ -2997,7 +3810,9 @@
     ) {
 
       const box =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       box.className =
         "task-empty";
@@ -3019,6 +3834,7 @@
 
 
       return box;
+
     }
 
 
@@ -3036,18 +3852,21 @@
 
       const completed =
         today.filter(
-          task => task.completed
+          task =>
+            task.completed
         ).length;
 
 
-      let percentage = 0;
+      let percentage =
+        0;
 
 
       if (total > 0) {
 
         percentage =
           Math.round(
-            (completed / total) * 100
+            (completed / total) *
+            100
           );
 
       }
@@ -3065,7 +3884,9 @@
         progressLabel.textContent =
           t("startFirst");
 
-      } else if (percentage === 100) {
+      } else if (
+        percentage === 100
+      ) {
 
         progressLabel.textContent =
           t("allDone");
@@ -3073,7 +3894,7 @@
       } else {
 
         progressLabel.textContent =
-          "تقدمك اليوم";
+          t("progressToday");
 
       }
 
@@ -3108,7 +3929,8 @@
 
       const task =
         tasks.find(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
       if (!task) {
@@ -3116,18 +3938,25 @@
       }
 
 
-      selectedTaskId = id;
+      selectedTaskId =
+        id;
 
       actionTaskPreview.textContent =
         task.text;
 
 
-      $("#actionComplete")
-        .querySelector("span:last-child")
+      const actionButton =
+        $("#actionComplete");
+
+
+      actionButton
+        .querySelector(
+          "span:last-child"
+        )
         .textContent =
           task.completed
-            ? "إلغاء الإنجاز"
-            : "تمت";
+            ? t("cancelDone")
+            : t("done");
 
 
       openOverlay(
@@ -3154,7 +3983,8 @@
             actionOverlay
           );
 
-          selectedTaskId = null;
+          selectedTaskId =
+            null;
 
         }
       );
@@ -3193,7 +4023,8 @@
             actionOverlay
           );
 
-          selectedTaskId = null;
+          selectedTaskId =
+            null;
 
           deleteTask(id);
 
@@ -3205,7 +4036,9 @@
        OVERLAYS
     ========================= */
 
-    function openOverlay(overlay) {
+    function openOverlay(
+      overlay
+    ) {
 
       overlay.classList.add(
         "show"
@@ -3223,7 +4056,9 @@
     }
 
 
-    function closeOverlay(overlay) {
+    function closeOverlay(
+      overlay
+    ) {
 
       overlay.classList.remove(
         "show"
@@ -3257,32 +4092,36 @@
           closeOverlay
         );
 
-      selectedTaskId = null;
+      selectedTaskId =
+        null;
 
     }
 
 
     $$(".overlay")
-      .forEach(overlay => {
+      .forEach(
+        overlay => {
 
-        overlay.addEventListener(
-          "click",
-          event => {
+          overlay.addEventListener(
+            "click",
+            event => {
 
-            if (
-              event.target === overlay
-            ) {
-
-              closeOverlay(
+              if (
+                event.target ===
                 overlay
-              );
+              ) {
+
+                closeOverlay(
+                  overlay
+                );
+
+              }
 
             }
+          );
 
-          }
-        );
-
-      });
+        }
+      );
 
 
     /* =========================
@@ -3303,20 +4142,22 @@
 
 
     $$("[data-view]")
-      .forEach(button => {
+      .forEach(
+        button => {
 
-        button.addEventListener(
-          "click",
-          () => {
+          button.addEventListener(
+            "click",
+            () => {
 
-            setView(
-              button.dataset.view
-            );
+              setView(
+                button.dataset.view
+              );
 
-          }
-        );
+            }
+          );
 
-      });
+        }
+      );
 
 
     $("#settingsBtn")
@@ -3339,59 +4180,127 @@
 
 
     /* =========================
-       SETTINGS
+       THEME
     ========================= */
 
     $$("[data-theme-choice]")
-      .forEach(button => {
+      .forEach(
+        button => {
 
-        button.addEventListener(
-          "click",
-          () => {
+          button.addEventListener(
+            "click",
+            () => {
 
-            settings.theme =
-              button.dataset.themeChoice;
+              settings.theme =
+                button.dataset.themeChoice;
 
-            saveSettings();
+              saveSettings();
 
-            applySettings();
+              applySettings();
 
-          }
-        );
+            }
+          );
 
-      });
+        }
+      );
 
+
+    /* =========================
+       ACCENT
+    ========================= */
 
     $$("[data-accent-choice]")
-      .forEach(button => {
+      .forEach(
+        button => {
 
-        button.addEventListener(
-          "click",
-          () => {
+          button.addEventListener(
+            "click",
+            () => {
 
-            settings.accent =
-              button.dataset.accentChoice;
+              settings.accent =
+                button.dataset.accentChoice;
 
-            saveSettings();
+              saveSettings();
 
-            applySettings();
+              applySettings();
 
-          }
-        );
+            }
+          );
 
-      });
+        }
+      );
 
 
-    $$('[data-language-choice]').forEach(button => {
-      button.addEventListener("click", () => {
-        settings.language = button.dataset.languageChoice === "en" ? "en" : "ar";
-        saveSettings();
-        applySettings();
-        render();
-        renderSettings();
-        renderTrash();
-      });
-    });
+    /* =========================
+       LANGUAGE
+    ========================= */
+
+    $$("[data-language-choice]")
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const newLanguage =
+                button.dataset.languageChoice === "en"
+                  ? "en"
+                  : "ar";
+
+
+              if (
+                settings.language ===
+                newLanguage
+              ) {
+
+                applyLanguage();
+
+                return;
+
+              }
+
+
+              settings.language =
+                newLanguage;
+
+
+              saveSettings();
+
+
+              /*
+                التغيير الفوري:
+                RTL <-> LTR
+              */
+
+              applyLanguage();
+
+
+              /*
+                إعادة رسم كل المحتوى
+                باللغة الجديدة.
+              */
+
+              render();
+
+
+              /*
+                تحديث حالة زر اللغة
+                بعد إعادة الرسم.
+              */
+
+              applyLanguage();
+
+              renderSettings();
+
+              renderTrash();
+
+            }
+          );
+
+        }
+      );
+
 
     function renderSettings() {
 
@@ -3431,11 +4340,13 @@
       trashCount.textContent =
         trash.length;
 
+      trashList.innerHTML =
+        "";
 
-      trashList.innerHTML = "";
 
-
-      if (trash.length === 0) {
+      if (
+        trash.length === 0
+      ) {
 
         trashList.appendChild(
           createEmptyState(
@@ -3446,88 +4357,101 @@
         );
 
         return;
+
       }
 
 
-      trash.forEach(task => {
+      trash.forEach(
+        task => {
 
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "trash-item";
-
-
-        const text =
-          document.createElement("div");
-
-        text.className =
-          "trash-text";
-
-        text.textContent =
-          task.text;
-
-
-        const restore =
-          document.createElement("button");
-
-        restore.type = "button";
-
-        restore.className =
-          "small-btn";
-
-        restore.textContent =
-          t("restore");
-
-
-        restore.addEventListener(
-          "click",
-          () => {
-
-            restoreTask(
-              task.id
+          const item =
+            document.createElement(
+              "div"
             );
 
-          }
-        );
+          item.className =
+            "trash-item";
 
 
-        const forever =
-          document.createElement("button");
-
-        forever.type = "button";
-
-        forever.className =
-          "small-btn danger";
-
-        forever.textContent =
-          "حذف";
-
-
-        forever.addEventListener(
-          "click",
-          () => {
-
-            deleteForever(
-              task.id
+          const text =
+            document.createElement(
+              "div"
             );
 
-          }
-        );
+          text.className =
+            "trash-text";
+
+          text.textContent =
+            task.text;
 
 
-        item.append(
-          text,
-          restore,
-          forever
-        );
+          const restore =
+            document.createElement(
+              "button"
+            );
+
+          restore.type =
+            "button";
+
+          restore.className =
+            "small-btn";
+
+          restore.textContent =
+            t("restore");
 
 
-        trashList.appendChild(
-          item
-        );
+          restore.addEventListener(
+            "click",
+            () => {
 
-      });
+              restoreTask(
+                task.id
+              );
+
+            }
+          );
+
+
+          const forever =
+            document.createElement(
+              "button"
+            );
+
+          forever.type =
+            "button";
+
+          forever.className =
+            "small-btn danger trash-delete-button";
+
+          forever.textContent =
+            t("delete");
+
+
+          forever.addEventListener(
+            "click",
+            () => {
+
+              deleteForever(
+                task.id
+              );
+
+            }
+          );
+
+
+          item.append(
+            text,
+            restore,
+            forever
+          );
+
+
+          trashList.appendChild(
+            item
+          );
+
+        }
+      );
 
     }
 
@@ -3552,7 +4476,8 @@
             editOverlay
           );
 
-          selectedTaskId = null;
+          selectedTaskId =
+            null;
 
         }
       );
@@ -3585,7 +4510,9 @@
     function updateComposer() {
 
       const hasText =
-        taskInput.value.trim().length > 0;
+        taskInput.value
+          .trim()
+          .length > 0;
 
 
       sendBtn.classList.toggle(
@@ -3624,7 +4551,9 @@
             event.preventDefault();
 
             document
-              .getElementById("composer")
+              .getElementById(
+                "composer"
+              )
               .requestSubmit();
 
           }
@@ -3650,9 +4579,12 @@
           }
 
 
-          if (addTask(text)) {
+          if (
+            addTask(text)
+          ) {
 
-            taskInput.value = "";
+            taskInput.value =
+              "";
 
             autoResizeTextarea();
 
@@ -3731,7 +4663,8 @@
         "show"
       );
 
-      undoAction = null;
+      undoAction =
+        null;
 
     }
 
@@ -3762,7 +4695,9 @@
 
     function getAudioContext() {
 
-      if (!typingAudioContext) {
+      if (
+        !typingAudioContext
+      ) {
 
         const AudioContext =
           window.AudioContext ||
@@ -3783,7 +4718,8 @@
         "suspended"
       ) {
 
-        typingAudioContext.resume()
+        typingAudioContext
+          .resume()
           .catch(() => {});
 
       }
@@ -3832,7 +4768,10 @@
 
 
         gain.gain.exponentialRampToValueAtTime(
-          Math.max(volume, 0.0002),
+          Math.max(
+            volume,
+            0.0002
+          ),
           ctx.currentTime + .008
         );
 
@@ -3845,13 +4784,17 @@
 
         oscillator.connect(gain);
 
-        gain.connect(ctx.destination);
+        gain.connect(
+          ctx.destination
+        );
 
 
         oscillator.start();
 
         oscillator.stop(
-          ctx.currentTime + duration + .01
+          ctx.currentTime +
+          duration +
+          .01
         );
 
       } catch {
@@ -3868,7 +4811,8 @@
 
 
       if (
-        now - lastTypingSound < 55
+        now - lastTypingSound <
+        55
       ) {
         return;
       }
@@ -3923,16 +4867,19 @@
       );
 
 
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        playTone(
-          700,
-          .12,
-          .035,
-          "sine"
-        );
+          playTone(
+            700,
+            .12,
+            .035,
+            "sine"
+          );
 
-      }, 55);
+        },
+        55
+      );
 
     }
 
@@ -3944,39 +4891,204 @@
     function escapeHtml(value) {
 
       return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+          "&",
+          "&amp;"
+        )
+        .replaceAll(
+          "<",
+          "&lt;"
+        )
+        .replaceAll(
+          ">",
+          "&gt;"
+        )
+        .replaceAll(
+          '"',
+          "&quot;"
+        )
+        .replaceAll(
+          "'",
+          "&#039;"
+        );
 
     }
 
 
     /* =========================
-       INSTALL BANNER
+       INSTALL
     ========================= */
-    let deferredInstallPrompt = null;
-    let installBannerDismissed = false;
-    const installBanner = $("#installBanner");
-    const installTitle = $("#installTitle");
-    const installText = $("#installText");
-    const installAction = $("#installAction");
-    const installDismiss = $("#installDismiss");
-    function isStandalone(){return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;}
-    function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
-    function showInstallBanner(){
-      if(isStandalone() || installBannerDismissed) return;
-      if(deferredInstallPrompt){installTitle.textContent=t("installTitle");installText.textContent=t("installText");installAction.textContent=t("install");}
-      else {installTitle.textContent=t("installGuideTitle");installText.textContent=t("installGuideText");installAction.textContent=t("install");}
-      installDismiss.textContent=t("continue");installBanner.classList.add("show");
+
+    function isStandalone() {
+
+      return (
+        window.matchMedia(
+          "(display-mode: standalone)"
+        ).matches ||
+        window.navigator.standalone === true
+      );
+
     }
-    function hideInstallBanner(){installBanner.classList.remove("show");}
-    window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstallPrompt=event;showInstallBanner();});
-    window.addEventListener("appinstalled",()=>{deferredInstallPrompt=null;hideInstallBanner();});
-    installAction.addEventListener("click",async()=>{if(!deferredInstallPrompt){if(isIOS())showToast(t("installGuideText"));return;}const promptEvent=deferredInstallPrompt;deferredInstallPrompt=null;hideInstallBanner();try{await promptEvent.prompt();await promptEvent.userChoice;}catch{}});
-    installDismiss.addEventListener("click",()=>{installBannerDismissed=true;hideInstallBanner();});
-    window.addEventListener("load",()=>setTimeout(showInstallBanner,700));
+
+
+    function isIOS() {
+
+      return /iphone|ipad|ipod/i
+        .test(
+          navigator.userAgent
+        );
+
+    }
+
+
+    function showInstallBanner() {
+
+      if (
+        isStandalone() ||
+        installBannerDismissed
+      ) {
+        return;
+      }
+
+
+      if (deferredInstallPrompt) {
+
+        installTitle.textContent =
+          t("installTitle");
+
+        installText.textContent =
+          t("installText");
+
+        installAction.textContent =
+          t("install");
+
+      } else {
+
+        installTitle.textContent =
+          t("installGuideTitle");
+
+        installText.textContent =
+          t("installGuideText");
+
+        installAction.textContent =
+          t("install");
+
+      }
+
+
+      installDismiss.textContent =
+        t("continue");
+
+
+      installBanner.classList.add(
+        "show"
+      );
+
+    }
+
+
+    function hideInstallBanner() {
+
+      installBanner.classList.remove(
+        "show"
+      );
+
+    }
+
+
+    window.addEventListener(
+      "beforeinstallprompt",
+      event => {
+
+        event.preventDefault();
+
+        deferredInstallPrompt =
+          event;
+
+        showInstallBanner();
+
+      }
+    );
+
+
+    window.addEventListener(
+      "appinstalled",
+      () => {
+
+        deferredInstallPrompt =
+          null;
+
+        hideInstallBanner();
+
+      }
+    );
+
+
+    installAction.addEventListener(
+      "click",
+      async () => {
+
+        if (!deferredInstallPrompt) {
+
+          if (isIOS()) {
+
+            showToast(
+              t("installGuideText")
+            );
+
+          }
+
+          return;
+
+        }
+
+
+        const promptEvent =
+          deferredInstallPrompt;
+
+        deferredInstallPrompt =
+          null;
+
+        hideInstallBanner();
+
+
+        try {
+
+          await promptEvent.prompt();
+
+          await promptEvent.userChoice;
+
+        } catch {}
+
+      }
+    );
+
+
+    installDismiss.addEventListener(
+      "click",
+      () => {
+
+        installBannerDismissed =
+          true;
+
+        hideInstallBanner();
+
+      }
+    );
+
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        setTimeout(
+          showInstallBanner,
+          700
+        );
+
+      }
+    );
+
 
     /* =========================
        DAY CHANGE
@@ -4001,7 +5113,8 @@
 
 
       if (
-        today !== lastKnownDay
+        today !==
+        lastKnownDay
       ) {
 
         lastKnownDay =
@@ -4024,21 +5137,21 @@
        KEYBOARD
     ========================= */
 
-    document
-      .addEventListener(
-        "keydown",
-        event => {
+    document.addEventListener(
+      "keydown",
+      event => {
 
-          if (
-            event.key === "Escape"
-          ) {
+        if (
+          event.key ===
+          "Escape"
+        ) {
 
-            closeAllOverlays();
-
-          }
+          closeAllOverlays();
 
         }
-      );
+
+      }
+    );
 
 
     /* =========================
@@ -4048,6 +5161,13 @@
     function init() {
 
       loadData();
+
+      /*
+        مهم:
+        applySettings() الآن تطبق
+        Theme + Accent + Language
+        معًا.
+      */
 
       applySettings();
 
@@ -4070,26 +5190,152 @@
        SERVICE WORKER
     ========================= */
 
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load",()=>{
-        navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).then(registration=>{
-          registration.update().catch(()=>{});
-          registration.addEventListener("updatefound",()=>{
-            const worker=registration.installing; if(!worker)return;
-            worker.addEventListener("statechange",()=>{
-              if(worker.state==="installed" && navigator.serviceWorker.controller){
-                showToast(t("updateAvailable"));
-                const b=document.createElement("button"); b.type="button"; b.className="toast-undo"; b.textContent=t("update");
-                b.addEventListener("click",()=>worker.postMessage({type:"SKIP_WAITING"})); toast.appendChild(b); setTimeout(()=>b.remove(),5000);
+    if (
+      "serviceWorker" in navigator
+    ) {
+
+      window.addEventListener(
+        "load",
+        () => {
+
+          navigator.serviceWorker
+            .register(
+              "./sw.js",
+              {
+                updateViaCache:
+                  "none"
               }
-            });
-          });
-          setInterval(()=>registration.update().catch(()=>{}),60*60*1000);
-        }).catch(()=>{});
-      });
-      navigator.serviceWorker.addEventListener("controllerchange",()=>window.location.reload());
+            )
+            .then(
+              registration => {
+
+                registration
+                  .update()
+                  .catch(
+                    () => {}
+                  );
+
+
+                registration
+                  .addEventListener(
+                    "updatefound",
+                    () => {
+
+                      const worker =
+                        registration.installing;
+
+                      if (!worker) {
+                        return;
+                      }
+
+
+                      worker
+                        .addEventListener(
+                          "statechange",
+                          () => {
+
+                            if (
+                              worker.state ===
+                              "installed" &&
+                              navigator
+                                .serviceWorker
+                                .controller
+                            ) {
+
+                              showToast(
+                                t(
+                                  "updateAvailable"
+                                )
+                              );
+
+
+                              const button =
+                                document.createElement(
+                                  "button"
+                                );
+
+                              button.type =
+                                "button";
+
+                              button.className =
+                                "toast-undo";
+
+                              button.textContent =
+                                t("update");
+
+
+                              button.addEventListener(
+                                "click",
+                                () => {
+
+                                  worker.postMessage(
+                                    {
+                                      type:
+                                        "SKIP_WAITING"
+                                    }
+                                  );
+
+                                }
+                              );
+
+
+                              toast.appendChild(
+                                button
+                              );
+
+
+                              setTimeout(
+                                () => {
+
+                                  button.remove();
+
+                                },
+                                5000
+                              );
+
+                            }
+
+                          }
+                        );
+
+                    }
+                  );
+
+
+                setInterval(
+                  () =>
+                    registration
+                      .update()
+                      .catch(
+                        () => {}
+                      ),
+                  60 * 60 * 1000
+                );
+
+              }
+            )
+            .catch(
+              () => {}
+            );
+
+        }
+      );
+
+
+      navigator.serviceWorker
+        .addEventListener(
+          "controllerchange",
+          () => {
+
+            window.location.reload();
+
+          }
+        );
+
     }
+
   </script>
 
 </body>
 </html>
+```
