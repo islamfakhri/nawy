@@ -8,17 +8,22 @@
 
 /* =========================================================
    VERSION
+   ---------------------------------------------------------
    غيّر الرقم عند إصدار نسخة جديدة من التطبيق.
+   مثال:
+   nawy-v7
+   nawy-v8
+   nawy-v9
    ========================================================= */
 
-const CACHE_VERSION = "nawy-v6";
-
+const CACHE_VERSION = "nawy-v7";
 const CACHE_NAME = CACHE_VERSION;
 
 
 /* =========================================================
-   APP FILES
-   الملفات الأساسية التي نريد الاحتفاظ بها Offline.
+   APP SHELL
+   ---------------------------------------------------------
+   الملفات الأساسية التي يجب أن تكون متاحة Offline.
    ========================================================= */
 
 const APP_SHELL = [
@@ -30,46 +35,76 @@ const APP_SHELL = [
 
 /* =========================================================
    INSTALL
-   تثبيت الـ Service Worker الجديد.
+   ---------------------------------------------------------
+   تثبيت النسخة الجديدة وتجهيز الملفات الأساسية.
    ========================================================= */
 
 self.addEventListener("install", (event) => {
 
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then((cache) => {
+        return cache.addAll(APP_SHELL);
+      })
+      .then(() => {
+        console.log("NAWY SW: Installed", CACHE_VERSION);
+      })
       .catch((error) => {
-        console.warn("NAWY SW: Cache install failed:", error);
+        console.error("NAWY SW: Install failed:", error);
+        throw error;
       })
   );
 
   /*
-    يجعل النسخة الجديدة جاهزة فورًا
-    بدل انتظار إغلاق جميع التبويبات القديمة.
+    تفعيل النسخة الجديدة فورًا
+    بدل انتظار إغلاق التبويبات القديمة.
   */
   self.skipWaiting();
+
 });
 
 
 /* =========================================================
    ACTIVATE
-   حذف أي Cache قديم.
+   ---------------------------------------------------------
+   حذف النسخ القديمة ثم السيطرة على الصفحات المفتوحة.
    ========================================================= */
 
 self.addEventListener("activate", (event) => {
 
   event.waitUntil(
+
     caches.keys()
       .then((cacheNames) => {
 
         return Promise.all(
+
           cacheNames
-            .filter((cacheName) => cacheName !== CACHE_NAME)
+            .filter((cacheName) => {
+
+              /*
+                نحذف فقط Caches الخاصة بـ NAWY.
+                ولا نلمس أي Cache تابع لتطبيق آخر.
+              */
+
+              return (
+                cacheName.startsWith("nawy-") &&
+                cacheName !== CACHE_NAME
+              );
+
+            })
             .map((cacheName) => caches.delete(cacheName))
+
         );
 
       })
+
       .then(() => self.clients.claim())
+
+      .then(() => {
+        console.log("NAWY SW: Activated", CACHE_VERSION);
+      })
+
   );
 
 });
@@ -77,79 +112,152 @@ self.addEventListener("activate", (event) => {
 
 /* =========================================================
    FETCH
-   Network First
    ---------------------------------------------------------
-   1. يحاول جلب أحدث نسخة من الإنترنت.
-   2. لو الإنترنت غير متاح يستخدم النسخة المخزنة.
-   3. يمنع بقاء index.html قديم قدر الإمكان.
+   استراتيجية:
+   Network First
+   ثم Cache عند عدم توفر الإنترنت.
    ========================================================= */
 
 self.addEventListener("fetch", (event) => {
 
-  /*
-    لا نتعامل مع الطلبات غير GET.
-  */
-  if (event.request.method !== "GET") {
+  const request = event.request;
+
+
+  /* -------------------------------------------------------
+     نتعامل فقط مع GET
+     ------------------------------------------------------- */
+
+  if (request.method !== "GET") {
     return;
   }
 
 
-  /*
-    نتعامل فقط مع نفس Origin الخاص بالتطبيق.
-  */
-  const requestURL = new URL(event.request.url);
+  /* -------------------------------------------------------
+     نفس Origin فقط
+     ------------------------------------------------------- */
+
+  const requestURL = new URL(request.url);
 
   if (requestURL.origin !== self.location.origin) {
     return;
   }
 
 
+  /* -------------------------------------------------------
+     Navigation
+     -------------------------------------------------------
+     طلب فتح صفحة التطبيق.
+
+     نحاول الإنترنت أولًا مع منع استخدام نسخة HTTP Cache
+     قديمة، ثم نخزن النتيجة في Cache.
+     ------------------------------------------------------- */
+
+  if (request.mode === "navigate") {
+
+    event.respondWith(
+
+      fetch(request, {
+        cache: "no-cache"
+      })
+
+        .then((response) => {
+
+          if (response && response.ok) {
+
+            const responseClone = response.clone();
+
+            event.waitUntil(
+
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  return cache.put("./index.html", responseClone);
+                })
+
+            );
+
+          }
+
+          return response;
+
+        })
+
+        .catch(() => {
+
+          /*
+            Offline:
+            نرجع آخر نسخة محفوظة من index.html.
+          */
+
+          return caches.match("./index.html")
+            .then((cachedResponse) => {
+
+              if (cachedResponse) {
+                return cachedResponse;
+              }
+
+              /*
+                fallback أخير.
+              */
+
+              return new Response(
+                "<h1>NAWY</h1><p>أنت غير متصل بالإنترنت.</p>",
+                {
+                  status: 503,
+                  statusText: "Offline",
+                  headers: {
+                    "Content-Type": "text/html; charset=utf-8"
+                  }
+                }
+              );
+
+            });
+
+        })
+
+    );
+
+    return;
+  }
+
+
+  /* -------------------------------------------------------
+     باقي الملفات
+     -------------------------------------------------------
+     Network First ثم Cache.
+     ------------------------------------------------------- */
+
   event.respondWith(
 
-    fetch(event.request)
-      .then((response) => {
+    fetch(request)
 
-        /*
-          نخزن نسخة ناجحة من الطلب.
-        */
+      .then((response) => {
 
         if (response && response.ok) {
 
           const responseClone = response.clone();
 
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseClone);
-            })
-            .catch(() => {});
+          event.waitUntil(
+
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                return cache.put(request, responseClone);
+              })
+
+          );
+
         }
 
         return response;
-      })
 
+      })
 
       .catch(() => {
 
-        /*
-          لو الإنترنت غير متاح،
-          استخدم النسخة الموجودة في Cache.
-        */
-
-        return caches.match(event.request)
+        return caches.match(request)
           .then((cachedResponse) => {
 
             if (cachedResponse) {
               return cachedResponse;
-            }
-
-            /*
-              لو الصفحة المطلوبة غير موجودة في Cache
-              نحاول إرجاع index.html.
-            */
-
-            if (event.request.mode === "navigate") {
-
-              return caches.match("./index.html");
             }
 
             return new Response(
@@ -171,7 +279,67 @@ self.addEventListener("fetch", (event) => {
 
 /* =========================================================
    MESSAGE
-   يسمح للـ index.html بطلب تحديث Service Worker يدويًا.
+   ---------------------------------------------------------
+   أوامر من index.html
+   ========================================================= */
+
+self.addEventListener("message", (event) => {
+
+  const data = event.data;
+
+  if (!data || typeof data.type !== "string") {
+    return;
+  }
+
+
+  /* -------------------------------------------------------
+     تفعيل النسخة الجديدة فورًا
+     ------------------------------------------------------- */
+
+  if (data.type === "SKIP_WAITING") {
+
+    self.skipWaiting();
+
+    return;
+  }
+
+
+  /* -------------------------------------------------------
+     مسح Cache الخاصة بـ NAWY فقط
+     ------------------------------------------------------- */
+
+  if (data.type === "CLEAR_CACHE") {
+
+    event.waitUntil(
+
+      caches.keys()
+        .then((cacheNames) => {
+
+          return Promise.all(
+
+            cacheNames
+              .filter((cacheName) => {
+                return cacheName.startsWith("nawy-");
+              })
+              .map((cacheName) => {
+                return caches.delete(cacheName);
+              })
+
+          );
+
+        })
+
+    );
+
+  }
+
+});
+
+
+/* =========================================================
+   VERSION MESSAGE
+   ---------------------------------------------------------
+   يسمح للـ index.html بمعرفة نسخة الـ Service Worker.
    ========================================================= */
 
 self.addEventListener("message", (event) => {
@@ -180,22 +348,16 @@ self.addEventListener("message", (event) => {
     return;
   }
 
+  if (event.data.type === "GET_VERSION") {
 
-  if (event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
+    if (event.ports && event.ports[0]) {
 
+      event.ports[0].postMessage({
+        type: "VERSION",
+        version: CACHE_VERSION
+      });
 
-  if (event.data.type === "CLEAR_CACHE") {
-
-    event.waitUntil(
-      caches.keys()
-        .then((cacheNames) => {
-          return Promise.all(
-            cacheNames.map((cacheName) => caches.delete(cacheName))
-          );
-        })
-    );
+    }
 
   }
 
