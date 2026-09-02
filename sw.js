@@ -12,7 +12,7 @@
    غيّر الرقم عند إصدار نسخة جديدة من التطبيق.
    ========================================================= */
 
-const CACHE_VERSION = "nawy-v8";
+const CACHE_VERSION = "nawy-v7";
 const CACHE_NAME = CACHE_VERSION;
 
 
