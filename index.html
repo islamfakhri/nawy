@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -11,7 +12,6 @@
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-touch-icon" content="./icon-192.png">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <meta name="description"
@@ -23,10 +23,7 @@
   <link rel="icon" href="./favicon.ico">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
-  <!--
-    Cairo للعربي.
-    في حالة عدم توفره محليًا، يتم استخدام Segoe UI / system-ui.
-  -->
+  <!-- Cairo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -58,7 +55,7 @@
       --surface-3: #e5e8ea;
 
       --text: #111415;
-      --muted: #7a8186;
+      --muted: #7b8287;
 
       --border: rgba(17, 20, 21, .075);
       --border-strong: rgba(17, 20, 21, .11);
@@ -70,12 +67,15 @@
       --warning: #e8a317;
 
       --shadow-soft:
-        0 8px 24px rgba(0, 0, 0, .035);
+        0 7px 22px rgba(0, 0, 0, .035);
+
+      --shadow-card:
+        0 8px 24px rgba(0, 0, 0, .055);
 
       --shadow-sheet:
-        0 24px 70px rgba(0, 0, 0, .20);
+        0 25px 70px rgba(0, 0, 0, .22);
 
-      --radius-xl: 24px;
+      --radius-xl: 23px;
       --radius-lg: 18px;
       --radius-md: 14px;
       --radius-sm: 11px;
@@ -94,10 +94,13 @@
       --muted: #939999;
 
       --border: rgba(255, 255, 255, .065);
-      --border-strong: rgba(255, 255, 255, .095);
+      --border-strong: rgba(255, 255, 255, .10);
 
       --shadow-soft:
-        0 10px 28px rgba(0, 0, 0, .18);
+        0 8px 24px rgba(0, 0, 0, .17);
+
+      --shadow-card:
+        0 10px 28px rgba(0, 0, 0, .24);
 
       --shadow-sheet:
         0 28px 80px rgba(0, 0, 0, .36);
@@ -223,8 +226,8 @@
       background:
         linear-gradient(
           to bottom,
-          var(--bg) 74%,
-          rgba(0, 0, 0, 0)
+          var(--bg) 75%,
+          rgba(0,0,0,0)
         );
 
       display: flex;
@@ -244,7 +247,7 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
 
       min-width: 0;
     }
@@ -252,6 +255,8 @@
     .brand-mark {
       width: 40px;
       height: 40px;
+
+      flex: 0 0 auto;
 
       border-radius: 13px;
 
@@ -267,11 +272,9 @@
       box-shadow:
         0 6px 16px color-mix(
           in srgb,
-          var(--accent) 20%,
+          var(--accent) 19%,
           transparent
         );
-
-      flex: 0 0 auto;
     }
 
     .brand-name {
@@ -284,11 +287,14 @@
       width: 42px;
       height: 42px;
 
+      flex: 0 0 auto;
+
       border-radius: 50%;
 
       background: var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       display: grid;
       place-items: center;
@@ -297,7 +303,7 @@
       line-height: 1;
 
       transition:
-        transform .15s ease,
+        transform .14s ease,
         background .18s ease;
     }
 
@@ -306,20 +312,22 @@
     }
 
     /* =========================
-       HEADER NAV
+       PRIMARY NAV
+       RTL visual order:
+       نواياي | اليوم | ★
     ========================= */
 
     .header-nav {
+      width: 100%;
+
       margin-top: 8px;
 
-      width: 100%;
+      padding: 3px;
 
       display: flex;
       align-items: center;
 
       gap: 3px;
-
-      padding: 3px;
 
       border-radius: 15px;
 
@@ -330,24 +338,17 @@
           transparent
         );
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .header-nav::-webkit-scrollbar {
-      display: none;
     }
 
     .header-tab {
-      flex: 1 1 0;
+      min-height: 40px;
 
-      min-width: 0;
-      min-height: 39px;
+      flex: 1 1 0;
 
       padding: 0 12px;
 
@@ -357,14 +358,15 @@
       align-items: center;
       justify-content: center;
 
-      gap: 6px;
+      gap: 5px;
+
+      background: transparent;
+
+      color: var(--muted);
 
       white-space: nowrap;
 
-      background: transparent;
-      color: var(--muted);
-
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
 
       transition:
@@ -390,7 +392,7 @@
     }
 
     .header-tab-star {
-      font-size: 20px;
+      font-size: 19px;
       line-height: 1;
     }
 
@@ -400,7 +402,7 @@
 
     .hero {
       padding:
-        21px 4px 10px;
+        20px 4px 10px;
     }
 
     .hero-title {
@@ -430,7 +432,7 @@
     ========================= */
 
     .progress-wrap {
-      margin-top: 21px;
+      margin-top: 20px;
 
       padding:
         13px 14px;
@@ -454,7 +456,9 @@
 
     .progress-top {
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
       gap: 10px;
@@ -466,6 +470,7 @@
       color: var(--muted);
 
       font-size: 12px;
+
       font-weight: 600;
     }
 
@@ -473,22 +478,24 @@
       color: var(--accent);
 
       font-size: 12px;
+
       font-weight: 800;
     }
 
     .progress-track {
       height: 6px;
 
+      overflow: hidden;
+
       border-radius: 999px;
 
       background: var(--surface-3);
-
-      overflow: hidden;
     }
 
     .progress-bar {
-      height: 100%;
       width: 0;
+
+      height: 100%;
 
       border-radius: inherit;
 
@@ -526,7 +533,7 @@
 
     @keyframes viewSlideNext {
       0% {
-        opacity: .65;
+        opacity: .68;
         transform:
           translateX(18px);
       }
@@ -540,7 +547,7 @@
 
     @keyframes viewSlidePrevious {
       0% {
-        opacity: .65;
+        opacity: .68;
         transform:
           translateX(-18px);
       }
@@ -551,6 +558,10 @@
           translateX(0);
       }
     }
+
+    /* =========================
+       SECTION
+    ========================= */
 
     .section {
       margin-top: 20px;
@@ -564,20 +575,22 @@
       display: flex;
 
       align-items: center;
+
       justify-content: space-between;
 
       gap: 10px;
 
-      margin-bottom: 7px;
-
       padding:
         0 5px;
+
+      margin-bottom: 7px;
     }
 
     .section-title {
       color: var(--muted);
 
       font-size: 12px;
+
       font-weight: 700;
     }
 
@@ -588,7 +601,9 @@
       padding: 0 6px;
 
       display: inline-flex;
+
       align-items: center;
+
       justify-content: center;
 
       border-radius: 999px;
@@ -598,48 +613,49 @@
       color: var(--muted);
 
       font-size: 10px;
+
       font-weight: 800;
     }
 
     /* =========================
        TASK LIST
+       خفيف جدًا
     ========================= */
 
     .task-list {
-      overflow: hidden;
-
       display: flex;
+
       flex-direction: column;
 
       gap: 0;
 
+      overflow: hidden;
+
+      border-radius: 16px;
+
+      background:
+        var(--surface);
+
       border:
         1px solid var(--border);
-
-      border-radius: 17px;
-
-      background: var(--surface);
     }
-
-    /*
-      هنا تحديدًا تم التخلص من
-      إحساس "بطاقة لكل مهمة".
-    */
 
     .task {
       position: relative;
 
       display: flex;
+
       align-items: center;
 
-      gap: 11px;
+      gap: 10px;
 
-      min-height: 60px;
+      min-height: 59px;
 
       padding:
-        8px 10px;
+        7px 10px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
       border: 0;
 
@@ -663,7 +679,7 @@
       background:
         color-mix(
           in srgb,
-          var(--surface-2) 48%,
+          var(--surface-2) 42%,
           var(--surface)
         );
     }
@@ -678,7 +694,7 @@
         background: var(--surface);
       }
 
-      40% {
+      42% {
         background: var(--accent-soft);
       }
 
@@ -691,15 +707,14 @@
       opacity: .62;
     }
 
-    /* =========================
-       CHECKBOX
-    ========================= */
-
     .task-checkbox {
       width: 25px;
       height: 25px;
 
       flex: 0 0 auto;
+
+      display: grid;
+      place-items: center;
 
       border-radius: 50%;
 
@@ -707,9 +722,6 @@
         1.8px solid var(--muted);
 
       background: transparent;
-
-      display: grid;
-      place-items: center;
 
       transition:
         background .18s ease,
@@ -723,6 +735,7 @@
 
     .task.completed .task-checkbox {
       background: var(--accent);
+
       border-color: var(--accent);
     }
 
@@ -741,15 +754,13 @@
 
     .task.completed .check-icon {
       opacity: 1;
+
       transform: scale(1);
     }
 
-    /* =========================
-       TASK MAIN
-    ========================= */
-
     .task-main {
       min-width: 0;
+
       flex: 1;
 
       padding:
@@ -770,9 +781,6 @@
       font-weight: 600;
 
       overflow-wrap: anywhere;
-
-      transition:
-        color .18s ease;
     }
 
     .task.completed .task-text {
@@ -785,15 +793,13 @@
         1.4px;
     }
 
-    /* =========================
-       TASK META
-    ========================= */
-
     .task-meta {
       margin-top: 3px;
 
       display: flex;
+
       align-items: center;
+
       flex-wrap: wrap;
 
       gap: 5px;
@@ -805,6 +811,7 @@
 
     .task-meta-date {
       display: inline-flex;
+
       align-items: center;
 
       gap: 4px;
@@ -814,9 +821,11 @@
 
       border-radius: 6px;
 
-      background: var(--accent-soft);
+      background:
+        var(--accent-soft);
 
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-weight: 700;
     }
@@ -827,26 +836,22 @@
       font-weight: 500;
     }
 
-    /* =========================
-       STAR
-    ========================= */
-
     .task-star {
-      width: 32px;
-      height: 32px;
+      width: 31px;
+      height: 31px;
 
       flex: 0 0 auto;
+
+      display: grid;
+      place-items: center;
 
       border-radius: 50%;
 
       background: transparent;
 
-      display: grid;
-      place-items: center;
-
       color: #92989c;
 
-      font-size: 19px;
+      font-size: 18px;
 
       transition:
         color .16s ease,
@@ -866,32 +871,48 @@
     }
 
     /* =========================
-       COMPLETED TOGGLE
+       COMPLETED CARD
+       أثقل بصريًا من الـTasks
     ========================= */
 
     .completed-section {
-      margin-top: 13px;
+      margin-top: 14px;
+
+      padding: 7px;
+
+      border-radius:
+        var(--radius-lg);
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--border-strong);
+
+      box-shadow:
+        var(--shadow-card);
     }
 
     .completed-toggle {
       width: 100%;
 
-      min-height: 49px;
+      min-height: 47px;
 
       padding:
-        5px 7px;
+        0 7px;
 
       display: flex;
 
       align-items: center;
 
-      justify-content: space-between;
+      justify-content: flex-start;
 
       gap: 8px;
 
-      border-radius: 14px;
+      border-radius: 12px;
 
-      background: transparent;
+      background:
+        transparent;
 
       text-align: start;
 
@@ -901,49 +922,27 @@
     }
 
     .completed-toggle:hover {
-      background: var(--surface-2);
+      background:
+        var(--surface-2);
     }
 
     .completed-toggle:active {
-      transform: scale(.99);
+      transform:
+        scale(.995);
     }
 
-    .completed-toggle-main {
-      display: flex;
-
-      align-items: center;
-
-      gap: 9px;
-
-      min-width: 0;
-      flex: 1;
-    }
-
-    .completed-toggle-icon {
-      width: 31px;
-      height: 31px;
-
-      flex: 0 0 auto;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 10px;
-
-      background: var(--accent-soft);
-
-      color: var(--accent);
-
-      font-size: 14px;
-
-      font-weight: 900;
-    }
+    /*
+      المطلوب:
+      المكتملة  3  ^
+      كله جنب بعض.
+    */
 
     .completed-toggle-title {
-      color: var(--muted);
+      color: var(--text);
 
-      font-size: 12px;
-      font-weight: 750;
+      font-size: 12.5px;
+
+      font-weight: 800;
     }
 
     .completed-toggle-count {
@@ -953,51 +952,62 @@
       padding: 0 6px;
 
       display: inline-flex;
+
       align-items: center;
       justify-content: center;
 
-      border-radius: 999px;
+      border-radius:
+        999px;
 
-      background: var(--surface-2);
+      background:
+        var(--surface-2);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size: 10px;
+
       font-weight: 800;
     }
 
     .completed-toggle-chevron {
-      width: 29px;
-      height: 29px;
-
-      flex: 0 0 auto;
+      width: 27px;
+      height: 27px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 9px;
 
-      background: var(--surface-2);
+      background:
+        var(--surface-2);
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
-      font-size: 16px;
+      font-size: 17px;
+
       font-weight: 900;
 
+      line-height: 1;
+
       transition:
-        transform .2s ease,
-        background .18s ease,
-        color .18s ease;
+        transform .20s cubic-bezier(.2,.8,.2,1),
+        color .18s ease,
+        background .18s ease;
     }
 
     .completed-toggle.open
     .completed-toggle-chevron {
-      color: var(--accent);
-
-      background: var(--accent-soft);
-
       transform:
         rotate(180deg);
+
+      color:
+        var(--accent);
+
+      background:
+        var(--accent-soft);
     }
 
     .completed-list-wrap {
@@ -1010,8 +1020,6 @@
       transform:
         translateY(-3px);
 
-      margin-top: 0;
-
       transition:
         max-height .30s cubic-bezier(.2,.8,.2,1),
         opacity .20s ease,
@@ -1020,14 +1028,21 @@
     }
 
     .completed-list-wrap.open {
-      max-height: 3000px;
+      max-height: 4000px;
 
       opacity: 1;
 
       transform:
         translateY(0);
 
-      margin-top: 2px;
+      margin-top: 3px;
+    }
+
+    .completed-list-wrap .task-list {
+      border-radius: 12px;
+
+      border:
+        1px solid var(--border);
     }
 
     /* =========================
@@ -1035,18 +1050,22 @@
     ========================= */
 
     .task-empty {
-      padding: 50px 20px;
+      padding:
+        48px 20px;
 
       text-align: center;
 
-      border-radius: 18px;
+      border-radius:
+        var(--radius-lg);
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
       border:
         1px solid var(--border);
 
-      color: var(--muted);
+      color:
+        var(--muted);
     }
 
     .empty-symbol {
@@ -1057,15 +1076,19 @@
         0 auto 12px;
 
       display: grid;
+
       place-items: center;
 
       border-radius: 15px;
 
-      background: var(--accent-soft);
+      background:
+        var(--accent-soft);
 
-      color: var(--accent);
+      color:
+        var(--accent);
 
       font-size: 21px;
+
       font-weight: 800;
     }
 
@@ -1073,6 +1096,7 @@
       color: var(--text);
 
       font-size: 15px;
+
       font-weight: 750;
     }
 
@@ -1098,7 +1122,8 @@
       left: 50%;
       bottom: 0;
 
-      width: min(760px, 100%);
+      width:
+        min(760px, 100%);
 
       transform:
         translateX(-50%);
@@ -1137,8 +1162,11 @@
       box-shadow:
         0 10px 34px rgba(0,0,0,.11);
 
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
     }
 
     .composer textarea {
@@ -1158,9 +1186,11 @@
 
       border: 0;
 
-      background: transparent;
+      background:
+        transparent;
 
-      color: var(--text);
+      color:
+        var(--text);
 
       font-size: 15px;
 
@@ -1170,7 +1200,8 @@
     }
 
     .composer textarea::placeholder {
-      color: var(--muted);
+      color:
+        var(--muted);
 
       opacity: .8;
     }
@@ -1183,14 +1214,18 @@
 
       border-radius: 50%;
 
-      background: var(--accent);
+      background:
+        var(--accent);
 
-      color: #fff;
+      color:
+        #fff;
 
       display: grid;
+
       place-items: center;
 
       font-size: 21px;
+
       font-weight: 800;
 
       transition:
@@ -1199,7 +1234,8 @@
     }
 
     .send-btn:active {
-      transform: scale(.90);
+      transform:
+        scale(.90);
     }
 
     .send-btn.disabled {
@@ -1228,6 +1264,7 @@
         rgba(0,0,0,.42);
 
       opacity: 0;
+
       visibility: hidden;
 
       transition:
@@ -1237,11 +1274,13 @@
 
     .overlay.show {
       opacity: 1;
+
       visibility: visible;
     }
 
     .sheet {
-      width: min(100%, 520px);
+      width:
+        min(100%, 520px);
 
       max-height:
         min(82vh, 680px);
@@ -1291,6 +1330,7 @@
         8px 9px 12px;
 
       font-size: 17px;
+
       font-weight: 800;
     }
 
@@ -1298,7 +1338,8 @@
       padding:
         0 9px 12px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size: 12px;
 
@@ -1325,9 +1366,11 @@
 
       border-radius: 14px;
 
-      background: transparent;
+      background:
+        transparent;
 
-      text-align: start;
+      text-align:
+        start;
 
       transition:
         background .15s ease;
@@ -1348,6 +1391,7 @@
       border-radius: 10px;
 
       display: grid;
+
       place-items: center;
 
       background:
@@ -1400,9 +1444,11 @@
 
       border-radius: 14px;
 
-      background: transparent;
+      background:
+        transparent;
 
-      text-align: start;
+      text-align:
+        start;
 
       font-size: 13px;
     }
@@ -1413,11 +1459,12 @@
     }
 
     .action-item.danger {
-      color: var(--danger);
+      color:
+        var(--danger);
     }
 
     /* =========================
-       MODAL / INPUT
+       MODALS
     ========================= */
 
     .edit-input {
@@ -1438,11 +1485,14 @@
       color:
         var(--text);
 
-      resize: vertical;
+      resize:
+        vertical;
 
-      font-size: 15px;
+      font-size:
+        15px;
 
-      line-height: 1.65;
+      line-height:
+        1.65;
     }
 
     .edit-input:focus {
@@ -1458,7 +1508,8 @@
       padding:
         0 12px;
 
-      border-radius: 14px;
+      border-radius:
+        14px;
 
       border:
         1px solid var(--border);
@@ -1469,7 +1520,8 @@
       color:
         var(--text);
 
-      font-size: 15px;
+      font-size:
+        15px;
     }
 
     .date-input:focus {
@@ -1492,16 +1544,17 @@
 
       border-radius: 14px;
 
-      font-weight: 750;
-
       font-size: 13px;
+
+      font-weight: 750;
     }
 
     .modal-btn.primary {
       background:
         var(--accent);
 
-      color: #fff;
+      color:
+        #fff;
     }
 
     .modal-btn.secondary {
@@ -1532,18 +1585,22 @@
       color:
         var(--muted);
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 750;
+      font-weight:
+        750;
     }
 
     .setting-box {
-      overflow: hidden;
+      overflow:
+        hidden;
 
       border:
         1px solid var(--border);
 
-      border-radius: 15px;
+      border-radius:
+        15px;
 
       background:
         var(--surface-2);
@@ -1557,46 +1614,57 @@
 
       display: flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      justify-content: space-between;
+      justify-content:
+        space-between;
 
-      gap: 10px;
+      gap:
+        10px;
 
       border-bottom:
         1px solid var(--border);
     }
 
     .setting-row:last-child {
-      border-bottom: 0;
+      border-bottom:
+        0;
     }
 
     .setting-name {
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: 650;
+      font-weight:
+        650;
     }
 
     .segmented {
       display: flex;
 
-      gap: 3px;
+      gap:
+        3px;
 
-      padding: 3px;
+      padding:
+        3px;
 
-      border-radius: 10px;
+      border-radius:
+        10px;
 
       background:
         var(--surface);
     }
 
     .segment {
-      min-height: 30px;
+      min-height:
+        30px;
 
       padding:
         0 9px;
 
-      border-radius: 8px;
+      border-radius:
+        8px;
 
       background:
         transparent;
@@ -1604,9 +1672,11 @@
       color:
         var(--muted);
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 700;
+      font-weight:
+        700;
 
       transition:
         background .16s ease,
@@ -1617,7 +1687,8 @@
       background:
         var(--accent);
 
-      color: #fff;
+      color:
+        #fff;
     }
 
     .colors {
@@ -1640,42 +1711,53 @@
       outline:
         1px solid var(--border);
 
-      position: relative;
+      position:
+        relative;
     }
 
     .color-btn.active::after {
       content: "✓";
 
       position: absolute;
+
       inset: 0;
 
       display: grid;
+
       place-items: center;
 
       color: #fff;
 
-      font-size: 12px;
-      font-weight: 900;
+      font-size:
+        12px;
+
+      font-weight:
+        900;
     }
 
     .green {
-      background: #19a974;
+      background:
+        #19a974;
     }
 
     .blue {
-      background: #3685ff;
+      background:
+        #3685ff;
     }
 
     .purple {
-      background: #8b5cf6;
+      background:
+        #8b5cf6;
     }
 
     .orange {
-      background: #f59e0b;
+      background:
+        #f59e0b;
     }
 
     .pink {
-      background: #e94f9b;
+      background:
+        #e94f9b;
     }
 
     /* =========================
@@ -1691,9 +1773,11 @@
     }
 
     .trash-item {
-      padding: 11px;
+      padding:
+        11px;
 
-      border-radius: 14px;
+      border-radius:
+        14px;
 
       background:
         var(--surface-2);
@@ -1710,27 +1794,34 @@
 
       min-width: 0;
 
-      font-size: 13px;
+      font-size:
+        13px;
 
-      line-height: 1.45;
+      line-height:
+        1.45;
 
-      overflow-wrap: anywhere;
+      overflow-wrap:
+        anywhere;
     }
 
     .small-btn {
-      min-height: 34px;
+      min-height:
+        34px;
 
       padding:
         0 9px;
 
-      border-radius: 9px;
+      border-radius:
+        9px;
 
       background:
         var(--surface);
 
-      font-size: 10px;
+      font-size:
+        10px;
 
-      font-weight: 750;
+      font-weight:
+        750;
     }
 
     .small-btn.danger {
@@ -1745,12 +1836,17 @@
     .toast {
       position: fixed;
 
-      z-index: 200;
+      z-index:
+        200;
 
-      left: 50%;
+      left:
+        50%;
 
       bottom:
-        calc(88px + env(safe-area-inset-bottom));
+        calc(
+          88px +
+          env(safe-area-inset-bottom)
+        );
 
       width:
         min(
@@ -1762,20 +1858,26 @@
         translate(-50%, 18px)
         scale(.97);
 
-      opacity: 0;
+      opacity:
+        0;
 
-      visibility: hidden;
+      visibility:
+        hidden;
 
       padding:
         11px 13px;
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 9px;
+      gap:
+        9px;
 
-      border-radius: 14px;
+      border-radius:
+        14px;
 
       background:
         var(--surface);
@@ -1793,8 +1895,11 @@
     }
 
     .toast.show {
-      opacity: 1;
-      visibility: visible;
+      opacity:
+        1;
+
+      visibility:
+        visible;
 
       transform:
         translate(-50%, 0)
@@ -1802,11 +1907,14 @@
     }
 
     .toast-message {
-      flex: 1;
+      flex:
+        1;
 
-      font-size: 12px;
+      font-size:
+        12px;
 
-      font-weight: 650;
+      font-weight:
+        650;
     }
 
     .toast-undo,
@@ -1814,7 +1922,8 @@
       padding:
         6px 9px;
 
-      border-radius: 8px;
+      border-radius:
+        8px;
 
       background:
         var(--accent-soft);
@@ -1822,11 +1931,14 @@
       color:
         var(--accent);
 
-      font-size: 11px;
+      font-size:
+        11px;
 
-      font-weight: 800;
+      font-weight:
+        800;
 
-      white-space: nowrap;
+      white-space:
+        nowrap;
     }
 
     /* =========================
@@ -1834,14 +1946,20 @@
     ========================= */
 
     .install-banner {
-      position: fixed;
+      position:
+        fixed;
 
-      z-index: 180;
+      z-index:
+        180;
 
-      left: 50%;
+      left:
+        50%;
 
       bottom:
-        calc(14px + env(safe-area-inset-bottom));
+        calc(
+          14px +
+          env(safe-area-inset-bottom)
+        );
 
       width:
         min(
@@ -1852,19 +1970,26 @@
       transform:
         translate(-50%, 20px);
 
-      opacity: 0;
+      opacity:
+        0;
 
-      visibility: hidden;
+      visibility:
+        hidden;
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 11px;
+      gap:
+        11px;
 
-      padding: 11px;
+      padding:
+        11px;
 
       background:
         color-mix(
@@ -1876,7 +2001,8 @@
       border:
         1px solid var(--border);
 
-      border-radius: 17px;
+      border-radius:
+        17px;
 
       box-shadow:
         var(--shadow-soft);
@@ -1897,87 +2023,118 @@
       transform:
         translate(-50%, 0);
 
-      opacity: 1;
+      opacity:
+        1;
 
-      visibility: visible;
+      visibility:
+        visible;
 
-      pointer-events: auto;
+      pointer-events:
+        auto;
     }
 
     .install-icon {
-      width: 40px;
-      height: 40px;
+      width:
+        40px;
 
-      flex: 0 0 auto;
+      height:
+        40px;
 
-      display: grid;
-      place-items: center;
+      flex:
+        0 0 auto;
 
-      border-radius: 12px;
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        12px;
 
       background:
         var(--accent);
 
-      color: #fff;
+      color:
+        #fff;
 
-      font-size: 20px;
+      font-size:
+        20px;
 
-      font-weight: 850;
+      font-weight:
+        850;
     }
 
     .install-copy {
-      min-width: 0;
+      min-width:
+        0;
 
-      flex: 1;
+      flex:
+        1;
     }
 
     .install-title {
-      font-size: 13px;
+      font-size:
+        13px;
 
-      font-weight: 800;
+      font-weight:
+        800;
     }
 
     .install-text {
-      margin-top: 1px;
+      margin-top:
+        1px;
 
       color:
         var(--muted);
 
-      font-size: 10px;
+      font-size:
+        10px;
 
-      line-height: 1.45;
+      line-height:
+        1.45;
     }
 
     .install-actions {
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 5px;
+      gap:
+        5px;
 
-      flex: 0 0 auto;
+      flex:
+        0 0 auto;
     }
 
     .install-btn {
-      min-height: 35px;
+      min-height:
+        35px;
 
       padding:
         0 9px;
 
-      border-radius: 10px;
+      border-radius:
+        10px;
 
-      font-size: 10px;
+      font-size:
+        10px;
 
-      font-weight: 800;
+      font-weight:
+        800;
 
-      white-space: nowrap;
+      white-space:
+        nowrap;
     }
 
     .install-btn.primary {
       background:
         var(--accent);
 
-      color: #fff;
+      color:
+        #fff;
     }
 
     .install-btn.secondary {
@@ -1990,106 +2147,154 @@
     ========================= */
 
     .hidden {
-      display: none !important;
+      display:
+        none !important;
     }
 
     .no-scroll {
-      overflow: hidden;
+      overflow:
+        hidden;
     }
 
     @media (max-width: 480px) {
 
       .app {
-        padding-left: 13px;
-        padding-right: 13px;
+        padding-left:
+          13px;
+
+        padding-right:
+          13px;
       }
 
       .header-tab {
         padding:
-          0 9px;
+          0 8px;
 
-        font-size: 11px;
+        font-size:
+          11px;
       }
 
       .header-tab-star {
-        font-size: 19px;
+        font-size:
+          18px;
       }
 
       .hero {
-        padding-left: 3px;
-        padding-right: 3px;
+        padding-left:
+          3px;
+
+        padding-right:
+          3px;
       }
 
       .task {
-        min-height: 58px;
+        min-height:
+          57px;
 
         padding:
           7px 8px;
       }
 
       .task-text {
-        font-size: 14px;
+        font-size:
+          14px;
       }
 
       .task-checkbox {
-        width: 24px;
-        height: 24px;
+        width:
+          24px;
+
+        height:
+          24px;
       }
 
       .task-star {
-        width: 30px;
-        height: 30px;
+        width:
+          30px;
 
-        font-size: 18px;
+        height:
+          30px;
+
+        font-size:
+          17px;
+      }
+
+      .completed-section {
+        padding:
+          6px;
+      }
+
+      .completed-toggle {
+        min-height:
+          46px;
       }
 
       .composer-wrap {
-        padding-left: 13px;
-        padding-right: 13px;
+        padding-left:
+          13px;
+
+        padding-right:
+          13px;
       }
 
       .install-banner {
-        align-items: flex-start;
+        align-items:
+          flex-start;
 
-        gap: 8px;
+        gap:
+          8px;
 
-        padding: 9px;
+        padding:
+          9px;
       }
 
       .install-icon {
-        width: 37px;
-        height: 37px;
+        width:
+          37px;
 
-        border-radius: 11px;
+        height:
+          37px;
+
+        border-radius:
+          11px;
       }
 
       .install-actions {
-        flex-direction: column;
+        flex-direction:
+          column;
 
-        align-items: stretch;
+        align-items:
+          stretch;
       }
 
       .install-btn {
-        min-height: 32px;
+        min-height:
+          32px;
       }
     }
 
     @media (min-width: 700px) {
 
       .app {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left:
+          20px;
+
+        padding-right:
+          20px;
       }
 
       .composer-wrap {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left:
+          20px;
+
+        padding-right:
+          20px;
       }
 
       .overlay {
-        align-items: center;
+        align-items:
+          center;
       }
-
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2097,15 +2302,18 @@
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
+        scroll-behavior:
+          auto !important;
 
-        animation-duration: .01ms !important;
+        animation-duration:
+          .01ms !important;
 
-        animation-iteration-count: 1 !important;
+        animation-iteration-count:
+          1 !important;
 
-        transition-duration: .01ms !important;
+        transition-duration:
+          .01ms !important;
       }
-
     }
   </style>
 </head>
@@ -2114,10 +2322,7 @@
 
   <div class="app">
 
-    <!-- =========================
-         HEADER
-    ========================== -->
-
+    <!-- HEADER -->
     <header class="header">
 
       <div class="header-main">
@@ -2147,11 +2352,28 @@
       </div>
 
 
+      <!--
+        RTL:
+        نواياي | اليوم | ★
+
+        اليوم هو الوسط والـDefault.
+      -->
+
       <nav
         class="header-nav"
         aria-label="التنقل الرئيسي"
         data-i18n-aria="mainNavigation"
       >
+
+        <button
+          class="header-tab"
+          data-view="all"
+          type="button"
+          data-i18n="all"
+        >
+          نواياي
+        </button>
+
 
         <button
           class="header-tab active"
@@ -2161,16 +2383,6 @@
           data-i18n="today"
         >
           اليوم
-        </button>
-
-
-        <button
-          class="header-tab"
-          data-view="all"
-          type="button"
-          data-i18n="all"
-        >
-          نواياي
         </button>
 
 
@@ -2191,10 +2403,7 @@
     </header>
 
 
-    <!-- =========================
-         HERO
-    ========================== -->
-
+    <!-- HERO -->
     <section class="hero">
 
       <h1
@@ -2251,10 +2460,7 @@
     </section>
 
 
-    <!-- =========================
-         CONTENT
-    ========================== -->
-
+    <!-- CONTENT -->
     <main
       class="content"
       id="content"
@@ -2263,10 +2469,7 @@
   </div>
 
 
-  <!-- =========================
-       COMPOSER
-  ========================== -->
-
+  <!-- COMPOSER -->
   <div class="composer-wrap">
 
     <form
@@ -2301,11 +2504,7 @@
   </div>
 
 
-  <!-- =========================
-       MENU
-       فقط الإعدادات + السلة
-  ========================== -->
-
+  <!-- MENU -->
   <div
     class="overlay"
     id="menuOverlay"
@@ -2322,6 +2521,7 @@
       </div>
 
 
+      <!-- SETTINGS ONLY -->
       <button
         class="menu-item"
         id="settingsBtn"
@@ -2342,6 +2542,7 @@
       </button>
 
 
+      <!-- TRASH ONLY -->
       <button
         class="menu-item"
         id="menuTrashBtn"
@@ -2366,10 +2567,7 @@
   </div>
 
 
-  <!-- =========================
-       TASK ACTIONS
-  ========================== -->
-
+  <!-- TASK ACTIONS -->
   <div
     class="overlay"
     id="actionOverlay"
@@ -2464,10 +2662,7 @@
   </div>
 
 
-  <!-- =========================
-       EDIT
-  ========================== -->
-
+  <!-- EDIT -->
   <div
     class="overlay"
     id="editOverlay"
@@ -2528,10 +2723,7 @@
   </div>
 
 
-  <!-- =========================
-       DATE
-  ========================== -->
-
+  <!-- DATE -->
   <div
     class="overlay"
     id="dateOverlay"
@@ -2615,10 +2807,7 @@
   </div>
 
 
-  <!-- =========================
-       SETTINGS
-  ========================== -->
-
+  <!-- SETTINGS -->
   <div
     class="overlay"
     id="settingsOverlay"
@@ -2822,57 +3011,12 @@
 
       </div>
 
-
-      <!-- DATA -->
-
-      <div class="setting-group">
-
-        <div
-          class="setting-label"
-          data-i18n="dataSection"
-        >
-          البيانات
-        </div>
-
-
-        <div class="setting-box">
-
-          <button
-            class="setting-row"
-            id="trashBtn"
-            type="button"
-          >
-
-            <span
-              class="setting-name"
-              data-i18n="trash"
-            >
-              سلة المحذوفات
-            </span>
-
-
-            <span
-              class="section-count"
-              id="trashCount"
-            >
-              0
-            </span>
-
-          </button>
-
-        </div>
-
-      </div>
-
     </div>
 
   </div>
 
 
-  <!-- =========================
-       TRASH
-  ========================== -->
-
+  <!-- TRASH -->
   <div
     class="overlay"
     id="trashOverlay"
@@ -2910,10 +3054,7 @@
   </div>
 
 
-  <!-- =========================
-       INSTALL
-  ========================== -->
-
+  <!-- INSTALL -->
   <div
     class="install-banner"
     id="installBanner"
@@ -2971,10 +3112,7 @@
   </div>
 
 
-  <!-- =========================
-       TOAST
-  ========================== -->
-
+  <!-- TOAST -->
   <div
     class="toast"
     id="toast"
@@ -3045,7 +3183,6 @@
         modeName: "الوضع",
 
         colorSection: "اللون",
-        dataSection: "البيانات",
 
         settings: "الإعدادات",
         trash: "سلة المحذوفات",
@@ -3053,10 +3190,17 @@
         trashSubtitle:
           "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
 
-        today: "اليوم",
-        all: "نواياي",
-        favorites: "مفضلاتي",
-        completed: "المكتملة",
+        today:
+          "اليوم",
+
+        all:
+          "نواياي",
+
+        favorites:
+          "مفضلاتي",
+
+        completed:
+          "المكتملة",
 
         completedSection:
           "المكتملة",
@@ -3178,9 +3322,6 @@
         achievementHint:
           "أول ما تخلص حاجة هتظهر هنا.",
 
-        previousDays:
-          "من أيام سابقة",
-
         currentIntentions:
           "نواياي",
 
@@ -3252,7 +3393,6 @@
 
       },
 
-
       en: {
 
         languageSection:
@@ -3269,9 +3409,6 @@
 
         colorSection:
           "Color",
-
-        dataSection:
-          "Data",
 
         settings:
           "Settings",
@@ -3414,9 +3551,6 @@
         achievementHint:
           "Once you complete something, it will appear here.",
 
-        previousDays:
-          "Previous days",
-
         currentIntentions:
           "My intentions",
 
@@ -3555,30 +3689,55 @@
       ...DEFAULT_SETTINGS
     };
 
-    let currentView = "today";
+    /*
+      اليوم هو الـDefault.
+    */
 
-    let selectedTaskId = null;
+    let currentView =
+      "today";
 
-    let completedExpanded = false;
+    let selectedTaskId =
+      null;
 
-    let undoTimer = null;
+    /*
+      نفس الحالة للمكتملة
+      في اليوم ونواياي.
+    */
 
-    let undoAction = null;
+    let completedExpanded =
+      false;
 
-    let typingAudioContext = null;
+    let undoTimer =
+      null;
 
-    let lastTypingSound = 0;
+    let undoAction =
+      null;
 
-    let lastKnownDay = null;
+    let typingAudioContext =
+      null;
+
+    let lastTypingSound =
+      0;
+
+    let lastKnownDay =
+      null;
 
 
     /*
-      3 Views فقط
+      ترتيب الـView:
+      نواياي | اليوم | المفضلة
+
+      لكن الـSwipe بيتعامل معها كحلقة:
+      اليوم:
+        يمين -> نواياي
+        يسار -> المفضلة
+
+      RTL.
     */
 
     const SWIPE_VIEWS = [
-      "today",
       "all",
+      "today",
       "favorites"
     ];
 
@@ -3587,13 +3746,17 @@
        SWIPE STATE
     ========================= */
 
-    let swipeStartX = 0;
+    let swipeStartX =
+      0;
 
-    let swipeStartY = 0;
+    let swipeStartY =
+      0;
 
-    let swipeTracking = false;
+    let swipeTracking =
+      false;
 
-    let swipeSuppressClick = false;
+    let swipeSuppressClick =
+      false;
 
 
     /* =========================
@@ -3675,9 +3838,6 @@
 
     const trashList =
       $("#trashList");
-
-    const trashCount =
-      $("#trashCount");
 
     const toast =
       $("#toast");
@@ -3929,7 +4089,9 @@
        DATE
     ========================= */
 
-    function pad(number) {
+    function pad(
+      number
+    ) {
 
       return String(number)
         .padStart(
@@ -4079,7 +4241,9 @@
 
 
       if (diff === 1) {
+
         return t("yesterday");
+
       }
 
 
@@ -4091,7 +4255,8 @@
         return t(
           "daysAgo",
           {
-            n: diff
+            n:
+              diff
           }
         );
 
@@ -4125,7 +4290,9 @@
 
 
       const createdAt =
-        Number(task.createdAt) ||
+        Number(
+          task.createdAt
+        ) ||
         Date.now();
 
 
@@ -4401,9 +4568,7 @@
         );
 
 
-      $$(
-        "[data-theme-choice]"
-      )
+      $$("[data-theme-choice]")
         .forEach(
           button => {
 
@@ -4427,9 +4592,7 @@
         );
 
 
-      $$(
-        "[data-accent-choice]"
-      )
+      $$("[data-accent-choice]")
         .forEach(
           button => {
 
@@ -4651,8 +4814,12 @@
         );
 
 
-      if (index === -1) {
+      if (
+        index === -1
+      ) {
+
         return;
+
       }
 
 
@@ -4777,8 +4944,12 @@
 
     function saveEdit() {
 
-      if (!selectedTaskId) {
+      if (
+        !selectedTaskId
+      ) {
+
         return;
+
       }
 
 
@@ -4791,6 +4962,7 @@
         showToast(
           t("writeFirst")
         );
+
 
         return;
 
@@ -4837,7 +5009,7 @@
 
 
     /* =========================
-       DATE
+       TASK DATE
     ========================= */
 
     function openTaskDate(
@@ -4889,8 +5061,12 @@
 
     function saveTaskDate() {
 
-      if (!selectedTaskId) {
+      if (
+        !selectedTaskId
+      ) {
+
         return;
+
       }
 
 
@@ -4951,8 +5127,12 @@
 
     function clearTaskDate() {
 
-      if (!selectedTaskId) {
+      if (
+        !selectedTaskId
+      ) {
+
         return;
+
       }
 
 
@@ -5036,8 +5216,12 @@
         );
 
 
-      if (index === -1) {
+      if (
+        index === -1
+      ) {
+
         return;
+
       }
 
 
@@ -5095,7 +5279,7 @@
 
 
     /* =========================
-       VIEW
+       VIEWS
     ========================= */
 
     function setView(
@@ -5315,7 +5499,8 @@
 
 
       content.classList.add(
-        direction === "next"
+        direction ===
+          "next"
           ? "view-transition-next"
           : "view-transition-previous"
       );
@@ -5425,7 +5610,7 @@
 
 
     /* =========================
-       ALL
+       ALL / MY INTENTIONS
     ========================= */
 
     function renderAll() {
@@ -5445,7 +5630,7 @@
 
         content.appendChild(
           createEmptyState(
-            "✓",
+            "ن",
             t("noIntentionsAll"),
             t("everyThingStarts")
           )
@@ -5471,11 +5656,6 @@
 
       }
 
-
-      /*
-        نفس Toggle المكتملة
-        في اليوم ونواياي.
-      */
 
       if (
         completed.length > 0
@@ -5532,7 +5712,7 @@
 
 
     /* =========================
-       COMPLETED TOGGLE
+       COMPLETED CARD + TOGGLE
     ========================= */
 
     function createCompletedToggleSection(
@@ -5582,30 +5762,6 @@
       );
 
 
-      const main =
-        document.createElement(
-          "span"
-        );
-
-
-      main.className =
-        "completed-toggle-main";
-
-
-      const icon =
-        document.createElement(
-          "span"
-        );
-
-
-      icon.className =
-        "completed-toggle-icon";
-
-
-      icon.textContent =
-        "✓";
-
-
       const title =
         document.createElement(
           "span"
@@ -5634,13 +5790,6 @@
         taskArray.length;
 
 
-      main.append(
-        icon,
-        title,
-        count
-      );
-
-
       const chevron =
         document.createElement(
           "span"
@@ -5652,11 +5801,12 @@
 
 
       chevron.textContent =
-        "⌄";
+        "^";
 
 
       toggle.append(
-        main,
+        title,
+        count,
         chevron
       );
 
@@ -6207,7 +6357,7 @@
 
 
     /* =========================
-       EMPTY STATE
+       EMPTY
     ========================= */
 
     function createEmptyState(
@@ -6346,7 +6496,7 @@
 
 
     /* =========================
-       HEADER NAV STATE
+       HEADER STATE
     ========================= */
 
     function updateHeaderNavState() {
@@ -6404,7 +6554,8 @@
 
 
       if (
-        currentIndex === -1
+        currentIndex ===
+        -1
       ) {
 
         return;
@@ -6447,6 +6598,20 @@
 
     }
 
+
+    /*
+      في RTL:
+
+      سحب يمين  = Previous
+      سحب يسار  = Next
+
+      وبترتيب:
+      نواياي → اليوم → المفضلة
+
+      إذن من اليوم:
+      يمين = نواياي
+      يسار = المفضلة
+    */
 
     function getSwipeDirection(
       dx
@@ -6592,8 +6757,7 @@
 
       if (
         absX < 55 ||
-        absX <=
-          absY * 1.2
+        absX <= absY * 1.2
       ) {
 
         return;
@@ -6666,7 +6830,8 @@
     ) {
 
       if (
-        event.button !== 0 ||
+        event.button !==
+          0 ||
         isSwipeBlockedTarget(
           event.target
         )
@@ -6850,9 +7015,10 @@
 
 
       const actionText =
-        actionButton.querySelector(
-          "span:last-child"
-        );
+        actionButton
+          .querySelector(
+            "span:last-child"
+          );
 
 
       if (actionText) {
@@ -6976,7 +7142,7 @@
 
 
     /* =========================
-       DATE ACTIONS
+       DATE
     ========================= */
 
     $("#dateSave")
@@ -7128,7 +7294,7 @@
 
 
     /* =========================
-       HEADER NAV
+       HEADER TABS
     ========================= */
 
     $$(".header-tab")
@@ -7176,7 +7342,7 @@
 
 
     /* =========================
-       TRASH FROM MENU
+       TRASH
     ========================= */
 
     $("#menuTrashBtn")
@@ -7317,34 +7483,9 @@
 
     function renderSettings() {
 
-      trashCount.textContent =
-        trash.length;
-
-
       applySettings();
 
     }
-
-
-    $("#trashBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          renderTrash();
-
-
-          closeOverlay(
-            settingsOverlay
-          );
-
-
-          openOverlay(
-            trashOverlay
-          );
-
-        }
-      );
 
 
     /* =========================
@@ -7352,10 +7493,6 @@
     ========================= */
 
     function renderTrash() {
-
-      trashCount.textContent =
-        trash.length;
-
 
       trashList.innerHTML =
         "";
@@ -7485,7 +7622,7 @@
 
 
     /* =========================
-       EDIT ACTIONS
+       EDIT
     ========================= */
 
     $("#editSave")
@@ -7901,7 +8038,7 @@
         );
 
       } catch {
-        /* Audio must never break NAWY. */
+        /* Audio should never break NAWY. */
       }
 
     }
@@ -8252,6 +8389,10 @@
           false;
 
 
+        currentView =
+          "today";
+
+
         render();
 
       }
@@ -8296,6 +8437,15 @@
 
 
       applySettings();
+
+
+      /*
+        اليوم دائمًا هو الـDefault
+        عند فتح التطبيق.
+      */
+
+      currentView =
+        "today";
 
 
       lastKnownDay =
@@ -8533,3 +8683,4 @@
 
 </body>
 </html>
+```
