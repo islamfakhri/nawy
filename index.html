@@ -11,6 +11,7 @@
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <meta name="description"
@@ -114,6 +115,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+
       background: var(--bg);
       color: var(--text);
 
@@ -284,11 +286,12 @@
 
       border-radius: 17px;
 
-      background: color-mix(
-        in srgb,
-        var(--surface) 88%,
-        transparent
-      );
+      background:
+        color-mix(
+          in srgb,
+          var(--surface) 88%,
+          transparent
+        );
 
       border: 1px solid var(--border);
 
@@ -353,10 +356,6 @@
     .header-tab-star {
       font-size: 21px;
       line-height: 1;
-    }
-
-    .header-tab.active .header-tab-star {
-      color: #fff;
     }
 
     /* =========================
@@ -538,13 +537,19 @@
     }
 
     /* =========================
-       COMPLETED COLLAPSIBLE
+       COMPLETED TOGGLE
     ========================= */
+
+    .completed-section {
+      margin-top: 18px;
+    }
 
     .completed-toggle {
       width: 100%;
 
-      min-height: 48px;
+      min-height: 50px;
+
+      padding: 4px 7px;
 
       display: flex;
       align-items: center;
@@ -552,43 +557,93 @@
 
       gap: 10px;
 
-      padding: 0 8px;
-
-      border-radius: 14px;
+      border-radius: 15px;
 
       background: transparent;
 
       text-align: start;
 
       transition:
-        background .16s ease;
+        background .16s ease,
+        transform .12s ease;
     }
 
-    .completed-toggle:hover,
-    .completed-toggle:active {
+    .completed-toggle:hover {
       background: var(--surface-2);
+    }
+
+    .completed-toggle:active {
+      transform: scale(.99);
     }
 
     .completed-toggle-main {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
 
       min-width: 0;
+      flex: 1;
+    }
+
+    .completed-toggle-icon {
+      width: 32px;
+      height: 32px;
+
+      flex: 0 0 auto;
+
+      border-radius: 10px;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--accent-soft);
+      color: var(--accent);
+
+      font-size: 14px;
+      font-weight: 900;
+
+      transition:
+        transform .2s ease,
+        background .18s ease;
+    }
+
+    .completed-toggle.open .completed-toggle-icon {
+      transform: rotate(0deg);
     }
 
     .completed-toggle-title {
       color: var(--muted);
 
       font-size: 13px;
-      font-weight: 780;
+      font-weight: 800;
+    }
+
+    .completed-toggle-count {
+      min-width: 25px;
+      height: 25px;
+
+      padding: 0 7px;
+
+      border-radius: 999px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      background: var(--surface-2);
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .completed-toggle-chevron {
-      width: 28px;
-      height: 28px;
+      width: 31px;
+      height: 31px;
 
-      border-radius: 9px;
+      flex: 0 0 auto;
+
+      border-radius: 10px;
 
       display: grid;
       place-items: center;
@@ -596,19 +651,19 @@
       background: var(--surface-2);
       color: var(--muted);
 
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 900;
 
       transition:
-        transform .2s ease,
+        transform .22s cubic-bezier(.2,.8,.2,1),
         color .18s ease,
         background .18s ease;
     }
 
-    .completed-toggle.open
-    .completed-toggle-chevron {
-      background: var(--accent-soft);
+    .completed-toggle.open .completed-toggle-chevron {
       color: var(--accent);
+      background: var(--accent-soft);
+      transform: rotate(180deg);
     }
 
     .completed-list-wrap {
@@ -617,15 +672,20 @@
       max-height: 0;
       opacity: 0;
 
+      transform: translateY(-4px);
+
       transition:
-        max-height .28s cubic-bezier(.2,.8,.2,1),
-        opacity .2s ease,
-        margin-top .2s ease;
+        max-height .30s cubic-bezier(.2,.8,.2,1),
+        opacity .20s ease,
+        transform .22s ease,
+        margin-top .20s ease;
     }
 
     .completed-list-wrap.open {
       max-height: 3000px;
       opacity: 1;
+
+      transform: translateY(0);
 
       margin-top: 4px;
     }
@@ -1153,10 +1213,6 @@
       color: var(--danger);
     }
 
-    .action-item-date {
-      color: var(--accent);
-    }
-
     /* =========================
        MODAL / INPUT
     ========================= */
@@ -1638,6 +1694,15 @@
         font-size: 20px;
       }
 
+      .completed-toggle {
+        min-height: 48px;
+      }
+
+      .completed-toggle-icon {
+        width: 30px;
+        height: 30px;
+      }
+
       .install-banner {
         align-items: flex-start;
         gap: 9px;
@@ -1738,7 +1803,6 @@
         <button
           class="header-tab active"
           data-view="today"
-          id="headerToday"
           type="button"
           aria-current="page"
           data-i18n="today"
@@ -1749,7 +1813,6 @@
         <button
           class="header-tab"
           data-view="all"
-          id="headerAll"
           type="button"
           data-i18n="all"
         >
@@ -1759,7 +1822,6 @@
         <button
           class="header-tab"
           data-view="favorites"
-          id="headerFavorites"
           type="button"
           aria-label="مفضلاتي"
           data-i18n-aria="favorites"
@@ -1883,12 +1945,12 @@
         NAWY
       </div>
 
-      <!-- SETTINGS ONLY -->
       <button
         class="menu-item"
         id="settingsBtn"
         type="button"
       >
+
         <span class="menu-icon">⚙</span>
 
         <span
@@ -1897,14 +1959,15 @@
         >
           الإعدادات
         </span>
+
       </button>
 
-      <!-- TRASH ONLY -->
       <button
         class="menu-item"
         id="menuTrashBtn"
         type="button"
       >
+
         <span class="menu-icon">⌫</span>
 
         <span
@@ -1913,6 +1976,7 @@
         >
           سلة المحذوفات
         </span>
+
       </button>
 
     </div>
@@ -1946,6 +2010,7 @@
         <span data-i18n="done">
           تمت
         </span>
+
       </button>
 
       <button
@@ -1961,6 +2026,7 @@
         >
           تحديد موعد
         </span>
+
       </button>
 
       <button
@@ -1973,6 +2039,7 @@
         <span data-i18n="edit">
           تعديل
         </span>
+
       </button>
 
       <button
@@ -1985,6 +2052,7 @@
         <span data-i18n="delete">
           حذف
         </span>
+
       </button>
 
     </div>
@@ -2531,6 +2599,7 @@
           "تعديل النية",
 
         done: "تمت",
+
         cancelDone:
           "إلغاء الإنجاز",
 
@@ -2547,16 +2616,29 @@
         taskPlaceholder:
           "اكتب اللي ناوي عليه...",
 
-        menu: "القائمة",
+        menu:
+          "القائمة",
 
-        light: "فاتح",
-        dark: "داكن",
+        light:
+          "فاتح",
 
-        green: "أخضر",
-        blue: "أزرق",
-        purple: "بنفسجي",
-        orange: "برتقالي",
-        pink: "وردي",
+        dark:
+          "داكن",
+
+        green:
+          "أخضر",
+
+        blue:
+          "أزرق",
+
+        purple:
+          "بنفسجي",
+
+        orange:
+          "برتقالي",
+
+        pink:
+          "وردي",
 
         nawyColor:
           "لون ناوي",
@@ -2615,8 +2697,8 @@
         previousDays:
           "من أيام سابقة",
 
-        doneToday:
-          "المنجز",
+        completedSection:
+          "المكتملة",
 
         currentIntentions:
           "نواياي",
@@ -2625,7 +2707,7 @@
           "مفضلاتي",
 
         allDoneSection:
-          "كل المنجز",
+          "المكتملة",
 
         trashEmpty:
           "السلة فاضية",
@@ -2689,29 +2771,50 @@
 
       },
 
+
       en: {
 
-        languageSection: "Language",
-        languageName: "NAWY language",
+        languageSection:
+          "Language",
 
-        appearanceSection: "Appearance",
-        modeName: "Mode",
+        languageName:
+          "NAWY language",
 
-        colorSection: "Color",
-        dataSection: "Data",
+        appearanceSection:
+          "Appearance",
 
-        settings: "Settings",
-        trash: "Trash",
+        modeName:
+          "Mode",
+
+        colorSection:
+          "Color",
+
+        dataSection:
+          "Data",
+
+        settings:
+          "Settings",
+
+        trash:
+          "Trash",
 
         trashSubtitle:
           "Restore deleted intentions or delete them permanently.",
 
-        today: "Today",
-        all: "My intentions",
-        favorites: "My favorites",
-        completed: "Completed",
+        today:
+          "Today",
 
-        mainNavigation: "Main navigation",
+        all:
+          "My intentions",
+
+        favorites:
+          "My favorites",
+
+        completed:
+          "Completed",
+
+        mainNavigation:
+          "Main navigation",
 
         heroToday:
           "What are you up to today?",
@@ -2722,16 +2825,26 @@
         editIntent:
           "Edit intention",
 
-        done: "Done",
+        done:
+          "Done",
+
         cancelDone:
           "Undo completion",
 
-        edit: "Edit",
-        delete: "Delete",
-        cancel: "Cancel",
-        save: "Save",
+        edit:
+          "Edit",
 
-        add: "Add",
+        delete:
+          "Delete",
+
+        cancel:
+          "Cancel",
+
+        save:
+          "Save",
+
+        add:
+          "Add",
 
         newIntent:
           "Write a new intention",
@@ -2739,16 +2852,29 @@
         taskPlaceholder:
           "Write what you intend to do...",
 
-        menu: "Menu",
+        menu:
+          "Menu",
 
-        light: "Light",
-        dark: "Dark",
+        light:
+          "Light",
 
-        green: "Green",
-        blue: "Blue",
-        purple: "Purple",
-        orange: "Orange",
-        pink: "Pink",
+        dark:
+          "Dark",
+
+        green:
+          "Green",
+
+        blue:
+          "Blue",
+
+        purple:
+          "Purple",
+
+        orange:
+          "Orange",
+
+        pink:
+          "Pink",
 
         nawyColor:
           "NAWY color",
@@ -2807,7 +2933,7 @@
         previousDays:
           "Previous days",
 
-        doneToday:
+        completedSection:
           "Completed",
 
         currentIntentions:
@@ -2817,7 +2943,7 @@
           "My favorites",
 
         allDoneSection:
-          "All completed",
+          "Completed",
 
         trashEmpty:
           "Trash is empty",
@@ -2943,6 +3069,10 @@
     let currentView = "today";
     let selectedTaskId = null;
 
+    /*
+      نفس الـToggle بيشتغل في:
+      اليوم + نواياي
+    */
     let completedExpanded = false;
 
     let undoTimer = null;
@@ -2955,11 +3085,8 @@
 
 
     /*
-      التصفح الأساسي أصبح:
+      التصفح الأساسي فقط:
       اليوم → نواياي → المفضلة
-
-      المنجز لم يعد View مستقل،
-      بل أصبح قسمًا قابلًا للطي داخل اليوم.
     */
     const SWIPE_VIEWS = [
       "today",
@@ -3345,66 +3472,6 @@
     }
 
 
-    function getRelativeDayText(task) {
-
-      if (!task.taskDay) {
-        return "";
-      }
-
-      const today =
-        getDateKey();
-
-      if (task.taskDay === today) {
-        return t("today");
-      }
-
-      const taskDate =
-        new Date(
-          `${task.taskDay}T12:00:00`
-        );
-
-      const currentDate =
-        new Date();
-
-      currentDate.setHours(
-        12,
-        0,
-        0,
-        0
-      );
-
-      const diff =
-        Math.round(
-          (currentDate - taskDate) /
-          86400000
-        );
-
-      if (diff === 1) {
-        return t("yesterday");
-      }
-
-      if (diff > 1 && diff < 7) {
-
-        return t(
-          "daysAgo",
-          { n: diff }
-        );
-
-      }
-
-      return new Intl.DateTimeFormat(
-        settings.language === "en"
-          ? "en-US"
-          : "ar-EG",
-        {
-          day: "numeric",
-          month: "short"
-        }
-      ).format(taskDate);
-
-    }
-
-
     function getTaskDisplayDate(task) {
 
       return task.scheduledDate ||
@@ -3453,10 +3520,14 @@
       }
 
       if (diff > 1 && diff < 7) {
+
         return t(
           "daysAgo",
-          { n: diff }
+          {
+            n: diff
+          }
         );
+
       }
 
       return formatTaskDate(
@@ -3598,7 +3669,8 @@
               .map(normalizeTask)
               .filter(Boolean)
               .filter(
-                task => task.text
+                task =>
+                  task.text
               )
           : [];
 
@@ -3609,7 +3681,8 @@
               .map(normalizeTask)
               .filter(Boolean)
               .filter(
-                task => task.text
+                task =>
+                  task.text
               )
           : [];
 
@@ -3621,8 +3694,12 @@
 
 
       if (
-        !["dark", "light"]
-          .includes(settings.theme)
+        ![
+          "dark",
+          "light"
+        ].includes(
+          settings.theme
+        )
       ) {
 
         settings.theme =
@@ -3638,7 +3715,9 @@
           "purple",
           "orange",
           "pink"
-        ].includes(settings.accent)
+        ].includes(
+          settings.accent
+        )
       ) {
 
         settings.accent =
@@ -3648,8 +3727,12 @@
 
 
       if (
-        !["ar", "en"]
-          .includes(settings.language)
+        ![
+          "ar",
+          "en"
+        ].includes(
+          settings.language
+        )
       ) {
 
         settings.language =
@@ -3945,6 +4028,7 @@
                 item.id === deleted.id
             );
 
+
           if (trashIndex !== -1) {
 
             trash.splice(
@@ -3954,10 +4038,15 @@
 
           }
 
-          tasks.unshift(deleted);
+
+          tasks.unshift(
+            deleted
+          );
+
 
           saveTasks();
           saveTrash();
+
 
           render();
 
@@ -3987,12 +4076,15 @@
       selectedTaskId =
         id;
 
+
       editInput.value =
         task.text;
+
 
       closeOverlay(
         actionOverlay
       );
+
 
       openOverlay(
         editOverlay
@@ -4023,6 +4115,7 @@
       const text =
         editInput.value.trim();
 
+
       if (!text) {
 
         showToast(
@@ -4030,6 +4123,7 @@
         );
 
         return;
+
       }
 
 
@@ -4049,17 +4143,22 @@
       task.text =
         text;
 
+
       saveTasks();
+
 
       closeOverlay(
         editOverlay
       );
 
+
       render();
+
 
       showToast(
         t("edited")
       );
+
 
       selectedTaskId =
         null;
@@ -4079,6 +4178,7 @@
             item.id === id
         );
 
+
       if (!task) {
         return;
       }
@@ -4096,6 +4196,7 @@
       closeOverlay(
         actionOverlay
       );
+
 
       openOverlay(
         dateOverlay
@@ -4136,7 +4237,9 @@
 
       if (
         !value ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(value)
+        !/^\d{4}-\d{2}-\d{2}$/.test(
+          value
+        )
       ) {
 
         return;
@@ -4150,15 +4253,19 @@
 
       saveTasks();
 
+
       closeOverlay(
         dateOverlay
       );
 
+
       render();
+
 
       showToast(
         t("dateSet")
       );
+
 
       selectedTaskId =
         null;
@@ -4191,15 +4298,19 @@
 
       saveTasks();
 
+
       closeOverlay(
         dateOverlay
       );
 
+
       render();
+
 
       showToast(
         t("dateRemoved")
       );
+
 
       selectedTaskId =
         null;
@@ -4207,7 +4318,9 @@
     }
 
 
-    function updateActionDateText(task) {
+    function updateActionDateText(
+      task
+    ) {
 
       if (!actionDateText) {
         return;
@@ -4257,11 +4370,14 @@
       delete task.deletedAt;
 
 
-      tasks.unshift(task);
+      tasks.unshift(
+        task
+      );
 
 
       saveTasks();
       saveTrash();
+
 
       renderTrash();
 
@@ -4316,10 +4432,12 @@
         const previousView =
           currentView;
 
+
         const previousIndex =
           SWIPE_VIEWS.indexOf(
             previousView
           );
+
 
         const nextIndex =
           SWIPE_VIEWS.indexOf(
@@ -4351,7 +4469,9 @@
       currentView =
         view;
 
+
       closeAllOverlays();
+
 
       render(
         transitionDirection
@@ -4364,6 +4484,7 @@
 
       const today =
         getDateKey();
+
 
       return tasks.filter(
         task =>
@@ -4378,28 +4499,11 @@
     }
 
 
-    function getPreviousActiveTasks() {
-
-      const today =
-        getDateKey();
-
-      return tasks.filter(
-        task =>
-          !task.completed &&
-          (
-            task.scheduledDate
-              ? task.scheduledDate !== today
-              : task.taskDay !== today
-          )
-      );
-
-    }
-
-
     function getCompletedToday() {
 
       const today =
         getDateKey();
+
 
       return tasks.filter(
         task =>
@@ -4456,9 +4560,12 @@
       heroDate.textContent =
         formatDate();
 
+
       updateHero();
 
+
       updateProgress();
+
 
       content.innerHTML =
         "";
@@ -4487,7 +4594,9 @@
 
       updateHeaderNavState();
 
+
       updateDynamicLanguageText();
+
 
       playViewTransition(
         transitionDirection
@@ -4571,6 +4680,7 @@
       const today =
         getTodayTasks();
 
+
       const completed =
         getCompletedToday();
 
@@ -4588,7 +4698,9 @@
           )
         );
 
+
         return;
+
       }
 
 
@@ -4607,7 +4719,7 @@
       if (completed.length > 0) {
 
         content.appendChild(
-          createCompletedTodaySection(
+          createCompletedToggleSection(
             completed
           )
         );
@@ -4626,6 +4738,7 @@
       const active =
         getAllActive();
 
+
       const completed =
         getAllCompleted();
 
@@ -4643,7 +4756,9 @@
           )
         );
 
+
         return;
+
       }
 
 
@@ -4660,13 +4775,16 @@
       }
 
 
+      /*
+        نفس Toggle الخاص باليوم
+        ولكن هنا يعرض كل المهام المكتملة.
+      */
+
       if (completed.length > 0) {
 
         content.appendChild(
-          createSection(
-            t("completed"),
-            completed,
-            true
+          createCompletedToggleSection(
+            completed
           )
         );
 
@@ -4697,6 +4815,7 @@
           )
         );
 
+
         return;
 
       }
@@ -4714,11 +4833,11 @@
 
 
     /* =========================
-       COMPLETED TODAY
-       COLLAPSIBLE
+       COMPLETED TOGGLE
+       Shared by Today + All
     ========================= */
 
-    function createCompletedTodaySection(
+    function createCompletedToggleSection(
       taskArray
     ) {
 
@@ -4727,8 +4846,9 @@
           "section"
         );
 
+
       section.className =
-        "section";
+        "completed-section";
 
 
       const toggle =
@@ -4736,8 +4856,10 @@
           "button"
         );
 
+
       toggle.type =
         "button";
+
 
       toggle.className =
         "completed-toggle" +
@@ -4747,9 +4869,18 @@
             : ""
         );
 
+
       toggle.setAttribute(
         "aria-expanded",
-        String(completedExpanded)
+        String(
+          completedExpanded
+        )
+      );
+
+
+      toggle.setAttribute(
+        "aria-controls",
+        "completedTasksPanel"
       );
 
 
@@ -4758,8 +4889,23 @@
           "span"
         );
 
+
       main.className =
         "completed-toggle-main";
+
+
+      const icon =
+        document.createElement(
+          "span"
+        );
+
+
+      icon.className =
+        "completed-toggle-icon";
+
+
+      icon.textContent =
+        "✓";
 
 
       const title =
@@ -4767,11 +4913,13 @@
           "span"
         );
 
+
       title.className =
         "completed-toggle-title";
 
+
       title.textContent =
-        t("doneToday");
+        t("completedSection");
 
 
       const count =
@@ -4779,14 +4927,17 @@
           "span"
         );
 
+
       count.className =
-        "section-count";
+        "completed-toggle-count";
+
 
       count.textContent =
         taskArray.length;
 
 
       main.append(
+        icon,
         title,
         count
       );
@@ -4797,13 +4948,13 @@
           "span"
         );
 
+
       chevron.className =
         "completed-toggle-chevron";
 
+
       chevron.textContent =
-        completedExpanded
-          ? "⌃"
-          : "⌄";
+        "⌄";
 
 
       toggle.append(
@@ -4816,6 +4967,11 @@
         document.createElement(
           "div"
         );
+
+
+      listWrap.id =
+        "completedTasksPanel";
+
 
       listWrap.className =
         "completed-list-wrap" +
@@ -4831,6 +4987,7 @@
           "div"
         );
 
+
       list.className =
         "task-list";
 
@@ -4841,7 +4998,7 @@
           list.appendChild(
             createTaskElement(
               task,
-              false,
+              true,
               true
             )
           );
@@ -4861,6 +5018,7 @@
 
           completedExpanded =
             !completedExpanded;
+
 
           render();
 
@@ -4895,6 +5053,7 @@
           "section"
         );
 
+
       section.className =
         "section";
 
@@ -4903,6 +5062,7 @@
         document.createElement(
           "div"
         );
+
 
       head.className =
         "section-head";
@@ -4913,8 +5073,10 @@
           "div"
         );
 
+
       titleEl.className =
         "section-title";
+
 
       titleEl.textContent =
         title;
@@ -4925,8 +5087,10 @@
           "span"
         );
 
+
       count.className =
         "section-count";
+
 
       count.textContent =
         taskArray.length;
@@ -4942,6 +5106,7 @@
         document.createElement(
           "div"
         );
+
 
       list.className =
         "task-list";
@@ -5011,6 +5176,7 @@
       checkbox.type =
         "button";
 
+
       checkbox.className =
         "task-checkbox";
 
@@ -5058,6 +5224,7 @@
           "div"
         );
 
+
       main.className =
         "task-main";
 
@@ -5067,8 +5234,10 @@
           "p"
         );
 
+
       text.className =
         "task-text";
+
 
       text.textContent =
         task.text;
@@ -5082,6 +5251,7 @@
       const displayDate =
         getTaskDisplayDate(task);
 
+
       const relativeDay =
         getTaskDisplayDay(task);
 
@@ -5089,15 +5259,20 @@
       const shouldShowMeta =
         showMeta ||
         task.taskDay !== getDateKey() ||
-        Boolean(task.scheduledDate);
+        Boolean(
+          task.scheduledDate
+        );
 
 
-      if (shouldShowMeta) {
+      if (
+        shouldShowMeta
+      ) {
 
         const meta =
           document.createElement(
             "div"
           );
+
 
         meta.className =
           "task-meta";
@@ -5112,8 +5287,10 @@
               "span"
             );
 
+
           dateBadge.className =
             "task-meta-date";
+
 
           dateBadge.innerHTML =
             `📅 ${escapeHtml(
@@ -5121,6 +5298,7 @@
                 task.scheduledDate
               )
             )}`;
+
 
           meta.appendChild(
             dateBadge
@@ -5143,11 +5321,14 @@
               "span"
             );
 
+
           dayText.className =
             "task-meta-day";
 
+
           dayText.textContent =
             relativeDay;
+
 
           meta.appendChild(
             dayText
@@ -5167,7 +5348,9 @@
         "click",
         event => {
 
-          if (swipeSuppressClick) {
+          if (
+            swipeSuppressClick
+          ) {
 
             swipeSuppressClick =
               false;
@@ -5178,7 +5361,10 @@
 
           }
 
-          openAction(task.id);
+
+          openAction(
+            task.id
+          );
 
         }
       );
@@ -5227,7 +5413,9 @@
 
       star.setAttribute(
         "aria-pressed",
-        String(task.starred)
+        String(
+          task.starred
+        )
       );
 
 
@@ -5236,6 +5424,7 @@
         event => {
 
           event.stopPropagation();
+
 
           toggleStar(
             task.id
@@ -5265,7 +5454,9 @@
               "button"
             )
           ) {
+
             return;
+
           }
 
 
@@ -5453,6 +5644,7 @@
             button.dataset.view ===
             currentView;
 
+
           button.classList.toggle(
             "active",
             active
@@ -5509,11 +5701,6 @@
         direction === "next"
       ) {
 
-        /*
-          Loop:
-          الأخيرة → الأولى
-        */
-
         nextIndex =
           (
             currentIndex + 1
@@ -5521,11 +5708,6 @@
           SWIPE_VIEWS.length;
 
       } else {
-
-        /*
-          Loop:
-          الأولى → الأخيرة
-        */
 
         nextIndex =
           (
@@ -5553,16 +5735,6 @@
         document.documentElement.dir ===
         "rtl";
 
-
-      /*
-        RTL:
-        سحب لليسار = Next
-        سحب لليمين = Previous
-
-        LTR:
-        سحب لليمين = Next
-        سحب لليسار = Previous
-      */
 
       if (isRTL) {
 
@@ -5597,7 +5769,9 @@
        TOUCH SWIPE
     ========================= */
 
-    function handleSwipeStart(event) {
+    function handleSwipeStart(
+      event
+    ) {
 
       if (
         isSwipeBlockedTarget(
@@ -5644,7 +5818,9 @@
     }
 
 
-    function handleSwipeEnd(event) {
+    function handleSwipeEnd(
+      event
+    ) {
 
       if (
         !swipeTracking
@@ -5690,11 +5866,6 @@
       const absY =
         Math.abs(dy);
 
-
-      /*
-        لازم يكون السحب أفقي بوضوح.
-        ده يمنع تحريك القائمة أثناء التمرير الرأسي.
-      */
 
       if (
         absX < 55 ||
@@ -5764,7 +5935,9 @@
        MOUSE DRAG SWIPE
     ========================= */
 
-    function handleMouseDown(event) {
+    function handleMouseDown(
+      event
+    ) {
 
       if (
         event.button !== 0 ||
@@ -5795,7 +5968,9 @@
     }
 
 
-    function handleMouseUp(event) {
+    function handleMouseUp(
+      event
+    ) {
 
       if (
         !swipeTracking
@@ -5896,6 +6071,7 @@
 
 
         event.preventDefault();
+
         event.stopPropagation();
 
 
@@ -5947,7 +6123,9 @@
             : t("done");
 
 
-      updateActionDateText(task);
+      updateActionDateText(
+        task
+      );
 
 
       openOverlay(
@@ -5971,7 +6149,9 @@
             selectedTaskId;
 
 
-          completeTask(id);
+          completeTask(
+            id
+          );
 
 
           closeOverlay(
@@ -6045,7 +6225,9 @@
             null;
 
 
-          deleteTask(id);
+          deleteTask(
+            id
+          );
 
         }
       );
@@ -6252,7 +6434,7 @@
 
 
     /* =========================
-       DIRECT TRASH FROM MENU
+       MENU TRASH
     ========================= */
 
     $("#menuTrashBtn")
@@ -6294,6 +6476,7 @@
 
               saveSettings();
 
+
               applySettings();
 
             }
@@ -6320,6 +6503,7 @@
 
 
               saveSettings();
+
 
               applySettings();
 
@@ -6366,13 +6550,18 @@
 
               saveSettings();
 
+
               applyLanguage();
+
 
               render();
 
+
               applyLanguage();
 
+
               renderSettings();
+
 
               renderTrash();
 
@@ -6440,6 +6629,7 @@
             t("noDeleted")
           )
         );
+
 
         return;
 
@@ -6590,6 +6780,7 @@
 
             event.preventDefault();
 
+
             saveEdit();
 
           }
@@ -6676,7 +6867,9 @@
 
 
           if (
-            addTask(text)
+            addTask(
+              text
+            )
           ) {
 
             taskInput.value =
@@ -6983,7 +7176,8 @@
 
       const frequency =
         145 +
-        Math.random() * 40;
+        Math.random() *
+        40;
 
 
       playTone(
@@ -7048,7 +7242,9 @@
        SAFE HTML
     ========================= */
 
-    function escapeHtml(value) {
+    function escapeHtml(
+      value
+    ) {
 
       return String(value)
         .replaceAll(
@@ -7113,7 +7309,9 @@
       }
 
 
-      if (deferredInstallPrompt) {
+      if (
+        deferredInstallPrompt
+      ) {
 
         installTitle.textContent =
           t("installTitle");
@@ -7134,7 +7332,6 @@
 
       installAction.textContent =
         t("install");
-
 
       installDismiss.textContent =
         t("continue");
@@ -7162,8 +7359,10 @@
 
         event.preventDefault();
 
+
         deferredInstallPrompt =
           event;
+
 
         showInstallBanner();
 
@@ -7178,6 +7377,7 @@
         deferredInstallPrompt =
           null;
 
+
         hideInstallBanner();
 
       }
@@ -7188,9 +7388,13 @@
       "click",
       async () => {
 
-        if (!deferredInstallPrompt) {
+        if (
+          !deferredInstallPrompt
+        ) {
 
-          if (isIOS()) {
+          if (
+            isIOS()
+          ) {
 
             showToast(
               t("installGuideText")
@@ -7283,8 +7487,10 @@
         lastKnownDay =
           today;
 
+
         completedExpanded =
           false;
+
 
         render();
 
@@ -7328,14 +7534,19 @@
 
       loadData();
 
+
       applySettings();
+
 
       lastKnownDay =
         getDateKey();
 
+
       render();
 
+
       updateComposer();
+
 
       autoResizeTextarea();
 
@@ -7512,7 +7723,9 @@
               }
             );
 
-          } catch (error) {
+          } catch (
+            error
+          ) {
 
             console.warn(
               "NAWY SW registration failed:",
@@ -7530,8 +7743,12 @@
           "controllerchange",
           () => {
 
-            if (swReloading) {
+            if (
+              swReloading
+            ) {
+
               return;
+
             }
 
 
