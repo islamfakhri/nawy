@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0d0d0d">
+  <meta name="theme-color" content="#3b82f6">
   <meta name="color-scheme" content="dark light">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 
-  <!-- Flatpickr Calendar -->
+  <!-- Flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
@@ -44,14 +44,6 @@
 
   <!-- Tone.js -->
   <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag("js", new Date());
-    gtag("config", "G-3612TKY0RT", { anonymize_ip: true });
-  </script>
 
   <style>
     :root {
@@ -63,8 +55,8 @@
       --muted: #6b7377;
       --border: rgba(17, 20, 21, .06);
       --border-strong: rgba(17, 20, 21, .10);
-      --accent: #19a974;
-      --accent-soft: rgba(25, 169, 116, .08);
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, .08);
       --danger: #e5484d;
       --warning: #e8a317;
       --shadow-soft: 0 1px 3px rgba(0,0,0,.03);
@@ -106,10 +98,11 @@
       --shadow-soft: 0 1px 4px rgba(0,0,0,.15); --shadow-card: 0 4px 12px rgba(0,0,0,.20); --shadow-sheet: 0 20px 60px rgba(0,0,0,.40);
       --shadow-drag: 0 12px 32px rgba(0,0,0,.40);
     }
-    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,.08); }
-    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,.08); }
-    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,.10); }
-    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,.08); }
+    html[data-accent="green"] { --accent: #19a974; --accent-soft: rgba(25, 169, 116, .08); }
+    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59, 130, 246, .08); }
+    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139, 92, 246, .08); }
+    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245, 158, 11, .10); }
+    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236, 72, 153, .08); }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { min-height: 100%; background: var(--bg); scroll-behavior: smooth; }
@@ -152,11 +145,11 @@
     .header-tab.active { color: var(--accent); }
     .header-tab-indicator { position: absolute; z-index: 3; left: var(--tab-indicator-left); bottom: 0; width: var(--tab-indicator-width); height: 3px; border-radius: var(--radius-full); background: var(--accent); pointer-events: none; transition: left .28s cubic-bezier(.22,.75,.25,1), width .28s cubic-bezier(.22,.75,.25,1); }
 
-    .hero { padding: var(--sp-lg) 2px var(--sp-md); }
-    .hero-title { margin: 0; font-size: var(--fs-hero); line-height: 1.25; letter-spacing: -.3px; font-weight: var(--fw-bold); }
+    .hero { padding: var(--sp-sm) 2px var(--sp-sm); }
+    .hero-title { margin: 0; font-size: var(--fs-lg); line-height: 1.3; letter-spacing: -.2px; font-weight: var(--fw-semibold); }
     .hero-date { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
 
-    .content { margin-top: var(--sp-md); }
+    .content { margin-top: var(--sp-sm); }
 
     .section {
       margin-top: var(--sp-md);
@@ -166,30 +159,8 @@
       overflow: hidden;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: background var(--transition-theme), border-color var(--transition-theme);
     }
     .section:first-child { margin-top: 0; }
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--sp-sm) var(--sp-md);
-      border-bottom: 1px solid var(--border);
-    }
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-sm);
-      font-size: var(--fs-sm);
-      font-weight: var(--fw-bold);
-    }
-    .section-count {
-      min-width: 22px; height: 22px; padding: 0 5px;
-      display: inline-flex; align-items: center; justify-content: center;
-      border-radius: var(--radius-full);
-      background: var(--surface-3); color: var(--muted);
-      font-size: var(--fs-xs); font-weight: var(--fw-bold);
-    }
     .task-list {
       padding: 0 var(--sp-md);
       display: flex; flex-direction: column;
@@ -319,18 +290,12 @@
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
-    @keyframes slideIn {
-      0% { opacity: 0; transform: translateY(-10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
     @media (max-width: 480px) {
       .app { padding-left: var(--sp-md); padding-right: var(--sp-md); }
       .task { min-height: 48px; gap: var(--sp-sm); }
       .task-checkbox { width: 28px; height: 28px; }
       .task-star { width: 40px; height: 40px; }
       .task-star .lucide { width: 18px; height: 18px; }
-      .section-head { padding: var(--sp-xs) var(--sp-sm); }
       .task-list { padding: 0 var(--sp-sm); }
       .segment { padding: 0 var(--sp-xs); font-size: var(--fs-xs); }
       .header-tab { font-size: 11px; }
@@ -358,7 +323,7 @@
         </button>
         <button class="header-tab active" data-view="today" type="button">
           <i data-lucide="sun"></i>
-          <span>ناوي على إيه النهارده؟</span>
+          <span>اليوم</span>
         </button>
         <button class="header-tab" data-view="favorites" type="button">
           <i data-lucide="star"></i>
@@ -446,11 +411,11 @@
       <button class="sheet-close-btn" type="button" data-close-overlay="dateOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">تحديد موعد</div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <button class="quick-date" data-date="today" type="button" style="flex:1;min-height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;">اليوم</button>
-        <button class="quick-date" data-date="tomorrow" type="button" style="flex:1;min-height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;">بكرة</button>
-      </div>
       <input class="date-input" id="taskDateInput" type="text" placeholder="اختر تاريخ" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;">
+      <div style="margin-top:12px;">
+        <label style="font-size:13px;font-weight:600;color:var(--muted);">الوقت (اختياري)</label>
+        <input type="time" id="taskTimeInput" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;margin-top:6px;">
+      </div>
       <div style="display:flex;gap:8px;margin-top:12px;">
         <button id="dateClear" type="button" style="flex:1;min-height:44px;border-radius:12px;background:rgba(229,72,77,.08);color:var(--danger);font-size:14px;font-weight:700;">إزالة</button>
         <button id="dateSave" type="button" style="flex:1;min-height:44px;border-radius:12px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;">حفظ</button>
@@ -503,7 +468,7 @@
             <div class="setting-name">لون ناوي</div>
             <div class="colors">
               <button class="color-btn green" data-accent-choice="green" type="button"></button>
-              <button class="color-btn blue" data-accent-choice="blue" type="button"></button>
+              <button class="color-btn blue active" data-accent-choice="blue" type="button"></button>
               <button class="color-btn purple" data-accent-choice="purple" type="button"></button>
               <button class="color-btn orange" data-accent-choice="orange" type="button"></button>
               <button class="color-btn pink" data-accent-choice="pink" type="button"></button>
@@ -516,9 +481,9 @@
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name">إشعار الصباح</div>
-            <button id="notificationToggleBtn" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px;font-weight:600;">تفعيل</button>
+            <button id="notificationToggleBtn" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px;font-weight:600;">تعطيل</button>
           </div>
-          <div class="setting-row hidden" id="notificationTimeRow">
+          <div class="setting-row" id="notificationTimeRow">
             <div class="setting-name">الوقت</div>
             <input type="time" class="time-input" id="notificationTimeInput" value="09:00">
           </div>
@@ -540,7 +505,7 @@
     "use strict";
 
     const STORAGE_KEYS = { tasks: "nawy_tasks_v9", trash: "nawy_trash_v2", settings: "nawy_settings_v2" };
-    const DEFAULT_SETTINGS = { theme: "system", accent: "green", language: "ar", fontSize: "medium", notificationEnabled: false, notificationTime: "09:00" };
+    const DEFAULT_SETTINGS = { theme: "system", accent: "blue", language: "ar", fontSize: "medium", notificationEnabled: true, notificationTime: "09:00" };
 
     const TRANSLATIONS = {
       ar: {
@@ -555,7 +520,7 @@
         archiveEmpty: "الأرشيف فاضي", restore: "استرجاع", taskPlaceholder: "اكتب النية اللي في بالك...",
         activeFavorites: "المفضلة النشطة", completedFavorites: "المفضلة المكتملة",
         repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا",
-        quickToday: "اليوم", quickTomorrow: "بكرة", removeDate: "إزالة", save: "حفظ",
+        removeDate: "إزالة", save: "حفظ", optionalTime: "الوقت (اختياري)",
         addedToast: "تمت إضافة النية ✨", completedToast: "تم إتمام النية 🎉", deletedToast: "تم التراجع - اضغط للاسترجاع",
         restoredToast: "تم الاسترجاع ✅", editedToast: "تم التعديل ✏️"
       },
@@ -571,7 +536,7 @@
         archiveEmpty: "Archive is empty", restore: "Restore", taskPlaceholder: "Write the intention on your mind...",
         activeFavorites: "Active Favorites", completedFavorites: "Completed Favorites",
         repeatNone: "No Repeat", repeatDaily: "Daily", repeatWeekly: "Weekly", repeatMonthly: "Monthly",
-        quickToday: "Today", quickTomorrow: "Tomorrow", removeDate: "Remove", save: "Save",
+        removeDate: "Remove", save: "Save", optionalTime: "Time (optional)",
         addedToast: "Intention added ✨", completedToast: "Intention completed 🎉", deletedToast: "Deleted - tap to undo",
         restoredToast: "Restored ✅", editedToast: "Edited ✏️"
       }
@@ -589,7 +554,7 @@
     const heroDate = $("#heroDate"), heroTitle = $("#heroTitle");
     const headerNav = $("#headerNav"), headerTabIndicator = $("#headerTabIndicator"), brandName = $("#brandName");
     const menuOverlay = $("#menuOverlay"), actionOverlay = $("#actionOverlay"), repeatOverlay = $("#repeatOverlay"), dateOverlay = $("#dateOverlay"), settingsOverlay = $("#settingsOverlay"), trashOverlay = $("#trashOverlay");
-    const taskDateInput = $("#taskDateInput"), trashList = $("#trashList");
+    const taskDateInput = $("#taskDateInput"), taskTimeInput = $("#taskTimeInput"), trashList = $("#trashList");
     const notificationToggleBtn = $("#notificationToggleBtn"), notificationTimeRow = $("#notificationTimeRow"), notificationTimeInput = $("#notificationTimeInput");
     const actionPreviewContainer = $("#actionPreviewContainer");
 
@@ -657,7 +622,7 @@
         playCompleteSound();
         if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
         if (typeof confetti === 'function') {
-          confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#19a974', '#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1'] });
+          confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#3b82f6', '#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1'] });
         }
       }
       saveTasks();
@@ -695,26 +660,30 @@
       content.innerHTML = "";
       
       if (currentView === "today") {
+        heroTitle.style.display = "block";
+        heroTitle.textContent = t("heroToday");
         const active = tasks.filter(x => !x.completed && (x.scheduledDate ? x.scheduledDate === getDateKey() : x.taskDay === getDateKey()));
         const completed = tasks.filter(x => x.completed && x.completedAt && getDateKey(new Date(x.completedAt)) === getDateKey());
         if (active.length === 0 && completed.length === 0) {
           content.appendChild(createEmptyState("ن", t("noIntentions"), t("firstIntent")));
         } else {
-          if (active.length > 0) content.appendChild(createSection(t("today"), active));
+          if (active.length > 0) content.appendChild(createSection(active));
           if (completed.length > 0) content.appendChild(createCompletedSection(completed));
         }
       } else if (currentView === "all") {
+        heroTitle.style.display = "none";
         const active = tasks.filter(x => !x.completed);
         const completed = tasks.filter(x => x.completed);
-        if (active.length > 0) content.appendChild(createSection(t("all"), active));
+        if (active.length > 0) content.appendChild(createSection(active));
         if (completed.length > 0) content.appendChild(createCompletedSection(completed));
       } else if (currentView === "favorites") {
+        heroTitle.style.display = "none";
         const favActive = tasks.filter(x => x.starred && !x.completed);
         const favCompleted = tasks.filter(x => x.starred && x.completed);
         if (favActive.length === 0 && favCompleted.length === 0) {
           content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint")));
         } else {
-          if (favActive.length > 0) content.appendChild(createSection(t("activeFavorites"), favActive));
+          if (favActive.length > 0) content.appendChild(createSection(favActive));
           if (favCompleted.length > 0) content.appendChild(createCompletedSection(favCompleted));
         }
       }
@@ -725,23 +694,13 @@
       lucide.createIcons();
     }
 
-    function createSection(title, taskArray) {
+    function createSection(taskArray) {
       const section = document.createElement("section");
       section.className = "section";
-      const head = document.createElement("div");
-      head.className = "section-head";
-      const titleEl = document.createElement("div");
-      titleEl.className = "section-title";
-      titleEl.textContent = title;
-      const count = document.createElement("span");
-      count.className = "section-count";
-      count.textContent = taskArray.length;
-      titleEl.appendChild(count);
-      head.appendChild(titleEl);
       const list = document.createElement("div");
       list.className = "task-list";
       taskArray.forEach(task => list.appendChild(createTaskElement(task)));
-      section.append(head, list);
+      section.appendChild(list);
       return section;
     }
 
@@ -822,9 +781,6 @@
         btn.classList.toggle("active", active);
         if (active) btn.setAttribute("aria-current", "page"); else btn.removeAttribute("aria-current");
       });
-      const views = ["all", "today", "favorites"];
-      const currentIndex = views.indexOf(currentView);
-      heroTitle.textContent = [t("all"), t("heroToday"), t("favorites")][currentIndex] || t("heroToday");
     }
 
     function updateIndicator() {
@@ -927,14 +883,11 @@
       $$(".header-tab").forEach(tab => {
         const view = tab.dataset.view;
         const label = tab.querySelector("span");
-        if (label) {
-          label.textContent = view === "all" ? t("all") : view === "today" ? t("today") : t("favorites");
-        }
+        if (label) label.textContent = view === "all" ? t("all") : view === "today" ? t("today") : t("favorites");
       });
       taskInput.placeholder = t("taskPlaceholder");
     }
 
-    // ============ Event Listeners ============
     composerFab.addEventListener("click", openComposer);
     $("#composer").addEventListener("submit", e => { e.preventDefault(); if (addTask(taskInput.value)) closeComposer(); });
     taskInput.addEventListener("input", () => sendBtn.classList.toggle("disabled", !taskInput.value.trim().length));
@@ -947,7 +900,7 @@
     $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     $("#actionRepeat").addEventListener("click", () => { closeOverlay(actionOverlay); openOverlay(repeatOverlay); });
-    $("#actionDate").addEventListener("click", () => { closeOverlay(actionOverlay); openOverlay(dateOverlay); initFlatpickr(); });
+    $("#actionDate").addEventListener("click", () => { closeOverlay(actionOverlay); openOverlay(dateOverlay); setTimeout(() => { initFlatpickr(); if (taskDateInput._flatpickr) taskDateInput._flatpickr.open(); }, 100); });
 
     repeatOverlay.querySelectorAll("[data-repeat]").forEach(btn => btn.addEventListener("click", () => {
       if (selectedTaskId) {
@@ -963,20 +916,21 @@
         dateFormat: "Y-m-d",
         locale: settings.language === "ar" ? "ar" : "en",
         clickOpens: true,
+        onClose: function(selectedDates, dateStr) {
+          if (dateStr) taskTimeInput.focus();
+        }
       });
     }
-
-    $$(".quick-date").forEach(btn => btn.addEventListener("click", () => {
-      const today = new Date();
-      let date = today;
-      if (btn.dataset.date === "tomorrow") { date = new Date(today); date.setDate(date.getDate() + 1); }
-      taskDateInput.value = getDateKey(date);
-    }));
 
     $("#dateSave").addEventListener("click", () => {
       if (selectedTaskId && taskDateInput.value) {
         const task = tasks.find(x => x.id === selectedTaskId);
-        if (task) { task.scheduledDate = taskDateInput.value; saveTasks(); }
+        if (task) {
+          task.scheduledDate = taskDateInput.value;
+          if (taskTimeInput.value) task.scheduledDate += `T${taskTimeInput.value}`;
+          saveTasks();
+          showToast("تم تحديد الموعد 📅", 'success');
+        }
       }
       closeOverlay(dateOverlay); selectedTaskId = null; render();
     });
@@ -997,7 +951,6 @@
       }
       trash.forEach(task => {
         const item = document.createElement("div");
-        item.className = "trash-item";
         item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;";
         const text = document.createElement("div");
         text.textContent = task.text;
@@ -1020,7 +973,6 @@
       });
     }
 
-    // ============ Swipe Navigation ============
     document.addEventListener("touchstart", function(e) {
       if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel")) return;
       const touch = e.touches[0];
@@ -1049,7 +1001,6 @@
       }
     }, { passive: true });
 
-    // ============ Settings ============
     $$("[data-theme-choice]").forEach(btn => btn.addEventListener("click", () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); }));
     $$("[data-accent-choice]").forEach(btn => btn.addEventListener("click", () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); }));
     $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
@@ -1059,7 +1010,6 @@
       if (settings.theme === "system") applySettings();
     });
 
-    // ============ Notifications ============
     notificationToggleBtn.addEventListener("click", () => {
       if (!("Notification" in window)) { showToast("Browser doesn't support notifications", 'error'); return; }
       if (Notification.permission === "granted") {
@@ -1072,7 +1022,6 @@
             settings.notificationEnabled = true;
             saveSettings();
             updateNotificationUI();
-            showToast("Notifications enabled 🔔", 'success');
           }
         });
       }
@@ -1090,11 +1039,15 @@
       showToast("Notification time updated", 'success');
     });
 
-    // ============ Init ============
     function init() {
       loadData();
       applySettings();
       updateNotificationUI();
+      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+          if (permission !== "granted") { settings.notificationEnabled = false; saveSettings(); updateNotificationUI(); }
+        });
+      }
       render();
       requestAnimationFrame(updateIndicator);
       lucide.createIcons();
