@@ -356,11 +356,19 @@
     .toolbar-item {
       display: flex; align-items: center; justify-content: center; gap: 4px;
       min-width: 40px; height: 40px; padding: 0 12px; border-radius: var(--radius-full);
-      background: var(--surface-2); font-size: 20px; font-weight: var(--fw-semibold); color: var(--text);
+      background: var(--surface-2); font-size: 20px; font-weight: var(--fw-semibold); color: var(--muted);
       cursor: pointer; transition: background .15s ease; line-height: 1;
     }
     .toolbar-item:hover { background: var(--surface-3); }
     .toolbar-item.active { background: var(--accent-soft); color: var(--accent); }
+    .toolbar-item svg {
+      width: 20px; height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
     /* ============ OVERLAYS & SHEETS ============ */
     .overlay {
@@ -665,8 +673,12 @@
       </div>
       <div class="composer-toolbar">
         <button class="toolbar-star" id="toolbarStar" type="button" aria-label="مفضلة">☆</button>
-        <button class="toolbar-item" id="toolbarSchedule" type="button">📅</button>
-        <button class="toolbar-item" id="toolbarRepeat" type="button">🔁</button>
+        <button class="toolbar-item" id="toolbarSchedule" type="button" aria-label="جدولة">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </button>
+        <button class="toolbar-item" id="toolbarRepeat" type="button" aria-label="تكرار">
+          <svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+        </button>
       </div>
     </form>
   </div>
@@ -1258,8 +1270,7 @@
     }
 
     function updateToolbarLanguage() {
-      if (toolbarSchedule) toolbarSchedule.innerHTML = `📅`;
-      if (toolbarRepeat) toolbarRepeat.innerHTML = `🔁`;
+      // SVG icons are static, no language change needed
     }
 
     function updatePinButtonText() {
@@ -2096,12 +2107,11 @@
 
     $("#dateSave").addEventListener("click", () => {
       if (composerPanel.classList.contains("open")) {
-        // إذا كنا في وضع الإضافة، نأخذ التاريخ فقط بدون إغلاق الحقل
+        // نحفظ التاريخ فقط، ونغلق النافذة، ثم نعيد التركيز لحقل النص
         composerState.scheduledDate = taskDateInput.value;
         closeOverlay(dateOverlay);
-        toolbarSchedule.classList.add("active");
-        // نعرض التاريخ الحالي بشكل رمزي صغير بجانب الأيقونة (يمكن إضافة تلميح)
-        toolbarSchedule.innerHTML = `📅`;
+        toolbarSchedule.classList.toggle("active", Boolean(composerState.scheduledDate));
+        taskInput.focus();
       } else {
         saveTaskDate();
       }
@@ -2112,7 +2122,6 @@
         composerState.scheduledDate = null;
         closeOverlay(dateOverlay);
         toolbarSchedule.classList.remove("active");
-        toolbarSchedule.innerHTML = `📅`;
       } else {
         clearTaskDate();
       }
@@ -2127,29 +2136,13 @@
       }
     });
 
-    const repeatTranslations = {
-      'none': 'repeatNone',
-      'daily': 'repeatDaily',
-      'weekly': 'repeatWeekly',
-      'monthly': 'repeatMonthly'
-    };
     const repeatOptions = ['none', 'daily', 'weekly', 'monthly'];
     let repeatIndex = 0;
     toolbarRepeat.addEventListener("click", () => {
       repeatIndex = (repeatIndex + 1) % repeatOptions.length;
       composerState.repeat = repeatOptions[repeatIndex];
       toolbarRepeat.classList.toggle("active", composerState.repeat !== 'none');
-      // نغير الأيقونة حسب التكرار: رمز تعبيري مختلف لكل حالة
-      if (composerState.repeat === 'none') {
-        toolbarRepeat.innerHTML = `🔁`;
-      } else if (composerState.repeat === 'daily') {
-        toolbarRepeat.innerHTML = `🔁`;
-      } else if (composerState.repeat === 'weekly') {
-        toolbarRepeat.innerHTML = `🔁`;
-      } else if (composerState.repeat === 'monthly') {
-        toolbarRepeat.innerHTML = `🔁`;
-      }
-      // يمكن إضافة نقطة ملونة أو تأثير نشط كافٍ
+      // لا نغير الأيقونة، فقط نغير حالة النشاط
     });
 
     function showToast(message, canUndo = false, undoCallback = null) {
