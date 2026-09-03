@@ -119,7 +119,6 @@
       touch-action: pan-y;
     }
 
-    /* ============ HEADER ============ */
     .header {
       min-height: var(--header-height); position: sticky; top: 0; z-index: 20; padding-top: var(--sp-sm);
       background: linear-gradient(to bottom, var(--bg) 80%, rgba(0,0,0,0));
@@ -144,7 +143,6 @@
     }
     .menu-btn:active { transform: scale(.94); background: var(--surface-2); color: var(--text); }
 
-    /* ============ PRIMARY NAV ============ */
     .header-nav {
       width: 100%; position: relative; margin-top: var(--sp-xs); padding: 0;
       display: flex; align-items: stretch; gap: 0; background: transparent; border: 0;
@@ -166,7 +164,6 @@
       transition: left .28s cubic-bezier(.22,.75,.25,1), width .28s cubic-bezier(.22,.75,.25,1);
     }
 
-    /* ============ HERO ============ */
     .hero { padding: var(--sp-lg) 2px var(--sp-md); touch-action: pan-y; }
     .hero-title {
       margin: 0; font-size: var(--fs-hero); line-height: 1.2; letter-spacing: -.4px;
@@ -174,7 +171,6 @@
     }
     .hero-date { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
 
-    /* ============ PROGRESS ============ */
     .progress-wrap {
       margin-top: var(--sp-lg); padding: var(--sp-md) 0; border-radius: 0;
       background: transparent; border: 0; transition: opacity .2s ease;
@@ -185,14 +181,12 @@
     .progress-track { height: 4px; overflow: hidden; border-radius: var(--radius-full); background: var(--surface-3); }
     .progress-bar { width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .45s cubic-bezier(.2,.8,.2,1); }
 
-    /* ============ CONTENT ============ */
     .content { margin-top: var(--sp-lg); touch-action: pan-y; overscroll-behavior-x: contain; will-change: transform, opacity; }
     .content.view-transition-next { animation: viewSlideNext .24s cubic-bezier(.22,.75,.25,1); }
     .content.view-transition-previous { animation: viewSlidePrevious .24s cubic-bezier(.22,.75,.25,1); }
     @keyframes viewSlideNext { 0% { opacity: .7; transform: translateX(12px); } 100% { opacity: 1; transform: translateX(0); } }
     @keyframes viewSlidePrevious { 0% { opacity: .7; transform: translateX(-12px); } 100% { opacity: 1; transform: translateX(0); } }
 
-    /* ============ SECTIONS ============ */
     .section { margin-top: var(--sp-xl); }
     .section:first-child { margin-top: 0; }
     .section-head {
@@ -206,7 +200,6 @@
       font-size: 10px; font-weight: var(--fw-bold);
     }
 
-    /* ============ TASK LIST ============ */
     .task-list {
       display: flex; flex-direction: column; overflow: visible; border-radius: 0;
       background: transparent; border: 0;
@@ -244,7 +237,6 @@
     .task-star:active { transform: scale(.9); }
     .task-star.active { color: var(--warning); background: transparent; }
 
-    /* ============ COMPLETED TOGGLE ============ */
     .completed-section { margin-top: var(--sp-lg); padding: 0; border-radius: 0; background: transparent; border: 0; box-shadow: none; }
     .completed-toggle {
       width: 100%; min-height: 48px; padding: 0 2px; display: flex; align-items: center;
@@ -273,7 +265,6 @@
     .completed-list-wrap.open { max-height: 4000px; opacity: 1; transform: translateY(0); margin-top: var(--sp-xs); }
     .completed-list-wrap .task-list { border-radius: 0; border: 0; }
 
-    /* ============ EMPTY STATE ============ */
     .task-empty {
       padding: 40px var(--sp-xl); text-align: center; border-radius: var(--radius-lg);
       background: transparent; border: 1px solid var(--border); color: var(--muted);
@@ -290,7 +281,7 @@
     .composer-wrap {
       position: fixed; z-index: 30; left: 50%; bottom: 0; width: min(760px, 100%);
       transform: translateX(-50%); padding: 0 var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom));
-      pointer-events: none; display: flex; justify-content: flex-end;
+      pointer-events: none; display: flex; justify-content: flex-end; align-items: flex-end;
     }
     .composer-fab {
       pointer-events: auto; width: var(--fab-size); height: var(--fab-size);
@@ -304,7 +295,7 @@
     .composer-panel {
       pointer-events: auto; position: absolute; bottom: calc(var(--sp-md) + var(--fab-size) + 12px + env(safe-area-inset-bottom));
       right: var(--sp-lg); left: var(--sp-lg);
-      background: var(--surface); border-radius: var(--radius-lg); overflow: hidden;
+      background: var(--surface); border-radius: var(--radius-lg); overflow: visible;
       box-shadow: 0 8px 24px rgba(0,0,0,.08); display: none; flex-direction: column;
       border: 1px solid var(--border);
     }
@@ -313,22 +304,40 @@
       0% { opacity: 0; transform: translateY(8px) scale(.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .composer-panel textarea {
-      width: 100%; min-height: 90px; max-height: 140px; resize: none; overflow-y: auto;
-      padding: var(--sp-lg); border: 0; background: transparent; color: var(--text);
+    .composer-input-row {
+      display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-sm);
+    }
+    .composer-input-row textarea {
+      flex: 1; min-height: 60px; max-height: 120px; resize: none; overflow-y: auto;
+      padding: var(--sp-md); border: 0; background: transparent; color: var(--text);
       font-size: var(--fs-base); line-height: 1.5;
     }
-    .composer-panel textarea::placeholder { color: var(--muted); opacity: .6; }
-    .composer-panel-actions {
-      display: flex; justify-content: flex-end; gap: var(--sp-sm); padding: 0 var(--sp-md) var(--sp-md);
+    .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
+    .composer-input-row .send-btn {
+      width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-full);
+      background: var(--accent); color: #fff; display: grid; place-items: center;
+      font-size: 18px; font-weight: var(--fw-bold); transition: transform .14s ease, opacity .18s ease;
     }
-    .composer-panel .send-btn {
-      min-height: 44px; padding: 0 var(--sp-xl); border-radius: var(--radius-md);
-      background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: var(--fw-bold);
-      transition: opacity .15s ease, transform .14s ease;
+    .composer-input-row .send-btn:active { transform: scale(.93); }
+    .composer-input-row .send-btn.disabled { opacity: .3; }
+
+    .composer-toolbar {
+      display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-sm) var(--sp-md);
+      border-top: 1px solid var(--border); flex-wrap: wrap;
     }
-    .composer-panel .send-btn:active { transform: scale(.96); }
-    .composer-panel .send-btn.disabled { opacity: .3; }
+    .toolbar-star {
+      width: 36px; height: 36px; border-radius: var(--radius-full); background: transparent;
+      border: 1px solid var(--border); font-size: 18px; color: var(--muted);
+      cursor: pointer; transition: all .15s ease; display: grid; place-items: center;
+    }
+    .toolbar-star.active { color: var(--warning); border-color: var(--warning); }
+    .toolbar-item {
+      display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-full);
+      background: var(--surface-2); font-size: 12px; font-weight: var(--fw-semibold); color: var(--text);
+      cursor: pointer; transition: background .15s ease;
+    }
+    .toolbar-item:hover { background: var(--surface-3); }
+    .toolbar-item.active { background: var(--accent-soft); color: var(--accent); }
 
     /* ============ OVERLAYS & SHEETS ============ */
     .overlay {
@@ -389,7 +398,6 @@
     .modal-btn.secondary { background: var(--surface-2); }
     .modal-btn.danger { background: rgba(229,72,77,.08); color: var(--danger); }
 
-    /* ============ SETTINGS ============ */
     .setting-group { margin-bottom: var(--sp-lg); }
     .setting-label { padding: 0 var(--sp-sm) var(--sp-sm); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: .3px; }
     .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
@@ -428,7 +436,6 @@
     }
     .small-btn.danger { color: var(--danger); }
 
-    /* ============ TOAST ============ */
     .toast {
       position: fixed; z-index: 200; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom));
       width: min(calc(100% - 32px), 440px); transform: translate(-50%, 16px) scale(.97);
@@ -443,7 +450,6 @@
       font-size: var(--fs-sm); font-weight: var(--fw-bold); white-space: nowrap;
     }
 
-    /* ============ INSTALL BANNER ============ */
     .install-banner {
       position: fixed; z-index: 180; left: 50%; bottom: calc(12px + env(safe-area-inset-bottom));
       width: min(calc(100% - 28px), 560px); transform: translate(-50%, 20px); opacity: 0; visibility: hidden;
@@ -469,7 +475,6 @@
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
-    /* ============ PIN OVERLAY ============ */
     .pin-overlay {
       position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center;
       background: var(--bg); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease;
@@ -519,7 +524,6 @@
       font-weight: var(--fw-medium); cursor: pointer;
     }
 
-    /* ============ RESPONSIVE ============ */
     @media (max-width: 480px) {
       .app { padding-left: var(--sp-md); padding-right: var(--sp-md); }
       .header-tab { padding: 0 var(--sp-xs) 5px; font-size: var(--fs-sm); }
@@ -625,9 +629,15 @@
   <div class="composer-wrap" id="composerWrap">
     <div class="composer-panel" id="composerPanel">
       <form id="composer" autocomplete="off">
-        <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." data-i18n-placeholder="taskPlaceholder" aria-label="أضف نية جديدة" data-i18n-aria="newIntent"></textarea>
-        <div class="composer-panel-actions">
-          <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف نية" data-i18n-aria="add">أضف نية</button>
+        <div class="composer-input-row">
+          <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." data-i18n-placeholder="taskPlaceholder" aria-label="أضف نية جديدة" data-i18n-aria="newIntent"></textarea>
+          <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف نية" data-i18n-aria="add">↑</button>
+        </div>
+        <div class="composer-toolbar">
+          <button class="toolbar-star" id="toolbarStar" type="button" aria-label="مفضلة">☆</button>
+          <button class="toolbar-item" id="toolbarSchedule" type="button">📅 <span data-i18n="schedule">جدولة</span></button>
+          <button class="toolbar-item" id="toolbarRemind" type="button">⏰ <span data-i18n="remind">تذكير</span></button>
+          <button class="toolbar-item" id="toolbarRepeat" type="button">🔁 <span data-i18n="repeatNone">بدون تكرار</span></button>
         </div>
       </form>
     </div>
@@ -915,7 +925,15 @@
         createdAt: "أُضيفت في",
         completedAt: "أُتمت في",
         detailsTitle: "تفاصيل النية",
-        taskDetails: "التفاصيل"
+        taskDetails: "التفاصيل",
+        schedule: "جدولة",
+        remind: "تذكير",
+        repeat: "تكرار",
+        repeatNone: "بدون تكرار",
+        repeatDaily: "يوميًا",
+        repeatWeekly: "أسبوعيًا",
+        repeatMonthly: "شهريًا",
+        remindUnavailable: "التذكيرات غير متاحة حالياً"
       },
 
       en: {
@@ -1026,7 +1044,15 @@
         createdAt: "Created",
         completedAt: "Completed",
         detailsTitle: "Intention Details",
-        taskDetails: "Details"
+        taskDetails: "Details",
+        schedule: "Schedule",
+        remind: "Remind",
+        repeat: "Repeat",
+        repeatNone: "No repeat",
+        repeatDaily: "Daily",
+        repeatWeekly: "Weekly",
+        repeatMonthly: "Monthly",
+        remindUnavailable: "Reminders not available yet"
       }
     };
 
@@ -1076,6 +1102,13 @@
       tempPin: ""
     };
 
+    let composerState = {
+      starred: false,
+      scheduledDate: null,
+      remindAt: null,
+      repeat: 'none'
+    };
+
     const $ = selector => document.querySelector(selector);
     const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -1084,6 +1117,10 @@
     const sendBtn = $("#sendBtn");
     const composerFab = $("#composerFab");
     const composerPanel = $("#composerPanel");
+    const toolbarStar = $("#toolbarStar");
+    const toolbarSchedule = $("#toolbarSchedule");
+    const toolbarRemind = $("#toolbarRemind");
+    const toolbarRepeat = $("#toolbarRepeat");
     const heroDate = $("#heroDate");
     const heroTitle = $("#heroTitle");
     const progressWrap = $("#progressWrap");
@@ -1179,6 +1216,13 @@
         installDismiss.textContent = t("continue");
       }
       if (toastUpdate) toastUpdate.textContent = t("update");
+      updateToolbarLanguage();
+    }
+
+    function updateToolbarLanguage() {
+      if (toolbarSchedule) toolbarSchedule.innerHTML = `📅 <span>${t("schedule")}</span>`;
+      if (toolbarRemind) toolbarRemind.innerHTML = `⏰ <span>${t("remind")}</span>`;
+      if (toolbarRepeat) toolbarRepeat.innerHTML = `🔁 <span>${t("repeat" + composerState.repeat.charAt(0).toUpperCase() + composerState.repeat.slice(1))}</span>`;
     }
 
     function updatePinButtonText() {
@@ -1241,7 +1285,9 @@
         createdAt,
         taskDay: task.taskDay || getDateKey(new Date(createdAt)),
         scheduledDate: typeof task.scheduledDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(task.scheduledDate) ? task.scheduledDate : null,
-        completedAt: task.completedAt ? Number(task.completedAt) : null
+        completedAt: task.completedAt ? Number(task.completedAt) : null,
+        remindAt: task.remindAt || null,
+        repeat: task.repeat || 'none'
       };
     }
     function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 9); }
@@ -1282,12 +1328,20 @@
       updatePinButtonText();
     }
 
-    function addTask(text) {
+    function addTask(text, options = {}) {
       const cleanText = String(text || "").trim();
       if (!cleanText) return false;
       const task = {
-        id: createId(), text: cleanText, completed: false, starred: false,
-        createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: null, completedAt: null
+        id: createId(),
+        text: cleanText,
+        completed: false,
+        starred: options.starred || false,
+        createdAt: Date.now(),
+        taskDay: getDateKey(),
+        scheduledDate: options.scheduledDate || null,
+        completedAt: null,
+        remindAt: options.remindAt || null,
+        repeat: options.repeat || 'none'
       };
       tasks.unshift(task);
       saveTasks();
@@ -1583,6 +1637,15 @@
       text.className = "task-text";
       text.textContent = task.text;
       main.appendChild(text);
+      if (task.repeat && task.repeat !== 'none') {
+        const meta = document.createElement("div");
+        meta.className = "task-meta";
+        const repeatText = document.createElement("span");
+        repeatText.className = "task-meta-day";
+        repeatText.textContent = `🔁 ${t("repeat" + task.repeat.charAt(0).toUpperCase() + task.repeat.slice(1))}`;
+        meta.appendChild(repeatText);
+        main.appendChild(meta);
+      }
       main.addEventListener("click", event => {
         if (swipeSuppressClick) { swipeSuppressClick = false; event.preventDefault(); return; }
         openAction(task.id);
@@ -1895,7 +1958,9 @@
       composerFab.classList.remove("open");
       composerPanel.classList.remove("open");
       taskInput.value = "";
+      composerState = { starred: false, scheduledDate: null, remindAt: null, repeat: 'none' };
       updateComposer();
+      updateToolbarLanguage();
     }
     composerFab.addEventListener("click", () => {
       if (composerPanel.classList.contains("open")) {
@@ -1924,15 +1989,85 @@
       event.preventDefault();
       const text = taskInput.value.trim();
       if (!text) return;
-      if (addTask(text)) {
+      if (addTask(text, {
+        starred: composerState.starred,
+        scheduledDate: composerState.scheduledDate,
+        remindAt: composerState.remindAt,
+        repeat: composerState.repeat
+      })) {
         closeComposer();
-        taskInput.focus();
       }
     });
     function autoResizeTextarea() {
       taskInput.style.height = "auto";
       taskInput.style.height = Math.min(taskInput.scrollHeight, 130) + "px";
     }
+
+    // Toolbar logic
+    toolbarStar.addEventListener("click", () => {
+      composerState.starred = !composerState.starred;
+      toolbarStar.classList.toggle("active", composerState.starred);
+      toolbarStar.textContent = composerState.starred ? "★" : "☆";
+    });
+
+    toolbarSchedule.addEventListener("click", () => {
+      if (dateOverlay.classList.contains("show")) {
+        closeOverlay(dateOverlay);
+      } else {
+        taskDateInput.value = composerState.scheduledDate || "";
+        openOverlay(dateOverlay);
+      }
+    });
+
+    $("#dateSave").addEventListener("click", () => {
+      if (composerPanel.classList.contains("open")) {
+        composerState.scheduledDate = taskDateInput.value;
+        closeOverlay(dateOverlay);
+        toolbarSchedule.classList.add("active");
+        toolbarSchedule.innerHTML = `📅 <span>${formatTaskDate(composerState.scheduledDate)}</span>`;
+      } else {
+        saveTaskDate();
+      }
+    });
+
+    $("#dateClear").addEventListener("click", () => {
+      if (composerPanel.classList.contains("open")) {
+        composerState.scheduledDate = null;
+        closeOverlay(dateOverlay);
+        toolbarSchedule.classList.remove("active");
+        toolbarSchedule.innerHTML = `📅 <span>${t("schedule")}</span>`;
+      } else {
+        clearTaskDate();
+      }
+    });
+
+    $("#dateCancel").addEventListener("click", () => {
+      closeOverlay(dateOverlay);
+      if (selectedTaskId === null && composerPanel.classList.contains("open")) {
+        // Do nothing, just close
+      } else {
+        selectedTaskId = null;
+      }
+    });
+
+    toolbarRemind.addEventListener("click", () => {
+      showToast(t("remindUnavailable"));
+    });
+
+    const repeatTranslations = {
+      'none': 'repeatNone',
+      'daily': 'repeatDaily',
+      'weekly': 'repeatWeekly',
+      'monthly': 'repeatMonthly'
+    };
+    const repeatOptions = ['none', 'daily', 'weekly', 'monthly'];
+    let repeatIndex = 0;
+    toolbarRepeat.addEventListener("click", () => {
+      repeatIndex = (repeatIndex + 1) % repeatOptions.length;
+      composerState.repeat = repeatOptions[repeatIndex];
+      toolbarRepeat.innerHTML = `🔁 <span>${t(repeatTranslations[composerState.repeat])}</span>`;
+      toolbarRepeat.classList.toggle("active", composerState.repeat !== 'none');
+    });
 
     function showToast(message, canUndo = false, undoCallback = null) {
       clearTimeout(undoTimer);
