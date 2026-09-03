@@ -39,7 +39,6 @@
       --border-strong: rgba(17, 20, 21, .11);
       --accent: #19a974;
       --accent-soft: rgba(25, 169, 116, .11);
-      --accent-glow: rgba(25, 169, 116, .25);
       --danger: #e5484d;
       --warning: #e8a317;
       --shadow-soft: 0 7px 22px rgba(0, 0, 0, .035);
@@ -54,6 +53,9 @@
       --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent);
       --tab-indicator-width: 30px;
       --tab-indicator-left: 0px;
+      --chevron-rotate: 0deg;
+      --chevron-color: var(--muted);
+      --chevron-bg: var(--surface-2);
     }
 
     html[data-theme="dark"] {
@@ -70,10 +72,10 @@
       --shadow-sheet: 0 28px 80px rgba(0, 0, 0, .36);
     }
 
-    html[data-accent="blue"] { --accent: #3685ff; --accent-soft: rgba(54, 133, 255, .11); --accent-glow: rgba(54, 133, 255, .25); }
-    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139, 92, 246, .11); --accent-glow: rgba(139, 92, 246, .25); }
-    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245, 158, 11, .12); --accent-glow: rgba(245, 158, 11, .25); }
-    html[data-accent="pink"] { --accent: #e94f9b; --accent-soft: rgba(233, 79, 155, .11); --accent-glow: rgba(233, 79, 155, .25); }
+    html[data-accent="blue"] { --accent: #3685ff; --accent-soft: rgba(54, 133, 255, .11); }
+    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139, 92, 246, .11); }
+    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245, 158, 11, .12); }
+    html[data-accent="pink"] { --accent: #e94f9b; --accent-soft: rgba(233, 79, 155, .11); }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { min-height: 100%; background: var(--bg); scroll-behavior: smooth; }
@@ -103,7 +105,6 @@
       background: linear-gradient(to bottom, var(--bg) 76%, rgba(0,0,0,0));
       display: flex; flex-direction: column; touch-action: pan-y;
     }
-
     .header-main { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .brand-mark {
@@ -219,10 +220,10 @@
     }
     .completed-toggle-chevron {
       width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%;
-      background: var(--surface-2); color: var(--muted); font-size: 14px; font-weight: 800; line-height: 1;
-      transform: rotate(0deg); transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease, background .18s ease;
+      background: var(--chevron-bg); color: var(--chevron-color); font-size: 14px; font-weight: 800; line-height: 1;
+      transform: rotate(var(--chevron-rotate)); transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease, background .18s ease;
     }
-    .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); color: var(--accent); background: var(--accent-soft); }
+    .completed-toggle.open .completed-toggle-chevron { --chevron-rotate: 180deg; --chevron-color: var(--accent); --chevron-bg: var(--accent-soft); }
     .completed-toggle.open .completed-toggle-title { color: var(--text); }
     .completed-list-wrap {
       overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-3px);
@@ -272,10 +273,17 @@
     .sheet {
       width: min(100%, 520px); max-height: min(82vh, 680px); overflow-y: auto; padding: 9px;
       background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-sheet);
-      transform: translateY(18px); transition: transform .24s cubic-bezier(.2,.8,.2,1);
+      transform: translateY(18px); transition: transform .24s cubic-bezier(.2,.8,.2,1); position: relative;
     }
     .overlay.show .sheet { transform: translateY(0); }
     .sheet-handle { width: 40px; height: 4px; margin: 3px auto 11px; border-radius: 999px; background: var(--surface-3); }
+    .sheet-close-btn {
+      position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface-2); display: grid; place-items: center; font-size: 18px; color: var(--muted);
+      transition: background .15s ease, color .15s ease, transform .1s ease; cursor: pointer;
+      z-index: 2;
+    }
+    .sheet-close-btn:active { transform: scale(.9); background: var(--surface-3); color: var(--text); }
     .sheet-title { padding: 8px 9px 12px; font-size: 17px; font-weight: 800; }
     .sheet-subtitle { padding: 0 9px 12px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 
@@ -397,7 +405,14 @@
     .pin-box {
       width: min(90%, 360px); background: var(--surface); border: 1px solid var(--border);
       border-radius: 24px; padding: 32px 24px; text-align: center; box-shadow: var(--shadow-sheet);
+      position: relative;
     }
+    .pin-close-btn {
+      position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface-2); display: grid; place-items: center; font-size: 18px; color: var(--muted);
+      transition: background .15s ease, color .15s ease, transform .1s ease; cursor: pointer;
+    }
+    .pin-close-btn:active { transform: scale(.9); background: var(--surface-3); color: var(--text); }
     .pin-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
     .pin-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
     .pin-dots { display: flex; justify-content: center; gap: 16px; margin-bottom: 32px; }
@@ -468,6 +483,7 @@
   <!-- PIN LOCK OVERLAY -->
   <div class="pin-overlay" id="pinOverlay" aria-hidden="true">
     <div class="pin-box">
+      <button class="pin-close-btn" id="pinCloseBtn" type="button" aria-label="إغلاق">✕</button>
       <div class="pin-title" id="pinTitle">أدخل رمز النوايا</div>
       <div class="pin-subtitle" id="pinSubtitle">أدخل رمزك السري لفتح نواياك</div>
       <div class="pin-dots" id="pinDots">
@@ -533,6 +549,7 @@
 
   <div class="overlay" id="menuOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="menuOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">ناوي</div>
       <button class="menu-item" id="settingsBtn" type="button">
@@ -546,6 +563,7 @@
 
   <div class="overlay" id="actionOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="actionOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="action-task-preview" id="actionTaskPreview"></div>
       <button class="action-item" id="actionComplete" type="button"><span>✓</span><span><span data-i18n="done">أتمم النية</span></span></button>
@@ -557,6 +575,7 @@
 
   <div class="overlay" id="editOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="editOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="editIntent">تعديل النية</div>
       <textarea class="edit-input" id="editInput" maxlength="500"></textarea>
@@ -569,6 +588,7 @@
 
   <div class="overlay" id="dateOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="dateOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="dateTitle">تحديد موعد</div>
       <div class="sheet-subtitle" data-i18n="dateSubtitle">اختر اليوم الذي تريد أن تظهر فيه النية.</div>
@@ -583,6 +603,7 @@
 
   <div class="overlay" id="settingsOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="settingsOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="settings">الإعدادات</div>
 
@@ -639,6 +660,10 @@
             <div class="setting-name" data-i18n="pinChange">تغيير الرمز</div>
             <button class="small-btn" id="pinChangeBtn" type="button"><span data-i18n="pinChange">تغيير</span></button>
           </div>
+          <div class="setting-row hidden" id="birthYearRow">
+            <div class="setting-name">سنة الميلاد (سؤال الأمان)</div>
+            <button class="small-btn" id="changeBirthYearBtn" type="button">تغيير</button>
+          </div>
         </div>
       </div>
 
@@ -647,6 +672,7 @@
 
   <div class="overlay" id="trashOverlay" aria-hidden="true">
     <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="trashOverlay">✕</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="trash">أرشيف النوايا</div>
       <div class="sheet-subtitle" data-i18n="trashSubtitle">نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.</div>
@@ -785,7 +811,10 @@
         pinResetSuccess: "تم استرجاع الرمز بنجاح",
         pinStartOver: "أبدأ من جديد",
         pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟",
-        pinStartOverDone: "تم مسح جميع البيانات. أعد التطبيق من جديد."
+        pinStartOverDone: "تم مسح جميع البيانات. أعد التطبيق من جديد.",
+        pinSetupBirthYearTitle: "سؤال الأمان",
+        pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام) لتتمكن من استرجاع رمزك إذا نسيته.",
+        pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام)."
       },
 
       en: {
@@ -889,7 +918,10 @@
         pinResetSuccess: "PIN recovered successfully",
         pinStartOver: "Start over",
         pinStartOverConfirm: "This will delete all intentions and settings. Are you sure?",
-        pinStartOverDone: "All data cleared. Restart the app."
+        pinStartOverDone: "All data cleared. Restart the app.",
+        pinSetupBirthYearTitle: "Security Question",
+        pinSetupBirthYearSubtitle: "Enter your birth year (4 digits) to recover your PIN if forgotten.",
+        pinBirthYearWrong: "Enter a valid year (4 digits)."
       }
     };
 
@@ -976,9 +1008,12 @@
     const pinSaveBtn = $("#pinSaveBtn");
     const pinForgotBtn = $("#pinForgotBtn");
     const pinResetLink = $("#pinResetLink");
+    const pinCloseBtn = $("#pinCloseBtn");
     const pinToggleBtn = $("#pinToggleBtn");
     const pinChangeRow = $("#pinChangeRow");
     const pinChangeBtn = $("#pinChangeBtn");
+    const birthYearRow = $("#birthYearRow");
+    const changeBirthYearBtn = $("#changeBirthYearBtn");
 
     let deferredInstallPrompt = null;
     let installBannerDismissed = false;
@@ -1036,9 +1071,11 @@
       if (settings.lockEnabled) {
         pinToggleBtn.innerHTML = `<span>${t("pinDisable")}</span>`;
         pinChangeRow.classList.remove("hidden");
+        birthYearRow.classList.remove("hidden");
       } else {
         pinToggleBtn.innerHTML = `<span>${t("pinEnable")}</span>`;
         pinChangeRow.classList.add("hidden");
+        birthYearRow.classList.add("hidden");
       }
     }
 
@@ -1357,7 +1394,7 @@
       count.textContent = taskArray.length;
       const chevron = document.createElement("span");
       chevron.className = "completed-toggle-chevron";
-      chevron.textContent = "⌄";
+      chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
       toggle.append(title, count, chevron);
       const listWrap = document.createElement("div");
       listWrap.id = "completedTasksPanel";
@@ -1628,6 +1665,17 @@
           closeOverlay(overlay);
           selectedTaskId = null;
         }
+      });
+    });
+
+    // ربط أزرار الإغلاق
+    $$("[data-close-overlay]").forEach(btn => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const overlayId = btn.dataset.closeOverlay;
+        const overlay = document.getElementById(overlayId);
+        if (overlay) closeOverlay(overlay);
+        selectedTaskId = null;
       });
     });
 
@@ -1946,6 +1994,11 @@
           pinSubtitle.textContent = t("pinResetNew");
           pinSaveBtn.classList.remove("hidden");
           break;
+        case "setupBirthYear":
+          pinTitle.textContent = t("pinSetupBirthYearTitle");
+          pinSubtitle.textContent = t("pinSetupBirthYearSubtitle");
+          pinSaveBtn.classList.remove("hidden");
+          break;
       }
       updatePinDots();
       pinOverlay.classList.add("show");
@@ -1994,18 +2047,26 @@
             pinSaveBtn.classList.add("hidden");
           } else {
             if (enteredPin === pinState.newPin) {
-              settings.lockEnabled = true;
-              settings.pin = enteredPin;
-              settings.birthYear = settings.birthYear || ""; // fallback if not set
-              saveSettings();
-              updatePinButtonText();
-              hidePinOverlay();
-              showToast(t("pinSuccess"));
+              // الرمز صحيح، ننتقل إلى خطوة سنة الميلاد
+              showPinOverlay("setupBirthYear");
             } else {
               pinError.textContent = t("pinErrorMismatch");
               pinState.newPin = "";
               pinSubtitle.textContent = t("pinNew");
             }
+          }
+          break;
+        case "setupBirthYear":
+          if (enteredPin.length === 4 && /^\d{4}$/.test(enteredPin)) {
+            settings.birthYear = enteredPin;
+            settings.lockEnabled = true;
+            settings.pin = pinState.newPin; // حفظ الرمز الذي تم تأكيده
+            saveSettings();
+            updatePinButtonText();
+            hidePinOverlay();
+            showToast(t("pinSuccess"));
+          } else {
+            pinError.textContent = t("pinBirthYearWrong");
           }
           break;
         case "change":
@@ -2095,7 +2156,6 @@
     pinForgotBtn.addEventListener("click", () => { showPinOverlay("forgot"); });
     pinResetLink.addEventListener("click", () => {
       if (confirm(t("pinStartOverConfirm"))) {
-        // Clear all data
         localStorage.removeItem(STORAGE_KEYS.tasks);
         localStorage.removeItem(STORAGE_KEYS.trash);
         localStorage.removeItem(STORAGE_KEYS.settings);
@@ -2103,12 +2163,11 @@
       }
     });
     pinSaveBtn.addEventListener("click", () => {
-      // Only used for setup / forgot / reset flows, but we handle in processPinComplete
-      if (pinState.mode === "forgot") {
-        // Check if buffer is full (4 digits) and process
-        if (pinState.buffer.length === 4) processPinComplete();
-        else pinError.textContent = t("pinSecurityError");
-      }
+      if (pinState.mode === "forgot" && pinState.buffer.length === 4) processPinComplete();
+    });
+    pinCloseBtn.addEventListener("click", hidePinOverlay);
+    changeBirthYearBtn.addEventListener("click", () => {
+      if (settings.lockEnabled) showPinOverlay("setupBirthYear");
     });
 
     // Keyboard support for PIN
@@ -2116,6 +2175,9 @@
       if (!pinOverlay.classList.contains("show")) return;
       if (event.key >= "0" && event.key <= "9") handlePinKey(event.key);
       else if (event.key === "Backspace") handlePinBackspace();
+      else if (event.key === "Enter") {
+        if (pinState.buffer.length === 4) processPinComplete();
+      }
     });
 
     init();
