@@ -7,7 +7,6 @@
   <meta name="color-scheme" content="dark light">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-touch-fullscreen" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="ناوي — مساحتك الخاصة لنواياك وأهدافك.">
   <title>ناوي</title>
@@ -395,6 +394,7 @@
         opacity: .7;
         transform: translateX(12px);
       }
+
       100% {
         opacity: 1;
         transform: translateX(0);
@@ -406,6 +406,7 @@
         opacity: .7;
         transform: translateX(-12px);
       }
+
       100% {
         opacity: 1;
         transform: translateX(0);
@@ -470,9 +471,7 @@
       border-bottom: 1px solid var(--border);
       border-radius: 0;
       box-shadow: none;
-      transition:
-        background .15s ease,
-        opacity .18s ease;
+      transition: background .15s ease, opacity .18s ease;
       cursor: pointer;
       touch-action: pan-y;
       will-change: transform;
@@ -490,9 +489,11 @@
       0% {
         background: transparent;
       }
+
       42% {
         background: var(--accent-soft);
       }
+
       100% {
         background: transparent;
       }
@@ -502,12 +503,6 @@
       opacity: .55;
     }
 
-    /*
-      أثناء السحب:
-      العنصر الأصلي يظل محافظًا على مكانه في الـlayout
-      لكن محتواه غير ظاهر، بينما النسخة المتحركة هي التي تتبع الإصبع.
-      لا يوجد Shadow ولا Placeholder ظاهر.
-    */
     .task.drag-source {
       visibility: hidden;
       pointer-events: none;
@@ -536,7 +531,7 @@
       border-bottom: 0 !important;
       border-radius: 0 !important;
       box-shadow: none !important;
-      will-change: left, top;
+      will-change: transform;
       transition: none !important;
       cursor: grabbing !important;
     }
@@ -561,10 +556,7 @@
       border-radius: var(--radius-full);
       border: 1.5px solid var(--muted);
       background: transparent;
-      transition:
-        background .18s ease,
-        border-color .18s ease,
-        transform .14s ease;
+      transition: background .18s ease, border-color .18s ease, transform .14s ease;
     }
 
     .task-checkbox:active {
@@ -581,9 +573,7 @@
       height: 12px;
       opacity: 0;
       transform: scale(.5);
-      transition:
-        opacity .16s ease,
-        transform .16s ease;
+      transition: opacity .16s ease, transform .16s ease;
     }
 
     .task.completed .check-icon {
@@ -636,10 +626,7 @@
       background: transparent;
       color: #b8bdbd;
       font-size: 26px;
-      transition:
-        color .16s ease,
-        background .16s ease,
-        transform .14s ease;
+      transition: color .16s ease, background .16s ease, transform .14s ease;
     }
 
     .task-star:active {
@@ -671,10 +658,7 @@
       border-radius: var(--radius-sm);
       background: transparent;
       text-align: start;
-      transition:
-        color .15s ease,
-        background .15s ease,
-        transform .12s ease;
+      transition: color .15s ease, background .15s ease, transform .12s ease;
     }
 
     .completed-toggle:active {
@@ -714,9 +698,7 @@
       font-size: 14px;
       font-weight: var(--fw-bold);
       line-height: 1;
-      transition:
-        transform .25s cubic-bezier(.2,.8,.2,1),
-        color .18s ease;
+      transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease;
     }
 
     .completed-toggle.open .completed-toggle-chevron {
@@ -819,9 +801,7 @@
       padding: 0;
       margin: 0;
       box-shadow: 0 4px 16px rgba(0,0,0,.18);
-      transition:
-        transform .15s ease,
-        box-shadow .15s ease;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
 
     .composer-fab:active {
@@ -897,9 +877,7 @@
       place-items: center;
       font-size: 20px;
       font-weight: var(--fw-bold);
-      transition:
-        transform .14s ease,
-        opacity .18s ease;
+      transition: transform .14s ease, opacity .18s ease;
     }
 
     .composer-input-row .send-btn:active {
@@ -923,9 +901,7 @@
       background: rgba(0,0,0,.40);
       opacity: 0;
       visibility: hidden;
-      transition:
-        opacity .20s ease,
-        visibility .20s ease;
+      transition: opacity .20s ease, visibility .20s ease;
       touch-action: auto;
     }
 
@@ -971,10 +947,7 @@
       display: grid;
       place-items: center;
       color: var(--muted);
-      transition:
-        background .15s ease,
-        color .15s ease,
-        transform .1s ease;
+      transition: background .15s ease, color .15s ease, transform .1s ease;
       cursor: pointer;
       z-index: 2;
     }
@@ -1269,9 +1242,7 @@
       color: var(--muted);
       font-size: var(--fs-sm);
       font-weight: var(--fw-semibold);
-      transition:
-        background .16s ease,
-        color .16s ease;
+      transition: background .16s ease, color .16s ease;
     }
 
     .segment.active {
@@ -1378,10 +1349,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
-      transition:
-        opacity .2s ease,
-        transform .2s ease,
-        visibility .2s ease;
+      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
     }
 
     .toast.show {
@@ -1427,10 +1395,7 @@
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      transition:
-        opacity .22s ease,
-        transform .22s ease,
-        visibility .22s ease;
+      transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
     }
 
     .install-banner.show {
@@ -1517,9 +1482,7 @@
       background: var(--bg);
       opacity: 0;
       visibility: hidden;
-      transition:
-        opacity .25s ease,
-        visibility .25s ease;
+      transition: opacity .25s ease, visibility .25s ease;
     }
 
     .pin-overlay.show {
@@ -1549,10 +1512,7 @@
       display: grid;
       place-items: center;
       color: var(--muted);
-      transition:
-        background .15s ease,
-        color .15s ease,
-        transform .1s ease;
+      transition: background .15s ease, color .15s ease, transform .1s ease;
     }
 
     .pin-close-btn:active {
@@ -1591,10 +1551,7 @@
       border-radius: var(--radius-full);
       border: 2px solid var(--muted);
       background: transparent;
-      transition:
-        background .15s ease,
-        border-color .15s ease,
-        transform .15s ease;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
 
     .pin-dot.filled {
@@ -1621,9 +1578,7 @@
       font-size: 20px;
       font-weight: var(--fw-bold);
       color: var(--text);
-      transition:
-        background .15s ease,
-        transform .1s ease;
+      transition: background .15s ease, transform .1s ease;
       cursor: pointer;
       min-height: 52px;
     }
@@ -1728,17 +1683,11 @@
       }
 
       .composer-wrap {
-        padding:
-          0
-          var(--sp-md)
-          calc(var(--sp-sm) + env(safe-area-inset-bottom));
+        padding: 0 var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom));
       }
 
       .composer-panel {
-        padding:
-          var(--sp-md)
-          var(--sp-md)
-          calc(var(--sp-sm) + env(safe-area-inset-bottom));
+        padding: var(--sp-md) var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom));
       }
 
       .install-banner {
@@ -1833,6 +1782,7 @@
 
   <div class="pin-overlay" id="pinOverlay" aria-hidden="true">
     <div class="pin-box">
+
       <button class="pin-close-btn" id="pinCloseBtn" type="button" aria-label="إغلاق">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 6l-6 6 6 6"/>
@@ -1856,6 +1806,7 @@
       <button class="pin-save-btn hidden" id="pinSaveBtn">حفظ</button>
       <button class="pin-forgot-link hidden" id="pinForgotBtn">نسيت الرمز؟</button>
       <button class="pin-reset-link hidden" id="pinResetLink">أبدأ من جديد</button>
+
     </div>
   </div>
 
@@ -1864,8 +1815,11 @@
     <header class="header">
 
       <div class="header-main">
+
         <div class="brand">
+
           <div class="brand-mark" id="brandMark">
+
             <img
               class="brand-mark-img"
               id="brandMarkImg"
@@ -1875,10 +1829,17 @@
               height="36"
               onerror="this.remove(); document.getElementById('brandMarkFallback').style.display = 'grid';"
             >
-            <span class="brand-mark-fallback" id="brandMarkFallback" style="display:none;">ن</span>
+
+            <span
+              class="brand-mark-fallback"
+              id="brandMarkFallback"
+              style="display:none;"
+            >ن</span>
+
           </div>
 
           <div class="brand-name" id="brandName">ناوي</div>
+
         </div>
 
         <button
@@ -1888,6 +1849,7 @@
           aria-label="القائمة"
           data-i18n-aria="menu"
         >⋯</button>
+
       </div>
 
       <nav
@@ -1896,6 +1858,7 @@
         aria-label="التنقل الرئيسي"
         data-i18n-aria="mainNavigation"
       >
+
         <button
           class="header-tab"
           data-view="all"
@@ -1926,37 +1889,61 @@
           id="headerTabIndicator"
           aria-hidden="true"
         ></span>
+
       </nav>
+
     </header>
 
     <section class="hero">
-      <h1 class="hero-title" id="heroTitle" data-i18n="heroToday">
-        ناوي على إيه النهارده؟
-      </h1>
 
-      <div class="hero-date" id="heroDate"></div>
+      <h1
+        class="hero-title"
+        id="heroTitle"
+        data-i18n="heroToday"
+      >ناوي على إيه النهارده؟</h1>
+
+      <div
+        class="hero-date"
+        id="heroDate"
+      ></div>
+
     </section>
 
-    <main class="content" id="content"></main>
+    <main
+      class="content"
+      id="content"
+    ></main>
+
   </div>
 
   <!-- FAB COMPOSER -->
-  <div class="composer-wrap" id="composerWrap">
+
+  <div
+    class="composer-wrap"
+    id="composerWrap"
+  >
+
     <button
       class="composer-fab"
       id="composerFab"
       type="button"
       aria-label="أضف نية"
     >+</button>
+
   </div>
 
   <!-- BOTTOM SHEET COMPOSER -->
+
   <div
     class="composer-panel"
     id="composerPanel"
     aria-hidden="true"
   >
-    <form id="composer" autocomplete="off">
+
+    <form
+      id="composer"
+      autocomplete="off"
+    >
 
       <div class="composer-input-row">
 
@@ -1979,11 +1966,19 @@
         >↑</button>
 
       </div>
+
     </form>
+
   </div>
 
   <!-- MENU OVERLAY -->
-  <div class="overlay" id="menuOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="menuOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -1999,9 +1994,17 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" id="menuSheetTitle">ناوي</div>
+      <div
+        class="sheet-title"
+        id="menuSheetTitle"
+      >ناوي</div>
 
-      <button class="menu-item" id="settingsBtn" type="button">
+      <button
+        class="menu-item"
+        id="settingsBtn"
+        type="button"
+      >
+
         <span class="menu-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
@@ -2009,10 +2012,19 @@
           </svg>
         </span>
 
-        <span class="menu-text" data-i18n="settings">الإعدادات</span>
+        <span
+          class="menu-text"
+          data-i18n="settings"
+        >الإعدادات</span>
+
       </button>
 
-      <button class="menu-item" id="menuTrashBtn" type="button">
+      <button
+        class="menu-item"
+        id="menuTrashBtn"
+        type="button"
+      >
+
         <span class="menu-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="21 8 21 21 3 21 3 8"/>
@@ -2021,14 +2033,25 @@
           </svg>
         </span>
 
-        <span class="menu-text" data-i18n="trash">أرشيف النوايا</span>
+        <span
+          class="menu-text"
+          data-i18n="trash"
+        >أرشيف النوايا</span>
+
       </button>
 
     </div>
+
   </div>
 
   <!-- ACTION OVERLAY -->
-  <div class="overlay" id="actionOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="actionOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2051,16 +2074,31 @@
         aria-label="تعديل نص النية"
       ></button>
 
-      <button class="action-item" id="actionComplete" type="button">
+      <button
+        class="action-item"
+        id="actionComplete"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
         </span>
-        <span class="action-text" data-i18n="done">أتمم النية</span>
+
+        <span
+          class="action-text"
+          data-i18n="done"
+        >أتمم النية</span>
+
       </button>
 
-      <button class="action-item" id="actionRepeat" type="button">
+      <button
+        class="action-item"
+        id="actionRepeat"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"/>
@@ -2069,10 +2107,17 @@
             <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
           </svg>
         </span>
+
         <span class="action-text">تكرار</span>
+
       </button>
 
-      <button class="action-item" id="actionDate" type="button">
+      <button
+        class="action-item"
+        id="actionDate"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -2081,10 +2126,21 @@
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
         </span>
-        <span class="action-text" id="actionDateText" data-i18n="setDate">تحديد موعد</span>
+
+        <span
+          class="action-text"
+          id="actionDateText"
+          data-i18n="setDate"
+        >تحديد موعد</span>
+
       </button>
 
-      <button class="action-item" id="actionDetails" type="button">
+      <button
+        class="action-item"
+        id="actionDetails"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
@@ -2092,10 +2148,17 @@
             <line x1="12" y1="8" x2="12.01" y2="8"/>
           </svg>
         </span>
+
         <span class="action-text">تفاصيل</span>
+
       </button>
 
-      <button class="action-item danger" id="actionDelete" type="button">
+      <button
+        class="action-item danger"
+        id="actionDelete"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3 6 5 6 21 6"/>
@@ -2105,14 +2168,26 @@
             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
           </svg>
         </span>
-        <span class="action-text" data-i18n="delete">تراجع عن النية</span>
+
+        <span
+          class="action-text"
+          data-i18n="delete"
+        >تراجع عن النية</span>
+
       </button>
 
     </div>
+
   </div>
 
   <!-- REPEAT SELECT OVERLAY -->
-  <div class="overlay" id="repeatOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="repeatOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2127,19 +2202,34 @@
       </button>
 
       <div class="sheet-handle"></div>
-      <div class="sheet-title">اختر التكرار</div>
 
-      <button class="action-item" data-repeat="none" type="button">
+      <div class="sheet-title">
+        اختر التكرار
+      </div>
+
+      <button
+        class="action-item"
+        data-repeat="none"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
             <line x1="4.9" y1="4.9" x2="19.1" y2="19.1"/>
           </svg>
         </span>
+
         <span class="action-text">بدون تكرار</span>
+
       </button>
 
-      <button class="action-item" data-repeat="daily" type="button">
+      <button
+        class="action-item"
+        data-repeat="daily"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"/>
@@ -2148,10 +2238,17 @@
             <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
           </svg>
         </span>
+
         <span class="action-text">يوميًا</span>
+
       </button>
 
-      <button class="action-item" data-repeat="weekly" type="button">
+      <button
+        class="action-item"
+        data-repeat="weekly"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"/>
@@ -2160,10 +2257,17 @@
             <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
           </svg>
         </span>
+
         <span class="action-text">أسبوعيًا</span>
+
       </button>
 
-      <button class="action-item" data-repeat="monthly" type="button">
+      <button
+        class="action-item"
+        data-repeat="monthly"
+        type="button"
+      >
+
         <span class="action-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="17 1 21 5 17 9"/>
@@ -2172,14 +2276,23 @@
             <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
           </svg>
         </span>
+
         <span class="action-text">شهريًا</span>
+
       </button>
 
     </div>
+
   </div>
 
   <!-- DETAILS OVERLAY -->
-  <div class="overlay" id="detailsOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="detailsOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2194,14 +2307,25 @@
       </button>
 
       <div class="sheet-handle"></div>
-      <div class="sheet-title">تفاصيل النية</div>
+
+      <div class="sheet-title">
+        تفاصيل النية
+      </div>
+
       <div id="detailsContent"></div>
 
     </div>
+
   </div>
 
   <!-- DATE OVERLAY -->
-  <div class="overlay" id="dateOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="dateOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2217,13 +2341,15 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="dateTitle">
-        تحديد موعد
-      </div>
+      <div
+        class="sheet-title"
+        data-i18n="dateTitle"
+      >تحديد موعد</div>
 
-      <div class="sheet-subtitle" data-i18n="dateSubtitle">
-        اختر اليوم الذي تريد أن تظهر فيه النية.
-      </div>
+      <div
+        class="sheet-subtitle"
+        data-i18n="dateSubtitle"
+      >اختر اليوم الذي تريد أن تظهر فيه النية.</div>
 
       <input
         class="date-input"
@@ -2235,24 +2361,44 @@
 
       <div class="modal-actions">
 
-        <button class="modal-btn danger" id="dateClear" type="button">
+        <button
+          class="modal-btn danger"
+          id="dateClear"
+          type="button"
+        >
           <span data-i18n="removeDate">إزالة الموعد</span>
         </button>
 
-        <button class="modal-btn secondary" id="dateCancel" type="button">
+        <button
+          class="modal-btn secondary"
+          id="dateCancel"
+          type="button"
+        >
           <span data-i18n="cancel">إلغاء</span>
         </button>
 
-        <button class="modal-btn primary" id="dateSave" type="button">
+        <button
+          class="modal-btn primary"
+          id="dateSave"
+          type="button"
+        >
           <span data-i18n="save">حفظ</span>
         </button>
 
       </div>
+
     </div>
+
   </div>
 
   <!-- SETTINGS OVERLAY -->
-  <div class="overlay" id="settingsOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="settingsOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2268,69 +2414,135 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="settings">
-        الإعدادات
-      </div>
-
-      <div class="setting-group">
-        <div class="setting-label" data-i18n="languageSection">اللغة</div>
-
-        <div class="setting-box">
-          <div class="setting-row">
-
-            <div class="setting-name" data-i18n="languageName">
-              لغة ناوي
-            </div>
-
-            <div class="segmented">
-              <button class="segment" data-language-choice="ar" type="button">العربية</button>
-              <button class="segment" data-language-choice="en" type="button">English</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="setting-group">
-        <div class="setting-label" data-i18n="appearanceSection">
-          المظهر
-        </div>
-
-        <div class="setting-box">
-
-          <div class="setting-row">
-            <div class="setting-name" data-i18n="modeName">الوضع</div>
-
-            <div class="segmented">
-              <button class="segment" data-theme-choice="light" type="button" data-i18n="light">فاتح</button>
-              <button class="segment" data-theme-choice="dark" type="button" data-i18n="dark">داكن</button>
-            </div>
-          </div>
-
-          <div class="setting-row">
-            <div class="setting-name" data-i18n="fontSizeName">حجم الخط</div>
-
-            <div class="segmented">
-              <button class="segment" data-font-choice="small" type="button">صغير</button>
-              <button class="segment" data-font-choice="medium" type="button">متوسط</button>
-              <button class="segment" data-font-choice="large" type="button">كبير</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
+      <div
+        class="sheet-title"
+        data-i18n="settings"
+      >الإعدادات</div>
 
       <div class="setting-group">
 
-        <div class="setting-label" data-i18n="colorSection">اللون</div>
+        <div
+          class="setting-label"
+          data-i18n="languageSection"
+        >اللغة</div>
 
         <div class="setting-box">
 
           <div class="setting-row">
 
-            <div class="setting-name" data-i18n="nawyColor">
-              لون ناوي
+            <div
+              class="setting-name"
+              data-i18n="languageName"
+            >لغة ناوي</div>
+
+            <div class="segmented">
+
+              <button
+                class="segment"
+                data-language-choice="ar"
+                type="button"
+              >العربية</button>
+
+              <button
+                class="segment"
+                data-language-choice="en"
+                type="button"
+              >English</button>
+
             </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="setting-group">
+
+        <div
+          class="setting-label"
+          data-i18n="appearanceSection"
+        >المظهر</div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div
+              class="setting-name"
+              data-i18n="modeName"
+            >الوضع</div>
+
+            <div class="segmented">
+
+              <button
+                class="segment"
+                data-theme-choice="light"
+                type="button"
+                data-i18n="light"
+              >فاتح</button>
+
+              <button
+                class="segment"
+                data-theme-choice="dark"
+                type="button"
+                data-i18n="dark"
+              >داكن</button>
+
+            </div>
+
+          </div>
+
+          <div class="setting-row">
+
+            <div
+              class="setting-name"
+              data-i18n="fontSizeName"
+            >حجم الخط</div>
+
+            <div class="segmented">
+
+              <button
+                class="segment"
+                data-font-choice="small"
+                type="button"
+              >صغير</button>
+
+              <button
+                class="segment"
+                data-font-choice="medium"
+                type="button"
+              >متوسط</button>
+
+              <button
+                class="segment"
+                data-font-choice="large"
+                type="button"
+              >كبير</button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="setting-group">
+
+        <div
+          class="setting-label"
+          data-i18n="colorSection"
+        >اللون</div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div
+              class="setting-name"
+              data-i18n="nawyColor"
+            >لون ناوي</div>
 
             <div class="colors">
 
@@ -2375,62 +2587,92 @@
               ></button>
 
             </div>
+
           </div>
+
         </div>
+
       </div>
 
       <div class="setting-group">
 
-        <div class="setting-label" data-i18n="pinSection">
-          الخصوصية
-        </div>
+        <div
+          class="setting-label"
+          data-i18n="pinSection"
+        >الخصوصية</div>
 
         <div class="setting-box">
 
           <div class="setting-row">
 
-            <div class="setting-name" data-i18n="pinName">
-              قفل ناوي
-            </div>
+            <div
+              class="setting-name"
+              data-i18n="pinName"
+            >قفل ناوي</div>
 
-            <button class="small-btn" id="pinToggleBtn" type="button">
+            <button
+              class="small-btn"
+              id="pinToggleBtn"
+              type="button"
+            >
               <span data-i18n="pinEnable">تفعيل</span>
             </button>
 
           </div>
 
-          <div class="setting-row hidden" id="pinChangeRow">
+          <div
+            class="setting-row hidden"
+            id="pinChangeRow"
+          >
 
-            <div class="setting-name" data-i18n="pinChange">
-              تغيير الرمز
-            </div>
+            <div
+              class="setting-name"
+              data-i18n="pinChange"
+            >تغيير الرمز</div>
 
-            <button class="small-btn" id="pinChangeBtn" type="button">
+            <button
+              class="small-btn"
+              id="pinChangeBtn"
+              type="button"
+            >
               <span data-i18n="pinChange">تغيير</span>
             </button>
 
           </div>
 
-          <div class="setting-row hidden" id="birthYearRow">
+          <div
+            class="setting-row hidden"
+            id="birthYearRow"
+          >
 
             <div class="setting-name">
               سنة الميلاد (سؤال الأمان)
             </div>
 
-            <button class="small-btn" id="changeBirthYearBtn" type="button">
-              تغيير
-            </button>
+            <button
+              class="small-btn"
+              id="changeBirthYearBtn"
+              type="button"
+            >تغيير</button>
 
           </div>
 
         </div>
+
       </div>
 
     </div>
+
   </div>
 
   <!-- TRASH OVERLAY -->
-  <div class="overlay" id="trashOverlay" aria-hidden="true">
+
+  <div
+    class="overlay"
+    id="trashOverlay"
+    aria-hidden="true"
+  >
+
     <div class="sheet">
 
       <button
@@ -2446,20 +2688,27 @@
 
       <div class="sheet-handle"></div>
 
-      <div class="sheet-title" data-i18n="trash">
-        أرشيف النوايا
-      </div>
+      <div
+        class="sheet-title"
+        data-i18n="trash"
+      >أرشيف النوايا</div>
 
-      <div class="sheet-subtitle" data-i18n="trashSubtitle">
-        نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.
-      </div>
+      <div
+        class="sheet-subtitle"
+        data-i18n="trashSubtitle"
+      >نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.</div>
 
-      <div class="trash-list" id="trashList"></div>
+      <div
+        class="trash-list"
+        id="trashList"
+      ></div>
 
     </div>
+
   </div>
 
   <!-- INSTALL BANNER -->
+
   <div
     class="install-banner"
     id="installBanner"
@@ -2468,7 +2717,10 @@
     aria-label="تثبيت ناوي"
   >
 
-    <div class="install-icon" id="installIcon">
+    <div
+      class="install-icon"
+      id="installIcon"
+    >
 
       <img
         class="install-icon-img"
@@ -2484,41 +2736,63 @@
 
     <div class="install-copy">
 
-      <div class="install-title" id="installTitle">
-        ثبّت ناوي على جهازك
-      </div>
+      <div
+        class="install-title"
+        id="installTitle"
+      >ثبّت ناوي على جهازك</div>
 
-      <div class="install-text" id="installText">
-        خليه معاك أسرع وأسهل من المتصفح.
-      </div>
+      <div
+        class="install-text"
+        id="installText"
+      >خليه معاك أسرع وأسهل من المتصفح.</div>
 
     </div>
 
     <div class="install-actions">
 
-      <button class="install-btn secondary" id="installDismiss" type="button">
-        متابعة
-      </button>
+      <button
+        class="install-btn secondary"
+        id="installDismiss"
+        type="button"
+      >متابعة</button>
 
-      <button class="install-btn primary" id="installAction" type="button">
-        تثبيت
-      </button>
+      <button
+        class="install-btn primary"
+        id="installAction"
+        type="button"
+      >تثبيت</button>
 
     </div>
+
   </div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast" role="status" aria-live="polite">
 
-    <div class="toast-message" id="toastMessage"></div>
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  >
 
-    <button class="toast-undo hidden" id="toastUndo" type="button">
+    <div
+      class="toast-message"
+      id="toastMessage"
+    ></div>
+
+    <button
+      class="toast-undo hidden"
+      id="toastUndo"
+      type="button"
+    >
       <span data-i18n="undo">استرجاع</span>
     </button>
 
-    <button class="toast-update hidden" id="toastUpdate" type="button">
-      تحديث
-    </button>
+    <button
+      class="toast-update hidden"
+      id="toastUpdate"
+      type="button"
+    >تحديث</button>
 
   </div>
 
@@ -2818,7 +3092,9 @@
 
     function t(key, vars = {}) {
       const language =
-        settings && settings.language === "en" ? "en" : "ar";
+        settings && settings.language === "en"
+          ? "en"
+          : "ar";
 
       const dict = TRANSLATIONS[language];
 
@@ -2827,12 +3103,14 @@
         TRANSLATIONS.ar[key] ??
         key;
 
-      Object.entries(vars).forEach(([keyName, valueToReplace]) => {
-        value = value.replaceAll(
-          `{${keyName}}`,
-          String(valueToReplace)
-        );
-      });
+      Object.entries(vars).forEach(
+        ([keyName, valueToReplace]) => {
+          value = value.replaceAll(
+            `{${keyName}}`,
+            String(valueToReplace)
+          );
+        }
+      );
 
       return value;
     }
@@ -2849,7 +3127,9 @@
 
     let tasks = [];
     let trash = [];
-    let settings = { ...DEFAULT_SETTINGS };
+    let settings = {
+      ...DEFAULT_SETTINGS
+    };
 
     let currentView = "today";
     let selectedTaskId = null;
@@ -2868,9 +3148,17 @@
       "favorites"
     ];
 
-    let swipeStartX = 0;
-    let swipeStartY = 0;
-    let swipeTracking = false;
+    let smoothSwipe = {
+      active: false,
+      pointerId: null,
+      startX: 0,
+      startY: 0,
+      currentX: 0,
+      horizontal: false,
+      lockedToSwipe: false,
+      wasDrag: false
+    };
+
     let swipeSuppressClick = false;
 
     let pinState = {
@@ -2923,9 +3211,12 @@
     const toastUpdate = $("#toastUpdate");
 
     const headerNav = $("#headerNav");
-    const headerTabIndicator = $("#headerTabIndicator");
+    const headerTabIndicator =
+      $("#headerTabIndicator");
+
     const brandName = $("#brandName");
-    const menuSheetTitle = $("#menuSheetTitle");
+    const menuSheetTitle =
+      $("#menuSheetTitle");
 
     const pinOverlay = $("#pinOverlay");
     const pinTitle = $("#pinTitle");
@@ -2938,29 +3229,52 @@
     const pinResetLink = $("#pinResetLink");
     const pinCloseBtn = $("#pinCloseBtn");
 
-    const pinToggleBtn = $("#pinToggleBtn");
-    const pinChangeRow = $("#pinChangeRow");
-    const pinChangeBtn = $("#pinChangeBtn");
-    const birthYearRow = $("#birthYearRow");
-    const changeBirthYearBtn = $("#changeBirthYearBtn");
+    const pinToggleBtn =
+      $("#pinToggleBtn");
+
+    const pinChangeRow =
+      $("#pinChangeRow");
+
+    const pinChangeBtn =
+      $("#pinChangeBtn");
+
+    const birthYearRow =
+      $("#birthYearRow");
+
+    const changeBirthYearBtn =
+      $("#changeBirthYearBtn");
 
     let deferredInstallPrompt = null;
     let installBannerDismissed = false;
 
-    const installBanner = $("#installBanner");
-    const installTitle = $("#installTitle");
-    const installText = $("#installText");
-    const installAction = $("#installAction");
-    const installDismiss = $("#installDismiss");
+    const installBanner =
+      $("#installBanner");
+
+    const installTitle =
+      $("#installTitle");
+
+    const installText =
+      $("#installText");
+
+    const installAction =
+      $("#installAction");
+
+    const installDismiss =
+      $("#installDismiss");
 
     function applyLanguage() {
       const lang =
-        settings.language === "en" ? "en" : "ar";
+        settings.language === "en"
+          ? "en"
+          : "ar";
 
-      document.documentElement.lang = lang;
+      document.documentElement.lang =
+        lang;
 
       document.documentElement.dir =
-        lang === "ar" ? "rtl" : "ltr";
+        lang === "ar"
+          ? "rtl"
+          : "ltr";
 
       document.documentElement.setAttribute(
         "data-language",
@@ -2969,40 +3283,62 @@
 
       if (brandName) {
         brandName.textContent =
-          lang === "en" ? "NAWY" : "ناوي";
+          lang === "en"
+            ? "NAWY"
+            : "ناوي";
       }
 
       if (menuSheetTitle) {
         menuSheetTitle.textContent =
-          lang === "en" ? "NAWY" : "ناوي";
+          lang === "en"
+            ? "NAWY"
+            : "ناوي";
       }
 
-      $$("[data-i18n]").forEach(el => {
-        el.textContent = t(el.dataset.i18n);
-      });
+      $$("[data-i18n]").forEach(
+        el => {
+          el.textContent =
+            t(el.dataset.i18n);
+        }
+      );
 
-      $$("[data-i18n-placeholder]").forEach(el => {
-        el.placeholder =
-          t(el.dataset.i18nPlaceholder);
-      });
+      $$("[data-i18n-placeholder]").forEach(
+        el => {
+          el.placeholder =
+            t(
+              el.dataset.i18nPlaceholder
+            );
+        }
+      );
 
-      $$("[data-i18n-aria]").forEach(el => {
-        el.setAttribute(
-          "aria-label",
-          t(el.dataset.i18nAria)
-        );
-      });
+      $$("[data-i18n-aria]").forEach(
+        el => {
+          el.setAttribute(
+            "aria-label",
+            t(
+              el.dataset.i18nAria
+            )
+          );
+        }
+      );
 
-      $$("[data-language-choice]").forEach(btn => {
-        const active =
-          btn.dataset.languageChoice === lang;
+      $$("[data-language-choice]").forEach(
+        btn => {
+          const active =
+            btn.dataset.languageChoice ===
+            lang;
 
-        btn.classList.toggle("active", active);
-        btn.setAttribute(
-          "aria-pressed",
-          String(active)
-        );
-      });
+          btn.classList.toggle(
+            "active",
+            active
+          );
+
+          btn.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+        }
+      );
 
       updateDynamicLanguageText();
 
@@ -3015,16 +3351,20 @@
 
     function updateDynamicLanguageText() {
       if (selectedTaskId) {
-        const task = tasks.find(
-          item => item.id === selectedTaskId
-        );
+        const task =
+          tasks.find(
+            item =>
+              item.id === selectedTaskId
+          );
 
         if (task) {
           const actionButton =
             $("#actionComplete");
 
           const text =
-            actionButton?.querySelector(".action-text");
+            actionButton?.querySelector(
+              ".action-text"
+            );
 
           if (text) {
             text.textContent =
@@ -3033,12 +3373,17 @@
                 : t("done");
           }
 
-          updateActionDateText(task);
+          updateActionDateText(
+            task
+          );
         }
       }
 
-      $$(".trash-delete-button").forEach(btn => {
-        btn.textContent = t("deleteForever");
+      $(
+        ".trash-delete-button"
+      ).forEach(btn => {
+        btn.textContent =
+          t("deleteForever");
       });
 
       if (installTitle) {
@@ -3070,29 +3415,42 @@
     }
 
     function updatePinButtonText() {
-      if (settings.lockEnabled) {
-
+      if (
+        settings.lockEnabled
+      ) {
         pinToggleBtn.innerHTML =
           `<span>${t("pinDisable")}</span>`;
 
-        pinChangeRow.classList.remove("hidden");
-        birthYearRow.classList.remove("hidden");
+        pinChangeRow.classList.remove(
+          "hidden"
+        );
+
+        birthYearRow.classList.remove(
+          "hidden"
+        );
 
       } else {
-
         pinToggleBtn.innerHTML =
           `<span>${t("pinEnable")}</span>`;
 
-        pinChangeRow.classList.add("hidden");
-        birthYearRow.classList.add("hidden");
+        pinChangeRow.classList.add(
+          "hidden"
+        );
+
+        birthYearRow.classList.add(
+          "hidden"
+        );
       }
     }
 
     function pad(number) {
-      return String(number).padStart(2, "0");
+      return String(number)
+        .padStart(2, "0");
     }
 
-    function getDateKey(date = new Date()) {
+    function getDateKey(
+      date = new Date()
+    ) {
       return [
         date.getFullYear(),
         pad(date.getMonth() + 1),
@@ -3100,7 +3458,9 @@
       ].join("-");
     }
 
-    function formatDate(date = new Date()) {
+    function formatDate(
+      date = new Date()
+    ) {
       return new Intl.DateTimeFormat(
         settings.language === "en"
           ? "en-US"
@@ -3113,13 +3473,23 @@
       ).format(date);
     }
 
-    function formatTaskDate(dateKey) {
-      if (!dateKey) return "";
+    function formatTaskDate(
+      dateKey
+    ) {
+      if (!dateKey) {
+        return "";
+      }
 
       const date =
-        new Date(`${dateKey}T12:00:00`);
+        new Date(
+          `${dateKey}T12:00:00`
+        );
 
-      if (Number.isNaN(date.getTime())) {
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
         return "";
       }
 
@@ -3134,8 +3504,12 @@
       ).format(date);
     }
 
-    function formatFullDate(timestamp) {
-      if (!timestamp) return "";
+    function formatFullDate(
+      timestamp
+    ) {
+      if (!timestamp) {
+        return "";
+      }
 
       return new Intl.DateTimeFormat(
         settings.language === "en"
@@ -3146,79 +3520,131 @@
           month: "short",
           year: "numeric"
         }
-      ).format(new Date(timestamp));
+      ).format(
+        new Date(timestamp)
+      );
     }
 
-    function getTaskDisplayDate(task) {
-      return task.scheduledDate ||
+    function getTaskDisplayDate(
+      task
+    ) {
+      return (
+        task.scheduledDate ||
         task.taskDay ||
-        "";
+        ""
+      );
     }
 
-    function getTaskDisplayDay(task) {
+    function getTaskDisplayDay(
+      task
+    ) {
       const dateKey =
         getTaskDisplayDate(task);
 
-      if (!dateKey) return "";
+      if (!dateKey) {
+        return "";
+      }
 
-      if (dateKey === getDateKey()) {
+      if (
+        dateKey === getDateKey()
+      ) {
         return t("today");
       }
 
       const date =
-        new Date(`${dateKey}T12:00:00`);
+        new Date(
+          `${dateKey}T12:00:00`
+        );
 
-      const currentDate = new Date();
+      const currentDate =
+        new Date();
 
-      currentDate.setHours(12, 0, 0, 0);
-
-      const diff = Math.round(
-        (currentDate - date) / 86400000
+      currentDate.setHours(
+        12,
+        0,
+        0,
+        0
       );
+
+      const diff =
+        Math.round(
+          (
+            currentDate -
+            date
+          ) /
+            86400000
+        );
 
       if (diff === 1) {
         return t("yesterday");
       }
 
-      if (diff > 1 && diff < 7) {
-        return t("daysAgo", { n: diff });
+      if (
+        diff > 1 &&
+        diff < 7
+      ) {
+        return t(
+          "daysAgo",
+          {
+            n: diff
+          }
+        );
       }
 
-      return formatTaskDate(dateKey);
+      return formatTaskDate(
+        dateKey
+      );
     }
 
-    function normalizeTask(task) {
-      if (!task || typeof task !== "object") {
+    function normalizeTask(
+      task
+    ) {
+      if (
+        !task ||
+        typeof task !== "object"
+      ) {
         return null;
       }
 
       const createdAt =
-        Number(task.createdAt) || Date.now();
+        Number(task.createdAt) ||
+        Date.now();
 
       return {
-        id: String(
-          task.id || createId()
-        ),
-        text: String(
-          task.text || ""
-        ).trim(),
+        id:
+          String(
+            task.id ||
+            createId()
+          ),
+
+        text:
+          String(
+            task.text || ""
+          ).trim(),
 
         completed:
-          Boolean(task.completed),
+          Boolean(
+            task.completed
+          ),
 
         starred:
-          Boolean(task.starred),
+          Boolean(
+            task.starred
+          ),
 
         createdAt,
 
         taskDay:
           task.taskDay ||
           getDateKey(
-            new Date(createdAt)
+            new Date(
+              createdAt
+            )
           ),
 
         scheduledDate:
-          typeof task.scheduledDate === "string" &&
+          typeof task.scheduledDate ===
+            "string" &&
           /^\d{4}-\d{2}-\d{2}$/.test(
             task.scheduledDate
           )
@@ -3227,11 +3653,14 @@
 
         completedAt:
           task.completedAt
-            ? Number(task.completedAt)
+            ? Number(
+                task.completedAt
+              )
             : null,
 
         repeat:
-          task.repeat || "none"
+          task.repeat ||
+          "none"
       };
     }
 
@@ -3244,10 +3673,17 @@
       );
     }
 
-    function safeParse(value, fallback) {
+    function safeParse(
+      value,
+      fallback
+    ) {
       try {
-        const parsed = JSON.parse(value);
-        return parsed ?? fallback;
+        const parsed =
+          JSON.parse(value);
+
+        return (
+          parsed ?? fallback
+        );
       } catch {
         return fallback;
       }
@@ -3279,19 +3715,27 @@
         );
 
       tasks =
-        Array.isArray(savedTasks)
+        Array.isArray(
+          savedTasks
+        )
           ? savedTasks
               .map(normalizeTask)
               .filter(Boolean)
-              .filter(task => task.text)
+              .filter(
+                task => task.text
+              )
           : [];
 
       trash =
-        Array.isArray(savedTrash)
+        Array.isArray(
+          savedTrash
+        )
           ? savedTrash
               .map(normalizeTask)
               .filter(Boolean)
-              .filter(task => task.text)
+              .filter(
+                task => task.text
+              )
           : [];
 
       settings = {
@@ -3300,10 +3744,15 @@
       };
 
       if (
-        !["dark", "light"]
-          .includes(settings.theme)
+        ![
+          "dark",
+          "light"
+        ].includes(
+          settings.theme
+        )
       ) {
-        settings.theme = "dark";
+        settings.theme =
+          "dark";
       }
 
       if (
@@ -3313,57 +3762,80 @@
           "purple",
           "orange",
           "pink"
-        ].includes(settings.accent)
+        ].includes(
+          settings.accent
+        )
       ) {
-        settings.accent = "green";
+        settings.accent =
+          "green";
       }
 
       if (
-        !["ar", "en"]
-          .includes(settings.language)
+        ![
+          "ar",
+          "en"
+        ].includes(
+          settings.language
+        )
       ) {
-        settings.language = "ar";
+        settings.language =
+          "ar";
       }
 
       if (
-        !["small", "medium", "large"]
-          .includes(settings.fontSize)
+        ![
+          "small",
+          "medium",
+          "large"
+        ].includes(
+          settings.fontSize
+        )
       ) {
-        settings.fontSize = "medium";
+        settings.fontSize =
+          "medium";
       }
 
       if (
-        typeof settings.lockEnabled !== "boolean"
+        typeof settings.lockEnabled !==
+        "boolean"
       ) {
-        settings.lockEnabled = false;
+        settings.lockEnabled =
+          false;
       }
 
       if (
         settings.lockEnabled &&
         !settings.pin
       ) {
-        settings.lockEnabled = false;
+        settings.lockEnabled =
+          false;
       }
     }
 
     function saveTasks() {
       localStorage.setItem(
         STORAGE_KEYS.tasks,
-        JSON.stringify(tasks)
+        JSON.stringify(
+          tasks
+        )
       );
     }
 
     function saveTrash() {
       localStorage.setItem(
         STORAGE_KEYS.trash,
-        JSON.stringify(trash)
+        JSON.stringify(
+          trash
+        )
       );
     }
 
     function saveSettings() {
       localStorage.setItem(
         STORAGE_KEYS.settings,
-        JSON.stringify(settings)
+        JSON.stringify(
+          settings
+        )
       );
     }
 
@@ -3383,57 +3855,64 @@
         settings.fontSize
       );
 
-      $$("[data-theme-choice]").forEach(btn => {
-        const active =
-          btn.dataset.themeChoice ===
-          settings.theme;
+      $$("[data-theme-choice]")
+        .forEach(btn => {
+          const active =
+            btn.dataset.themeChoice ===
+            settings.theme;
 
-        btn.classList.toggle(
-          "active",
-          active
-        );
+          btn.classList.toggle(
+            "active",
+            active
+          );
 
-        btn.setAttribute(
-          "aria-pressed",
-          String(active)
-        );
-      });
+          btn.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+        });
 
-      $$("[data-accent-choice]").forEach(btn => {
-        const active =
-          btn.dataset.accentChoice ===
-          settings.accent;
+      $$("[data-accent-choice]")
+        .forEach(btn => {
+          const active =
+            btn.dataset.accentChoice ===
+            settings.accent;
 
-        btn.classList.toggle(
-          "active",
-          active
-        );
-      });
+          btn.classList.toggle(
+            "active",
+            active
+          );
+        });
 
-      $$("[data-font-choice]").forEach(btn => {
-        const active =
-          btn.dataset.fontChoice ===
-          settings.fontSize;
+      $$("[data-font-choice]")
+        .forEach(btn => {
+          const active =
+            btn.dataset.fontChoice ===
+            settings.fontSize;
 
-        btn.classList.toggle(
-          "active",
-          active
-        );
+          btn.classList.toggle(
+            "active",
+            active
+          );
 
-        btn.setAttribute(
-          "aria-pressed",
-          String(active)
-        );
-      });
+          btn.setAttribute(
+            "aria-pressed",
+            String(active)
+          );
+        });
 
       applyLanguage();
 
       updatePinButtonText();
     }
 
-    function addTask(text, options = {}) {
+    function addTask(
+      text,
+      options = {}
+    ) {
       const cleanText =
-        String(text || "").trim();
+        String(text || "")
+          .trim();
 
       if (!cleanText) {
         return false;
@@ -3443,21 +3922,29 @@
         id: createId(),
         text: cleanText,
         completed: false,
-        starred: options.starred || false,
-        createdAt: Date.now(),
-        taskDay: getDateKey(),
+        starred:
+          options.starred ||
+          false,
+        createdAt:
+          Date.now(),
+        taskDay:
+          getDateKey(),
         scheduledDate:
-          options.scheduledDate || null,
-        completedAt: null,
+          options.scheduledDate ||
+          null,
+        completedAt:
+          null,
         repeat:
-          options.repeat || "none"
+          options.repeat ||
+          "none"
       };
 
       tasks.unshift(task);
 
       saveTasks();
 
-      currentView = "today";
+      currentView =
+        "today";
 
       render();
 
@@ -3466,11 +3953,18 @@
       return true;
     }
 
-    function completeTask(id) {
+    function completeTask(
+      id
+    ) {
       const task =
-        tasks.find(item => item.id === id);
+        tasks.find(
+          item =>
+            item.id === id
+        );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       task.completed =
         !task.completed;
@@ -3484,35 +3978,49 @@
 
       render();
 
-      if (task.completed) {
+      if (
+        task.completed
+      ) {
         playCompleteSound();
 
-        requestAnimationFrame(() => {
-          const element =
-            document.querySelector(
-              `[data-task-id="${CSS.escape(task.id)}"]`
-            );
+        requestAnimationFrame(
+          () => {
+            const element =
+              document.querySelector(
+                `[data-task-id="${CSS.escape(task.id)}"]`
+              );
 
-          if (element) {
-            element.classList.add(
-              "just-completed"
-            );
-
-            setTimeout(() => {
-              element.classList.remove(
+            if (element) {
+              element.classList.add(
                 "just-completed"
               );
-            }, 550);
+
+              setTimeout(
+                () => {
+                  element.classList.remove(
+                    "just-completed"
+                  );
+                },
+                550
+              );
+            }
           }
-        });
+        );
       }
     }
 
-    function toggleStar(id) {
+    function toggleStar(
+      id
+    ) {
       const task =
-        tasks.find(item => item.id === id);
+        tasks.find(
+          item =>
+            item.id === id
+        );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       task.starred =
         !task.starred;
@@ -3522,20 +4030,31 @@
       render();
     }
 
-    function deleteTask(id) {
+    function deleteTask(
+      id
+    ) {
       const index =
         tasks.findIndex(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
-      if (index === -1) return;
+      if (index === -1) {
+        return;
+      }
 
-      const [deleted] =
-        tasks.splice(index, 1);
+      const [
+        deleted
+      ] =
+        tasks.splice(
+          index,
+          1
+        );
 
       trash.unshift({
         ...deleted,
-        deletedAt: Date.now()
+        deletedAt:
+          Date.now()
       });
 
       saveTasks();
@@ -3549,17 +4068,24 @@
         () => {
           const trashIndex =
             trash.findIndex(
-              item => item.id === deleted.id
+              item =>
+                item.id ===
+                deleted.id
             );
 
-          if (trashIndex !== -1) {
+          if (
+            trashIndex !==
+            -1
+          ) {
             trash.splice(
               trashIndex,
               1
             );
           }
 
-          tasks.unshift(deleted);
+          tasks.unshift(
+            deleted
+          );
 
           saveTasks();
           saveTrash();
@@ -3569,9 +4095,9 @@
       );
     }
 
-    /* ===== Inline edit inside the action sheet preview ===== */
-
-    function resetActionPreview(text) {
+    function resetActionPreview(
+      text
+    ) {
       actionTaskPreview.classList.remove(
         "editing"
       );
@@ -3581,14 +4107,20 @@
     }
 
     function enterPreviewEdit() {
-      if (!selectedTaskId) return;
+      if (!selectedTaskId) {
+        return;
+      }
 
       const task =
         tasks.find(
-          item => item.id === selectedTaskId
+          item =>
+            item.id ===
+            selectedTaskId
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       actionTaskPreview.classList.add(
         "editing"
@@ -3602,10 +4134,13 @@
           "actionTaskEditInput"
         );
 
-      editArea.value = task.text;
+      editArea.value =
+        task.text;
 
       const resize = () => {
-        editArea.style.height = "auto";
+        editArea.style.height =
+          "auto";
+
         editArea.style.height =
           Math.min(
             editArea.scrollHeight,
@@ -3624,16 +4159,20 @@
         "keydown",
         event => {
           if (
-            event.key === "Enter" &&
+            event.key ===
+              "Enter" &&
             !event.shiftKey
           ) {
             event.preventDefault();
             commitPreviewEdit();
+
           } else if (
-            event.key === "Escape"
+            event.key ===
+            "Escape"
           ) {
             event.preventDefault();
             event.stopPropagation();
+
             resetActionPreview(
               task.text
             );
@@ -3662,36 +4201,51 @@
           "actionTaskEditInput"
         );
 
-      if (!editArea || !selectedTaskId) {
+      if (
+        !editArea ||
+        !selectedTaskId
+      ) {
         return;
       }
 
       const task =
         tasks.find(
-          item => item.id === selectedTaskId
+          item =>
+            item.id ===
+            selectedTaskId
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       const text =
         editArea.value.trim();
 
       if (!text) {
-        resetActionPreview(task.text);
+        resetActionPreview(
+          task.text
+        );
+
         return;
       }
 
       const changed =
         text !== task.text;
 
-      task.text = text;
+      task.text =
+        text;
 
-      resetActionPreview(text);
+      resetActionPreview(
+        text
+      );
 
       if (changed) {
         saveTasks();
         render();
-        showToast(t("edited"));
+        showToast(
+          t("edited")
+        );
       }
     }
 
@@ -3708,94 +4262,142 @@
       }
     );
 
-    function openTaskDate(id) {
+    function openTaskDate(
+      id
+    ) {
       const task =
         tasks.find(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
-      selectedTaskId = id;
+      selectedTaskId =
+        id;
 
       taskDateInput.value =
-        task.scheduledDate || "";
+        task.scheduledDate ||
+        "";
 
-      closeOverlay(actionOverlay);
+      closeOverlay(
+        actionOverlay
+      );
 
-      openOverlay(dateOverlay);
+      openOverlay(
+        dateOverlay
+      );
 
-      setTimeout(() => {
-        taskDateInput.focus();
+      setTimeout(
+        () => {
+          taskDateInput.focus();
 
-        if (taskDateInput.showPicker) {
-          try {
-            taskDateInput.showPicker();
-          } catch {}
-        }
-      }, 100);
+          if (
+            taskDateInput.showPicker
+          ) {
+            try {
+              taskDateInput.showPicker();
+            } catch {}
+          }
+        },
+        100
+      );
     }
 
     function saveTaskDate() {
-      if (!selectedTaskId) return;
+      if (!selectedTaskId) {
+        return;
+      }
 
       const task =
         tasks.find(
-          item => item.id === selectedTaskId
+          item =>
+            item.id ===
+            selectedTaskId
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       const value =
         taskDateInput.value;
 
       if (
         !value ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(value)
+        !/^\d{4}-\d{2}-\d{2}$/.test(
+          value
+        )
       ) {
         return;
       }
 
-      task.scheduledDate = value;
+      task.scheduledDate =
+        value;
 
       saveTasks();
 
-      closeOverlay(dateOverlay);
+      closeOverlay(
+        dateOverlay
+      );
 
       render();
 
-      showToast(t("dateSet"));
+      showToast(
+        t("dateSet")
+      );
 
-      selectedTaskId = null;
+      selectedTaskId =
+        null;
     }
 
     function clearTaskDate() {
-      if (!selectedTaskId) return;
+      if (!selectedTaskId) {
+        return;
+      }
 
       const task =
         tasks.find(
-          item => item.id === selectedTaskId
+          item =>
+            item.id ===
+            selectedTaskId
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
-      task.scheduledDate = null;
+      task.scheduledDate =
+        null;
 
       saveTasks();
 
-      closeOverlay(dateOverlay);
+      closeOverlay(
+        dateOverlay
+      );
 
       render();
 
-      showToast(t("dateRemoved"));
+      showToast(
+        t("dateRemoved")
+      );
 
-      selectedTaskId = null;
+      selectedTaskId =
+        null;
     }
 
-    function updateActionDateText(task) {
-      if (!actionDateText) return;
+    function updateActionDateText(
+      task
+    ) {
+      if (!actionDateText) {
+        return;
+      }
 
-      if (task?.scheduledDate) {
+      if (
+        task?.scheduledDate
+      ) {
         actionDateText.textContent =
           `${t("changeDate")} · ${formatTaskDate(task.scheduledDate)}`;
       } else {
@@ -3804,13 +4406,18 @@
       }
     }
 
-    function openDetails(id) {
+    function openDetails(
+      id
+    ) {
       const task =
         tasks.find(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
-      if (!task) return;
+      if (!task) {
+        return;
+      }
 
       const created =
         formatFullDate(
@@ -3834,12 +4441,14 @@
       const starredText =
         task.starred
           ? (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "Yes"
                 : "نعم"
             )
           : (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "No"
                 : "لا"
             );
@@ -3847,12 +4456,14 @@
       const completedText =
         task.completed
           ? (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "Yes"
                 : "نعم"
             )
           : (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "No"
                 : "لا"
             );
@@ -3860,21 +4471,35 @@
       detailsContent.innerHTML =
         `<div class="action-task-preview" style="cursor:default;"><span class="action-task-preview-text">${escapeHtml(task.text)}</span></div><div class="trash-item"><span class="trash-text">${t("createdAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${created}</span></div><div class="trash-item"><span class="trash-text">${t("completedAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completed}</span></div><div class="trash-item"><span class="trash-text">${t("setDate")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${scheduled}</span></div><div class="trash-item"><span class="trash-text">${t("favorites")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${starredText}</span></div><div class="trash-item"><span class="trash-text">${t("completed")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completedText}</span></div>`;
 
-      closeOverlay(actionOverlay);
+      closeOverlay(
+        actionOverlay
+      );
 
-      openOverlay(detailsOverlay);
+      openOverlay(
+        detailsOverlay
+      );
     }
 
-    function restoreTask(id) {
+    function restoreTask(
+      id
+    ) {
       const index =
         trash.findIndex(
-          item => item.id === id
+          item =>
+            item.id === id
         );
 
-      if (index === -1) return;
+      if (index === -1) {
+        return;
+      }
 
-      const [task] =
-        trash.splice(index, 1);
+      const [
+        task
+      ] =
+        trash.splice(
+          index,
+          1
+        );
 
       delete task.deletedAt;
 
@@ -3885,13 +4510,18 @@
 
       renderTrash();
 
-      showToast(t("restored"));
+      showToast(
+        t("restored")
+      );
     }
 
-    function deleteForever(id) {
+    function deleteForever(
+      id
+    ) {
       trash =
         trash.filter(
-          item => item.id !== id
+          item =>
+            item.id !== id
         );
 
       saveTrash();
@@ -3907,39 +4537,49 @@
       view,
       transitionDirection = null
     ) {
-      if (!SWIPE_VIEWS.includes(view)) {
+      if (
+        !SWIPE_VIEWS.includes(view)
+      ) {
         return;
       }
 
-      if (!transitionDirection) {
+      if (
+        !transitionDirection
+      ) {
         const previousIndex =
           SWIPE_VIEWS.indexOf(
             currentView
           );
 
         const nextIndex =
-          SWIPE_VIEWS.indexOf(view);
+          SWIPE_VIEWS.indexOf(
+            view
+          );
 
         if (
-          nextIndex > previousIndex
+          nextIndex >
+          previousIndex
         ) {
           transitionDirection =
             "next";
         } else if (
-          nextIndex < previousIndex
+          nextIndex <
+          previousIndex
         ) {
           transitionDirection =
             "previous";
         }
       }
 
-      currentView = view;
+      currentView =
+        view;
 
       closeAllOverlays();
-
       closeComposer();
 
-      render(transitionDirection);
+      render(
+        transitionDirection
+      );
     }
 
     function getTodayTasks() {
@@ -3951,8 +4591,10 @@
           !task.completed &&
           (
             task.scheduledDate
-              ? task.scheduledDate === today
-              : task.taskDay === today
+              ? task.scheduledDate ===
+                today
+              : task.taskDay ===
+                today
           )
       );
     }
@@ -3975,19 +4617,22 @@
 
     function getAllActive() {
       return tasks.filter(
-        task => !task.completed
+        task =>
+          !task.completed
       );
     }
 
     function getAllCompleted() {
       return tasks.filter(
-        task => task.completed
+        task =>
+          task.completed
       );
     }
 
     function getFavorites() {
       return tasks.filter(
-        task => task.starred
+        task =>
+          task.starred
       );
     }
 
@@ -3999,18 +4644,24 @@
 
       updateHero();
 
-      content.innerHTML = "";
+      content.innerHTML =
+        "";
 
       if (
-        currentView === "today"
+        currentView ===
+        "today"
       ) {
         renderToday();
+
       } else if (
-        currentView === "all"
+        currentView ===
+        "all"
       ) {
         renderAll();
+
       } else if (
-        currentView === "favorites"
+        currentView ===
+        "favorites"
       ) {
         renderFavorites();
       }
@@ -4036,7 +4687,9 @@
         "view-transition-previous"
       );
 
-      if (!direction) return;
+      if (!direction) {
+        return;
+      }
 
       void content.offsetWidth;
 
@@ -4054,15 +4707,20 @@
             "view-transition-previous"
           );
         },
-        { once: true }
+        {
+          once: true
+        }
       );
     }
 
     function updateHero() {
       const titles = {
-        today: t("heroToday"),
-        all: t("all"),
-        favorites: t("favorites")
+        today:
+          t("heroToday"),
+        all:
+          t("all"),
+        favorites:
+          t("favorites")
       };
 
       heroTitle.textContent =
@@ -4092,7 +4750,9 @@
         return;
       }
 
-      if (today.length > 0) {
+      if (
+        today.length > 0
+      ) {
         content.appendChild(
           createSection(
             t("today"),
@@ -4101,7 +4761,9 @@
         );
       }
 
-      if (completed.length > 0) {
+      if (
+        completed.length > 0
+      ) {
         content.appendChild(
           createCompletedToggleSection(
             completed
@@ -4132,7 +4794,9 @@
         return;
       }
 
-      if (active.length > 0) {
+      if (
+        active.length > 0
+      ) {
         content.appendChild(
           createSection(
             t("currentIntentions"),
@@ -4141,7 +4805,9 @@
         );
       }
 
-      if (completed.length > 0) {
+      if (
+        completed.length > 0
+      ) {
         content.appendChild(
           createCompletedToggleSection(
             completed
@@ -4154,7 +4820,9 @@
       const favorites =
         getFavorites();
 
-      if (favorites.length === 0) {
+      if (
+        favorites.length === 0
+      ) {
         content.appendChild(
           createEmptyState(
             "★",
@@ -4166,12 +4834,40 @@
         return;
       }
 
-      content.appendChild(
-        createSection(
-          t("favoriteSection"),
-          favorites
-        )
-      );
+      const activeFavorites =
+        favorites.filter(
+          task =>
+            !task.completed
+        );
+
+      const completedFavorites =
+        favorites.filter(
+          task =>
+            task.completed
+        );
+
+      if (
+        activeFavorites.length >
+        0
+      ) {
+        content.appendChild(
+          createSection(
+            t("favoriteSection"),
+            activeFavorites
+          )
+        );
+      }
+
+      if (
+        completedFavorites.length >
+        0
+      ) {
+        content.appendChild(
+          createCompletedToggleSection(
+            completedFavorites
+          )
+        );
+      }
     }
 
     function createCompletedToggleSection(
@@ -4190,7 +4886,8 @@
           "button"
         );
 
-      toggle.type = "button";
+      toggle.type =
+        "button";
 
       toggle.className =
         "completed-toggle" +
@@ -4202,7 +4899,9 @@
 
       toggle.setAttribute(
         "aria-expanded",
-        String(completedExpanded)
+        String(
+          completedExpanded
+        )
       );
 
       toggle.setAttribute(
@@ -4273,17 +4972,21 @@
       list.className =
         "task-list";
 
-      taskArray.forEach(task => {
-        list.appendChild(
-          createTaskElement(
-            task,
-            true,
-            true
-          )
-        );
-      });
+      taskArray.forEach(
+        task => {
+          list.appendChild(
+            createTaskElement(
+              task,
+              true,
+              true
+            )
+          );
+        }
+      );
 
-      listWrap.appendChild(list);
+      listWrap.appendChild(
+        list
+      );
 
       toggle.addEventListener(
         "click",
@@ -4360,15 +5063,17 @@
       list.className =
         "task-list";
 
-      taskArray.forEach(task => {
-        list.appendChild(
-          createTaskElement(
-            task,
-            showMeta,
-            completedSection
-          )
-        );
-      });
+      taskArray.forEach(
+        task => {
+          list.appendChild(
+            createTaskElement(
+              task,
+              showMeta,
+              completedSection
+            )
+          );
+        }
+      );
 
       section.append(
         head,
@@ -4378,13 +5083,12 @@
       return section;
     }
 
-    /*
-      يحفظ ترتيب النوايا النشطة بناءً على ترتيب
-      العناصر المرئية فقط، مع الحفاظ على النوايا
-      غير المرئية في أماكنها النسبية.
-    */
-    function reorderVisibleTasks(list) {
-      if (!list) return;
+    function reorderVisibleTasks(
+      list
+    ) {
+      if (!list) {
+        return;
+      }
 
       const visibleIds =
         [
@@ -4393,23 +5097,31 @@
           )
         ]
           .map(
-            el => el.dataset.taskId
+            el =>
+              el.dataset.taskId
           )
           .filter(Boolean);
 
-      if (visibleIds.length < 2) {
+      if (
+        visibleIds.length <
+        1
+      ) {
         return;
       }
 
-      const visibleIdSet =
-        new Set(visibleIds);
+      const visibleSet =
+        new Set(
+          visibleIds
+        );
 
       const visibleTasks =
         visibleIds
           .map(
             id =>
               tasks.find(
-                task => task.id === id
+                task =>
+                  task.id ===
+                  id
               )
           )
           .filter(Boolean);
@@ -4423,30 +5135,36 @@
 
       const activeTasks =
         tasks.filter(
-          task => !task.completed
+          task =>
+            !task.completed
         );
 
       const completedTasks =
         tasks.filter(
-          task => task.completed
+          task =>
+            task.completed
         );
 
       let visibleIndex = 0;
 
       const reorderedActive =
-        activeTasks.map(task => {
-          if (
-            !visibleIdSet.has(
-              task.id
-            )
-          ) {
-            return task;
-          }
+        activeTasks.map(
+          task => {
+            if (
+              !visibleSet.has(
+                task.id
+              )
+            ) {
+              return task;
+            }
 
-          return visibleTasks[
-            visibleIndex++
-          ];
-        });
+            return (
+              visibleTasks[
+                visibleIndex++
+              ]
+            );
+          }
+        );
 
       tasks = [
         ...reorderedActive,
@@ -4457,20 +5175,11 @@
     }
 
     /*
-      =========================================================
-      Sحب وإفلات محسّن
-      =========================================================
-
-      القواعد:
-      1) الضغط العادي لا يبدأ Drag.
-      2) يبدأ Drag فقط بعد Long Press.
-      3) الحركة قبل الـLong Press تلغي السحب وتترك
-         التمرير الطبيعي يعمل.
-      4) لا يوجد Drop Placeholder ظاهر.
-      5) لا يوجد Shadow.
-      6) النسخة المتحركة تتبع الإصبع مباشرة.
-      7) الحفظ يتم مرة واحدة فقط عند الإفلات.
+      ===========================================================
+      DRAG & DROP
+      ===========================================================
     */
+
     function createTaskElement(
       task,
       showMeta = false,
@@ -4500,7 +5209,8 @@
           "button"
         );
 
-      checkbox.type = "button";
+      checkbox.type =
+        "button";
 
       checkbox.className =
         "task-checkbox";
@@ -4520,7 +5230,10 @@
         event => {
           event.stopPropagation();
 
-          completeTask(task.id);
+          toggleStar
+          completeTask(
+            task.id
+          );
         }
       );
 
@@ -4543,7 +5256,9 @@
       text.textContent =
         task.text;
 
-      main.appendChild(text);
+      main.appendChild(
+        text
+      );
 
       if (
         task.repeat &&
@@ -4568,7 +5283,9 @@
         repeatText.textContent =
           `🔁 ${t(
             "repeat" +
-            task.repeat.charAt(0).toUpperCase() +
+            task.repeat
+              .charAt(0)
+              .toUpperCase() +
             task.repeat.slice(1)
           )}`;
 
@@ -4576,7 +5293,9 @@
           repeatText
         );
 
-        main.appendChild(meta);
+        main.appendChild(
+          meta
+        );
       }
 
       main.addEventListener(
@@ -4587,7 +5306,8 @@
             article.dataset.dragMoved ===
               "true"
           ) {
-            swipeSuppressClick = false;
+            swipeSuppressClick =
+              false;
 
             article.dataset.dragMoved =
               "false";
@@ -4597,7 +5317,9 @@
             return;
           }
 
-          openAction(task.id);
+          openAction(
+            task.id
+          );
         }
       );
 
@@ -4606,7 +5328,8 @@
           "button"
         );
 
-      star.type = "button";
+      star.type =
+        "button";
 
       star.className =
         "task-star" +
@@ -4625,12 +5348,14 @@
         "aria-label",
         task.starred
           ? (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "Remove favorite"
                 : "إزالة من المفضلة"
             )
           : (
-              settings.language === "en"
+              settings.language ===
+              "en"
                 ? "Favorite"
                 : "إضافة للمفضلة"
             )
@@ -4638,7 +5363,9 @@
 
       star.setAttribute(
         "aria-pressed",
-        String(task.starred)
+        String(
+          task.starred
+        )
       );
 
       star.addEventListener(
@@ -4646,7 +5373,9 @@
         event => {
           event.stopPropagation();
 
-          toggleStar(task.id);
+          toggleStar(
+            task.id
+          );
         }
       );
 
@@ -4656,50 +5385,93 @@
         star
       );
 
-      /*
-        السحب متاح فقط:
-        - للنوايا غير المكتملة
-        - خارج قسم النوايا المكتملة
-      */
       if (
         !task.completed &&
         !completedSection
       ) {
-        let longPressTimer = null;
+        let longPressTimer =
+          null;
 
-        let pointerId = null;
-        let pointerDown = false;
-        let dragState = null;
+        let pointerId =
+          null;
 
-        let didMove = false;
-        let dragOrderChanged = false;
+        let pointerDown =
+          false;
 
-        let startX = 0;
-        let startY = 0;
+        let dragState =
+          null;
 
-        let lastClientX = 0;
-        let lastClientY = 0;
+        let didMove =
+          false;
 
-        let autoScrollFrame = null;
-        let autoScrollDirection = 0;
-        let autoScrollSpeed = 0;
+        let startX =
+          0;
 
-        const LONG_PRESS_MS = 330;
-        const MOVE_CANCEL_DISTANCE = 12;
+        let startY =
+          0;
 
-        const EDGE_ZONE = 72;
-        const MAX_AUTO_SCROLL = 13;
+        let lastClientX =
+          0;
+
+        let lastClientY =
+          0;
+
+        let autoScrollFrame =
+          null;
+
+        let autoScrollDirection =
+          0;
+
+        let autoScrollSpeed =
+          0;
+
+        const LONG_PRESS_MS =
+          330;
+
+        const MOVE_CANCEL_DISTANCE =
+          12;
+
+        const EDGE_ZONE =
+          72;
+
+        const MAX_AUTO_SCROLL =
+          13;
 
         function clearLongPress() {
           if (
-            longPressTimer !== null
+            longPressTimer !==
+            null
           ) {
             clearTimeout(
               longPressTimer
             );
 
-            longPressTimer = null;
+            longPressTimer =
+              null;
           }
+        }
+
+        function triggerDragFeedback() {
+          try {
+            if (
+              navigator.vibrate &&
+              typeof navigator.vibrate ===
+                "function"
+            ) {
+              navigator.vibrate(
+                18
+              );
+            }
+          } catch {}
+
+          try {
+            playTone(
+              180,
+              .045,
+              .022,
+              "sine"
+            );
+          } catch {}
         }
 
         function lockDragSurface(
@@ -4727,8 +5499,11 @@
         }
 
         function stopAutoScroll() {
-          autoScrollDirection = 0;
-          autoScrollSpeed = 0;
+          autoScrollDirection =
+            0;
+
+          autoScrollSpeed =
+            0;
 
           if (
             autoScrollFrame !==
@@ -4738,7 +5513,8 @@
               autoScrollFrame
             );
 
-            autoScrollFrame = null;
+            autoScrollFrame =
+              null;
           }
         }
 
@@ -4754,13 +5530,18 @@
             document.documentElement
               .clientHeight;
 
-          let direction = 0;
-          let speed = 0;
+          let direction =
+            0;
+
+          let speed =
+            0;
 
           if (
-            clientY < EDGE_ZONE
+            clientY <
+            EDGE_ZONE
           ) {
-            direction = -1;
+            direction =
+              -1;
 
             const intensity =
               Math.min(
@@ -4771,7 +5552,7 @@
                     EDGE_ZONE -
                     clientY
                   ) /
-                  EDGE_ZONE
+                    EDGE_ZONE
                 )
               );
 
@@ -4788,7 +5569,8 @@
             viewportHeight -
               EDGE_ZONE
           ) {
-            direction = 1;
+            direction =
+              1;
 
             const intensity =
               Math.min(
@@ -4802,7 +5584,7 @@
                       EDGE_ZONE
                     )
                   ) /
-                  EDGE_ZONE
+                    EDGE_ZONE
                 )
               );
 
@@ -4822,15 +5604,20 @@
             speed;
 
           if (
-            direction !== 0 &&
-            autoScrollFrame === null
+            direction !==
+              0 &&
+            autoScrollFrame ===
+              null
           ) {
             autoScrollFrame =
               requestAnimationFrame(
                 autoScrollLoop
               );
-          } else if (
-            direction === 0
+          }
+
+          if (
+            direction ===
+            0
           ) {
             stopAutoScroll();
           }
@@ -4839,7 +5626,8 @@
         function autoScrollLoop() {
           if (
             !dragState ||
-            autoScrollDirection === 0
+            autoScrollDirection ===
+              0
           ) {
             autoScrollFrame =
               null;
@@ -4863,11 +5651,6 @@
             );
         }
 
-        /*
-          لا نستخدم Placeholder ظاهر.
-          الـspacer غير مرئي، والغرض منه فقط الحفاظ
-          على ثبات الـlayout أثناء حركة النسخة.
-        */
         function updateDropTarget(
           clientY
         ) {
@@ -4878,7 +5661,8 @@
           const {
             list,
             spacer
-          } = dragState;
+          } =
+            dragState;
 
           const items =
             [
@@ -4887,11 +5671,12 @@
               )
             ].filter(
               el =>
-                el !== article &&
-                el !== spacer
+                el !==
+                article
             );
 
-          let before = null;
+          let before =
+            null;
 
           for (
             const item of items
@@ -4902,19 +5687,17 @@
             if (
               clientY <
               rect.top +
-                rect.height / 2
+                rect.height /
+                  2
             ) {
-              before = item;
+              before =
+                item;
+
               break;
             }
           }
 
-          let previousSibling;
-
           if (before) {
-            previousSibling =
-              before.previousElementSibling;
-
             if (
               spacer.nextElementSibling !==
               before
@@ -4925,9 +5708,6 @@
               );
             }
           } else {
-            previousSibling =
-              list.lastElementChild;
-
             if (
               spacer !==
               list.lastElementChild
@@ -4935,38 +5715,6 @@
               list.appendChild(
                 spacer
               );
-            }
-          }
-
-          const newPositionSignature =
-            [
-              ...list.children
-            ]
-              .filter(
-                el =>
-                  el.classList &&
-                  el.classList.contains(
-                    "task"
-                  )
-              )
-              .map(
-                el =>
-                  el.dataset.taskId
-              )
-              .join("|");
-
-          if (
-            dragState.positionSignature !==
-            newPositionSignature
-          ) {
-            dragState.positionSignature =
-              newPositionSignature;
-
-            if (
-              dragState.initialPositionSignature !==
-              newPositionSignature
-            ) {
-              dragOrderChanged = true;
             }
           }
         }
@@ -4991,9 +5739,6 @@
           const rect =
             article.getBoundingClientRect();
 
-          /*
-            Spacer غير مرئي تمامًا.
-          */
           const spacer =
             document.createElement(
               "div"
@@ -5013,13 +5758,10 @@
             "true"
           );
 
-          /*
-            نسخة متحركة بدون shadow.
-            النسخة تتبع نفس أبعاد النية
-            ومكانها الأفقي.
-          */
           const preview =
-            article.cloneNode(true);
+            article.cloneNode(
+              true
+            );
 
           preview.classList.remove(
             "drag-source"
@@ -5046,21 +5788,22 @@
 
           preview.querySelectorAll(
             "button"
-          ).forEach(button => {
-            button.tabIndex = -1;
-            button.setAttribute(
-              "aria-hidden",
-              "true"
-            );
-          });
+          ).forEach(
+            button => {
+              button.tabIndex =
+                -1;
+
+              button.setAttribute(
+                "aria-hidden",
+                "true"
+              );
+            }
+          );
 
           document.body.appendChild(
             preview
           );
 
-          /*
-            وضع spacer في مكان النية الأصلية.
-          */
           list.insertBefore(
             spacer,
             article
@@ -5083,51 +5826,19 @@
               lastClientY -
               rect.top,
 
-            initialPositionSignature:
-              [
-                ...list.children
-              ]
-                .filter(
-                  el =>
-                    el.classList &&
-                    el.classList.contains(
-                      "task"
-                    )
-                )
-                .map(
-                  el =>
-                    el.dataset.taskId
-                )
-                .join("|"),
-
-            positionSignature:
-              [
-                ...list.children
-              ]
-                .filter(
-                  el =>
-                    el.classList &&
-                    el.classList.contains(
-                      "task"
-                    )
-                )
-                .map(
-                  el =>
-                    el.dataset.taskId
-                )
-                .join("|")
+            originalRect:
+              rect
           };
 
-          didMove = false;
-          dragOrderChanged = false;
+          didMove =
+            false;
 
-          lockDragSurface(true);
+          triggerDragFeedback();
 
-          /*
-            نأخذ Pointer Capture فقط بعد بدء السحب،
-            وبالتالي الـscroll الطبيعي قبل الـlong press
-            لا يتأثر.
-          */
+          lockDragSurface(
+            true
+          );
+
           try {
             article.setPointerCapture(
               pointerId
@@ -5158,7 +5869,8 @@
           lastClientY =
             event.clientY;
 
-          didMove = true;
+          didMove =
+            true;
 
           article.dataset.dragMoved =
             "true";
@@ -5171,14 +5883,16 @@
             event.clientY -
             dragState.offsetY;
 
-          /*
-            الحركة مباشرة مع الإصبع.
-          */
-          dragState.preview.style.left =
-            `${x}px`;
+          const dx =
+            x -
+            dragState.originalRect.left;
 
-          dragState.preview.style.top =
-            `${y}px`;
+          const dy =
+            y -
+            dragState.originalRect.top;
+
+          dragState.preview.style.transform =
+            `translate3d(${dx}px, ${dy}px, 0)`;
 
           updateDropTarget(
             event.clientY
@@ -5197,8 +5911,12 @@
           stopAutoScroll();
 
           if (!dragState) {
-            pointerDown = false;
-            pointerId = null;
+            pointerDown =
+              false;
+
+            pointerId =
+              null;
+
             return;
           }
 
@@ -5206,67 +5924,24 @@
             list,
             spacer,
             preview
-          } = dragState;
+          } =
+            dragState;
 
-          /*
-            عند الإلغاء:
-            لا نستخدم الترتيب الجديد أصلًا.
-          */
-          if (cancelled) {
+          if (
+            cancelled
+          ) {
             spacer.replaceWith(
               article
             );
 
           } else {
+            spacer.replaceWith(
+              article
+            );
 
-            /*
-              نحسب مكان النية النهائي من موقع
-              الـspacer المخفي.
-            */
-            const children =
-              [
-                ...list.children
-              ];
-
-            const orderedIds =
-              children
-                .filter(
-                  el =>
-                    el.classList &&
-                    el.classList.contains(
-                      "task"
-                    ) &&
-                    el !== article &&
-                    !el.classList.contains(
-                      "completed"
-                    )
-                )
-                .map(
-                  el =>
-                    el.dataset.taskId
-                )
-                .filter(Boolean);
-
-            /*
-              إذا كان ترتيب السحب قد تغير فعلًا،
-              نضع الـarticle في موضع الـspacer
-              ثم نحفظ مرة واحدة.
-            */
-            if (
-              dragOrderChanged
-            ) {
-              spacer.replaceWith(
-                article
-              );
-
-              reorderVisibleTasks(
-                list
-              );
-            } else {
-              spacer.replaceWith(
-                article
-              );
-            }
+            reorderVisibleTasks(
+              list
+            );
           }
 
           article.classList.remove(
@@ -5286,12 +5961,10 @@
             );
           }
 
-          /*
-            تحرير Pointer Capture.
-          */
           try {
             if (
-              pointerId !== null &&
+              pointerId !==
+                null &&
               article.hasPointerCapture(
                 pointerId
               )
@@ -5302,27 +5975,38 @@
             }
           } catch {}
 
-          dragState = null;
+          dragState =
+            null;
 
-          pointerDown = false;
-          pointerId = null;
+          pointerDown =
+            false;
 
-          lockDragSurface(false);
+          pointerId =
+            null;
 
-          /*
-            منع فتح النية مباشرة بعد Drag.
-          */
+          lockDragSurface(
+            false
+          );
+
           if (didMove) {
-            swipeSuppressClick = true;
+            swipeSuppressClick =
+              true;
 
-            setTimeout(() => {
-              swipeSuppressClick = false;
-            }, 250);
+            setTimeout(
+              () => {
+                swipeSuppressClick =
+                  false;
+              },
+              280
+            );
 
-            setTimeout(() => {
-              article.dataset.dragMoved =
-                "false";
-            }, 250);
+            setTimeout(
+              () => {
+                article.dataset.dragMoved =
+                  "false";
+              },
+              280
+            );
           }
         }
 
@@ -5332,14 +6016,16 @@
             if (
               event.pointerType ===
                 "mouse" &&
-              event.button !== 0
+              event.button !==
+                0
             ) {
               return;
             }
 
             /*
-              الضغط على Checkbox أو Star
-              لا يبدأ Drag.
+              الضغط على الأزرار لا يبدأ Drag.
+              الضغط على مساحة النية يبدأ عداد
+              الـLong Press فقط.
             */
             if (
               event.target.closest(
@@ -5353,7 +6039,8 @@
               return;
             }
 
-            pointerDown = true;
+            pointerDown =
+              true;
 
             pointerId =
               event.pointerId;
@@ -5370,27 +6057,25 @@
             lastClientY =
               event.clientY;
 
-            didMove = false;
-            dragOrderChanged = false;
+            didMove =
+              false;
 
             clearLongPress();
 
             longPressTimer =
-              setTimeout(() => {
-                if (
-                  !pointerDown ||
-                  dragState
-                ) {
-                  return;
-                }
+              setTimeout(
+                () => {
+                  if (
+                    !pointerDown ||
+                    dragState
+                  ) {
+                    return;
+                  }
 
-                /*
-                  نبدأ السحب باستخدام أحدث
-                  إحداثيات فعلية بدل الاعتماد
-                  على Event قديم.
-                */
-                startDrag();
-              }, LONG_PRESS_MS);
+                  startDrag();
+                },
+                LONG_PRESS_MS
+              );
           },
           {
             passive: true
@@ -5400,7 +6085,9 @@
         article.addEventListener(
           "pointermove",
           event => {
-            if (!pointerDown) {
+            if (
+              !pointerDown
+            ) {
               return;
             }
 
@@ -5410,8 +6097,9 @@
             lastClientY =
               event.clientY;
 
-            if (!dragState) {
-
+            if (
+              !dragState
+            ) {
               const distance =
                 Math.hypot(
                   event.clientX -
@@ -5421,9 +6109,8 @@
                 );
 
               /*
-                أي حركة واضحة قبل اكتمال Long Press
-                تلغي السحب وتترك المتصفح يتعامل
-                مع الـscroll بصورة طبيعية.
+                أي حركة قبل الـLong Press
+                تلغي Drag وتسمح بالـScroll.
               */
               if (
                 distance >
@@ -5431,15 +6118,19 @@
               ) {
                 clearLongPress();
 
-                pointerDown = false;
+                pointerDown =
+                  false;
 
-                pointerId = null;
+                pointerId =
+                  null;
               }
 
               return;
             }
 
-            moveDrag(event);
+            moveDrag(
+              event
+            );
           },
           {
             passive: false
@@ -5449,14 +6140,18 @@
         article.addEventListener(
           "pointerup",
           () => {
-            finishDrag(false);
+            finishDrag(
+              false
+            );
           }
         );
 
         article.addEventListener(
           "pointercancel",
           () => {
-            finishDrag(true);
+            finishDrag(
+              true
+            );
           }
         );
 
@@ -5464,7 +6159,9 @@
           "lostpointercapture",
           () => {
             if (dragState) {
-              finishDrag(true);
+              finishDrag(
+                true
+              );
             }
           }
         );
@@ -5493,29 +6190,30 @@
     }
 
     function updateHeaderNavState() {
-      $$(".header-tab").forEach(
-        button => {
-          const active =
-            button.dataset.view ===
-            currentView;
+      $$(".header-tab")
+        .forEach(
+          button => {
+            const active =
+              button.dataset.view ===
+              currentView;
 
-          button.classList.toggle(
-            "active",
-            active
-          );
+            button.classList.toggle(
+              "active",
+              active
+            );
 
-          if (active) {
-            button.setAttribute(
-              "aria-current",
-              "page"
-            );
-          } else {
-            button.removeAttribute(
-              "aria-current"
-            );
+            if (active) {
+              button.setAttribute(
+                "aria-current",
+                "page"
+              );
+            } else {
+              button.removeAttribute(
+                "aria-current"
+              );
+            }
           }
-        }
-      );
+        );
     }
 
     function updateHeaderTabIndicator() {
@@ -5531,7 +6229,9 @@
           `.header-tab[data-view="${currentView}"]`
         );
 
-      if (!activeTab) return;
+      if (!activeTab) {
+        return;
+      }
 
       const navRect =
         headerNav.getBoundingClientRect();
@@ -5544,7 +6244,8 @@
           22,
           Math.min(
             36,
-            tabRect.width * .32
+            tabRect.width *
+              .32
           )
         );
 
@@ -5555,7 +6256,8 @@
           (
             tabRect.width -
             indicatorWidth
-          ) / 2
+          ) /
+            2
         );
 
       headerNav.style.setProperty(
@@ -5569,44 +6271,11 @@
       );
     }
 
-    function navigateBySwipe(
-      direction
-    ) {
-      const currentIndex =
-        SWIPE_VIEWS.indexOf(
-          currentView
-        );
-
-      if (
-        currentIndex === -1
-      ) {
-        return;
-      }
-
-      let nextIndex;
-
-      if (
-        direction === "next"
-      ) {
-        nextIndex =
-          (
-            currentIndex + 1
-          ) %
-          SWIPE_VIEWS.length;
-      } else {
-        nextIndex =
-          (
-            currentIndex - 1 +
-            SWIPE_VIEWS.length
-          ) %
-          SWIPE_VIEWS.length;
-      }
-
-      setView(
-        SWIPE_VIEWS[nextIndex],
-        direction
-      );
-    }
+    /*
+      ===========================================================
+      SWIPE
+      ===========================================================
+    */
 
     function getSwipeDirection(
       dx
@@ -5626,7 +6295,33 @@
         : "previous";
     }
 
-    function isSwipeBlockedTarget(
+    function resetSmoothSwipe() {
+      smoothSwipe.active =
+        false;
+
+      smoothSwipe.pointerId =
+        null;
+
+      smoothSwipe.horizontal =
+        false;
+
+      smoothSwipe.lockedToSwipe =
+        false;
+
+      smoothSwipe.wasDrag =
+        false;
+
+      content.style.transition =
+        "";
+
+      content.style.transform =
+        "";
+
+      content.style.opacity =
+        "";
+    }
+
+    function isSmoothSwipeBlocked(
       target
     ) {
       return Boolean(
@@ -5636,156 +6331,101 @@
       );
     }
 
-    function handleSwipeStart(
+    function smoothSwipeStart(
       event
     ) {
       if (
-        isSwipeBlockedTarget(
+        event.pointerType ===
+          "mouse" &&
+        event.button !==
+          0
+      ) {
+        return;
+      }
+
+      if (
+        isSmoothSwipeBlocked(
           event.target
         )
       ) {
-        swipeTracking = false;
+        resetSmoothSwipe();
         return;
       }
 
       if (
-        event.touches &&
-        event.touches.length !== 1
-      ) {
-        swipeTracking = false;
-        return;
-      }
-
-      const touch =
-        event.touches[0];
-
-      swipeStartX =
-        touch.clientX;
-
-      swipeStartY =
-        touch.clientY;
-
-      swipeTracking = true;
-    }
-
-    function handleSwipeEnd(
-      event
-    ) {
-      if (!swipeTracking) {
-        return;
-      }
-
-      swipeTracking = false;
-
-      if (
-        event.changedTouches &&
-        event.changedTouches.length !== 1
-      ) {
-        return;
-      }
-
-      const touch =
-        event.changedTouches[0];
-
-      const dx =
-        touch.clientX -
-        swipeStartX;
-
-      const dy =
-        touch.clientY -
-        swipeStartY;
-
-      const absX =
-        Math.abs(dx);
-
-      const absY =
-        Math.abs(dy);
-
-      if (
-        absX < 55 ||
-        absX <= absY * 1.2
-      ) {
-        return;
-      }
-
-      swipeSuppressClick = true;
-
-      navigateBySwipe(
-        getSwipeDirection(dx)
-      );
-
-      setTimeout(() => {
-        swipeSuppressClick = false;
-      }, 500);
-    }
-
-    document.addEventListener(
-      "touchstart",
-      handleSwipeStart,
-      {
-        passive: true,
-        capture: true
-      }
-    );
-
-    document.addEventListener(
-      "touchend",
-      handleSwipeEnd,
-      {
-        passive: true,
-        capture: true
-      }
-    );
-
-    document.addEventListener(
-      "touchcancel",
-      () => {
-        swipeTracking = false;
-      },
-      {
-        passive: true,
-        capture: true
-      }
-    );
-
-    function handleMouseDown(
-      event
-    ) {
-      if (
-        event.button !== 0 ||
-        isSwipeBlockedTarget(
-          event.target
+        document.documentElement.classList.contains(
+          "nawy-drag-active"
         )
       ) {
-        swipeTracking = false;
         return;
       }
 
-      swipeStartX =
+      if (
+        event.isPrimary ===
+        false
+      ) {
+        return;
+      }
+
+      smoothSwipe.active =
+        true;
+
+      smoothSwipe.pointerId =
+        event.pointerId;
+
+      smoothSwipe.startX =
         event.clientX;
 
-      swipeStartY =
+      smoothSwipe.startY =
         event.clientY;
 
-      swipeTracking = true;
+      smoothSwipe.currentX =
+        event.clientX;
+
+      smoothSwipe.horizontal =
+        false;
+
+      smoothSwipe.lockedToSwipe =
+        false;
+
+      smoothSwipe.wasDrag =
+        false;
+
+      content.style.transition =
+        "none";
     }
 
-    function handleMouseUp(
+    function smoothSwipeMove(
       event
     ) {
-      if (!swipeTracking) {
+      if (
+        !smoothSwipe.active ||
+        event.pointerId !==
+          smoothSwipe.pointerId
+      ) {
         return;
       }
 
-      swipeTracking = false;
+      if (
+        document.documentElement.classList.contains(
+          "nawy-drag-active"
+        )
+      ) {
+        smoothSwipe.wasDrag =
+          true;
+
+        resetSmoothSwipe();
+
+        return;
+      }
 
       const dx =
         event.clientX -
-        swipeStartX;
+        smoothSwipe.startX;
 
       const dy =
         event.clientY -
-        swipeStartY;
+        smoothSwipe.startY;
 
       const absX =
         Math.abs(dx);
@@ -5794,69 +6434,362 @@
         Math.abs(dy);
 
       if (
-        absX < 65 ||
-        absX <= absY * 1.2
+        !smoothSwipe.horizontal &&
+        !smoothSwipe.lockedToSwipe
+      ) {
+        if (
+          absX < 8 &&
+          absY < 8
+        ) {
+          return;
+        }
+
+        if (
+          absY >
+          absX * 1.15
+        ) {
+          resetSmoothSwipe();
+
+          return;
+        }
+
+        if (
+          absX >
+          absY * 1.15
+        ) {
+          smoothSwipe.horizontal =
+            true;
+
+          smoothSwipe.lockedToSwipe =
+            true;
+        } else {
+          return;
+        }
+      }
+
+      if (
+        !smoothSwipe.lockedToSwipe
       ) {
         return;
       }
 
-      swipeSuppressClick = true;
+      event.preventDefault();
 
-      navigateBySwipe(
-        getSwipeDirection(dx)
-      );
+      smoothSwipe.currentX =
+        event.clientX;
 
-      setTimeout(() => {
-        swipeSuppressClick = false;
-      }, 500);
-    }
+      /*
+        مقاومة بسيطة للحركة الأفقية
+        تجعلها أقرب لإحساس الـnative.
+      */
+      const resistance =
+        0.82;
 
-    function handleMouseLeave() {
-      swipeTracking = false;
-    }
+      const visualX =
+        dx *
+        resistance;
 
-    document.addEventListener(
-      "mousedown",
-      handleMouseDown,
-      true
-    );
-
-    document.addEventListener(
-      "mouseup",
-      handleMouseUp,
-      true
-    );
-
-    document.addEventListener(
-      "mouseleave",
-      handleMouseLeave,
-      true
-    );
-
-    document.addEventListener(
-      "click",
-      event => {
-        if (!swipeSuppressClick) {
-          return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        swipeSuppressClick = false;
-      },
-      true
-    );
-
-    function openAction(id) {
-      const task =
-        tasks.find(
-          item => item.id === id
+      const opacity =
+        Math.max(
+          0.72,
+          1 -
+            Math.min(
+              0.28,
+              Math.abs(
+                visualX
+              ) / 700
+            )
         );
 
-      if (!task) return;
+      content.style.transform =
+        `translate3d(${visualX}px,0,0)`;
 
-      selectedTaskId = id;
+      content.style.opacity =
+        String(opacity);
+    }
+
+    function smoothSwipeEnd(
+      event
+    ) {
+      if (
+        !smoothSwipe.active ||
+        event.pointerId !==
+          smoothSwipe.pointerId
+      ) {
+        return;
+      }
+
+      if (
+        smoothSwipe.wasDrag ||
+        !smoothSwipe.lockedToSwipe
+      ) {
+        resetSmoothSwipe();
+
+        return;
+      }
+
+      const dx =
+        event.clientX -
+        smoothSwipe.startX;
+
+      const width =
+        content.getBoundingClientRect()
+          .width ||
+        window.innerWidth;
+
+      const threshold =
+        Math.max(
+          55,
+          Math.min(
+            110,
+            width * 0.16
+          )
+        );
+
+      if (
+        Math.abs(dx) <
+        threshold
+      ) {
+        content.style.transition =
+          "transform .24s cubic-bezier(.22,.75,.25,1), opacity .20s ease";
+
+        content.style.transform =
+          "translate3d(0,0,0)";
+
+        content.style.opacity =
+          "1";
+
+        setTimeout(
+          resetSmoothSwipe,
+          250
+        );
+
+        return;
+      }
+
+      const direction =
+        getSwipeDirection(
+          dx
+        );
+
+      const exitX =
+        dx < 0
+          ? -width * 1.05
+          : width * 1.05;
+
+      content.style.transition =
+        "transform .22s cubic-bezier(.22,.75,.25,1), opacity .18s ease";
+
+      content.style.transform =
+        `translate3d(${exitX}px,0,0)`;
+
+      content.style.opacity =
+        "0";
+
+      swipeSuppressClick =
+        true;
+
+      setTimeout(
+        () => {
+          const currentIndex =
+            SWIPE_VIEWS.indexOf(
+              currentView
+            );
+
+          if (
+            currentIndex ===
+            -1
+          ) {
+            resetSmoothSwipe();
+            return;
+          }
+
+          let nextIndex;
+
+          if (
+            direction ===
+            "next"
+          ) {
+            nextIndex =
+              (
+                currentIndex +
+                1
+              ) %
+              SWIPE_VIEWS.length;
+          } else {
+            nextIndex =
+              (
+                currentIndex -
+                1 +
+                SWIPE_VIEWS.length
+              ) %
+              SWIPE_VIEWS.length;
+          }
+
+          const nextView =
+            SWIPE_VIEWS[
+              nextIndex
+            ];
+
+          currentView =
+            nextView;
+
+          closeAllOverlays();
+          closeComposer();
+
+          /*
+            نرسم بدون Animation قديم.
+          */
+          content.classList.remove(
+            "view-transition-next",
+            "view-transition-previous"
+          );
+
+          content.innerHTML =
+            "";
+
+          if (
+            currentView ===
+            "today"
+          ) {
+            renderToday();
+          } else if (
+            currentView ===
+            "all"
+          ) {
+            renderAll();
+          } else if (
+            currentView ===
+            "favorites"
+          ) {
+            renderFavorites();
+          }
+
+          updateHeaderNavState();
+          updateDynamicLanguageText();
+
+          requestAnimationFrame(
+            updateHeaderTabIndicator
+          );
+
+          const enterX =
+            dx < 0
+              ? width * 0.18
+              : -width * 0.18;
+
+          content.style.transition =
+            "none";
+
+          content.style.transform =
+            `translate3d(${enterX}px,0,0)`;
+
+          content.style.opacity =
+            "0.72";
+
+          requestAnimationFrame(
+            () => {
+              requestAnimationFrame(
+                () => {
+                  content.style.transition =
+                    "transform .24s cubic-bezier(.22,.75,.25,1), opacity .22s ease";
+
+                  content.style.transform =
+                    "translate3d(0,0,0)";
+
+                  content.style.opacity =
+                    "1";
+
+                  setTimeout(
+                    () => {
+                      resetSmoothSwipe();
+                    },
+                    260
+                  );
+                }
+              );
+            }
+          );
+        },
+        220
+      );
+
+      setTimeout(
+        () => {
+          swipeSuppressClick =
+            false;
+        },
+        500
+      );
+    }
+
+    function smoothSwipeCancel() {
+      if (
+        !smoothSwipe.active
+      ) {
+        return;
+      }
+
+      resetSmoothSwipe();
+    }
+
+    content.addEventListener(
+      "pointerdown",
+      smoothSwipeStart,
+      {
+        passive: true
+      }
+    );
+
+    content.addEventListener(
+      "pointermove",
+      smoothSwipeMove,
+      {
+        passive: false
+      }
+    );
+
+    content.addEventListener(
+      "pointerup",
+      smoothSwipeEnd,
+      {
+        passive: true
+      }
+    );
+
+    content.addEventListener(
+      "pointercancel",
+      smoothSwipeCancel,
+      {
+        passive: true
+      }
+    );
+
+    content.addEventListener(
+      "lostpointercapture",
+      smoothSwipeCancel
+    );
+
+    /*
+      ===========================================================
+      TASK ACTIONS
+      ===========================================================
+    */
+
+    function openAction(
+      id
+    ) {
+      const task =
+        tasks.find(
+          item =>
+            item.id === id
+        );
+
+      if (!task) {
+        return;
+      }
+
+      selectedTaskId =
+        id;
 
       resetActionPreview(
         task.text
@@ -5896,13 +6829,16 @@
         const id =
           selectedTaskId;
 
-        completeTask(id);
+        completeTask(
+          id
+        );
 
         closeOverlay(
           actionOverlay
         );
 
-        selectedTaskId = null;
+        selectedTaskId =
+          null;
       }
     );
 
@@ -5946,9 +6882,12 @@
           actionOverlay
         );
 
-        selectedTaskId = null;
+        selectedTaskId =
+          null;
 
-        deleteTask(id);
+        deleteTask(
+          id
+        );
       }
     );
 
@@ -5973,38 +6912,43 @@
       .querySelectorAll(
         "[data-repeat]"
       )
-      .forEach(btn => {
-        btn.addEventListener(
-          "click",
-          () => {
-            if (!selectedTaskId) {
-              return;
-            }
+      .forEach(
+        btn => {
+          btn.addEventListener(
+            "click",
+            () => {
+              if (
+                !selectedTaskId
+              ) {
+                return;
+              }
 
-            const task =
-              tasks.find(
-                item =>
-                  item.id ===
-                  selectedTaskId
+              const task =
+                tasks.find(
+                  item =>
+                    item.id ===
+                    selectedTaskId
+                );
+
+              if (task) {
+                task.repeat =
+                  btn.dataset.repeat;
+
+                saveTasks();
+              }
+
+              closeOverlay(
+                repeatOverlay
               );
 
-            if (task) {
-              task.repeat =
-                btn.dataset.repeat;
+              selectedTaskId =
+                null;
 
-              saveTasks();
+              render();
             }
-
-            closeOverlay(
-              repeatOverlay
-            );
-
-            selectedTaskId = null;
-
-            render();
-          }
-        );
-      });
+          );
+        }
+      );
 
     $("#dateSave").addEventListener(
       "click",
@@ -6023,7 +6967,8 @@
           dateOverlay
         );
 
-        selectedTaskId = null;
+        selectedTaskId =
+          null;
       }
     );
 
@@ -6069,9 +7014,12 @@
 
     function closeAllOverlays() {
       $$(".overlay.show")
-        .forEach(closeOverlay);
+        .forEach(
+          closeOverlay
+        );
 
-      selectedTaskId = null;
+      selectedTaskId =
+        null;
     }
 
     $$(".overlay").forEach(
@@ -6087,7 +7035,8 @@
                 overlay
               );
 
-              selectedTaskId = null;
+              selectedTaskId =
+                null;
             }
           }
         );
@@ -6095,31 +7044,33 @@
     );
 
     $$("[data-close-overlay]")
-      .forEach(btn => {
-        btn.addEventListener(
-          "click",
-          event => {
-            event.stopPropagation();
+      .forEach(
+        btn => {
+          btn.addEventListener(
+            "click",
+            event => {
+              event.stopPropagation();
 
-            const overlayId =
-              btn.dataset.closeOverlay;
+              const overlayId =
+                btn.dataset.closeOverlay;
 
-            const overlay =
-              document.getElementById(
-                overlayId
-              );
+              const overlay =
+                document.getElementById(
+                  overlayId
+                );
 
-            if (overlay) {
-              closeOverlay(
-                overlay
-              );
+              if (overlay) {
+                closeOverlay(
+                  overlay
+                );
+              }
+
+              selectedTaskId =
+                null;
             }
-
-            selectedTaskId =
-              null;
-          }
-        );
-      });
+          );
+        }
+      );
 
     $("#menuBtn").addEventListener(
       "click",
@@ -6174,99 +7125,111 @@
     );
 
     $$("[data-theme-choice]")
-      .forEach(button => {
-        button.addEventListener(
-          "click",
-          () => {
-            settings.theme =
-              button.dataset.themeChoice;
+      .forEach(
+        button => {
+          button.addEventListener(
+            "click",
+            () => {
+              settings.theme =
+                button.dataset.themeChoice;
 
-            saveSettings();
+              saveSettings();
 
-            applySettings();
-          }
-        );
-      });
+              applySettings();
+            }
+          );
+        }
+      );
 
     $$("[data-accent-choice]")
-      .forEach(button => {
-        button.addEventListener(
-          "click",
-          () => {
-            settings.accent =
-              button.dataset.accentChoice;
+      .forEach(
+        button => {
+          button.addEventListener(
+            "click",
+            () => {
+              settings.accent =
+                button.dataset.accentChoice;
 
-            saveSettings();
+              saveSettings();
 
-            applySettings();
+              applySettings();
 
-            requestAnimationFrame(
-              updateHeaderTabIndicator
-            );
-          }
-        );
-      });
+              requestAnimationFrame(
+                updateHeaderTabIndicator
+              );
+            }
+          );
+        }
+      );
 
     $$("[data-font-choice]")
-      .forEach(button => {
-        button.addEventListener(
-          "click",
-          () => {
-            settings.fontSize =
-              button.dataset.fontChoice;
+      .forEach(
+        button => {
+          button.addEventListener(
+            "click",
+            () => {
+              settings.fontSize =
+                button.dataset.fontChoice;
 
-            saveSettings();
+              saveSettings();
 
-            applySettings();
+              applySettings();
 
-            render();
-          }
-        );
-      });
+              render();
+            }
+          );
+        }
+      );
 
     $$("[data-language-choice]")
-      .forEach(button => {
-        button.addEventListener(
-          "click",
-          () => {
-            const newLanguage =
-              button.dataset.languageChoice ===
-              "en"
-                ? "en"
-                : "ar";
+      .forEach(
+        button => {
+          button.addEventListener(
+            "click",
+            () => {
+              const newLanguage =
+                button.dataset.languageChoice ===
+                "en"
+                  ? "en"
+                  : "ar";
 
-            if (
-              settings.language ===
-              newLanguage
-            ) {
+              if (
+                settings.language ===
+                newLanguage
+              ) {
+                applyLanguage();
+                return;
+              }
+
+              settings.language =
+                newLanguage;
+
+              saveSettings();
+
+              render();
+
               applyLanguage();
-              return;
+
+              renderSettings();
+
+              renderTrash();
             }
-
-            settings.language =
-              newLanguage;
-
-            saveSettings();
-
-            render();
-
-            applyLanguage();
-
-            renderSettings();
-
-            renderTrash();
-          }
-        );
-      });
+          );
+        }
+      );
 
     function renderSettings() {
       applySettings();
     }
 
     function renderTrash() {
-      trashList.innerHTML = "";
+      trashList.innerHTML =
+        "";
 
-      if (trash.length === 0) {
+      if (
+        trash.length ===
+        0
+      ) {
         trashList.appendChild(
           createEmptyState(
             "📦",
@@ -6278,81 +7241,84 @@
         return;
       }
 
-      trash.forEach(task => {
-        const item =
-          document.createElement(
-            "div"
-          );
-
-        item.className =
-          "trash-item";
-
-        const text =
-          document.createElement(
-            "div"
-          );
-
-        text.className =
-          "trash-text";
-
-        text.textContent =
-          task.text;
-
-        const restore =
-          document.createElement(
-            "button"
-          );
-
-        restore.type = "button";
-
-        restore.className =
-          "small-btn";
-
-        restore.textContent =
-          t("restore");
-
-        restore.addEventListener(
-          "click",
-          () => {
-            restoreTask(
-              task.id
+      trash.forEach(
+        task => {
+          const item =
+            document.createElement(
+              "div"
             );
-          }
-        );
 
-        const forever =
-          document.createElement(
-            "button"
+          item.className =
+            "trash-item";
+
+          const text =
+            document.createElement(
+              "div"
+            );
+
+          text.className =
+            "trash-text";
+
+          text.textContent =
+            task.text;
+
+          const restore =
+            document.createElement(
+              "button"
+            );
+
+          restore.type =
+            "button";
+
+          restore.className =
+            "small-btn";
+
+          restore.textContent =
+            t("restore");
+
+          restore.addEventListener(
+            "click",
+            () => {
+              restoreTask(
+                task.id
+              );
+            }
           );
 
-        forever.type =
-          "button";
-
-        forever.className =
-          "small-btn danger trash-delete-button";
-
-        forever.textContent =
-          t("deleteForever");
-
-        forever.addEventListener(
-          "click",
-          () => {
-            deleteForever(
-              task.id
+          const forever =
+            document.createElement(
+              "button"
             );
-          }
-        );
 
-        item.append(
-          text,
-          restore,
-          forever
-        );
+          forever.type =
+            "button";
 
-        trashList.appendChild(
-          item
-        );
-      });
+          forever.className =
+            "small-btn danger trash-delete-button";
+
+          forever.textContent =
+            t("deleteForever");
+
+          forever.addEventListener(
+            "click",
+            () => {
+              deleteForever(
+                task.id
+              );
+            }
+          );
+
+          item.append(
+            text,
+            restore,
+            forever
+          );
+
+          trashList.appendChild(
+            item
+          );
+        }
+      );
     }
 
     function openComposer() {
@@ -6373,7 +7339,8 @@
 
       history.pushState(
         {
-          composerOpen: true
+          composerOpen:
+            true
         },
         ""
       );
@@ -6393,7 +7360,8 @@
         "true"
       );
 
-      taskInput.value = "";
+      taskInput.value =
+        "";
 
       composerState = {
         starred: false,
@@ -6434,7 +7402,6 @@
             !isClickOnFab
           ) {
             closeComposer();
-
             history.back();
           }
         }
@@ -6443,8 +7410,8 @@
 
     function updateComposer() {
       const hasText =
-        taskInput.value.trim().length >
-        0;
+        taskInput.value.trim()
+          .length > 0;
 
       sendBtn.classList.toggle(
         "disabled",
@@ -6456,9 +7423,7 @@
       "input",
       () => {
         autoResizeTextarea();
-
         updateComposer();
-
         playTypingSound();
       }
     );
@@ -6467,7 +7432,8 @@
       "keydown",
       event => {
         if (
-          event.key === "Enter" &&
+          event.key ===
+            "Enter" &&
           !event.shiftKey
         ) {
           event.preventDefault();
@@ -6485,7 +7451,9 @@
         const text =
           taskInput.value.trim();
 
-        if (!text) return;
+        if (!text) {
+          return;
+        }
 
         if (
           addTask(
@@ -6493,15 +7461,16 @@
             {
               starred:
                 composerState.starred,
+
               scheduledDate:
                 composerState.scheduledDate,
+
               repeat:
                 composerState.repeat
             }
           )
         ) {
           closeComposer();
-
           history.back();
         }
       }
@@ -6560,10 +7529,13 @@
         undoTimer
       );
 
-      undoAction = null;
+      undoAction =
+        null;
 
       toastMessage.textContent =
-        t("updateAvailable");
+        t(
+          "updateAvailable"
+        );
 
       toastUndo.classList.add(
         "hidden"
@@ -6586,7 +7558,8 @@
         "show"
       );
 
-      undoAction = null;
+      undoAction =
+        null;
 
       toastUpdate.classList.add(
         "hidden"
@@ -6642,7 +7615,9 @@
       const ctx =
         getAudioContext();
 
-      if (!ctx) return;
+      if (!ctx) {
+        return;
+      }
 
       try {
         const oscillator =
@@ -6700,7 +7675,8 @@
         performance.now();
 
       if (
-        now - lastTypingSound <
+        now -
+          lastTypingSound <
         55
       ) {
         return;
@@ -6735,7 +7711,9 @@
       const ctx =
         getAudioContext();
 
-      if (!ctx) return;
+      if (!ctx) {
+        return;
+      }
 
       playTone(
         520,
@@ -6744,17 +7722,22 @@
         "sine"
       );
 
-      setTimeout(() => {
-        playTone(
-          700,
-          .12,
-          .035,
-          "sine"
-        );
-      }, 55);
+      setTimeout(
+        () => {
+          playTone(
+            700,
+            .12,
+            .035,
+            "sine"
+          );
+        },
+        55
+      );
     }
 
-    function escapeHtml(value) {
+    function escapeHtml(
+      value
+    ) {
       return String(value)
         .replaceAll(
           "&",
@@ -6784,7 +7767,8 @@
           "(display-mode: standalone)"
         ).matches ||
         window.navigator
-          .standalone === true
+          .standalone ===
+          true
       );
     }
 
@@ -6802,7 +7786,9 @@
         return;
       }
 
-      if (deferredInstallPrompt) {
+      if (
+        deferredInstallPrompt
+      ) {
         installTitle.textContent =
           t("installTitle");
 
@@ -6858,10 +7844,14 @@
     installAction.addEventListener(
       "click",
       async () => {
-        if (!deferredInstallPrompt) {
+        if (
+          !deferredInstallPrompt
+        ) {
           if (isIOS()) {
             showToast(
-              t("installGuideText")
+              t(
+                "installGuideText"
+              )
             );
           }
 
@@ -6913,7 +7903,8 @@
         getDateKey();
 
       if (
-        lastKnownDay === null
+        lastKnownDay ===
+        null
       ) {
         lastKnownDay =
           today;
@@ -6947,7 +7938,8 @@
       "keydown",
       event => {
         if (
-          event.key === "Escape"
+          event.key ===
+          "Escape"
         ) {
           if (
             composerPanel.classList.contains(
@@ -6955,7 +7947,6 @@
             )
           ) {
             closeComposer();
-
             history.back();
           } else {
             closeAllOverlays();
@@ -7107,10 +8098,14 @@
 
         case "forgot":
           pinTitle.textContent =
-            t("pinSecurityQuestion");
+            t(
+              "pinSecurityQuestion"
+            );
 
           pinSubtitle.textContent =
-            t("pinSecuritySubtitle");
+            t(
+              "pinSecuritySubtitle"
+            );
 
           pinSaveBtn.classList.remove(
             "hidden"
@@ -7139,10 +8134,14 @@
 
         case "setupBirthYear":
           pinTitle.textContent =
-            t("pinSetupBirthYearTitle");
+            t(
+              "pinSetupBirthYearTitle"
+            );
 
           pinSubtitle.textContent =
-            t("pinSetupBirthYearSubtitle");
+            t(
+              "pinSetupBirthYearSubtitle"
+            );
 
           pinSaveBtn.classList.remove(
             "hidden"
@@ -7263,7 +8262,9 @@
             hidePinOverlay();
           } else {
             pinError.textContent =
-              t("pinErrorWrong");
+              t(
+                "pinErrorWrong"
+              );
           }
           break;
 
@@ -7275,11 +8276,14 @@
               enteredPin;
 
             pinSubtitle.textContent =
-              t("pinConfirm");
+              t(
+                "pinConfirm"
+              );
 
             pinSaveBtn.classList.add(
               "hidden"
             );
+
           } else {
 
             if (
@@ -7303,7 +8307,9 @@
                 "";
 
               pinSubtitle.textContent =
-                t("pinNew");
+                t(
+                  "pinNew"
+                );
             }
           }
           break;
@@ -7345,6 +8351,7 @@
           if (
             !pinState.currentPin
           ) {
+
             if (
               enteredPin ===
               settings.pin
@@ -7356,17 +8363,22 @@
                 t("pinNew");
             } else {
               pinError.textContent =
-                t("pinErrorWrong");
+                t(
+                  "pinErrorWrong"
+                );
             }
 
           } else if (
             !pinState.newPin
           ) {
+
             pinState.newPin =
               enteredPin;
 
             pinSubtitle.textContent =
-              t("pinConfirm");
+              t(
+                "pinConfirm"
+              );
 
           } else {
 
@@ -7424,9 +8436,10 @@
 
           } else {
             pinError.textContent =
-              t("pinErrorWrong");
+              t(
+                "pinErrorWrong"
+              );
           }
-
           break;
 
         case "forgot":
@@ -7439,7 +8452,9 @@
             );
           } else {
             pinError.textContent =
-              t("pinSecurityError");
+              t(
+                "pinSecurityError"
+              );
           }
           break;
 
@@ -7447,6 +8462,7 @@
           if (
             !pinState.newPin
           ) {
+
             pinState.newPin =
               enteredPin;
 
@@ -7473,7 +8489,9 @@
               hidePinOverlay();
 
               showToast(
-                t("pinResetSuccess")
+                t(
+                  "pinResetSuccess"
+                )
               );
 
             } else {
@@ -7486,10 +8504,11 @@
                 "";
 
               pinSubtitle.textContent =
-                t("pinResetNew");
+                t(
+                  "pinResetNew"
+                );
             }
           }
-
           break;
       }
     }
@@ -7523,13 +8542,17 @@
           button.className =
             "pin-key";
 
-          if (key === "empty") {
+          if (
+            key ===
+            "empty"
+          ) {
             button.classList.add(
               "empty"
             );
 
           } else if (
-            key === "backspace"
+            key ===
+            "backspace"
           ) {
             button.classList.add(
               "pin-backspace"
@@ -7544,6 +8567,7 @@
             );
 
           } else {
+
             button.textContent =
               key;
 
@@ -7704,8 +8728,11 @@
 
     buildPinKeypad();
 
-    let swReloading = false;
-    let swUpdatePending = false;
+    let swReloading =
+      false;
+
+    let swUpdatePending =
+      false;
 
     function requestServiceWorkerUpdate(
       registration
@@ -7809,7 +8836,9 @@
                   registration
                 );
               },
-              60 * 60 * 1000
+              60 *
+                60 *
+                1000
             );
 
             document.addEventListener(
@@ -7826,7 +8855,9 @@
               }
             );
 
-          } catch (error) {
+          } catch (
+            error
+          ) {
             console.warn(
               "NAWY SW registration failed:",
               error
@@ -7838,11 +8869,14 @@
       navigator.serviceWorker.addEventListener(
         "controllerchange",
         () => {
-          if (swReloading) {
+          if (
+            swReloading
+          ) {
             return;
           }
 
-          swReloading = true;
+          swReloading =
+            true;
 
           window.location.reload();
         }
