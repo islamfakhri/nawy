@@ -143,13 +143,69 @@
     @keyframes viewSlideNext { 0% { opacity: .7; transform: translateX(12px); } 100% { opacity: 1; transform: translateX(0); } }
     @keyframes viewSlidePrevious { 0% { opacity: .7; transform: translateX(-12px); } 100% { opacity: 1; transform: translateX(0); } }
 
-    .section { margin-top: var(--sp-lg); }
+    /* ============ Premium Cards ============ */
+    .section {
+      margin-top: var(--sp-lg);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
     .section:first-child { margin-top: 0; }
-    .section-head { display: flex; align-items: center; gap: var(--sp-sm); padding: 0 2px; margin-bottom: var(--sp-sm); }
-    .section-title { color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); letter-spacing: .2px; }
-    .section-count { min-width: 22px; height: 22px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--surface-2); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-md) var(--sp-lg);
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .section-head::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: var(--sp-lg);
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+    .section:hover .section-head::after {
+      width: 48px;
+    }
+    .section-title {
+      color: var(--text);
+      font-size: var(--fs-md);
+      font-weight: var(--fw-bold);
+      letter-spacing: -.2px;
+    }
+    .section-count {
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--accent);
+      color: #fff;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
+    }
+    .task-list {
+      padding: var(--sp-sm) var(--sp-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      position: relative;
+    }
 
-    .task-list { display: flex; flex-direction: column; overflow: visible; border-radius: 0; background: transparent; border: 0; position: relative; }
     .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease, transform .2s cubic-bezier(.2,.8,.2,1); cursor: pointer; touch-action: pan-y; }
     .task:last-child { border-bottom: 0; }
     .task.just-completed { animation: completeRow .5s ease; }
@@ -219,17 +275,79 @@
     .task-star:active { transform: scale(.9); }
     .task-star.active { color: var(--warning); background: transparent; }
 
-    .completed-section { margin-top: var(--sp-md); padding: 0; border-radius: 0; background: transparent; border: 0; box-shadow: none; }
-    .completed-toggle { width: 100%; min-height: 48px; padding: 0 2px; display: flex; align-items: center; justify-content: flex-start; gap: var(--sp-sm); border-radius: var(--radius-sm); background: transparent; text-align: start; transition: color .15s ease, background .15s ease, transform .12s ease; }
-    .completed-toggle:active { transform: scale(.99); }
-    .completed-toggle-title { color: var(--muted); font-size: var(--fs-sm); line-height: 1; font-weight: var(--fw-medium); }
-    .completed-toggle-count { min-width: 22px; height: 22px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: transparent; color: var(--muted); font-size: var(--fs-xs); line-height: 1; font-weight: var(--fw-semibold); }
-    .completed-toggle-chevron { width: 26px; height: 26px; display: grid; place-items: center; border-radius: var(--radius-full); background: transparent; color: var(--muted); font-size: 14px; font-weight: var(--fw-bold); line-height: 1; transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease; }
+    .completed-section {
+      margin-top: var(--sp-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .completed-toggle {
+      width: 100%;
+      min-height: 52px;
+      padding: var(--sp-md) var(--sp-lg);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--sp-sm);
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      transition: all .2s ease;
+    }
+    .completed-toggle:active {
+      background: var(--surface-3);
+    }
+    .completed-toggle-title {
+      color: var(--text);
+      font-size: var(--fs-md);
+      font-weight: var(--fw-bold);
+    }
+    .completed-toggle-count {
+      min-width: 24px;
+      height: 24px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--surface-3);
+      color: var(--muted);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+    }
+    .completed-toggle-chevron {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: var(--fw-bold);
+      line-height: 1;
+      transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease;
+      margin-right: auto;
+    }
     .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); color: var(--accent); }
     .completed-toggle.open .completed-toggle-title { color: var(--text); }
-    .completed-list-wrap { overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-2px); transition: max-height .30s cubic-bezier(.2,.8,.2,1), opacity .20s ease, transform .22s ease, margin-top .20s ease; }
-    .completed-list-wrap.open { max-height: 4000px; opacity: 1; transform: translateY(0); margin-top: var(--sp-xs); }
-    .completed-list-wrap .task-list { border-radius: 0; border: 0; }
+    .completed-list-wrap {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-2px);
+      transition: max-height .30s cubic-bezier(.2,.8,.2,1), opacity .20s ease, transform .22s ease, margin-top .20s ease;
+    }
+    .completed-list-wrap.open {
+      max-height: 4000px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 0;
+    }
+    .completed-list-wrap .task-list {
+      padding: var(--sp-sm) var(--sp-lg);
+    }
 
     .task-empty { padding: 36px var(--sp-xl); text-align: center; border-radius: var(--radius-lg); background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .empty-symbol { width: 44px; height: 44px; margin: 0 auto var(--sp-md); display: grid; place-items: center; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: var(--fw-extrabold); }
@@ -380,7 +498,10 @@
       .sheet { padding: var(--sp-md); }
       .sheet-close-btn { top: 8px; left: 8px; }
       .section { margin-top: var(--sp-md); }
-      .task-list { border-radius: 0; }
+      .section-head { padding: var(--sp-sm) var(--sp-md); }
+      .task-list { padding: var(--sp-xs) var(--sp-md); }
+      .completed-toggle { padding: var(--sp-sm) var(--sp-md); }
+      .completed-list-wrap .task-list { padding: var(--sp-xs) var(--sp-md); }
       .brand-mark { width: 32px; height: 32px; }
       .menu-btn { width: 42px; height: 42px; font-size: 24px; }
       .time-input { width: 100px; min-height: 36px; font-size: var(--fs-sm); }
@@ -857,25 +978,28 @@
     function createCompletedToggleSection(taskArray) { const section = document.createElement("section"); section.className = "completed-section"; const toggle = document.createElement("button"); toggle.type = "button"; toggle.className = "completed-toggle" + (completedExpanded ? " open" : ""); toggle.setAttribute("aria-expanded", String(completedExpanded)); toggle.setAttribute("aria-controls", "completedTasksPanel"); const title = document.createElement("span"); title.className = "completed-toggle-title"; title.textContent = t("completedSection"); const count = document.createElement("span"); count.className = "completed-toggle-count"; count.textContent = taskArray.length; const chevron = document.createElement("span"); chevron.className = "completed-toggle-chevron"; chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; toggle.append(title, count, chevron); const listWrap = document.createElement("div"); listWrap.id = "completedTasksPanel"; listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : ""); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, true, true)); }); listWrap.appendChild(list); toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); }); section.append(toggle, listWrap); return section; }
     function createSection(title, taskArray, showMeta = false, completedSection = false) { const section = document.createElement("section"); section.className = "section"; const head = document.createElement("div"); head.className = "section-head"; const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title; const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length; head.append(titleEl, count); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); }); section.append(head, list); return section; }
     
-    function reorderVisibleTasks(list) {
-      if (!list) return;
-      const visibleIds = [...list.querySelectorAll(".task:not(.completed)")]
+    function reorderVisibleTasks(list, draggedTaskId) {
+      if (!list || !draggedTaskId) return;
+      
+      const visibleIds = [...list.querySelectorAll(".task")]
         .map(el => el.dataset.taskId)
         .filter(Boolean);
+      
       if (visibleIds.length < 2) return;
-      const visibleIdSet = new Set(visibleIds);
-      const visibleTasks = visibleIds
-        .map(id => tasks.find(task => task.id === id))
-        .filter(Boolean);
-      if (visibleTasks.length !== visibleIds.length) return;
-      const activeTasks = tasks.filter(task => !task.completed);
-      const completedTasks = tasks.filter(task => task.completed);
-      let visibleIndex = 0;
-      const reorderedActive = activeTasks.map(task => {
-        if (!visibleIdSet.has(task.id)) return task;
-        return visibleTasks[visibleIndex++];
-      });
-      tasks = [...reorderedActive, ...completedTasks];
+      
+      const draggedIndex = tasks.findIndex(task => task.id === draggedTaskId);
+      if (draggedIndex === -1) return;
+      
+      const [draggedTask] = tasks.splice(draggedIndex, 1);
+      
+      const newIndex = visibleIds.indexOf(draggedTaskId);
+      
+      if (newIndex === -1) {
+        tasks.push(draggedTask);
+      } else {
+        tasks.splice(newIndex, 0, draggedTask);
+      }
+      
       saveTasks();
     }
 
@@ -956,10 +1080,10 @@
       let autoScrollDirection = 0;
       let autoScrollSpeed = 0;
 
-      const LONG_PRESS_MS = 200;
-      const MOVE_CANCEL_DISTANCE = 8;
-      const EDGE_ZONE = 72;
-      const MAX_AUTO_SCROLL = 13;
+      const LONG_PRESS_MS = 250;
+      const MOVE_CANCEL_DISTANCE = 10;
+      const EDGE_ZONE = 80;
+      const MAX_AUTO_SCROLL = 15;
 
       function clearLongPress() {
         if (longPressTimer !== null) {
@@ -1075,6 +1199,7 @@
           list,
           indicator,
           ghost,
+          draggedTaskId: task.id,
           offsetX: event.clientX - rect.left,
           offsetY: event.clientY - rect.top
         };
@@ -1116,13 +1241,15 @@
           return;
         }
 
-        const { list, indicator, ghost } = dragState;
+        const { list, indicator, ghost, draggedTaskId } = dragState;
 
-        if (!cancelled) {
-          reorderVisibleTasks(list);
+        if (!cancelled && didMove) {
+          reorderVisibleTasks(list, draggedTaskId);
+          render();
+        } else {
+          article.classList.remove("drag-source");
         }
 
-        article.classList.remove("drag-source");
         article.dataset.dragMoved = didMove ? "true" : "false";
 
         if (indicator.parentNode) {
@@ -1179,13 +1306,9 @@
           const distance = Math.hypot(dx, dy);
 
           if (distance > MOVE_CANCEL_DISTANCE) {
-            const absX = Math.abs(dx);
-            const absY = Math.abs(dy);
-            if (absY > absX) {
-              clearLongPress();
-              pointerDown = false;
-              pointerId = null;
-            }
+            clearLongPress();
+            pointerDown = false;
+            pointerId = null;
           }
           return;
         }
