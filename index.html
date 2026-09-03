@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -22,7 +23,6 @@
   <link rel="icon" href="./favicon.ico">
   <link rel="apple-touch-icon" href="./icon-192.png">
 
-  <!-- Cairo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -30,7 +30,6 @@
     rel="stylesheet"
   >
 
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -69,7 +68,7 @@
         0 7px 22px rgba(0, 0, 0, .035);
 
       --shadow-card:
-        0 8px 24px rgba(0, 0, 0, .055);
+        0 8px 24px rgba(0, 0, 0, .045);
 
       --shadow-sheet:
         0 25px 70px rgba(0, 0, 0, .22);
@@ -79,10 +78,13 @@
       --radius-md: 14px;
       --radius-sm: 11px;
 
-      --header-height: 116px;
+      --header-height: 112px;
       --bottom-space: 120px;
 
       --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 45%, transparent);
+
+      --tab-indicator-width: 30px;
+      --tab-indicator-left: 0px;
     }
 
     html[data-theme="dark"] {
@@ -101,7 +103,7 @@
         0 8px 24px rgba(0, 0, 0, .17);
 
       --shadow-card:
-        0 10px 28px rgba(0, 0, 0, .24);
+        0 10px 28px rgba(0, 0, 0, .20);
 
       --shadow-sheet:
         0 28px 80px rgba(0, 0, 0, .36);
@@ -141,7 +143,6 @@
     body {
       margin: 0;
       min-height: 100vh;
-
       background: var(--bg);
       color: var(--text);
 
@@ -160,6 +161,7 @@
         color .25s ease;
 
       overscroll-behavior-y: none;
+      touch-action: pan-y;
     }
 
     html[lang="en"] body {
@@ -194,7 +196,6 @@
       color: #fff;
     }
 
-    /* Focus visibility for keyboard users */
     a:focus-visible,
     button:focus-visible,
     textarea:focus-visible,
@@ -212,7 +213,6 @@
     .app {
       width: min(100%, 760px);
       min-height: 100vh;
-
       margin: 0 auto;
 
       padding:
@@ -220,6 +220,8 @@
         16px
         calc(var(--bottom-space) + env(safe-area-inset-bottom))
         16px;
+
+      touch-action: pan-y;
     }
 
     /* =========================
@@ -238,12 +240,14 @@
       background:
         linear-gradient(
           to bottom,
-          var(--bg) 75%,
+          var(--bg) 76%,
           rgba(0,0,0,0)
         );
 
       display: flex;
       flex-direction: column;
+
+      touch-action: pan-y;
     }
 
     .header-main {
@@ -341,46 +345,41 @@
 
     /* =========================
        PRIMARY NAV
-       RTL visual order:
-       نواياي | اليوم | ★
+       Google Tasks inspired
     ========================= */
 
     .header-nav {
       width: 100%;
 
+      position: relative;
+
       margin-top: 8px;
 
-      padding: 3px;
+      padding: 0;
 
       display: flex;
-      align-items: center;
+      align-items: stretch;
 
-      gap: 3px;
+      gap: 0;
 
-      border-radius: 15px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
 
-      background:
-        color-mix(
-          in srgb,
-          var(--surface) 82%,
-          transparent
-        );
-
-      border:
-        1px solid var(--border);
-
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      touch-action: pan-y;
     }
 
     .header-tab {
-      min-height: 40px;
+      position: relative;
+      z-index: 2;
+
+      min-height: 43px;
 
       flex: 1 1 0;
 
-      padding: 0 12px;
+      padding: 0 10px 7px;
 
-      border-radius: 11px;
+      border-radius: 0;
 
       display: inline-flex;
       align-items: center;
@@ -398,7 +397,6 @@
       font-weight: 700;
 
       transition:
-        background .18s ease,
         color .18s ease,
         transform .12s ease;
     }
@@ -408,20 +406,38 @@
     }
 
     .header-tab.active {
-      background: var(--accent);
-      color: #fff;
-
-      box-shadow:
-        0 5px 14px color-mix(
-          in srgb,
-          var(--accent) 18%,
-          transparent
-        );
+      background: transparent;
+      color: var(--accent);
+      box-shadow: none;
     }
 
     .header-tab-star {
-      font-size: 19px;
+      font-size: 18px;
       line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .header-tab-indicator {
+      position: absolute;
+
+      z-index: 3;
+
+      left: var(--tab-indicator-left);
+      bottom: 1px;
+
+      width: var(--tab-indicator-width);
+      height: 2.5px;
+
+      border-radius: 999px;
+
+      background: var(--accent);
+
+      pointer-events: none;
+
+      transition:
+        left .28s cubic-bezier(.22,.75,.25,1),
+        width .28s cubic-bezier(.22,.75,.25,1),
+        background .18s ease;
     }
 
     /* =========================
@@ -430,7 +446,9 @@
 
     .hero {
       padding:
-        20px 4px 10px;
+        18px 4px 10px;
+
+      touch-action: pan-y;
     }
 
     .hero-title {
@@ -440,9 +458,7 @@
         clamp(27px, 7vw, 38px);
 
       line-height: 1.18;
-
       letter-spacing: -.8px;
-
       font-weight: 800;
     }
 
@@ -484,49 +500,35 @@
 
     .progress-top {
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
-
       gap: 10px;
-
       margin-bottom: 8px;
     }
 
     .progress-label {
       color: var(--muted);
-
       font-size: 12px;
-
       font-weight: 600;
     }
 
     .progress-value {
       color: var(--accent);
-
       font-size: 12px;
-
       font-weight: 800;
     }
 
     .progress-track {
       height: 6px;
-
       overflow: hidden;
-
       border-radius: 999px;
-
       background: var(--surface-3);
     }
 
     .progress-bar {
       width: 0;
-
       height: 100%;
-
       border-radius: inherit;
-
       background: var(--accent);
 
       transition:
@@ -562,28 +564,24 @@
     @keyframes viewSlideNext {
       0% {
         opacity: .68;
-        transform:
-          translateX(18px);
+        transform: translateX(18px);
       }
 
       100% {
         opacity: 1;
-        transform:
-          translateX(0);
+        transform: translateX(0);
       }
     }
 
     @keyframes viewSlidePrevious {
       0% {
         opacity: .68;
-        transform:
-          translateX(-18px);
+        transform: translateX(-18px);
       }
 
       100% {
         opacity: 1;
-        transform:
-          translateX(0);
+        transform: translateX(0);
       }
     }
 
@@ -601,11 +599,8 @@
 
     .section-head {
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
-
       gap: 10px;
 
       padding:
@@ -616,9 +611,7 @@
 
     .section-title {
       color: var(--muted);
-
       font-size: 12px;
-
       font-weight: 700;
     }
 
@@ -629,40 +622,33 @@
       padding: 0 6px;
 
       display: inline-flex;
-
       align-items: center;
-
       justify-content: center;
 
       border-radius: 999px;
 
       background: var(--surface-2);
-
       color: var(--muted);
 
       font-size: 10px;
-
       font-weight: 800;
     }
 
     /* =========================
        TASK LIST
-       خفيف جدًا
+       Minimal dividers
     ========================= */
 
     .task-list {
       display: flex;
-
       flex-direction: column;
-
       gap: 0;
 
       overflow: hidden;
 
       border-radius: 16px;
 
-      background:
-        var(--surface);
+      background: var(--surface);
 
       border:
         1px solid var(--border);
@@ -672,7 +658,6 @@
       position: relative;
 
       display: flex;
-
       align-items: center;
 
       gap: 10px;
@@ -682,13 +667,10 @@
       padding:
         7px 10px;
 
-      background:
-        var(--surface);
+      background: var(--surface);
 
       border: 0;
-
-      border-bottom:
-        1px solid var(--border);
+      border-bottom: 0;
 
       border-radius: 0;
 
@@ -699,15 +681,30 @@
         opacity .18s ease;
     }
 
-    .task:last-child {
-      border-bottom: 0;
+    .task + .task::before {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+
+      left: 16px;
+      right: 16px;
+
+      height: 1px;
+
+      background: var(--border);
+
+      opacity: .38;
+
+      pointer-events: none;
     }
 
     .task:hover {
       background:
         color-mix(
           in srgb,
-          var(--surface-2) 42%,
+          var(--surface-2) 38%,
           var(--surface)
         );
     }
@@ -763,7 +760,6 @@
 
     .task.completed .task-checkbox {
       background: var(--accent);
-
       border-color: var(--accent);
     }
 
@@ -782,13 +778,11 @@
 
     .task.completed .check-icon {
       opacity: 1;
-
       transform: scale(1);
     }
 
     .task-main {
       min-width: 0;
-
       flex: 1;
 
       padding:
@@ -803,9 +797,7 @@
       color: var(--text);
 
       font-size: 15px;
-
       line-height: 1.5;
-
       font-weight: 600;
 
       overflow-wrap: anywhere;
@@ -814,20 +806,15 @@
     .task.completed .task-text {
       color: var(--muted);
 
-      text-decoration:
-        line-through;
-
-      text-decoration-thickness:
-        1.4px;
+      text-decoration: line-through;
+      text-decoration-thickness: 1.4px;
     }
 
     .task-meta {
       margin-top: 3px;
 
       display: flex;
-
       align-items: center;
-
       flex-wrap: wrap;
 
       gap: 5px;
@@ -839,9 +826,7 @@
 
     .task-meta-date {
       display: inline-flex;
-
       align-items: center;
-
       gap: 4px;
 
       padding:
@@ -849,18 +834,14 @@
 
       border-radius: 6px;
 
-      background:
-        var(--accent-soft);
-
-      color:
-        var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
 
       font-weight: 700;
     }
 
     .task-meta-day {
       color: var(--muted);
-
       font-weight: 500;
     }
 
@@ -893,149 +874,134 @@
 
     .task-star.active {
       color: var(--warning);
-
-      background:
-        rgba(232,163,23,.08);
+      background: rgba(232,163,23,.08);
     }
 
     /* =========================
-       COMPLETED CARD
-       أثقل بصريًا من الـTasks
+       COMPLETED
+       Minimal / Google-like
     ========================= */
 
     .completed-section {
-      margin-top: 14px;
+      margin-top: 16px;
 
-      padding: 7px;
+      padding: 0;
 
-      border-radius:
-        var(--radius-lg);
+      border-radius: 0;
 
-      background:
-        var(--surface);
+      background: transparent;
 
-      border:
-        1px solid var(--border-strong);
+      border: 0;
 
-      box-shadow:
-        var(--shadow-card);
+      box-shadow: none;
     }
 
     .completed-toggle {
       width: 100%;
 
-      min-height: 47px;
+      min-height: 40px;
 
       padding:
-        0 7px;
+        0 4px;
 
       display: flex;
-
       align-items: center;
-
       justify-content: flex-start;
 
-      gap: 8px;
+      gap: 7px;
 
-      border-radius: 12px;
+      border-radius: 10px;
 
-      background:
-        transparent;
+      background: transparent;
 
       text-align: start;
 
       transition:
+        color .15s ease,
         background .15s ease,
         transform .12s ease;
     }
 
     .completed-toggle:hover {
       background:
-        var(--surface-2);
+        color-mix(
+          in srgb,
+          var(--surface-2) 42%,
+          transparent
+        );
     }
 
     .completed-toggle:active {
-      transform:
-        scale(.995);
+      transform: scale(.995);
     }
 
-    /*
-      المطلوب:
-      المكتملة  3  ^
-      كله جنب بعض.
-    */
-
     .completed-toggle-title {
-      color: var(--text);
+      color: var(--muted);
 
       font-size: 12.5px;
 
-      font-weight: 800;
+      line-height: 1;
+
+      font-weight: 750;
     }
 
     .completed-toggle-count {
-      min-width: 23px;
-      height: 23px;
+      min-width: 18px;
+      height: 18px;
 
-      padding: 0 6px;
+      padding: 0 4px;
 
       display: inline-flex;
-
       align-items: center;
       justify-content: center;
 
-      border-radius:
-        999px;
+      border-radius: 999px;
 
-      background:
-        var(--surface-2);
+      background: transparent;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
       font-size: 10px;
+      line-height: 1;
 
       font-weight: 800;
     }
 
     .completed-toggle-chevron {
-      width: 27px;
-      height: 27px;
+      width: 18px;
+      height: 18px;
 
       display: grid;
-
       place-items: center;
 
-      border-radius: 9px;
+      border-radius: 0;
 
-      background:
-        var(--surface-2);
+      background: transparent;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
-      font-size: 17px;
+      font-size: 16px;
 
-      font-weight: 900;
+      font-weight: 800;
 
       line-height: 1;
 
+      transform: rotate(0deg);
+
       transition:
-        transform .20s cubic-bezier(.2,.8,.2,1),
-        color .18s ease,
-        background .18s ease;
+        transform .22s cubic-bezier(.2,.8,.2,1),
+        color .18s ease;
     }
 
     .completed-toggle.open
     .completed-toggle-chevron {
-      transform:
-        rotate(180deg);
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
 
-      color:
-        var(--accent);
-
-      background:
-        var(--accent-soft);
+    .completed-toggle.open
+    .completed-toggle-title {
+      color: var(--text);
     }
 
     .completed-list-wrap {
@@ -1060,17 +1026,14 @@
 
       opacity: 1;
 
-      transform:
-        translateY(0);
+      transform: translateY(0);
 
       margin-top: 3px;
     }
 
     .completed-list-wrap .task-list {
-      border-radius: 12px;
-
-      border:
-        1px solid var(--border);
+      border-radius: 14px;
+      border: 1px solid var(--border);
     }
 
     /* =========================
@@ -1104,27 +1067,20 @@
         0 auto 12px;
 
       display: grid;
-
       place-items: center;
 
       border-radius: 15px;
 
-      background:
-        var(--accent-soft);
-
-      color:
-        var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
 
       font-size: 21px;
-
       font-weight: 800;
     }
 
     .empty-title {
       color: var(--text);
-
       font-size: 15px;
-
       font-weight: 750;
     }
 
@@ -1134,7 +1090,6 @@
       color: var(--muted);
 
       font-size: 12px;
-
       line-height: 1.7;
     }
 
@@ -1228,9 +1183,7 @@
     }
 
     .composer textarea::placeholder {
-      color:
-        var(--muted);
-
+      color: var(--muted);
       opacity: .8;
     }
 
@@ -1242,18 +1195,13 @@
 
       border-radius: 50%;
 
-      background:
-        var(--accent);
-
-      color:
-        #fff;
+      background: var(--accent);
+      color: #fff;
 
       display: grid;
-
       place-items: center;
 
       font-size: 21px;
-
       font-weight: 800;
 
       transition:
@@ -1262,8 +1210,7 @@
     }
 
     .send-btn:active {
-      transform:
-        scale(.90);
+      transform: scale(.90);
     }
 
     .send-btn.disabled {
@@ -1283,7 +1230,6 @@
       display: flex;
 
       align-items: flex-end;
-
       justify-content: center;
 
       padding: 16px;
@@ -1292,17 +1238,17 @@
         rgba(0,0,0,.42);
 
       opacity: 0;
-
       visibility: hidden;
 
       transition:
         opacity .20s ease,
         visibility .20s ease;
+
+      touch-action: auto;
     }
 
     .overlay.show {
       opacity: 1;
-
       visibility: visible;
     }
 
@@ -1366,17 +1312,12 @@
       padding:
         0 9px 12px;
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
       font-size: 12px;
 
       line-height: 1.6;
     }
-
-    /* =========================
-       MENU
-    ========================= */
 
     .menu-item {
       width: 100%;
@@ -1387,18 +1328,15 @@
         0 10px;
 
       display: flex;
-
       align-items: center;
 
       gap: 11px;
 
       border-radius: 14px;
 
-      background:
-        transparent;
+      background: transparent;
 
-      text-align:
-        start;
+      text-align: start;
 
       transition:
         background .15s ease;
@@ -1419,11 +1357,9 @@
       border-radius: 10px;
 
       display: grid;
-
       place-items: center;
 
-      background:
-        var(--surface-2);
+      background: var(--surface-2);
 
       font-size: 15px;
     }
@@ -1435,10 +1371,6 @@
 
       font-weight: 650;
     }
-
-    /* =========================
-       ACTIONS
-    ========================= */
 
     .action-task-preview {
       margin:
@@ -1465,18 +1397,15 @@
         0 11px;
 
       display: flex;
-
       align-items: center;
 
       gap: 11px;
 
       border-radius: 14px;
 
-      background:
-        transparent;
+      background: transparent;
 
-      text-align:
-        start;
+      text-align: start;
 
       font-size: 13px;
     }
@@ -1490,10 +1419,6 @@
       color:
         var(--danger);
     }
-
-    /* =========================
-       MODALS
-    ========================= */
 
     .edit-input {
       width: 100%;
@@ -1513,8 +1438,7 @@
       color:
         var(--text);
 
-      resize:
-        vertical;
+      resize: vertical;
 
       font-size:
         15px;
@@ -1559,9 +1483,7 @@
 
     .modal-actions {
       display: flex;
-
       gap: 7px;
-
       margin-top: 9px;
     }
 
@@ -1597,10 +1519,6 @@
       color:
         var(--danger);
     }
-
-    /* =========================
-       SETTINGS
-    ========================= */
 
     .setting-group {
       margin-bottom: 15px;
@@ -1721,9 +1639,7 @@
 
     .colors {
       display: flex;
-
       align-items: center;
-
       gap: 8px;
     }
 
@@ -1756,47 +1672,20 @@
 
       color: #fff;
 
-      font-size:
-        12px;
+      font-size: 12px;
 
-      font-weight:
-        900;
+      font-weight: 900;
     }
 
-    .green {
-      background:
-        #19a974;
-    }
-
-    .blue {
-      background:
-        #3685ff;
-    }
-
-    .purple {
-      background:
-        #8b5cf6;
-    }
-
-    .orange {
-      background:
-        #f59e0b;
-    }
-
-    .pink {
-      background:
-        #e94f9b;
-    }
-
-    /* =========================
-       TRASH
-    ========================= */
+    .green { background: #19a974; }
+    .blue { background: #3685ff; }
+    .purple { background: #8b5cf6; }
+    .orange { background: #f59e0b; }
+    .pink { background: #e94f9b; }
 
     .trash-list {
       display: flex;
-
       flex-direction: column;
-
       gap: 7px;
     }
 
@@ -1810,16 +1699,18 @@
       background:
         var(--surface-2);
 
-      display: flex;
+      display:
+        flex;
 
-      align-items: center;
+      align-items:
+        center;
 
-      gap: 8px;
+      gap:
+        8px;
     }
 
     .trash-text {
       flex: 1;
-
       min-width: 0;
 
       font-size:
@@ -1856,10 +1747,6 @@
       color:
         var(--danger);
     }
-
-    /* =========================
-       TOAST
-    ========================= */
 
     .toast {
       position: fixed;
@@ -1968,10 +1855,6 @@
       white-space:
         nowrap;
     }
-
-    /* =========================
-       INSTALL
-    ========================= */
 
     .install-banner {
       position:
@@ -2179,10 +2062,6 @@
         var(--surface-2);
     }
 
-    /* =========================
-       UTILITIES
-    ========================= */
-
     .hidden {
       display:
         none !important;
@@ -2205,15 +2084,15 @@
 
       .header-tab {
         padding:
-          0 8px;
+          0 7px 7px;
 
         font-size:
-          11px;
+          11.5px;
       }
 
       .header-tab-star {
         font-size:
-          18px;
+          17px;
       }
 
       .hero {
@@ -2230,6 +2109,11 @@
 
         padding:
           7px 8px;
+      }
+
+      .task + .task::before {
+        left: 14px;
+        right: 14px;
       }
 
       .task-text {
@@ -2256,14 +2140,9 @@
           17px;
       }
 
-      .completed-section {
-        padding:
-          6px;
-      }
-
       .completed-toggle {
         min-height:
-          46px;
+          39px;
       }
 
       .composer-wrap {
@@ -2359,7 +2238,6 @@
 
   <div class="app">
 
-    <!-- HEADER -->
     <header class="header">
 
       <div class="header-main">
@@ -2397,16 +2275,9 @@
 
       </div>
 
-
-      <!--
-        RTL:
-        نواياي | اليوم | ★
-
-        اليوم هو الوسط والـDefault.
-      -->
-
       <nav
         class="header-nav"
+        id="headerNav"
         aria-label="التنقل الرئيسي"
         data-i18n-aria="mainNavigation"
       >
@@ -2420,7 +2291,6 @@
           نواياي
         </button>
 
-
         <button
           class="header-tab active"
           data-view="today"
@@ -2430,7 +2300,6 @@
         >
           اليوم
         </button>
-
 
         <button
           class="header-tab"
@@ -2444,12 +2313,16 @@
           </span>
         </button>
 
+        <span
+          class="header-tab-indicator"
+          id="headerTabIndicator"
+          aria-hidden="true"
+        ></span>
+
       </nav>
 
     </header>
 
-
-    <!-- HERO -->
     <section class="hero">
 
       <h1
@@ -2460,12 +2333,10 @@
         ناوي على إيه النهارده؟
       </h1>
 
-
       <div
         class="hero-date"
         id="heroDate"
       ></div>
-
 
       <div
         class="progress-wrap"
@@ -2481,7 +2352,6 @@
             تقدمك اليوم
           </span>
 
-
           <span
             class="progress-value"
             id="progressValue"
@@ -2490,7 +2360,6 @@
           </span>
 
         </div>
-
 
         <div class="progress-track">
 
@@ -2505,8 +2374,6 @@
 
     </section>
 
-
-    <!-- CONTENT -->
     <main
       class="content"
       id="content"
@@ -2514,8 +2381,6 @@
 
   </div>
 
-
-  <!-- COMPOSER -->
   <div class="composer-wrap">
 
     <form
@@ -2534,7 +2399,6 @@
         data-i18n-aria="newIntent"
       ></textarea>
 
-
       <button
         class="send-btn disabled"
         id="sendBtn"
@@ -2549,8 +2413,6 @@
 
   </div>
 
-
-  <!-- MENU -->
   <div
     class="overlay"
     id="menuOverlay"
@@ -2561,22 +2423,16 @@
 
       <div class="sheet-handle"></div>
 
-
       <div class="sheet-title">
         ناوي
       </div>
 
-
-      <!-- SETTINGS ONLY -->
       <button
         class="menu-item"
         id="settingsBtn"
         type="button"
       >
-
-        <span class="menu-icon">
-          ⚙
-        </span>
+        <span class="menu-icon">⚙</span>
 
         <span
           class="menu-text"
@@ -2587,17 +2443,12 @@
 
       </button>
 
-
-      <!-- TRASH ONLY -->
       <button
         class="menu-item"
         id="menuTrashBtn"
         type="button"
       >
-
-        <span class="menu-icon">
-          ⌫
-        </span>
+        <span class="menu-icon">⌫</span>
 
         <span
           class="menu-text"
@@ -2612,8 +2463,6 @@
 
   </div>
 
-
-  <!-- TASK ACTIONS -->
   <div
     class="overlay"
     id="actionOverlay"
@@ -2624,41 +2473,31 @@
 
       <div class="sheet-handle"></div>
 
-
       <div
         class="action-task-preview"
         id="actionTaskPreview"
       ></div>
-
 
       <button
         class="action-item"
         id="actionComplete"
         type="button"
       >
-
-        <span>
-          ✓
-        </span>
+        <span>✓</span>
 
         <span>
           <span data-i18n="done">
             تمت
           </span>
         </span>
-
       </button>
-
 
       <button
         class="action-item"
         id="actionDate"
         type="button"
       >
-
-        <span>
-          📅
-        </span>
+        <span>📅</span>
 
         <span
           id="actionDateText"
@@ -2666,49 +2505,36 @@
         >
           تحديد موعد
         </span>
-
       </button>
-
 
       <button
         class="action-item"
         id="actionEdit"
         type="button"
       >
-
-        <span>
-          ✎
-        </span>
+        <span>✎</span>
 
         <span data-i18n="edit">
           تعديل
         </span>
-
       </button>
-
 
       <button
         class="action-item danger"
         id="actionDelete"
         type="button"
       >
-
-        <span>
-          ⌫
-        </span>
+        <span>⌫</span>
 
         <span data-i18n="delete">
           حذف
         </span>
-
       </button>
 
     </div>
 
   </div>
 
-
-  <!-- EDIT -->
   <div
     class="overlay"
     id="editOverlay"
@@ -2719,7 +2545,6 @@
 
       <div class="sheet-handle"></div>
 
-
       <div
         class="sheet-title"
         data-i18n="editIntent"
@@ -2727,13 +2552,11 @@
         تعديل النية
       </div>
 
-
       <textarea
         class="edit-input"
         id="editInput"
         maxlength="500"
       ></textarea>
-
 
       <div class="modal-actions">
 
@@ -2742,24 +2565,19 @@
           id="editCancel"
           type="button"
         >
-
           <span data-i18n="cancel">
             إلغاء
           </span>
-
         </button>
-
 
         <button
           class="modal-btn primary"
           id="editSave"
           type="button"
         >
-
           <span data-i18n="save">
             حفظ
           </span>
-
         </button>
 
       </div>
@@ -2768,8 +2586,6 @@
 
   </div>
 
-
-  <!-- DATE -->
   <div
     class="overlay"
     id="dateOverlay"
@@ -2780,7 +2596,6 @@
 
       <div class="sheet-handle"></div>
 
-
       <div
         class="sheet-title"
         data-i18n="dateTitle"
@@ -2788,14 +2603,12 @@
         تحديد موعد
       </div>
 
-
       <div
         class="sheet-subtitle"
         data-i18n="dateSubtitle"
       >
         اختر اليوم الذي تريد أن تظهر فيه النية.
       </div>
-
 
       <input
         class="date-input"
@@ -2805,7 +2618,6 @@
         data-i18n-aria="taskDate"
       >
 
-
       <div class="modal-actions">
 
         <button
@@ -2813,37 +2625,29 @@
           id="dateClear"
           type="button"
         >
-
           <span data-i18n="removeDate">
             إزالة الموعد
           </span>
-
         </button>
-
 
         <button
           class="modal-btn secondary"
           id="dateCancel"
           type="button"
         >
-
           <span data-i18n="cancel">
             إلغاء
           </span>
-
         </button>
-
 
         <button
           class="modal-btn primary"
           id="dateSave"
           type="button"
         >
-
           <span data-i18n="save">
             حفظ
           </span>
-
         </button>
 
       </div>
@@ -2852,8 +2656,6 @@
 
   </div>
 
-
-  <!-- SETTINGS -->
   <div
     class="overlay"
     id="settingsOverlay"
@@ -2864,16 +2666,12 @@
 
       <div class="sheet-handle"></div>
 
-
       <div
         class="sheet-title"
         data-i18n="settings"
       >
         الإعدادات
       </div>
-
-
-      <!-- LANGUAGE -->
 
       <div class="setting-group">
 
@@ -2883,7 +2681,6 @@
         >
           اللغة
         </div>
-
 
         <div class="setting-box">
 
@@ -2896,7 +2693,6 @@
               لغة ناوي
             </div>
 
-
             <div class="segmented">
 
               <button
@@ -2906,7 +2702,6 @@
               >
                 العربية
               </button>
-
 
               <button
                 class="segment"
@@ -2924,9 +2719,6 @@
 
       </div>
 
-
-      <!-- APPEARANCE -->
-
       <div class="setting-group">
 
         <div
@@ -2935,7 +2727,6 @@
         >
           المظهر
         </div>
-
 
         <div class="setting-box">
 
@@ -2948,7 +2739,6 @@
               الوضع
             </div>
 
-
             <div class="segmented">
 
               <button
@@ -2959,7 +2749,6 @@
               >
                 فاتح
               </button>
-
 
               <button
                 class="segment"
@@ -2978,9 +2767,6 @@
 
       </div>
 
-
-      <!-- COLOR -->
-
       <div class="setting-group">
 
         <div
@@ -2989,7 +2775,6 @@
         >
           اللون
         </div>
-
 
         <div class="setting-box">
 
@@ -3002,7 +2787,6 @@
               لون ناوي
             </div>
 
-
             <div class="colors">
 
               <button
@@ -3013,7 +2797,6 @@
                 data-i18n-aria="green"
               ></button>
 
-
               <button
                 class="color-btn blue"
                 data-accent-choice="blue"
@@ -3021,7 +2804,6 @@
                 aria-label="أزرق"
                 data-i18n-aria="blue"
               ></button>
-
 
               <button
                 class="color-btn purple"
@@ -3031,7 +2813,6 @@
                 data-i18n-aria="purple"
               ></button>
 
-
               <button
                 class="color-btn orange"
                 data-accent-choice="orange"
@@ -3039,7 +2820,6 @@
                 aria-label="برتقالي"
                 data-i18n-aria="orange"
               ></button>
-
 
               <button
                 class="color-btn pink"
@@ -3061,8 +2841,6 @@
 
   </div>
 
-
-  <!-- TRASH -->
   <div
     class="overlay"
     id="trashOverlay"
@@ -3073,7 +2851,6 @@
 
       <div class="sheet-handle"></div>
 
-
       <div
         class="sheet-title"
         data-i18n="trash"
@@ -3081,14 +2858,12 @@
         سلة المحذوفات
       </div>
 
-
       <div
         class="sheet-subtitle"
         data-i18n="trashSubtitle"
       >
         يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.
       </div>
-
 
       <div
         class="trash-list"
@@ -3099,8 +2874,6 @@
 
   </div>
 
-
-  <!-- INSTALL -->
   <div
     class="install-banner"
     id="installBanner"
@@ -3110,6 +2883,7 @@
   >
 
     <div class="install-icon" id="installIcon">
+
       <img
         class="install-icon-img"
         id="installIconImg"
@@ -3119,8 +2893,8 @@
         height="40"
         onerror="this.remove(); var i=document.getElementById('installIcon'); if(i){ i.textContent='ن'; }"
       >
-    </div>
 
+    </div>
 
     <div class="install-copy">
 
@@ -3131,7 +2905,6 @@
         ثبّت ناوي على جهازك
       </div>
 
-
       <div
         class="install-text"
         id="installText"
@@ -3140,7 +2913,6 @@
       </div>
 
     </div>
-
 
     <div class="install-actions">
 
@@ -3151,7 +2923,6 @@
       >
         متابعة
       </button>
-
 
       <button
         class="install-btn primary"
@@ -3165,8 +2936,6 @@
 
   </div>
 
-
-  <!-- TOAST -->
   <div
     class="toast"
     id="toast"
@@ -3179,7 +2948,6 @@
       id="toastMessage"
     ></div>
 
-
     <button
       class="toast-undo hidden"
       id="toastUndo"
@@ -3189,7 +2957,6 @@
         تراجع
       </span>
     </button>
-
 
     <button
       class="toast-update hidden"
@@ -3201,19 +2968,8 @@
 
   </div>
 
-
   <script>
-    /* =========================================================
-       NAWY
-       Local-first task / intention app
-       ========================================================= */
-
     "use strict";
-
-
-    /* =========================
-       STORAGE
-    ========================= */
 
     const STORAGE_KEYS = {
       tasks: "nawy_tasks_v9",
@@ -3221,468 +2977,167 @@
       settings: "nawy_settings_v2"
     };
 
-
-    /* =========================
-       I18N
-    ========================= */
-
     const TRANSLATIONS = {
 
       ar: {
-
         languageSection: "اللغة",
         languageName: "لغة ناوي",
-
         appearanceSection: "المظهر",
         modeName: "الوضع",
-
         colorSection: "اللون",
-
         settings: "الإعدادات",
         trash: "سلة المحذوفات",
-
-        trashSubtitle:
-          "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
-
-        today:
-          "اليوم",
-
-        all:
-          "نواياي",
-
-        favorites:
-          "مفضلاتي",
-
-        completed:
-          "المكتملة",
-
-        completedSection:
-          "المكتملة",
-
-        mainNavigation:
-          "التنقل الرئيسي",
-
-        heroToday:
-          "ناوي على إيه النهارده؟",
-
-        progressToday:
-          "تقدمك اليوم",
-
-        editIntent:
-          "تعديل النية",
-
-        done:
-          "تمت",
-
-        cancelDone:
-          "إلغاء الإنجاز",
-
-        edit:
-          "تعديل",
-
-        delete:
-          "حذف",
-
-        cancel:
-          "إلغاء",
-
-        save:
-          "حفظ",
-
-        add:
-          "إضافة",
-
-        newIntent:
-          "اكتب نية جديدة",
-
-        taskPlaceholder:
-          "اكتب اللي ناوي عليه...",
-
-        menu:
-          "القائمة",
-
-        light:
-          "فاتح",
-
-        dark:
-          "داكن",
-
-        green:
-          "أخضر",
-
-        blue:
-          "أزرق",
-
-        purple:
-          "بنفسجي",
-
-        orange:
-          "برتقالي",
-
-        pink:
-          "وردي",
-
-        nawyColor:
-          "لون ناوي",
-
-        yesterday:
-          "أمس",
-
-        daysAgo:
-          "منذ {n} أيام",
-
-        startFirst:
-          "ابدأ أول نية",
-
-        allDone:
-          "كل نواياك اتحققت ✨",
-
-        deleted:
-          "اتحذفت من النوايا",
-
-        restored:
-          "رجعت للنوايا",
-
-        deletedForever:
-          "اتحذفت نهائيًا",
-
-        edited:
-          "اتعدلت بنجاح",
-
-        writeFirst:
-          "اكتب النية الأول",
-
-        noIntentions:
-          "مفيش نوايا لسه",
-
-        firstIntent:
-          "اكتب أول حاجة ناوي تعملها النهارده.",
-
-        noIntentionsAll:
-          "لسه مفيش نوايا",
-
-        everyThingStarts:
-          "كل حاجة تبدأ بنية.",
-
-        noFavorites:
-          "مفيش مفضلات لسه",
-
-        favoriteHint:
-          "علّم أي نية بنجمة وهتظهر هنا.",
-
-        noAchievements:
-          "لسه مفيش إنجازات",
-
-        achievementHint:
-          "أول ما تخلص حاجة هتظهر هنا.",
-
-        currentIntentions:
-          "نواياي",
-
-        favoriteSection:
-          "مفضلاتي",
-
-        allDoneSection:
-          "المكتملة",
-
-        trashEmpty:
-          "السلة فاضية",
-
-        noDeleted:
-          "مفيش نوايا محذوفة.",
-
-        restore:
-          "استرجاع",
-
-        setDate:
-          "تحديد موعد",
-
-        changeDate:
-          "تغيير الموعد",
-
-        dateTitle:
-          "تحديد موعد",
-
-        dateSubtitle:
-          "اختر اليوم الذي تريد أن تظهر فيه النية.",
-
-        removeDate:
-          "إزالة الموعد",
-
-        taskDate:
-          "تاريخ المهمة",
-
-        dateSet:
-          "تم تحديد الموعد",
-
-        dateRemoved:
-          "تمت إزالة الموعد",
-
-        installTitle:
-          "ثبّت ناوي على جهازك",
-
-        installText:
-          "خليه معاك أسرع وأسهل من المتصفح.",
-
-        install:
-          "تثبيت",
-
-        continue:
-          "متابعة",
-
-        installGuideTitle:
-          "أضف ناوي إلى الشاشة الرئيسية",
-
-        installGuideText:
-          "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
-
-        updateAvailable:
-          "تحديث جديد من ناوي متاح.",
-
-        update:
-          "تحديث",
-
-        undo:
-          "تراجع"
-
+        trashSubtitle: "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
+        today: "اليوم",
+        all: "نواياي",
+        favorites: "مفضلاتي",
+        completed: "المكتملة",
+        completedSection: "المكتملة",
+        mainNavigation: "التنقل الرئيسي",
+        heroToday: "ناوي على إيه النهارده؟",
+        progressToday: "تقدمك اليوم",
+        editIntent: "تعديل النية",
+        done: "تمت",
+        cancelDone: "إلغاء الإنجاز",
+        edit: "تعديل",
+        delete: "حذف",
+        cancel: "إلغاء",
+        save: "حفظ",
+        add: "إضافة",
+        newIntent: "اكتب نية جديدة",
+        taskPlaceholder: "اكتب اللي ناوي عليه...",
+        menu: "القائمة",
+        light: "فاتح",
+        dark: "داكن",
+        green: "أخضر",
+        blue: "أزرق",
+        purple: "بنفسجي",
+        orange: "برتقالي",
+        pink: "وردي",
+        nawyColor: "لون ناوي",
+        yesterday: "أمس",
+        daysAgo: "منذ {n} أيام",
+        startFirst: "ابدأ أول نية",
+        allDone: "كل نواياك اتحققت ✨",
+        deleted: "اتحذفت من النوايا",
+        restored: "رجعت للنوايا",
+        deletedForever: "اتحذفت نهائيًا",
+        edited: "اتعدلت بنجاح",
+        writeFirst: "اكتب النية الأول",
+        noIntentions: "مفيش نوايا لسه",
+        firstIntent: "اكتب أول حاجة ناوي تعملها النهارده.",
+        noIntentionsAll: "لسه مفيش نوايا",
+        everyThingStarts: "كل حاجة تبدأ بنية.",
+        noFavorites: "مفيش مفضلات لسه",
+        favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
+        noAchievements: "لسه مفيش إنجازات",
+        achievementHint: "أول ما تخلص حاجة هتظهر هنا.",
+        currentIntentions: "نواياي",
+        favoriteSection: "مفضلاتي",
+        allDoneSection: "المكتملة",
+        trashEmpty: "السلة فاضية",
+        noDeleted: "مفيش نوايا محذوفة.",
+        restore: "استرجاع",
+        setDate: "تحديد موعد",
+        changeDate: "تغيير الموعد",
+        dateTitle: "تحديد موعد",
+        dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.",
+        removeDate: "إزالة الموعد",
+        taskDate: "تاريخ المهمة",
+        dateSet: "تم تحديد الموعد",
+        dateRemoved: "تمت إزالة الموعد",
+        installTitle: "ثبّت ناوي على جهازك",
+        installText: "خليه معاك أسرع وأسهل من المتصفح.",
+        install: "تثبيت",
+        continue: "متابعة",
+        installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية",
+        installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
+        updateAvailable: "تحديث جديد من ناوي متاح.",
+        update: "تحديث",
+        undo: "تراجع"
       },
 
       en: {
-
-        languageSection:
-          "Language",
-
-        languageName:
-          "NAWY language",
-
-        appearanceSection:
-          "Appearance",
-
-        modeName:
-          "Mode",
-
-        colorSection:
-          "Color",
-
-        settings:
-          "Settings",
-
-        trash:
-          "Trash",
-
-        trashSubtitle:
-          "Restore deleted intentions or delete them permanently.",
-
-        today:
-          "Today",
-
-        all:
-          "My intentions",
-
-        favorites:
-          "My favorites",
-
-        completed:
-          "Completed",
-
-        completedSection:
-          "Completed",
-
-        mainNavigation:
-          "Main navigation",
-
-        heroToday:
-          "What are you up to today?",
-
-        progressToday:
-          "Today's progress",
-
-        editIntent:
-          "Edit intention",
-
-        done:
-          "Done",
-
-        cancelDone:
-          "Undo completion",
-
-        edit:
-          "Edit",
-
-        delete:
-          "Delete",
-
-        cancel:
-          "Cancel",
-
-        save:
-          "Save",
-
-        add:
-          "Add",
-
-        newIntent:
-          "Write a new intention",
-
-        taskPlaceholder:
-          "Write what you intend to do...",
-
-        menu:
-          "Menu",
-
-        light:
-          "Light",
-
-        dark:
-          "Dark",
-
-        green:
-          "Green",
-
-        blue:
-          "Blue",
-
-        purple:
-          "Purple",
-
-        orange:
-          "Orange",
-
-        pink:
-          "Pink",
-
-        nawyColor:
-          "NAWY color",
-
-        yesterday:
-          "Yesterday",
-
-        daysAgo:
-          "{n} days ago",
-
-        startFirst:
-          "Start your first intention",
-
-        allDone:
-          "All your intentions are done ✨",
-
-        deleted:
-          "Removed from intentions",
-
-        restored:
-          "Restored to intentions",
-
-        deletedForever:
-          "Deleted permanently",
-
-        edited:
-          "Updated successfully",
-
-        writeFirst:
-          "Write the intention first",
-
-        noIntentions:
-          "No intentions yet",
-
-        firstIntent:
-          "Write the first thing you intend to do today.",
-
-        noIntentionsAll:
-          "No intentions yet",
-
-        everyThingStarts:
-          "Everything starts with an intention.",
-
-        noFavorites:
-          "No favorites yet",
-
-        favoriteHint:
-          "Star an intention and it will appear here.",
-
-        noAchievements:
-          "No achievements yet",
-
-        achievementHint:
-          "Once you complete something, it will appear here.",
-
-        currentIntentions:
-          "My intentions",
-
-        favoriteSection:
-          "My favorites",
-
-        allDoneSection:
-          "Completed",
-
-        trashEmpty:
-          "Trash is empty",
-
-        noDeleted:
-          "No deleted intentions.",
-
-        restore:
-          "Restore",
-
-        setDate:
-          "Set date",
-
-        changeDate:
-          "Change date",
-
-        dateTitle:
-          "Set date",
-
-        dateSubtitle:
-          "Choose the day you want this intention to appear.",
-
-        removeDate:
-          "Remove date",
-
-        taskDate:
-          "Task date",
-
-        dateSet:
-          "Date set",
-
-        dateRemoved:
-          "Date removed",
-
-        installTitle:
-          "Install NAWY on your device",
-
-        installText:
-          "Keep it faster and easier than opening the browser.",
-
-        install:
-          "Install",
-
-        continue:
-          "Continue",
-
-        installGuideTitle:
-          "Add NAWY to your Home Screen",
-
-        installGuideText:
-          "Open your browser menu and choose Add to Home Screen.",
-
-        updateAvailable:
-          "A new NAWY update is available.",
-
-        update:
-          "Update",
-
-        undo:
-          "Undo"
-
+        languageSection: "Language",
+        languageName: "NAWY language",
+        appearanceSection: "Appearance",
+        modeName: "Mode",
+        colorSection: "Color",
+        settings: "Settings",
+        trash: "Trash",
+        trashSubtitle: "Restore deleted intentions or delete them permanently.",
+        today: "Today",
+        all: "My intentions",
+        favorites: "My favorites",
+        completed: "Completed",
+        completedSection: "Completed",
+        mainNavigation: "Main navigation",
+        heroToday: "What are you up to today?",
+        progressToday: "Today's progress",
+        editIntent: "Edit intention",
+        done: "Done",
+        cancelDone: "Undo completion",
+        edit: "Edit",
+        delete: "Delete",
+        cancel: "Cancel",
+        save: "Save",
+        add: "Add",
+        newIntent: "Write a new intention",
+        taskPlaceholder: "Write what you intend to do...",
+        menu: "Menu",
+        light: "Light",
+        dark: "Dark",
+        green: "Green",
+        blue: "Blue",
+        purple: "Purple",
+        orange: "Orange",
+        pink: "Pink",
+        nawyColor: "NAWY color",
+        yesterday: "Yesterday",
+        daysAgo: "{n} days ago",
+        startFirst: "Start your first intention",
+        allDone: "All your intentions are done ✨",
+        deleted: "Removed from intentions",
+        restored: "Restored to intentions",
+        deletedForever: "Deleted permanently",
+        edited: "Updated successfully",
+        writeFirst: "Write the intention first",
+        noIntentions: "No intentions yet",
+        firstIntent: "Write the first thing you intend to do today.",
+        noIntentionsAll: "No intentions yet",
+        everyThingStarts: "Everything starts with an intention.",
+        noFavorites: "No favorites yet",
+        favoriteHint: "Star an intention and it will appear here.",
+        noAchievements: "No achievements yet",
+        achievementHint: "Once you complete something, it will appear here.",
+        currentIntentions: "My intentions",
+        favoriteSection: "My favorites",
+        allDoneSection: "Completed",
+        trashEmpty: "Trash is empty",
+        noDeleted: "No deleted intentions.",
+        restore: "Restore",
+        setDate: "Set date",
+        changeDate: "Change date",
+        dateTitle: "Set date",
+        dateSubtitle: "Choose the day you want this intention to appear.",
+        removeDate: "Remove date",
+        taskDate: "Task date",
+        dateSet: "Date set",
+        dateRemoved: "Date removed",
+        installTitle: "Install NAWY on your device",
+        installText: "Keep it faster and easier than opening the browser.",
+        install: "Install",
+        continue: "Continue",
+        installGuideTitle: "Add NAWY to your Home Screen",
+        installGuideText: "Open your browser menu and choose Add to Home Screen.",
+        updateAvailable: "A new NAWY update is available.",
+        update: "Update",
+        undo: "Undo"
       }
 
     };
 
-
-    function t(
-      key,
-      vars = {}
-    ) {
+    function t(key, vars = {}) {
 
       const language =
         settings &&
@@ -3690,16 +3145,13 @@
           ? "en"
           : "ar";
 
-
       const dict =
         TRANSLATIONS[language];
-
 
       let value =
         dict[key] ??
         TRANSLATIONS.ar[key] ??
         key;
-
 
       Object.entries(vars)
         .forEach(
@@ -3714,15 +3166,8 @@
           }
         );
 
-
       return value;
-
     }
-
-
-    /* =========================
-       DEFAULT SETTINGS
-    ========================= */
 
     const DEFAULT_SETTINGS = {
       theme: "dark",
@@ -3730,64 +3175,23 @@
       language: "ar"
     };
 
-
-    /* =========================
-       STATE
-    ========================= */
-
     let tasks = [];
-
     let trash = [];
 
     let settings = {
       ...DEFAULT_SETTINGS
     };
 
-    /*
-      اليوم هو الـDefault.
-    */
+    let currentView = "today";
+    let selectedTaskId = null;
+    let completedExpanded = false;
 
-    let currentView =
-      "today";
+    let undoTimer = null;
+    let undoAction = null;
 
-    let selectedTaskId =
-      null;
-
-    /*
-      نفس الحالة للمكتملة
-      في اليوم ونواياي.
-    */
-
-    let completedExpanded =
-      false;
-
-    let undoTimer =
-      null;
-
-    let undoAction =
-      null;
-
-    let typingAudioContext =
-      null;
-
-    let lastTypingSound =
-      0;
-
-    let lastKnownDay =
-      null;
-
-
-    /*
-      ترتيب الـView:
-      نواياي | اليوم | المفضلة
-
-      لكن الـSwipe بيتعامل معها كحلقة:
-      اليوم:
-        يمين -> نواياي
-        يسار -> المفضلة
-
-      RTL.
-    */
+    let typingAudioContext = null;
+    let lastTypingSound = 0;
+    let lastKnownDay = null;
 
     const SWIPE_VIEWS = [
       "all",
@@ -3795,146 +3199,63 @@
       "favorites"
     ];
 
-
     /* =========================
        SWIPE STATE
+       Whole screen
     ========================= */
 
-    let swipeStartX =
-      0;
-
-    let swipeStartY =
-      0;
-
-    let swipeTracking =
-      false;
-
-    let swipeSuppressClick =
-      false;
-
-
-    /* =========================
-       DOM
-    ========================= */
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeTracking = false;
+    let swipeSuppressClick = false;
 
     const $ =
       selector =>
-        document.querySelector(
-          selector
-        );
-
+        document.querySelector(selector);
 
     const $$ =
       selector =>
-        [
-          ...document.querySelectorAll(
-            selector
-          )
-        ];
+        [...document.querySelectorAll(selector)];
 
+    const content = $("#content");
+    const taskInput = $("#taskInput");
+    const sendBtn = $("#sendBtn");
+    const heroDate = $("#heroDate");
+    const heroTitle = $("#heroTitle");
+    const progressWrap = $("#progressWrap");
+    const progressBar = $("#progressBar");
+    const progressValue = $("#progressValue");
+    const progressLabel = $("#progressLabel");
 
-    const content =
-      $("#content");
+    const menuOverlay = $("#menuOverlay");
+    const actionOverlay = $("#actionOverlay");
+    const editOverlay = $("#editOverlay");
+    const dateOverlay = $("#dateOverlay");
+    const settingsOverlay = $("#settingsOverlay");
+    const trashOverlay = $("#trashOverlay");
 
-    const taskInput =
-      $("#taskInput");
+    const actionTaskPreview = $("#actionTaskPreview");
+    const actionDateText = $("#actionDateText");
+    const editInput = $("#editInput");
+    const taskDateInput = $("#taskDateInput");
+    const trashList = $("#trashList");
 
-    const sendBtn =
-      $("#sendBtn");
+    const toast = $("#toast");
+    const toastMessage = $("#toastMessage");
+    const toastUndo = $("#toastUndo");
+    const toastUpdate = $("#toastUpdate");
 
-    const heroDate =
-      $("#heroDate");
+    const headerNav = $("#headerNav");
+    const headerTabIndicator = $("#headerTabIndicator");
 
-    const heroTitle =
-      $("#heroTitle");
+    let deferredInstallPrompt = null;
+    let installBannerDismissed = false;
 
-    const progressWrap =
-      $("#progressWrap");
-
-    const progressBar =
-      $("#progressBar");
-
-    const progressValue =
-      $("#progressValue");
-
-    const progressLabel =
-      $("#progressLabel");
-
-    const menuOverlay =
-      $("#menuOverlay");
-
-    const actionOverlay =
-      $("#actionOverlay");
-
-    const editOverlay =
-      $("#editOverlay");
-
-    const dateOverlay =
-      $("#dateOverlay");
-
-    const settingsOverlay =
-      $("#settingsOverlay");
-
-    const trashOverlay =
-      $("#trashOverlay");
-
-    const actionTaskPreview =
-      $("#actionTaskPreview");
-
-    const actionDateText =
-      $("#actionDateText");
-
-    const editInput =
-      $("#editInput");
-
-    const taskDateInput =
-      $("#taskDateInput");
-
-    const trashList =
-      $("#trashList");
-
-    const toast =
-      $("#toast");
-
-    const toastMessage =
-      $("#toastMessage");
-
-    const toastUndo =
-      $("#toastUndo");
-
-    const toastUpdate =
-      $("#toastUpdate");
-
-
-    /* =========================
-       INSTALL
-    ========================= */
-
-    let deferredInstallPrompt =
-      null;
-
-    let installBannerDismissed =
-      false;
-
-    const installBanner =
-      $("#installBanner");
-
-    const installTitle =
-      $("#installTitle");
-
-    const installText =
-      $("#installText");
-
-    const installAction =
-      $("#installAction");
-
-    const installDismiss =
-      $("#installDismiss");
-
-
-    /* =========================
-       LANGUAGE
-    ========================= */
+    const installBanner = $("#installBanner");
+    const installTitle = $("#installTitle");
+    const installText = $("#installText");
+    const installAction = $("#installAction");
+    const installDismiss = $("#installDismiss");
 
     function applyLanguage() {
 
@@ -3943,64 +3264,46 @@
           ? "en"
           : "ar";
 
-
       document.documentElement.lang =
         lang;
-
 
       document.documentElement.dir =
         lang === "ar"
           ? "rtl"
           : "ltr";
 
-
-      document.documentElement
-        .setAttribute(
-          "data-language",
-          lang
-        );
-
+      document.documentElement.setAttribute(
+        "data-language",
+        lang
+      );
 
       $$("[data-i18n]")
         .forEach(
           element => {
-
             element.textContent =
-              t(
-                element.dataset.i18n
-              );
-
+              t(element.dataset.i18n);
           }
         );
-
 
       $$("[data-i18n-placeholder]")
         .forEach(
           element => {
-
             element.placeholder =
               t(
                 element.dataset.i18nPlaceholder
               );
-
           }
         );
-
 
       $$("[data-i18n-aria]")
         .forEach(
           element => {
-
             element.setAttribute(
               "aria-label",
-              t(
-                element.dataset.i18nAria
-              )
+              t(element.dataset.i18nAria)
             );
-
           }
         );
-
 
       $$("[data-language-choice]")
         .forEach(
@@ -4010,12 +3313,10 @@
               button.dataset.languageChoice ===
               lang;
 
-
             button.classList.toggle(
               "active",
               active
             );
-
 
             button.setAttribute(
               "aria-pressed",
@@ -4025,11 +3326,9 @@
           }
         );
 
-
       updateDynamicLanguageText();
-
+      requestAnimationFrame(updateHeaderTabIndicator);
     }
-
 
     function updateDynamicLanguageText() {
 
@@ -4042,65 +3341,45 @@
               selectedTaskId
           );
 
-
         if (task) {
 
           const actionButton =
             $("#actionComplete");
 
-
           const text =
-            actionButton
-              ?.querySelector(
-                "span:last-child"
-              );
-
+            actionButton?.querySelector(
+              "span:last-child"
+            );
 
           if (text) {
-
             text.textContent =
               task.completed
                 ? t("cancelDone")
                 : t("done");
-
           }
 
-
-          updateActionDateText(
-            task
-          );
-
+          updateActionDateText(task);
         }
-
       }
-
 
       if (
         typeof updateProgress ===
         "function"
       ) {
-
         updateProgress();
-
       }
-
 
       $$(".trash-delete-button")
         .forEach(
           button => {
-
             button.textContent =
               t("delete");
-
           }
         );
 
-
       if (installTitle) {
 
-        if (
-          deferredInstallPrompt
-        ) {
+        if (deferredInstallPrompt) {
 
           installTitle.textContent =
             t("installTitle");
@@ -4115,46 +3394,25 @@
 
           installText.textContent =
             t("installGuideText");
-
         }
-
 
         installAction.textContent =
           t("install");
 
-
         installDismiss.textContent =
           t("continue");
-
       }
-
 
       if (toastUpdate) {
-
         toastUpdate.textContent =
           t("update");
-
       }
-
     }
 
-
-    /* =========================
-       DATE
-    ========================= */
-
-    function pad(
-      number
-    ) {
-
+    function pad(number) {
       return String(number)
-        .padStart(
-          2,
-          "0"
-        );
-
+        .padStart(2, "0");
     }
-
 
     function getDateKey(
       date = new Date()
@@ -4162,16 +3420,10 @@
 
       return [
         date.getFullYear(),
-        pad(
-          date.getMonth() + 1
-        ),
-        pad(
-          date.getDate()
-        )
+        pad(date.getMonth() + 1),
+        pad(date.getDate())
       ].join("-");
-
     }
-
 
     function formatDate(
       date = new Date()
@@ -4187,9 +3439,7 @@
           month: "long"
         }
       ).format(date);
-
     }
-
 
     function formatTaskDate(
       dateKey
@@ -4199,23 +3449,18 @@
         return "";
       }
 
-
       const date =
         new Date(
           `${dateKey}T12:00:00`
         );
-
 
       if (
         Number.isNaN(
           date.getTime()
         )
       ) {
-
         return "";
-
       }
-
 
       return new Intl.DateTimeFormat(
         settings.language === "en"
@@ -4226,55 +3471,37 @@
           month: "short"
         }
       ).format(date);
-
     }
 
-
-    function getTaskDisplayDate(
-      task
-    ) {
-
+    function getTaskDisplayDate(task) {
       return task.scheduledDate ||
         task.taskDay ||
         "";
-
     }
 
-
-    function getTaskDisplayDay(
-      task
-    ) {
+    function getTaskDisplayDay(task) {
 
       const dateKey =
-        getTaskDisplayDate(
-          task
-        );
-
+        getTaskDisplayDate(task);
 
       if (!dateKey) {
         return "";
       }
 
-
       if (
         dateKey ===
         getDateKey()
       ) {
-
         return t("today");
-
       }
-
 
       const date =
         new Date(
           `${dateKey}T12:00:00`
         );
 
-
       const currentDate =
         new Date();
-
 
       currentDate.setHours(
         12,
@@ -4282,7 +3509,6 @@
         0,
         0
       );
-
 
       const diff =
         Math.round(
@@ -4293,65 +3519,39 @@
           86400000
         );
 
-
       if (diff === 1) {
-
         return t("yesterday");
-
       }
-
 
       if (
         diff > 1 &&
         diff < 7
       ) {
-
         return t(
           "daysAgo",
           {
-            n:
-              diff
+            n: diff
           }
         );
-
       }
 
-
-      return formatTaskDate(
-        dateKey
-      );
-
+      return formatTaskDate(dateKey);
     }
 
-
-    /* =========================
-       NORMALIZE
-    ========================= */
-
-    function normalizeTask(
-      task
-    ) {
+    function normalizeTask(task) {
 
       if (
         !task ||
-        typeof task !==
-        "object"
+        typeof task !== "object"
       ) {
-
         return null;
-
       }
 
-
       const createdAt =
-        Number(
-          task.createdAt
-        ) ||
+        Number(task.createdAt) ||
         Date.now();
 
-
       return {
-
         id:
           String(
             task.id ||
@@ -4379,9 +3579,7 @@
         taskDay:
           task.taskDay ||
           getDateKey(
-            new Date(
-              createdAt
-            )
+            new Date(createdAt)
           ),
 
         scheduledDate:
@@ -4399,28 +3597,18 @@
                 task.completedAt
               )
             : null
-
       };
-
     }
-
 
     function createId() {
 
       return (
-        Date.now()
-          .toString(36) +
+        Date.now().toString(36) +
         Math.random()
           .toString(36)
           .slice(2, 9)
       );
-
     }
-
-
-    /* =========================
-       STORAGE
-    ========================= */
 
     function safeParse(
       value,
@@ -4430,10 +3618,7 @@
       try {
 
         const parsed =
-          JSON.parse(
-            value
-          );
-
+          JSON.parse(value);
 
         return (
           parsed ??
@@ -4443,11 +3628,8 @@
       } catch {
 
         return fallback;
-
       }
-
     }
-
 
     function loadData() {
 
@@ -4459,7 +3641,6 @@
           []
         );
 
-
       const savedTrash =
         safeParse(
           localStorage.getItem(
@@ -4467,7 +3648,6 @@
           ),
           []
         );
-
 
       const savedSettings =
         safeParse(
@@ -4477,59 +3657,37 @@
           {}
         );
 
-
       tasks =
-        Array.isArray(
-          savedTasks
-        )
+        Array.isArray(savedTasks)
           ? savedTasks
-              .map(
-                normalizeTask
-              )
+              .map(normalizeTask)
               .filter(Boolean)
               .filter(
-                task =>
-                  task.text
+                task => task.text
               )
           : [];
-
 
       trash =
-        Array.isArray(
-          savedTrash
-        )
+        Array.isArray(savedTrash)
           ? savedTrash
-              .map(
-                normalizeTask
-              )
+              .map(normalizeTask)
               .filter(Boolean)
               .filter(
-                task =>
-                  task.text
+                task => task.text
               )
           : [];
-
 
       settings = {
         ...DEFAULT_SETTINGS,
         ...(savedSettings || {})
       };
 
-
       if (
-        ![
-          "dark",
-          "light"
-        ].includes(
-          settings.theme
-        )
+        !["dark", "light"]
+          .includes(settings.theme)
       ) {
-
-        settings.theme =
-          "dark";
-
+        settings.theme = "dark";
       }
-
 
       if (
         ![
@@ -4542,85 +3700,52 @@
           settings.accent
         )
       ) {
-
-        settings.accent =
-          "green";
-
+        settings.accent = "green";
       }
-
 
       if (
-        ![
-          "ar",
-          "en"
-        ].includes(
-          settings.language
-        )
+        !["ar", "en"]
+          .includes(settings.language)
       ) {
-
-        settings.language =
-          "ar";
-
+        settings.language = "ar";
       }
-
     }
-
 
     function saveTasks() {
 
       localStorage.setItem(
         STORAGE_KEYS.tasks,
-        JSON.stringify(
-          tasks
-        )
+        JSON.stringify(tasks)
       );
-
     }
-
 
     function saveTrash() {
 
       localStorage.setItem(
         STORAGE_KEYS.trash,
-        JSON.stringify(
-          trash
-        )
+        JSON.stringify(trash)
       );
-
     }
-
 
     function saveSettings() {
 
       localStorage.setItem(
         STORAGE_KEYS.settings,
-        JSON.stringify(
-          settings
-        )
+        JSON.stringify(settings)
       );
-
     }
-
-
-    /* =========================
-       SETTINGS
-    ========================= */
 
     function applySettings() {
 
-      document.documentElement
-        .setAttribute(
-          "data-theme",
-          settings.theme
-        );
+      document.documentElement.setAttribute(
+        "data-theme",
+        settings.theme
+      );
 
-
-      document.documentElement
-        .setAttribute(
-          "data-accent",
-          settings.accent
-        );
-
+      document.documentElement.setAttribute(
+        "data-accent",
+        settings.accent
+      );
 
       $$("[data-theme-choice]")
         .forEach(
@@ -4630,21 +3755,17 @@
               button.dataset.themeChoice ===
               settings.theme;
 
-
             button.classList.toggle(
               "active",
               active
             );
 
-
             button.setAttribute(
               "aria-pressed",
               String(active)
             );
-
           }
         );
-
 
       $$("[data-accent-choice]")
         .forEach(
@@ -4654,40 +3775,24 @@
               button.dataset.accentChoice ===
               settings.accent;
 
-
             button.classList.toggle(
               "active",
               active
             );
-
           }
         );
 
-
       applyLanguage();
-
     }
 
-
-    /* =========================
-       ADD TASK
-       Keep name: addTask
-    ========================= */
-
-    function addTask(
-      text
-    ) {
+    function addTask(text) {
 
       const cleanText =
-        String(
-          text || ""
-        ).trim();
-
+        String(text || "").trim();
 
       if (!cleanText) {
         return false;
       }
-
 
       const task = {
 
@@ -4714,75 +3819,47 @@
 
         completedAt:
           null
-
       };
 
-
-      tasks.unshift(
-        task
-      );
-
+      tasks.unshift(task);
 
       saveTasks();
 
-
-      currentView =
-        "today";
-
+      currentView = "today";
 
       render();
 
-
       playAddSound();
 
-
       return true;
-
     }
 
-
-    /* =========================
-       COMPLETE
-    ========================= */
-
-    function completeTask(
-      id
-    ) {
+    function completeTask(id) {
 
       const task =
         tasks.find(
-          item =>
-            item.id === id
+          item => item.id === id
         );
-
 
       if (!task) {
         return;
       }
 
-
       task.completed =
         !task.completed;
-
 
       task.completedAt =
         task.completed
           ? Date.now()
           : null;
 
-
       saveTasks();
-
 
       render();
 
-
-      if (
-        task.completed
-      ) {
+      if (task.completed) {
 
         playCompleteSound();
-
 
         requestAnimationFrame(
           () => {
@@ -4792,111 +3869,68 @@
                 `[data-task-id="${CSS.escape(task.id)}"]`
               );
 
-
             if (element) {
 
               element.classList.add(
                 "just-completed"
               );
 
-
               setTimeout(
                 () => {
-
                   element.classList.remove(
                     "just-completed"
                   );
-
                 },
                 550
               );
-
             }
-
           }
         );
-
       }
-
     }
 
-
-    /* =========================
-       STAR
-    ========================= */
-
-    function toggleStar(
-      id
-    ) {
+    function toggleStar(id) {
 
       const task =
         tasks.find(
-          item =>
-            item.id === id
+          item => item.id === id
         );
-
 
       if (!task) {
         return;
       }
 
-
       task.starred =
         !task.starred;
 
-
       saveTasks();
 
-
       render();
-
     }
 
-
-    /* =========================
-       DELETE
-    ========================= */
-
-    function deleteTask(
-      id
-    ) {
+    function deleteTask(id) {
 
       const index =
         tasks.findIndex(
-          item =>
-            item.id === id
+          item => item.id === id
         );
 
-
-      if (
-        index === -1
-      ) {
-
+      if (index === -1) {
         return;
-
       }
 
-
       const [deleted] =
-        tasks.splice(
-          index,
-          1
-        );
-
+        tasks.splice(index, 1);
 
       trash.unshift({
         ...deleted,
-        deletedAt:
-          Date.now()
+        deletedAt: Date.now()
       });
-
 
       saveTasks();
       saveTrash();
 
-
       render();
-
 
       showToast(
         t("deleted"),
@@ -4910,79 +3944,47 @@
                 deleted.id
             );
 
-
-          if (
-            trashIndex !== -1
-          ) {
-
+          if (trashIndex !== -1) {
             trash.splice(
               trashIndex,
               1
             );
-
           }
 
-
-          tasks.unshift(
-            deleted
-          );
-
+          tasks.unshift(deleted);
 
           saveTasks();
           saveTrash();
 
-
           render();
-
         }
       );
-
     }
 
-
-    /* =========================
-       EDIT
-    ========================= */
-
-    function openEdit(
-      id
-    ) {
+    function openEdit(id) {
 
       const task =
         tasks.find(
-          item =>
-            item.id === id
+          item => item.id === id
         );
-
 
       if (!task) {
         return;
       }
 
-
-      selectedTaskId =
-        id;
-
+      selectedTaskId = id;
 
       editInput.value =
         task.text;
 
+      closeOverlay(actionOverlay);
 
-      closeOverlay(
-        actionOverlay
-      );
-
-
-      openOverlay(
-        editOverlay
-      );
-
+      openOverlay(editOverlay);
 
       setTimeout(
         () => {
 
           editInput.focus();
-
 
           editInput.setSelectionRange(
             editInput.value.length,
@@ -4992,24 +3994,16 @@
         },
         100
       );
-
     }
-
 
     function saveEdit() {
 
-      if (
-        !selectedTaskId
-      ) {
-
+      if (!selectedTaskId) {
         return;
-
       }
-
 
       const text =
         editInput.value.trim();
-
 
       if (!text) {
 
@@ -5017,11 +4011,8 @@
           t("writeFirst")
         );
 
-
         return;
-
       }
-
 
       const task =
         tasks.find(
@@ -5030,99 +4021,59 @@
             selectedTaskId
         );
 
-
       if (!task) {
         return;
       }
 
-
-      task.text =
-        text;
-
+      task.text = text;
 
       saveTasks();
 
-
-      closeOverlay(
-        editOverlay
-      );
-
+      closeOverlay(editOverlay);
 
       render();
-
 
       showToast(
         t("edited")
       );
 
-
-      selectedTaskId =
-        null;
-
+      selectedTaskId = null;
     }
 
-
-    /* =========================
-       TASK DATE
-    ========================= */
-
-    function openTaskDate(
-      id
-    ) {
+    function openTaskDate(id) {
 
       const task =
         tasks.find(
-          item =>
-            item.id === id
+          item => item.id === id
         );
-
 
       if (!task) {
         return;
       }
 
-
-      selectedTaskId =
-        id;
-
+      selectedTaskId = id;
 
       taskDateInput.value =
         task.scheduledDate ||
         "";
 
+      closeOverlay(actionOverlay);
 
-      closeOverlay(
-        actionOverlay
-      );
-
-
-      openOverlay(
-        dateOverlay
-      );
-
+      openOverlay(dateOverlay);
 
       setTimeout(
         () => {
-
           taskDateInput.focus();
-
         },
         100
       );
-
     }
-
 
     function saveTaskDate() {
 
-      if (
-        !selectedTaskId
-      ) {
-
+      if (!selectedTaskId) {
         return;
-
       }
-
 
       const task =
         tasks.find(
@@ -5131,15 +4082,12 @@
             selectedTaskId
         );
 
-
       if (!task) {
         return;
       }
 
-
       const value =
         taskDateInput.value;
-
 
       if (
         !value ||
@@ -5147,48 +4095,30 @@
           value
         )
       ) {
-
         return;
-
       }
-
 
       task.scheduledDate =
         value;
 
-
       saveTasks();
 
-
-      closeOverlay(
-        dateOverlay
-      );
-
+      closeOverlay(dateOverlay);
 
       render();
-
 
       showToast(
         t("dateSet")
       );
 
-
-      selectedTaskId =
-        null;
-
+      selectedTaskId = null;
     }
-
 
     function clearTaskDate() {
 
-      if (
-        !selectedTaskId
-      ) {
-
+      if (!selectedTaskId) {
         return;
-
       }
-
 
       const task =
         tasks.find(
@@ -5197,50 +4127,33 @@
             selectedTaskId
         );
 
-
       if (!task) {
         return;
       }
 
-
       task.scheduledDate =
         null;
 
-
       saveTasks();
 
-
-      closeOverlay(
-        dateOverlay
-      );
-
+      closeOverlay(dateOverlay);
 
       render();
-
 
       showToast(
         t("dateRemoved")
       );
 
-
-      selectedTaskId =
-        null;
-
+      selectedTaskId = null;
     }
 
-
-    function updateActionDateText(
-      task
-    ) {
+    function updateActionDateText(task) {
 
       if (!actionDateText) {
         return;
       }
 
-
-      if (
-        task?.scheduledDate
-      ) {
+      if (task?.scheduledDate) {
 
         actionDateText.textContent =
           `${t("changeDate")} · ${formatTaskDate(task.scheduledDate)}`;
@@ -5249,68 +4162,38 @@
 
         actionDateText.textContent =
           t("setDate");
-
       }
-
     }
 
-
-    /* =========================
-       TRASH
-    ========================= */
-
-    function restoreTask(
-      id
-    ) {
+    function restoreTask(id) {
 
       const index =
         trash.findIndex(
-          item =>
-            item.id === id
+          item => item.id === id
         );
 
-
-      if (
-        index === -1
-      ) {
-
+      if (index === -1) {
         return;
-
       }
 
-
       const [task] =
-        trash.splice(
-          index,
-          1
-        );
-
+        trash.splice(index, 1);
 
       delete task.deletedAt;
 
-
-      tasks.unshift(
-        task
-      );
-
+      tasks.unshift(task);
 
       saveTasks();
       saveTrash();
 
-
       renderTrash();
-
 
       showToast(
         t("restored")
       );
-
     }
 
-
-    function deleteForever(
-      id
-    ) {
+    function deleteForever(id) {
 
       trash =
         trash.filter(
@@ -5318,23 +4201,14 @@
             item.id !== id
         );
 
-
       saveTrash();
 
-
       renderTrash();
-
 
       showToast(
         t("deletedForever")
       );
-
     }
-
-
-    /* =========================
-       VIEWS
-    ========================= */
 
     function setView(
       view,
@@ -5342,142 +4216,95 @@
     ) {
 
       if (
-        !SWIPE_VIEWS.includes(
-          view
-        )
+        !SWIPE_VIEWS.includes(view)
       ) {
-
         return;
-
       }
 
-
-      if (
-        !transitionDirection
-      ) {
+      if (!transitionDirection) {
 
         const previousIndex =
           SWIPE_VIEWS.indexOf(
             currentView
           );
 
-
         const nextIndex =
           SWIPE_VIEWS.indexOf(
             view
           );
 
-
         if (
           nextIndex >
           previousIndex
         ) {
-
-          transitionDirection =
-            "next";
+          transitionDirection = "next";
 
         } else if (
           nextIndex <
           previousIndex
         ) {
-
           transitionDirection =
             "previous";
-
         }
-
       }
 
-
-      currentView =
-        view;
-
+      currentView = view;
 
       closeAllOverlays();
-
 
       render(
         transitionDirection
       );
-
     }
-
 
     function getTodayTasks() {
 
       const today =
         getDateKey();
 
-
       return tasks.filter(
         task =>
           !task.completed &&
           (
             task.scheduledDate
-              ? task.scheduledDate ===
-                today
-              : task.taskDay ===
-                today
+              ? task.scheduledDate === today
+              : task.taskDay === today
           )
       );
-
     }
-
 
     function getCompletedToday() {
 
       const today =
         getDateKey();
 
-
       return tasks.filter(
         task =>
           task.completed &&
           task.completedAt &&
           getDateKey(
-            new Date(
-              task.completedAt
-            )
-          ) ===
-          today
+            new Date(task.completedAt)
+          ) === today
       );
-
     }
-
 
     function getAllActive() {
-
       return tasks.filter(
-        task =>
-          !task.completed
+        task => !task.completed
       );
-
     }
-
 
     function getAllCompleted() {
-
       return tasks.filter(
-        task =>
-          task.completed
+        task => task.completed
       );
-
     }
-
 
     function getFavorites() {
-
       return tasks.filter(
-        task =>
-          task.starred
+        task => task.starred
       );
-
     }
-
-
-    /* =========================
-       RENDER
-    ========================= */
 
     function render(
       transitionDirection = null
@@ -5486,53 +4313,39 @@
       heroDate.textContent =
         formatDate();
 
-
       updateHero();
-
 
       updateProgress();
 
+      content.innerHTML = "";
 
-      content.innerHTML =
-        "";
-
-
-      if (
-        currentView ===
-        "today"
-      ) {
+      if (currentView === "today") {
 
         renderToday();
 
-      } else if (
-        currentView ===
-        "all"
-      ) {
+      } else if (currentView === "all") {
 
         renderAll();
 
       } else if (
-        currentView ===
-        "favorites"
+        currentView === "favorites"
       ) {
 
         renderFavorites();
-
       }
-
 
       updateHeaderNavState();
 
-
       updateDynamicLanguageText();
-
 
       playViewTransition(
         transitionDirection
       );
 
+      requestAnimationFrame(
+        updateHeaderTabIndicator
+      );
     }
-
 
     function playViewTransition(
       direction
@@ -5543,40 +4356,31 @@
         "view-transition-previous"
       );
 
-
       if (!direction) {
         return;
       }
 
-
       void content.offsetWidth;
 
-
       content.classList.add(
-        direction ===
-          "next"
+        direction === "next"
           ? "view-transition-next"
           : "view-transition-previous"
       );
 
-
       content.addEventListener(
         "animationend",
         () => {
-
           content.classList.remove(
             "view-transition-next",
             "view-transition-previous"
           );
-
         },
         {
           once: true
         }
       );
-
     }
-
 
     function updateHero() {
 
@@ -5590,30 +4394,20 @@
 
         favorites:
           t("favorites")
-
       };
-
 
       heroTitle.textContent =
         titles[currentView] ||
         titles.today;
-
     }
-
-
-    /* =========================
-       TODAY
-    ========================= */
 
     function renderToday() {
 
       const today =
         getTodayTasks();
 
-
       const completed =
         getCompletedToday();
-
 
       if (
         today.length === 0 &&
@@ -5628,15 +4422,10 @@
           )
         );
 
-
         return;
-
       }
 
-
-      if (
-        today.length > 0
-      ) {
+      if (today.length > 0) {
 
         content.appendChild(
           createSection(
@@ -5644,38 +4433,25 @@
             today
           )
         );
-
       }
 
-
-      if (
-        completed.length > 0
-      ) {
+      if (completed.length > 0) {
 
         content.appendChild(
           createCompletedToggleSection(
             completed
           )
         );
-
       }
-
     }
-
-
-    /* =========================
-       ALL / MY INTENTIONS
-    ========================= */
 
     function renderAll() {
 
       const active =
         getAllActive();
 
-
       const completed =
         getAllCompleted();
-
 
       if (
         active.length === 0 &&
@@ -5690,15 +4466,10 @@
           )
         );
 
-
         return;
-
       }
 
-
-      if (
-        active.length > 0
-      ) {
+      if (active.length > 0) {
 
         content.appendChild(
           createSection(
@@ -5707,38 +4478,24 @@
             true
           )
         );
-
       }
 
-
-      if (
-        completed.length > 0
-      ) {
+      if (completed.length > 0) {
 
         content.appendChild(
           createCompletedToggleSection(
             completed
           )
         );
-
       }
-
     }
-
-
-    /* =========================
-       FAVORITES
-    ========================= */
 
     function renderFavorites() {
 
       const favorites =
         getFavorites();
 
-
-      if (
-        favorites.length === 0
-      ) {
+      if (favorites.length === 0) {
 
         content.appendChild(
           createEmptyState(
@@ -5748,11 +4505,8 @@
           )
         );
 
-
         return;
-
       }
-
 
       content.appendChild(
         createSection(
@@ -5761,37 +4515,22 @@
           true
         )
       );
-
     }
-
-
-    /* =========================
-       COMPLETED CARD + TOGGLE
-    ========================= */
 
     function createCompletedToggleSection(
       taskArray
     ) {
 
       const section =
-        document.createElement(
-          "section"
-        );
-
+        document.createElement("section");
 
       section.className =
         "completed-section";
 
-
       const toggle =
-        document.createElement(
-          "button"
-        );
+        document.createElement("button");
 
-
-      toggle.type =
-        "button";
-
+      toggle.type = "button";
 
       toggle.className =
         "completed-toggle" +
@@ -5801,62 +4540,42 @@
             : ""
         );
 
-
       toggle.setAttribute(
         "aria-expanded",
-        String(
-          completedExpanded
-        )
+        String(completedExpanded)
       );
-
 
       toggle.setAttribute(
         "aria-controls",
         "completedTasksPanel"
       );
 
-
       const title =
-        document.createElement(
-          "span"
-        );
-
+        document.createElement("span");
 
       title.className =
         "completed-toggle-title";
 
-
       title.textContent =
         t("completedSection");
 
-
       const count =
-        document.createElement(
-          "span"
-        );
-
+        document.createElement("span");
 
       count.className =
         "completed-toggle-count";
 
-
       count.textContent =
         taskArray.length;
 
-
       const chevron =
-        document.createElement(
-          "span"
-        );
-
+        document.createElement("span");
 
       chevron.className =
         "completed-toggle-chevron";
 
-
       chevron.textContent =
-        "^";
-
+        "⌄";
 
       toggle.append(
         title,
@@ -5864,16 +4583,11 @@
         chevron
       );
 
-
       const listWrap =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       listWrap.id =
         "completedTasksPanel";
-
 
       listWrap.className =
         "completed-list-wrap" +
@@ -5883,16 +4597,11 @@
             : ""
         );
 
-
       const list =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       list.className =
         "task-list";
-
 
       taskArray.forEach(
         task => {
@@ -5904,15 +4613,10 @@
               true
             )
           );
-
         }
       );
 
-
-      listWrap.appendChild(
-        list
-      );
-
+      listWrap.appendChild(list);
 
       toggle.addEventListener(
         "click",
@@ -5921,27 +4625,17 @@
           completedExpanded =
             !completedExpanded;
 
-
           render();
-
         }
       );
-
 
       section.append(
         toggle,
         listWrap
       );
 
-
       return section;
-
     }
-
-
-    /* =========================
-       SECTION
-    ========================= */
 
     function createSection(
       title,
@@ -5951,68 +4645,45 @@
     ) {
 
       const section =
-        document.createElement(
-          "section"
-        );
-
+        document.createElement("section");
 
       section.className =
         "section";
 
-
       const head =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       head.className =
         "section-head";
 
-
       const titleEl =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       titleEl.className =
         "section-title";
 
-
       titleEl.textContent =
         title;
 
-
       const count =
-        document.createElement(
-          "span"
-        );
-
+        document.createElement("span");
 
       count.className =
         "section-count";
 
-
       count.textContent =
         taskArray.length;
-
 
       head.append(
         titleEl,
         count
       );
 
-
       const list =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       list.className =
         "task-list";
-
 
       taskArray.forEach(
         task => {
@@ -6024,25 +4695,16 @@
               completedSection
             )
           );
-
         }
       );
-
 
       section.append(
         head,
         list
       );
 
-
       return section;
-
     }
-
-
-    /* =========================
-       TASK ELEMENT
-    ========================= */
 
     function createTaskElement(
       task,
@@ -6051,10 +4713,7 @@
     ) {
 
       const article =
-        document.createElement(
-          "article"
-        );
-
+        document.createElement("article");
 
       article.className =
         "task" +
@@ -6064,24 +4723,16 @@
             : ""
         );
 
-
       article.dataset.taskId =
         task.id;
 
-
       const checkbox =
-        document.createElement(
-          "button"
-        );
+        document.createElement("button");
 
-
-      checkbox.type =
-        "button";
-
+      checkbox.type = "button";
 
       checkbox.className =
         "task-checkbox";
-
 
       checkbox.setAttribute(
         "aria-label",
@@ -6089,7 +4740,6 @@
           ? t("cancelDone")
           : t("done")
       );
-
 
       checkbox.innerHTML = `
         <svg
@@ -6106,56 +4756,37 @@
         </svg>
       `;
 
-
       checkbox.addEventListener(
         "click",
         event => {
 
           event.stopPropagation();
 
-
           completeTask(
             task.id
           );
-
         }
       );
 
-
       const main =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       main.className =
         "task-main";
 
-
       const text =
-        document.createElement(
-          "p"
-        );
-
+        document.createElement("p");
 
       text.className =
         "task-text";
 
-
       text.textContent =
         task.text;
 
-
-      main.appendChild(
-        text
-      );
-
+      main.appendChild(text);
 
       const relativeDay =
-        getTaskDisplayDay(
-          task
-        );
-
+        getTaskDisplayDay(task);
 
       const shouldShowMeta =
         showMeta ||
@@ -6165,34 +4796,21 @@
           task.scheduledDate
         );
 
-
-      if (
-        shouldShowMeta
-      ) {
+      if (shouldShowMeta) {
 
         const meta =
-          document.createElement(
-            "div"
-          );
-
+          document.createElement("div");
 
         meta.className =
           "task-meta";
 
-
-        if (
-          task.scheduledDate
-        ) {
+        if (task.scheduledDate) {
 
           const dateBadge =
-            document.createElement(
-              "span"
-            );
-
+            document.createElement("span");
 
           dateBadge.className =
             "task-meta-date";
-
 
           dateBadge.innerHTML =
             `📅 ${escapeHtml(
@@ -6201,13 +4819,8 @@
               )
             )}`;
 
-
-          meta.appendChild(
-            dateBadge
-          );
-
+          meta.appendChild(dateBadge);
         }
-
 
         if (
           relativeDay &&
@@ -6220,70 +4833,44 @@
         ) {
 
           const dayText =
-            document.createElement(
-              "span"
-            );
-
+            document.createElement("span");
 
           dayText.className =
             "task-meta-day";
 
-
           dayText.textContent =
             relativeDay;
 
-
-          meta.appendChild(
-            dayText
-          );
-
+          meta.appendChild(dayText);
         }
 
-
-        main.appendChild(
-          meta
-        );
-
+        main.appendChild(meta);
       }
-
 
       main.addEventListener(
         "click",
         event => {
 
-          if (
-            swipeSuppressClick
-          ) {
+          if (swipeSuppressClick) {
 
             swipeSuppressClick =
               false;
 
-
             event.preventDefault();
 
-
             return;
-
           }
-
 
           openAction(
             task.id
           );
-
         }
       );
 
-
       const star =
-        document.createElement(
-          "button"
-        );
+        document.createElement("button");
 
-
-      star.type =
-        "button";
-
+      star.type = "button";
 
       star.className =
         "task-star" +
@@ -6293,38 +4880,30 @@
             : ""
         );
 
-
       star.innerHTML =
         task.starred
           ? "★"
           : "☆";
 
-
       star.setAttribute(
         "aria-label",
         task.starred
           ? (
-              settings.language ===
-              "en"
+              settings.language === "en"
                 ? "Remove favorite"
                 : "إزالة من المفضلة"
             )
           : (
-              settings.language ===
-              "en"
+              settings.language === "en"
                 ? "Favorite"
                 : "إضافة للمفضلة"
             )
       );
 
-
       star.setAttribute(
         "aria-pressed",
-        String(
-          task.starred
-        )
+        String(task.starred)
       );
-
 
       star.addEventListener(
         "click",
@@ -6332,14 +4911,11 @@
 
           event.stopPropagation();
 
-
           toggleStar(
             task.id
           );
-
         }
       );
-
 
       article.append(
         checkbox,
@@ -6347,25 +4923,17 @@
         star
       );
 
-
-      let pressTimer =
-        null;
-
+      let pressTimer = null;
 
       article.addEventListener(
         "pointerdown",
         event => {
 
           if (
-            event.target.closest(
-              "button"
-            )
+            event.target.closest("button")
           ) {
-
             return;
-
           }
-
 
           pressTimer =
             setTimeout(
@@ -6374,14 +4942,11 @@
                 openAction(
                   task.id
                 );
-
               },
               550
             );
-
         }
       );
-
 
       [
         "pointerup",
@@ -6397,22 +4962,13 @@
               clearTimeout(
                 pressTimer
               );
-
             }
           );
-
         }
       );
 
-
       return article;
-
     }
-
-
-    /* =========================
-       EMPTY
-    ========================= */
 
     function createEmptyState(
       symbol,
@@ -6421,14 +4977,10 @@
     ) {
 
       const box =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       box.className =
         "task-empty";
-
 
       box.innerHTML = `
         <div class="empty-symbol">
@@ -6444,33 +4996,22 @@
         </div>
       `;
 
-
       return box;
-
     }
-
-
-    /* =========================
-       PROGRESS
-    ========================= */
 
     function updateProgress() {
 
       const isToday =
-        currentView ===
-        "today";
-
+        currentView === "today";
 
       progressWrap.classList.toggle(
         "hidden",
         !isToday
       );
 
-
       if (!isToday) {
         return;
       }
-
 
       const today =
         tasks.filter(
@@ -6484,10 +5025,8 @@
             )
         );
 
-
       const total =
         today.length;
-
 
       const completed =
         today.filter(
@@ -6495,14 +5034,9 @@
             task.completed
         ).length;
 
+      let percentage = 0;
 
-      let percentage =
-        0;
-
-
-      if (
-        total > 0
-      ) {
+      if (total > 0) {
 
         percentage =
           Math.round(
@@ -6512,29 +5046,20 @@
             ) *
             100
           );
-
       }
-
 
       progressBar.style.width =
         `${percentage}%`;
 
-
       progressValue.textContent =
         `${percentage}%`;
 
-
-      if (
-        total === 0
-      ) {
+      if (total === 0) {
 
         progressLabel.textContent =
           t("startFirst");
 
-      } else if (
-        percentage ===
-        100
-      ) {
+      } else if (percentage === 100) {
 
         progressLabel.textContent =
           t("allDone");
@@ -6543,15 +5068,8 @@
 
         progressLabel.textContent =
           t("progressToday");
-
       }
-
     }
-
-
-    /* =========================
-       HEADER STATE
-    ========================= */
 
     function updateHeaderNavState() {
 
@@ -6563,16 +5081,12 @@
               button.dataset.view ===
               currentView;
 
-
             button.classList.toggle(
               "active",
               active
             );
 
-
-            if (
-              active
-            ) {
+            if (active) {
 
               button.setAttribute(
                 "aria-current",
@@ -6584,18 +5098,72 @@
               button.removeAttribute(
                 "aria-current"
               );
-
             }
-
           }
         );
-
     }
 
+    /* =========================
+       MOVING TAB INDICATOR
+    ========================= */
+
+    function updateHeaderTabIndicator() {
+
+      if (
+        !headerNav ||
+        !headerTabIndicator
+      ) {
+        return;
+      }
+
+      const activeTab =
+        headerNav.querySelector(
+          `.header-tab[data-view="${currentView}"]`
+        );
+
+      if (!activeTab) {
+        return;
+      }
+
+      const navRect =
+        headerNav.getBoundingClientRect();
+
+      const tabRect =
+        activeTab.getBoundingClientRect();
+
+      const indicatorWidth =
+        Math.max(
+          24,
+          Math.min(
+            38,
+            tabRect.width * .38
+          )
+        );
+
+      const left =
+        (
+          tabRect.left -
+          navRect.left +
+          (
+            tabRect.width -
+            indicatorWidth
+          ) / 2
+        );
+
+      headerNav.style.setProperty(
+        "--tab-indicator-width",
+        `${indicatorWidth}px`
+      );
+
+      headerNav.style.setProperty(
+        "--tab-indicator-left",
+        `${left}px`
+      );
+    }
 
     /* =========================
-       SWIPE
-    ========================= */
+       WHOLE SCREEN SWIPE
+       ========================= */
 
     function navigateBySwipe(
       direction
@@ -6606,29 +5174,21 @@
           currentView
         );
 
-
       if (
-        currentIndex ===
-        -1
+        currentIndex === -1
       ) {
-
         return;
-
       }
-
 
       let nextIndex;
 
-
       if (
-        direction ===
-        "next"
+        direction === "next"
       ) {
 
         nextIndex =
           (
-            currentIndex +
-            1
+            currentIndex + 1
           ) %
           SWIPE_VIEWS.length;
 
@@ -6636,63 +5196,35 @@
 
         nextIndex =
           (
-            currentIndex -
-            1 +
+            currentIndex - 1 +
             SWIPE_VIEWS.length
           ) %
           SWIPE_VIEWS.length;
-
       }
-
 
       setView(
         SWIPE_VIEWS[nextIndex],
         direction
       );
-
     }
 
-
-    /*
-      في RTL:
-
-      سحب يمين  = Previous
-      سحب يسار  = Next
-
-      وبترتيب:
-      نواياي → اليوم → المفضلة
-
-      إذن من اليوم:
-      يمين = نواياي
-      يسار = المفضلة
-    */
-
-    function getSwipeDirection(
-      dx
-    ) {
+    function getSwipeDirection(dx) {
 
       const isRTL =
         document.documentElement.dir ===
         "rtl";
 
-
-      if (
-        isRTL
-      ) {
+      if (isRTL) {
 
         return dx < 0
           ? "next"
           : "previous";
-
       }
-
 
       return dx > 0
         ? "next"
         : "previous";
-
     }
-
 
     function isSwipeBlockedTarget(
       target
@@ -6700,16 +5232,10 @@
 
       return Boolean(
         target?.closest(
-          "textarea, input, button, .overlay"
+          "textarea, input, button, select, option, .overlay, .sheet"
         )
       );
-
     }
-
-
-    /* =========================
-       TOUCH
-    ========================= */
 
     function handleSwipeStart(
       event
@@ -6721,359 +5247,250 @@
         )
       ) {
 
-        swipeTracking =
-          false;
-
+        swipeTracking = false;
         return;
-
       }
-
 
       if (
         event.touches &&
         event.touches.length !== 1
       ) {
 
-        swipeTracking =
-          false;
-
+        swipeTracking = false;
         return;
-
       }
-
 
       const touch =
         event.touches[0];
 
-
       swipeStartX =
         touch.clientX;
-
 
       swipeStartY =
         touch.clientY;
 
-
-      swipeTracking =
-        true;
-
+      swipeTracking = true;
     }
-
 
     function handleSwipeEnd(
       event
     ) {
 
-      if (
-        !swipeTracking
-      ) {
-
+      if (!swipeTracking) {
         return;
-
       }
 
-
-      swipeTracking =
-        false;
-
+      swipeTracking = false;
 
       if (
         event.changedTouches &&
         event.changedTouches.length !== 1
       ) {
-
         return;
-
       }
-
 
       const touch =
         event.changedTouches[0];
-
 
       const dx =
         touch.clientX -
         swipeStartX;
 
-
       const dy =
         touch.clientY -
         swipeStartY;
 
-
       const absX =
         Math.abs(dx);
 
-
       const absY =
         Math.abs(dy);
-
 
       if (
         absX < 55 ||
         absX <= absY * 1.2
       ) {
-
         return;
-
       }
 
-
-      swipeSuppressClick =
-        true;
-
+      swipeSuppressClick = true;
 
       navigateBySwipe(
-        getSwipeDirection(
-          dx
-        )
+        getSwipeDirection(dx)
       );
-
 
       setTimeout(
         () => {
-
-          swipeSuppressClick =
-            false;
-
+          swipeSuppressClick = false;
         },
         500
       );
-
     }
 
-
-    content.addEventListener(
+    /* document instead of content */
+    document.addEventListener(
       "touchstart",
       handleSwipeStart,
       {
-        passive: true
+        passive: true,
+        capture: true
       }
     );
 
-
-    content.addEventListener(
+    document.addEventListener(
       "touchend",
       handleSwipeEnd,
       {
-        passive: true
+        passive: true,
+        capture: true
       }
     );
 
-
-    content.addEventListener(
+    document.addEventListener(
       "touchcancel",
       () => {
-
-        swipeTracking =
-          false;
-
+        swipeTracking = false;
       },
       {
-        passive: true
+        passive: true,
+        capture: true
       }
     );
 
-
     /* =========================
-       MOUSE DRAG
+       MOUSE DRAG WHOLE PAGE
     ========================= */
 
-    function handleMouseDown(
-      event
-    ) {
+    function handleMouseDown(event) {
 
       if (
-        event.button !==
-          0 ||
+        event.button !== 0 ||
         isSwipeBlockedTarget(
           event.target
         )
       ) {
 
-        swipeTracking =
-          false;
-
+        swipeTracking = false;
         return;
-
       }
-
 
       swipeStartX =
         event.clientX;
 
-
       swipeStartY =
         event.clientY;
 
-
-      swipeTracking =
-        true;
-
+      swipeTracking = true;
     }
 
+    function handleMouseUp(event) {
 
-    function handleMouseUp(
-      event
-    ) {
-
-      if (
-        !swipeTracking
-      ) {
-
+      if (!swipeTracking) {
         return;
-
       }
 
-
-      swipeTracking =
-        false;
-
+      swipeTracking = false;
 
       const dx =
         event.clientX -
         swipeStartX;
 
-
       const dy =
         event.clientY -
         swipeStartY;
 
-
       const absX =
         Math.abs(dx);
-
 
       const absY =
         Math.abs(dy);
 
-
       if (
         absX < 65 ||
-        absX <=
-          absY * 1.2
+        absX <= absY * 1.2
       ) {
-
         return;
-
       }
 
-
-      swipeSuppressClick =
-        true;
-
+      swipeSuppressClick = true;
 
       navigateBySwipe(
-        getSwipeDirection(
-          dx
-        )
+        getSwipeDirection(dx)
       );
-
 
       setTimeout(
         () => {
-
-          swipeSuppressClick =
-            false;
-
+          swipeSuppressClick = false;
         },
         500
       );
-
     }
-
 
     function handleMouseLeave() {
-
-      swipeTracking =
-        false;
-
+      swipeTracking = false;
     }
 
-
-    content.addEventListener(
+    document.addEventListener(
       "mousedown",
-      handleMouseDown
-    );
-
-
-    content.addEventListener(
-      "mouseup",
-      handleMouseUp
-    );
-
-
-    content.addEventListener(
-      "mouseleave",
-      handleMouseLeave
-    );
-
-
-    content.addEventListener(
-      "click",
-      event => {
-
-        if (
-          !swipeSuppressClick
-        ) {
-
-          return;
-
-        }
-
-
-        event.preventDefault();
-
-
-        event.stopPropagation();
-
-
-        swipeSuppressClick =
-          false;
-
-      },
+      handleMouseDown,
       true
     );
 
+    document.addEventListener(
+      "mouseup",
+      handleMouseUp,
+      true
+    );
+
+    document.addEventListener(
+      "mouseleave",
+      handleMouseLeave,
+      true
+    );
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        if (!swipeSuppressClick) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        swipeSuppressClick = false;
+      },
+      true
+    );
 
     /* =========================
        ACTION SHEET
     ========================= */
 
-    function openAction(
-      id
-    ) {
+    function openAction(id) {
 
       const task =
         tasks.find(
-          item =>
-            item.id === id
+          item => item.id === id
         );
-
 
       if (!task) {
         return;
       }
 
-
-      selectedTaskId =
-        id;
-
+      selectedTaskId = id;
 
       actionTaskPreview.textContent =
         task.text;
 
-
       const actionButton =
         $("#actionComplete");
 
-
       const actionText =
-        actionButton
-          .querySelector(
-            "span:last-child"
-          );
-
+        actionButton.querySelector(
+          "span:last-child"
+        );
 
       if (actionText) {
 
@@ -7081,21 +5498,12 @@
           task.completed
             ? t("cancelDone")
             : t("done");
-
       }
 
+      updateActionDateText(task);
 
-      updateActionDateText(
-        task
-      );
-
-
-      openOverlay(
-        actionOverlay
-      );
-
+      openOverlay(actionOverlay);
     }
-
 
     $("#actionComplete")
       .addEventListener(
@@ -7106,27 +5514,16 @@
             return;
           }
 
-
           const id =
             selectedTaskId;
 
+          completeTask(id);
 
-          completeTask(
-            id
-          );
+          closeOverlay(actionOverlay);
 
-
-          closeOverlay(
-            actionOverlay
-          );
-
-
-          selectedTaskId =
-            null;
-
+          selectedTaskId = null;
         }
       );
-
 
     $("#actionDate")
       .addEventListener(
@@ -7137,14 +5534,11 @@
             return;
           }
 
-
           openTaskDate(
             selectedTaskId
           );
-
         }
       );
-
 
     $("#actionEdit")
       .addEventListener(
@@ -7155,14 +5549,11 @@
             return;
           }
 
-
           openEdit(
             selectedTaskId
           );
-
         }
       );
-
 
     $("#actionDelete")
       .addEventListener(
@@ -7173,31 +5564,16 @@
             return;
           }
 
-
           const id =
             selectedTaskId;
 
+          closeOverlay(actionOverlay);
 
-          closeOverlay(
-            actionOverlay
-          );
+          selectedTaskId = null;
 
-
-          selectedTaskId =
-            null;
-
-
-          deleteTask(
-            id
-          );
-
+          deleteTask(id);
         }
       );
-
-
-    /* =========================
-       DATE
-    ========================= */
 
     $("#dateSave")
       .addEventListener(
@@ -7205,71 +5581,45 @@
         saveTaskDate
       );
 
-
     $("#dateClear")
       .addEventListener(
         "click",
         clearTaskDate
       );
 
-
     $("#dateCancel")
       .addEventListener(
         "click",
         () => {
 
-          closeOverlay(
-            dateOverlay
-          );
+          closeOverlay(dateOverlay);
 
-
-          selectedTaskId =
-            null;
-
+          selectedTaskId = null;
         }
       );
 
+    function openOverlay(overlay) {
 
-    /* =========================
-       OVERLAYS
-    ========================= */
-
-    function openOverlay(
-      overlay
-    ) {
-
-      overlay.classList.add(
-        "show"
-      );
-
+      overlay.classList.add("show");
 
       overlay.setAttribute(
         "aria-hidden",
         "false"
       );
 
-
       document.body.classList.add(
         "no-scroll"
       );
-
     }
 
+    function closeOverlay(overlay) {
 
-    function closeOverlay(
-      overlay
-    ) {
-
-      overlay.classList.remove(
-        "show"
-      );
-
+      overlay.classList.remove("show");
 
       overlay.setAttribute(
         "aria-hidden",
         "true"
       );
-
 
       if (
         !document.querySelector(
@@ -7280,25 +5630,16 @@
         document.body.classList.remove(
           "no-scroll"
         );
-
       }
-
     }
-
 
     function closeAllOverlays() {
 
       $$(".overlay.show")
-        .forEach(
-          closeOverlay
-        );
+        .forEach(closeOverlay);
 
-
-      selectedTaskId =
-        null;
-
+      selectedTaskId = null;
     }
-
 
     $$(".overlay")
       .forEach(
@@ -7309,30 +5650,20 @@
             event => {
 
               if (
-                event.target ===
-                overlay
+                event.target === overlay
               ) {
 
                 closeOverlay(
                   overlay
                 );
 
-
                 selectedTaskId =
                   null;
-
               }
-
             }
           );
-
         }
       );
-
-
-    /* =========================
-       MENU
-    ========================= */
 
     $("#menuBtn")
       .addEventListener(
@@ -7342,14 +5673,8 @@
           openOverlay(
             menuOverlay
           );
-
         }
       );
-
-
-    /* =========================
-       HEADER TABS
-    ========================= */
 
     $$(".header-tab")
       .forEach(
@@ -7362,17 +5687,10 @@
               setView(
                 button.dataset.view
               );
-
             }
           );
-
         }
       );
-
-
-    /* =========================
-       SETTINGS
-    ========================= */
 
     $("#settingsBtn")
       .addEventListener(
@@ -7383,21 +5701,13 @@
             menuOverlay
           );
 
-
           renderSettings();
-
 
           openOverlay(
             settingsOverlay
           );
-
         }
       );
-
-
-    /* =========================
-       TRASH
-    ========================= */
 
     $("#menuTrashBtn")
       .addEventListener(
@@ -7406,23 +5716,15 @@
 
           renderTrash();
 
-
           closeOverlay(
             menuOverlay
           );
 
-
           openOverlay(
             trashOverlay
           );
-
         }
       );
-
-
-    /* =========================
-       THEME
-    ========================= */
 
     $$("[data-theme-choice]")
       .forEach(
@@ -7435,22 +5737,13 @@
               settings.theme =
                 button.dataset.themeChoice;
 
-
               saveSettings();
 
-
               applySettings();
-
             }
           );
-
         }
       );
-
-
-    /* =========================
-       ACCENT
-    ========================= */
 
     $$("[data-accent-choice]")
       .forEach(
@@ -7463,22 +5756,17 @@
               settings.accent =
                 button.dataset.accentChoice;
 
-
               saveSettings();
-
 
               applySettings();
 
+              requestAnimationFrame(
+                updateHeaderTabIndicator
+              );
             }
           );
-
         }
       );
-
-
-    /* =========================
-       LANGUAGE
-    ========================= */
 
     $$("[data-language-choice]")
       .forEach(
@@ -7494,64 +5782,42 @@
                   ? "en"
                   : "ar";
 
-
               if (
                 settings.language ===
                 newLanguage
               ) {
 
                 applyLanguage();
-
                 return;
-
               }
-
 
               settings.language =
                 newLanguage;
 
-
               saveSettings();
-
 
               render();
 
-
               applyLanguage();
-
 
               renderSettings();
 
-
               renderTrash();
-
             }
           );
-
         }
       );
 
-
     function renderSettings() {
-
       applySettings();
-
     }
-
-
-    /* =========================
-       TRASH RENDER
-    ========================= */
 
     function renderTrash() {
 
-      trashList.innerHTML =
-        "";
-
+      trashList.innerHTML = "";
 
       if (
-        trash.length ===
-        0
+        trash.length === 0
       ) {
 
         trashList.appendChild(
@@ -7562,56 +5828,37 @@
           )
         );
 
-
         return;
-
       }
-
 
       trash.forEach(
         task => {
 
           const item =
-            document.createElement(
-              "div"
-            );
-
+            document.createElement("div");
 
           item.className =
             "trash-item";
 
-
           const text =
-            document.createElement(
-              "div"
-            );
-
+            document.createElement("div");
 
           text.className =
             "trash-text";
 
-
           text.textContent =
             task.text;
 
-
           const restore =
-            document.createElement(
-              "button"
-            );
+            document.createElement("button");
 
-
-          restore.type =
-            "button";
-
+          restore.type = "button";
 
           restore.className =
             "small-btn";
 
-
           restore.textContent =
             t("restore");
-
 
           restore.addEventListener(
             "click",
@@ -7620,28 +5867,19 @@
               restoreTask(
                 task.id
               );
-
             }
           );
 
-
           const forever =
-            document.createElement(
-              "button"
-            );
+            document.createElement("button");
 
-
-          forever.type =
-            "button";
-
+          forever.type = "button";
 
           forever.className =
             "small-btn danger trash-delete-button";
 
-
           forever.textContent =
             t("delete");
-
 
           forever.addEventListener(
             "click",
@@ -7650,10 +5888,8 @@
               deleteForever(
                 task.id
               );
-
             }
           );
-
 
           item.append(
             text,
@@ -7661,27 +5897,16 @@
             forever
           );
 
-
-          trashList.appendChild(
-            item
-          );
-
+          trashList.appendChild(item);
         }
       );
-
     }
-
-
-    /* =========================
-       EDIT
-    ========================= */
 
     $("#editSave")
       .addEventListener(
         "click",
         saveEdit
       );
-
 
     $("#editCancel")
       .addEventListener(
@@ -7692,13 +5917,9 @@
             editOverlay
           );
 
-
-          selectedTaskId =
-            null;
-
+          selectedTaskId = null;
         }
       );
-
 
     editInput
       .addEventListener(
@@ -7706,25 +5927,16 @@
         event => {
 
           if (
-            event.key ===
-              "Enter" &&
+            event.key === "Enter" &&
             !event.shiftKey
           ) {
 
             event.preventDefault();
 
-
             saveEdit();
-
           }
-
         }
       );
-
-
-    /* =========================
-       COMPOSER
-    ========================= */
 
     function updateComposer() {
 
@@ -7733,14 +5945,11 @@
           .trim()
           .length > 0;
 
-
       sendBtn.classList.toggle(
         "disabled",
         !hasText
       );
-
     }
-
 
     taskInput
       .addEventListener(
@@ -7749,15 +5958,11 @@
 
           autoResizeTextarea();
 
-
           updateComposer();
 
-
           playTypingSound();
-
         }
       );
-
 
     taskInput
       .addEventListener(
@@ -7765,22 +5970,17 @@
         event => {
 
           if (
-            event.key ===
-              "Enter" &&
+            event.key === "Enter" &&
             !event.shiftKey
           ) {
 
             event.preventDefault();
 
-
             $("#composer")
               .requestSubmit();
-
           }
-
         }
       );
-
 
     $("#composer")
       .addEventListener(
@@ -7789,58 +5989,39 @@
 
           event.preventDefault();
 
-
           const text =
             taskInput.value.trim();
-
 
           if (!text) {
             return;
           }
 
-
           if (
-            addTask(
-              text
-            )
+            addTask(text)
           ) {
 
-            taskInput.value =
-              "";
-
+            taskInput.value = "";
 
             autoResizeTextarea();
 
-
             updateComposer();
 
-
             taskInput.focus();
-
           }
-
         }
       );
-
 
     function autoResizeTextarea() {
 
       taskInput.style.height =
         "auto";
 
-
       taskInput.style.height =
         Math.min(
           taskInput.scrollHeight,
           130
         ) + "px";
-
     }
-
-
-    /* =========================
-       TOAST
-    ========================= */
 
     function showToast(
       message,
@@ -7852,41 +6033,33 @@
         undoTimer
       );
 
-
       undoAction =
         canUndo
           ? undoCallback
           : null;
 
-
       toastMessage.textContent =
         message;
-
 
       toastUndo.classList.toggle(
         "hidden",
         !canUndo
       );
 
-
       toastUpdate.classList.add(
         "hidden"
       );
 
-
       toast.classList.add(
         "show"
       );
-
 
       undoTimer =
         setTimeout(
           hideToast,
           4500
         );
-
     }
-
 
     function showUpdateToast() {
 
@@ -7894,35 +6067,26 @@
         undoTimer
       );
 
-
-      undoAction =
-        null;
-
+      undoAction = null;
 
       toastMessage.textContent =
         t("updateAvailable");
-
 
       toastUndo.classList.add(
         "hidden"
       );
 
-
       toastUpdate.classList.remove(
         "hidden"
       );
 
-
       toastUpdate.textContent =
         t("update");
-
 
       toast.classList.add(
         "show"
       );
-
     }
-
 
     function hideToast() {
 
@@ -7930,17 +6094,12 @@
         "show"
       );
 
-
-      undoAction =
-        null;
-
+      undoAction = null;
 
       toastUpdate.classList.add(
         "hidden"
       );
-
     }
-
 
     toastUndo
       .addEventListener(
@@ -7953,45 +6112,27 @@
           ) {
 
             undoAction();
-
           }
 
-
           hideToast();
-
         }
       );
 
-
-    /* =========================
-       SOUND
-    ========================= */
-
     function getAudioContext() {
 
-      if (
-        !typingAudioContext
-      ) {
+      if (!typingAudioContext) {
 
         const AudioContext =
           window.AudioContext ||
           window.webkitAudioContext;
 
-
-        if (
-          !AudioContext
-        ) {
-
+        if (!AudioContext) {
           return null;
-
         }
-
 
         typingAudioContext =
           new AudioContext();
-
       }
-
 
       if (
         typingAudioContext.state ===
@@ -8003,14 +6144,10 @@
           .catch(
             () => {}
           );
-
       }
 
-
       return typingAudioContext;
-
     }
-
 
     function playTone(
       frequency,
@@ -8022,65 +6159,49 @@
       const ctx =
         getAudioContext();
 
-
       if (!ctx) {
         return;
       }
-
 
       try {
 
         const oscillator =
           ctx.createOscillator();
 
-
         const gain =
           ctx.createGain();
-
 
         oscillator.type =
           type;
 
-
         oscillator.frequency.value =
           frequency;
-
 
         gain.gain.setValueAtTime(
           0.0001,
           ctx.currentTime
         );
 
-
         gain.gain.exponentialRampToValueAtTime(
           Math.max(
             volume,
             0.0002
           ),
-          ctx.currentTime +
-            .008
+          ctx.currentTime + .008
         );
-
 
         gain.gain.exponentialRampToValueAtTime(
           0.0001,
-          ctx.currentTime +
-            duration
+          ctx.currentTime + duration
         );
 
-
-        oscillator.connect(
-          gain
-        );
-
+        oscillator.connect(gain);
 
         gain.connect(
           ctx.destination
         );
 
-
         oscillator.start();
-
 
         oscillator.stop(
           ctx.currentTime +
@@ -8088,39 +6209,29 @@
           .01
         );
 
-      } catch {
-        /* Audio should never break NAWY. */
-      }
-
+      } catch {}
     }
-
 
     function playTypingSound() {
 
       const now =
         performance.now();
 
-
       if (
         now -
         lastTypingSound <
         55
       ) {
-
         return;
-
       }
-
 
       lastTypingSound =
         now;
-
 
       const frequency =
         145 +
         Math.random() *
         40;
-
 
       playTone(
         frequency,
@@ -8128,9 +6239,7 @@
         .018,
         "sine"
       );
-
     }
-
 
     function playAddSound() {
 
@@ -8140,20 +6249,16 @@
         .025,
         "sine"
       );
-
     }
-
 
     function playCompleteSound() {
 
       const ctx =
         getAudioContext();
 
-
       if (!ctx) {
         return;
       }
-
 
       playTone(
         520,
@@ -8161,7 +6266,6 @@
         .045,
         "sine"
       );
-
 
       setTimeout(
         () => {
@@ -8172,25 +6276,14 @@
             .035,
             "sine"
           );
-
         },
         55
       );
-
     }
 
+    function escapeHtml(value) {
 
-    /* =========================
-       SAFE HTML
-    ========================= */
-
-    function escapeHtml(
-      value
-    ) {
-
-      return String(
-        value
-      )
+      return String(value)
         .replaceAll(
           "&",
           "&amp;"
@@ -8211,13 +6304,7 @@
           "'",
           "&#039;"
         );
-
     }
-
-
-    /* =========================
-       INSTALL
-    ========================= */
 
     function isStandalone() {
 
@@ -8228,9 +6315,7 @@
         window.navigator.standalone ===
           true
       );
-
     }
-
 
     function isIOS() {
 
@@ -8238,9 +6323,7 @@
         .test(
           navigator.userAgent
         );
-
     }
-
 
     function showInstallBanner() {
 
@@ -8248,11 +6331,8 @@
         isStandalone() ||
         installBannerDismissed
       ) {
-
         return;
-
       }
-
 
       if (
         deferredInstallPrompt
@@ -8271,33 +6351,25 @@
 
         installText.textContent =
           t("installGuideText");
-
       }
-
 
       installAction.textContent =
         t("install");
 
-
       installDismiss.textContent =
         t("continue");
-
 
       installBanner.classList.add(
         "show"
       );
-
     }
-
 
     function hideInstallBanner() {
 
       installBanner.classList.remove(
         "show"
       );
-
     }
-
 
     window.addEventListener(
       "beforeinstallprompt",
@@ -8305,16 +6377,12 @@
 
         event.preventDefault();
 
-
         deferredInstallPrompt =
           event;
 
-
         showInstallBanner();
-
       }
     );
-
 
     window.addEventListener(
       "appinstalled",
@@ -8323,12 +6391,9 @@
         deferredInstallPrompt =
           null;
 
-
         hideInstallBanner();
-
       }
     );
-
 
     installAction.addEventListener(
       "click",
@@ -8338,44 +6403,33 @@
           !deferredInstallPrompt
         ) {
 
-          if (
-            isIOS()
-          ) {
+          if (isIOS()) {
 
             showToast(
               t("installGuideText")
             );
-
           }
 
           return;
-
         }
-
 
         const promptEvent =
           deferredInstallPrompt;
 
-
         deferredInstallPrompt =
           null;
 
-
         hideInstallBanner();
-
 
         try {
 
           await promptEvent.prompt();
 
-
           await promptEvent.userChoice;
 
         } catch {}
-
       }
     );
-
 
     installDismiss.addEventListener(
       "click",
@@ -8384,12 +6438,9 @@
         installBannerDismissed =
           true;
 
-
         hideInstallBanner();
-
       }
     );
-
 
     window.addEventListener(
       "load",
@@ -8400,32 +6451,26 @@
           700
         );
 
+        requestAnimationFrame(
+          updateHeaderTabIndicator
+        );
       }
     );
-
-
-    /* =========================
-       DAY CHANGE
-    ========================= */
 
     function checkDayChange() {
 
       const today =
         getDateKey();
 
-
       if (
-        lastKnownDay ===
-        null
+        lastKnownDay === null
       ) {
 
         lastKnownDay =
           today;
 
         return;
-
       }
-
 
       if (
         today !==
@@ -8435,31 +6480,20 @@
         lastKnownDay =
           today;
 
-
         completedExpanded =
           false;
-
 
         currentView =
           "today";
 
-
         render();
-
       }
-
     }
-
 
     setInterval(
       checkDayChange,
       30000
     );
-
-
-    /* =========================
-       KEYBOARD
-    ========================= */
 
     document.addEventListener(
       "keydown",
@@ -8469,65 +6503,62 @@
           event.key ===
           "Escape"
         ) {
-
           closeAllOverlays();
-
         }
-
       }
     );
 
+    window.addEventListener(
+      "resize",
+      () => {
+        requestAnimationFrame(
+          updateHeaderTabIndicator
+        );
+      }
+    );
 
-    /* =========================
-       INIT
-    ========================= */
+    window.addEventListener(
+      "orientationchange",
+      () => {
+        setTimeout(
+          updateHeaderTabIndicator,
+          100
+        );
+      }
+    );
 
     function init() {
 
       loadData();
 
-
       applySettings();
-
-
-      /*
-        اليوم دائمًا هو الـDefault
-        عند فتح التطبيق.
-      */
 
       currentView =
         "today";
 
-
       lastKnownDay =
         getDateKey();
 
-
       render();
-
 
       updateComposer();
 
-
       autoResizeTextarea();
 
+      requestAnimationFrame(
+        updateHeaderTabIndicator
+      );
     }
 
-
     init();
-
 
     /* =========================================================
        SERVICE WORKER
        Compatible with NAWY sw.js v7
        ========================================================= */
 
-    let swReloading =
-      false;
-
-    let swUpdatePending =
-      false;
-
+    let swReloading = false;
+    let swUpdatePending = false;
 
     function requestServiceWorkerUpdate(
       registration
@@ -8537,19 +6568,15 @@
         return;
       }
 
-
       registration
         .update()
         .catch(
           () => {}
         );
-
     }
 
-
     if (
-      "serviceWorker" in
-      navigator
+      "serviceWorker" in navigator
     ) {
 
       window.addEventListener(
@@ -8567,11 +6594,9 @@
                 }
               );
 
-
             requestServiceWorkerUpdate(
               registration
             );
-
 
             registration.addEventListener(
               "updatefound",
@@ -8580,11 +6605,9 @@
                 const worker =
                   registration.installing;
 
-
                 if (!worker) {
                   return;
                 }
-
 
                 worker.addEventListener(
                   "statechange",
@@ -8601,26 +6624,18 @@
                       if (
                         swUpdatePending
                       ) {
-
                         return;
-
                       }
-
 
                       swUpdatePending =
                         true;
 
-
                       showUpdateToast();
-
                     }
-
                   }
                 );
-
               }
             );
-
 
             toastUpdate.addEventListener(
               "click",
@@ -8629,7 +6644,6 @@
                 const waiting =
                   registration.waiting;
 
-
                 if (!waiting) {
 
                   requestServiceWorkerUpdate(
@@ -8637,26 +6651,20 @@
                   );
 
                   return;
-
                 }
-
 
                 toastUpdate.disabled =
                   true;
 
-
                 toastUpdate.textContent =
                   t("update");
-
 
                 waiting.postMessage({
                   type:
                     "SKIP_WAITING"
                 });
-
               }
             );
-
 
             setInterval(
               () => {
@@ -8671,7 +6679,6 @@
               1000
             );
 
-
             document.addEventListener(
               "visibilitychange",
               () => {
@@ -8684,53 +6691,38 @@
                   requestServiceWorkerUpdate(
                     registration
                   );
-
                 }
-
               }
             );
 
-          } catch (
-            error
-          ) {
+          } catch (error) {
 
             console.warn(
               "NAWY SW registration failed:",
               error
             );
-
           }
-
         }
       );
-
 
       navigator.serviceWorker
         .addEventListener(
           "controllerchange",
           () => {
 
-            if (
-              swReloading
-            ) {
-
+            if (swReloading) {
               return;
-
             }
-
 
             swReloading =
               true;
 
-
             window.location.reload();
-
           }
         );
-
     }
-
   </script>
 
 </body>
 </html>
+```
