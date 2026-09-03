@@ -70,7 +70,6 @@
       --fab-size: 56px;
     }
 
-    /* ============ FONT SIZE SYSTEM ============ */
     html[data-font="small"] {
       --fs-xs: 10px;
       --fs-sm: 12px;
@@ -308,7 +307,8 @@
     .composer-fab {
       pointer-events: auto; width: var(--fab-size); height: var(--fab-size);
       border-radius: var(--radius-full); background: var(--accent); color: #fff;
-      display: grid; place-items: center; font-size: 24px; font-weight: var(--fw-bold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 300; line-height: 1;
       box-shadow: 0 4px 16px rgba(0,0,0,.18); transition: transform .15s ease, box-shadow .15s ease;
     }
     .composer-fab:active { transform: scale(.93); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
@@ -326,10 +326,13 @@
     .composer-input-row {
       display: flex; align-items: center; gap: var(--sp-sm);
     }
-    .composer-input-row textarea {
+    .composer-input-row textarea,
+    .composer-input-row textarea:focus,
+    .composer-input-row textarea:focus-visible {
       flex: 1; min-height: 48px; max-height: 110px; resize: none; overflow-y: auto;
-      padding: var(--sp-md); border: none; border-radius: 0;
+      padding: var(--sp-md); border: none; outline: none; box-shadow: none;
       background: transparent; color: var(--text); font-size: var(--fs-base); line-height: 1.5;
+      -webkit-appearance: none; appearance: none;
     }
     .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
     .composer-input-row .send-btn {
@@ -344,15 +347,17 @@
       display: flex; align-items: center; gap: var(--sp-sm); padding: var(--sp-sm) 0 0;
     }
     .toolbar-star {
-      width: 36px; height: 36px; border-radius: var(--radius-full); background: transparent;
-      border: 1px solid var(--border); font-size: 18px; color: var(--muted);
+      width: 40px; height: 40px; border-radius: var(--radius-full); background: transparent;
+      border: 1px solid var(--border); font-size: 22px; color: var(--muted);
       cursor: pointer; transition: all .15s ease; display: grid; place-items: center;
+      line-height: 1;
     }
     .toolbar-star.active { color: var(--warning); border-color: var(--warning); }
     .toolbar-item {
-      display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-full);
-      background: var(--surface-2); font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text);
-      cursor: pointer; transition: background .15s ease;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+      min-width: 40px; height: 40px; padding: 0 12px; border-radius: var(--radius-full);
+      background: var(--surface-2); font-size: 20px; font-weight: var(--fw-semibold); color: var(--text);
+      cursor: pointer; transition: background .15s ease; line-height: 1;
     }
     .toolbar-item:hover { background: var(--surface-3); }
     .toolbar-item.active { background: var(--accent-soft); color: var(--accent); }
@@ -554,6 +559,8 @@
       .completed-toggle { min-height: 40px; }
       .composer-wrap { padding: 0 var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom)); }
       .composer-panel { padding: var(--sp-md) var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom)); }
+      .toolbar-star { width: 36px; height: 36px; font-size: 20px; }
+      .toolbar-item { min-width: 36px; height: 36px; font-size: 18px; }
       .install-banner { align-items: flex-start; gap: var(--sp-sm); padding: var(--sp-sm); }
       .install-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); }
       .install-actions { flex-direction: column; align-items: stretch; }
@@ -658,8 +665,8 @@
       </div>
       <div class="composer-toolbar">
         <button class="toolbar-star" id="toolbarStar" type="button" aria-label="مفضلة">☆</button>
-        <button class="toolbar-item" id="toolbarSchedule" type="button">📅 <span data-i18n="schedule">جدولة</span></button>
-        <button class="toolbar-item" id="toolbarRepeat" type="button">🔁 <span data-i18n="repeatNone">بدون تكرار</span></button>
+        <button class="toolbar-item" id="toolbarSchedule" type="button">📅</button>
+        <button class="toolbar-item" id="toolbarRepeat" type="button">🔁</button>
       </div>
     </form>
   </div>
@@ -1251,8 +1258,8 @@
     }
 
     function updateToolbarLanguage() {
-      if (toolbarSchedule) toolbarSchedule.innerHTML = `📅 <span>${t("schedule")}</span>`;
-      if (toolbarRepeat) toolbarRepeat.innerHTML = `🔁 <span>${t("repeat" + composerState.repeat.charAt(0).toUpperCase() + composerState.repeat.slice(1))}</span>`;
+      if (toolbarSchedule) toolbarSchedule.innerHTML = `📅`;
+      if (toolbarRepeat) toolbarRepeat.innerHTML = `🔁`;
     }
 
     function updatePinButtonText() {
@@ -2089,10 +2096,12 @@
 
     $("#dateSave").addEventListener("click", () => {
       if (composerPanel.classList.contains("open")) {
+        // إذا كنا في وضع الإضافة، نأخذ التاريخ فقط بدون إغلاق الحقل
         composerState.scheduledDate = taskDateInput.value;
         closeOverlay(dateOverlay);
         toolbarSchedule.classList.add("active");
-        toolbarSchedule.innerHTML = `📅 <span>${formatTaskDate(composerState.scheduledDate)}</span>`;
+        // نعرض التاريخ الحالي بشكل رمزي صغير بجانب الأيقونة (يمكن إضافة تلميح)
+        toolbarSchedule.innerHTML = `📅`;
       } else {
         saveTaskDate();
       }
@@ -2103,7 +2112,7 @@
         composerState.scheduledDate = null;
         closeOverlay(dateOverlay);
         toolbarSchedule.classList.remove("active");
-        toolbarSchedule.innerHTML = `📅 <span>${t("schedule")}</span>`;
+        toolbarSchedule.innerHTML = `📅`;
       } else {
         clearTaskDate();
       }
@@ -2129,8 +2138,18 @@
     toolbarRepeat.addEventListener("click", () => {
       repeatIndex = (repeatIndex + 1) % repeatOptions.length;
       composerState.repeat = repeatOptions[repeatIndex];
-      toolbarRepeat.innerHTML = `🔁 <span>${t(repeatTranslations[composerState.repeat])}</span>`;
       toolbarRepeat.classList.toggle("active", composerState.repeat !== 'none');
+      // نغير الأيقونة حسب التكرار: رمز تعبيري مختلف لكل حالة
+      if (composerState.repeat === 'none') {
+        toolbarRepeat.innerHTML = `🔁`;
+      } else if (composerState.repeat === 'daily') {
+        toolbarRepeat.innerHTML = `🔁`;
+      } else if (composerState.repeat === 'weekly') {
+        toolbarRepeat.innerHTML = `🔁`;
+      } else if (composerState.repeat === 'monthly') {
+        toolbarRepeat.innerHTML = `🔁`;
+      }
+      // يمكن إضافة نقطة ملونة أو تأثير نشط كافٍ
     });
 
     function showToast(message, canUndo = false, undoCallback = null) {
