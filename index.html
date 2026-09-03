@@ -44,7 +44,7 @@
       --shadow-soft: 0 1px 3px rgba(0,0,0,.03);
       --shadow-card: 0 2px 8px rgba(0,0,0,.04);
       --shadow-sheet: 0 16px 50px rgba(0,0,0,.12);
-      --shadow-drag: 0 12px 32px rgba(0,0,0,.18);
+      --shadow-drag: 0 8px 24px rgba(0,0,0,.15);
       --radius-sm: 10px;
       --radius-md: 14px;
       --radius-lg: 18px;
@@ -80,7 +80,7 @@
       --bg: #0e1010; --surface: #1a1d1d; --surface-2: #222626; --surface-3: #2c3131;
       --text: #eef1f1; --muted: #8b9494; --border: rgba(255,255,255,.05); --border-strong: rgba(255,255,255,.08);
       --shadow-soft: 0 1px 4px rgba(0,0,0,.15); --shadow-card: 0 4px 12px rgba(0,0,0,.20); --shadow-sheet: 0 20px 60px rgba(0,0,0,.40);
-      --shadow-drag: 0 16px 40px rgba(0,0,0,.50);
+      --shadow-drag: 0 12px 32px rgba(0,0,0,.40);
     }
     html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,.08); --drop-indicator-color: #3b82f6; }
     html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,.08); --drop-indicator-color: #8b5cf6; }
@@ -143,60 +143,46 @@
     @keyframes viewSlideNext { 0% { opacity: .7; transform: translateX(12px); } 100% { opacity: 1; transform: translateX(0); } }
     @keyframes viewSlidePrevious { 0% { opacity: .7; transform: translateX(-12px); } 100% { opacity: 1; transform: translateX(0); } }
 
-    /* ============ Premium Cards ============ */
+    /* ============ Premium Cards - شفافة ============ */
     .section {
-      margin-top: var(--sp-lg);
-      background: var(--surface);
+      margin-top: var(--sp-md);
+      background: color-mix(in srgb, var(--surface) 60%, transparent);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .section:first-child { margin-top: 0; }
     .section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: var(--sp-md) var(--sp-lg);
-      background: var(--surface-2);
+      padding: var(--sp-sm) var(--sp-md);
+      background: transparent;
       border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .section-head::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      right: var(--sp-lg);
-      width: 32px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width .3s ease;
-    }
-    .section:hover .section-head::after {
-      width: 48px;
     }
     .section-title {
       color: var(--text);
-      font-size: var(--fs-md);
+      font-size: var(--fs-sm);
       font-weight: var(--fw-bold);
-      letter-spacing: -.2px;
+      letter-spacing: -.1px;
     }
     .section-count {
-      min-width: 28px;
-      height: 28px;
-      padding: 0 8px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 6px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border-radius: var(--radius-full);
-      background: var(--accent);
-      color: #fff;
-      font-size: var(--fs-sm);
+      background: var(--surface-3);
+      color: var(--muted);
+      font-size: var(--fs-xs);
       font-weight: var(--fw-bold);
     }
     .task-list {
-      padding: var(--sp-sm) var(--sp-lg);
+      padding: 0 var(--sp-md);
       display: flex;
       flex-direction: column;
       overflow: visible;
@@ -206,7 +192,7 @@
       position: relative;
     }
 
-    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease, transform .2s cubic-bezier(.2,.8,.2,1); cursor: pointer; touch-action: pan-y; }
+    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 52px; padding: var(--sp-xs) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease; cursor: pointer; touch-action: pan-y; }
     .task:last-child { border-bottom: 0; }
     .task.just-completed { animation: completeRow .5s ease; }
     @keyframes completeRow { 0% { background: transparent; } 42% { background: var(--accent-soft); } 100% { background: transparent; } }
@@ -217,40 +203,29 @@
       pointer-events: none;
     }
 
-    .task.dragging {
-      opacity: .35;
-      pointer-events: none;
-    }
-
     .drag-ghost {
       position: fixed !important;
       z-index: 9999 !important;
       margin: 0 !important;
       pointer-events: none !important;
-      opacity: .97 !important;
+      opacity: .95 !important;
       background: var(--surface) !important;
       border: 1px solid var(--border-strong) !important;
       border-radius: var(--radius-md) !important;
       box-shadow: var(--shadow-drag) !important;
-      will-change: left, top, transform;
+      will-change: left, top;
       transition: none !important;
       cursor: grabbing !important;
-      transform: scale(1.02) !important;
     }
 
     .drag-indicator {
-      position: relative;
-      height: 3px;
-      background: var(--drop-indicator-color);
-      border-radius: var(--radius-full);
+      height: 2px;
+      background: var(--accent);
+      opacity: .5;
+      border-radius: 2px;
       margin: 0;
-      animation: dropIndicatorGrow .2s cubic-bezier(.2,.8,.2,1);
-      box-shadow: 0 0 8px rgba(66, 133, 244, .3);
-    }
-
-    @keyframes dropIndicatorGrow {
-      0% { transform: scaleX(0); opacity: 0; }
-      100% { transform: scaleX(1); opacity: 1; }
+      box-shadow: none;
+      animation: none;
     }
 
     html.nawy-drag-active,
@@ -271,42 +246,43 @@
     .task-meta { margin-top: 3px; display: flex; align-items: center; gap: 6px; }
     .task-meta-day { color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-medium); }
 
-    .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 26px; transition: color .16s ease, background .16s ease, transform .14s ease; }
+    .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 24px; transition: color .16s ease, background .16s ease, transform .14s ease; }
     .task-star:active { transform: scale(.9); }
     .task-star.active { color: var(--warning); background: transparent; }
 
     .completed-section {
       margin-top: var(--sp-md);
-      background: var(--surface);
+      background: color-mix(in srgb, var(--surface) 60%, transparent);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .completed-toggle {
       width: 100%;
-      min-height: 52px;
-      padding: var(--sp-md) var(--sp-lg);
+      min-height: 44px;
+      padding: var(--sp-xs) var(--sp-md);
       display: flex;
       align-items: center;
       justify-content: flex-start;
       gap: var(--sp-sm);
-      background: var(--surface-2);
+      background: transparent;
       border-bottom: 1px solid var(--border);
-      transition: all .2s ease;
+      transition: background .15s ease;
     }
     .completed-toggle:active {
-      background: var(--surface-3);
+      background: var(--surface-2);
     }
     .completed-toggle-title {
       color: var(--text);
-      font-size: var(--fs-md);
+      font-size: var(--fs-sm);
       font-weight: var(--fw-bold);
     }
     .completed-toggle-count {
-      min-width: 24px;
-      height: 24px;
-      padding: 0 6px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -317,36 +293,32 @@
       font-weight: var(--fw-bold);
     }
     .completed-toggle-chevron {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       display: grid;
       place-items: center;
       border-radius: var(--radius-full);
       background: transparent;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: var(--fw-bold);
       line-height: 1;
       transition: transform .25s cubic-bezier(.2,.8,.2,1), color .18s ease;
       margin-right: auto;
     }
     .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); color: var(--accent); }
-    .completed-toggle.open .completed-toggle-title { color: var(--text); }
     .completed-list-wrap {
       overflow: hidden;
       max-height: 0;
       opacity: 0;
-      transform: translateY(-2px);
-      transition: max-height .30s cubic-bezier(.2,.8,.2,1), opacity .20s ease, transform .22s ease, margin-top .20s ease;
+      transition: max-height .30s cubic-bezier(.2,.8,.2,1), opacity .20s ease;
     }
     .completed-list-wrap.open {
       max-height: 4000px;
       opacity: 1;
-      transform: translateY(0);
-      margin-top: 0;
     }
     .completed-list-wrap .task-list {
-      padding: var(--sp-sm) var(--sp-lg);
+      padding: 0 var(--sp-md);
     }
 
     .task-empty { padding: 36px var(--sp-xl); text-align: center; border-radius: var(--radius-lg); background: transparent; border: 1px solid var(--border); color: var(--muted); }
@@ -483,11 +455,11 @@
       .header-tab { padding: 0 var(--sp-xs) 6px; font-size: var(--fs-md); }
       .header-tab-star { font-size: 18px; }
       .hero { padding-left: 0; padding-right: 0; }
-      .task { min-height: 52px; padding: var(--sp-xs) 0; gap: var(--sp-sm); }
+      .task { min-height: 48px; padding: var(--sp-xs) 0; gap: var(--sp-sm); }
       .task-text { font-size: var(--fs-md); }
       .task-checkbox { width: 28px; height: 28px; }
-      .task-star { width: 42px; height: 42px; font-size: 22px; }
-      .completed-toggle { min-height: 44px; }
+      .task-star { width: 40px; height: 40px; font-size: 20px; }
+      .completed-toggle { min-height: 40px; }
       .composer-wrap { padding: 0 var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom)); }
       .composer-panel { padding: var(--sp-md) var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom)); }
       .install-banner { align-items: flex-start; gap: var(--sp-sm); padding: var(--sp-sm); }
@@ -497,11 +469,11 @@
       .pin-key { min-height: 44px; font-size: 18px; }
       .sheet { padding: var(--sp-md); }
       .sheet-close-btn { top: 8px; left: 8px; }
-      .section { margin-top: var(--sp-md); }
-      .section-head { padding: var(--sp-sm) var(--sp-md); }
-      .task-list { padding: var(--sp-xs) var(--sp-md); }
-      .completed-toggle { padding: var(--sp-sm) var(--sp-md); }
-      .completed-list-wrap .task-list { padding: var(--sp-xs) var(--sp-md); }
+      .section { margin-top: var(--sp-sm); }
+      .section-head { padding: var(--sp-xs) var(--sp-sm); }
+      .task-list { padding: 0 var(--sp-sm); }
+      .completed-toggle { padding: var(--sp-xs) var(--sp-sm); }
+      .completed-list-wrap .task-list { padding: 0 var(--sp-sm); }
       .brand-mark { width: 32px; height: 32px; }
       .menu-btn { width: 42px; height: 42px; font-size: 24px; }
       .time-input { width: 100px; min-height: 36px; font-size: var(--fs-sm); }
@@ -825,7 +797,7 @@
         deleted: "تم التراجع عن النية", restored: "تم استرجاع النية", deletedForever: "تم الحذف نهائيًا", edited: "تم تعديل النية بنجاح", writeFirst: "اكتب النية الأول",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.", noIntentionsAll: "لسه مفيش نوايا", everyThingStarts: "كل حاجة تبدأ بنية.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.", noAchievements: "لسه مفيش إنجازات", achievementHint: "أول ما تتمم نية هتظهر هنا.",
-        currentIntentions: "نواياي", favoriteSection: "مفضلاتي", allDoneSection: "المكتملة", trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
+        currentIntentions: "نواياي", favoriteSection: "المفضلة النشطة", favoriteCompletedSection: "المفضلة المكتملة", allDoneSection: "المكتملة", trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
         restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد", dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.", removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
         installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.", install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
         updateAvailable: "تحديث جديد من ناوي متاح.", update: "تحديث", undo: "استرجاع",
@@ -848,7 +820,7 @@
         deleted: "Stepped back from intention", restored: "Intention restored", deletedForever: "Deleted permanently", edited: "Intention updated successfully", writeFirst: "Write the intention first",
         noIntentions: "No intentions yet", firstIntent: "Write the first intention you have for today.", noIntentionsAll: "No intentions yet", everyThingStarts: "Everything starts with an intention.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.", noAchievements: "No achievements yet", achievementHint: "Once you complete an intention, it will appear here.",
-        currentIntentions: "My intentions", favoriteSection: "My favorites", allDoneSection: "Completed", trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
+        currentIntentions: "My intentions", favoriteSection: "Active favorites", favoriteCompletedSection: "Completed favorites", allDoneSection: "Completed", trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
         restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day you want this intention to appear.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
         installTitle: "Install NAWY on your device", installText: "Keep it faster and easier than opening the browser.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
         updateAvailable: "A new NAWY update is available.", update: "Update", undo: "Restore",
@@ -974,34 +946,9 @@
     function updateHero() { const titles = { today: t("heroToday"), all: t("all"), favorites: t("favorites") }; heroTitle.textContent = titles[currentView] || titles.today; }
     function renderToday() { const today = getTodayTasks(); const completed = getCompletedToday(); if (today.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentions"), t("firstIntent"))); return; } if (today.length > 0) content.appendChild(createSection(t("today"), today)); if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed)); }
     function renderAll() { const active = getAllActive(); const completed = getAllCompleted(); if (active.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentionsAll"), t("everyThingStarts"))); return; } if (active.length > 0) content.appendChild(createSection(t("currentIntentions"), active)); if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed)); }
-    function renderFavorites() { const favorites = getFavorites(); if (favorites.length === 0) { content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint"))); return; } content.appendChild(createSection(t("favoriteSection"), favorites)); }
+    function renderFavorites() { const favoriteActive = tasks.filter(task => task.starred && !task.completed); const favoriteCompleted = tasks.filter(task => task.starred && task.completed); if (favoriteActive.length === 0 && favoriteCompleted.length === 0) { content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint"))); return; } if (favoriteActive.length > 0) { content.appendChild(createSection(t("favoriteSection"), favoriteActive)); } if (favoriteCompleted.length > 0) { content.appendChild(createCompletedToggleSection(favoriteCompleted)); } }
     function createCompletedToggleSection(taskArray) { const section = document.createElement("section"); section.className = "completed-section"; const toggle = document.createElement("button"); toggle.type = "button"; toggle.className = "completed-toggle" + (completedExpanded ? " open" : ""); toggle.setAttribute("aria-expanded", String(completedExpanded)); toggle.setAttribute("aria-controls", "completedTasksPanel"); const title = document.createElement("span"); title.className = "completed-toggle-title"; title.textContent = t("completedSection"); const count = document.createElement("span"); count.className = "completed-toggle-count"; count.textContent = taskArray.length; const chevron = document.createElement("span"); chevron.className = "completed-toggle-chevron"; chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; toggle.append(title, count, chevron); const listWrap = document.createElement("div"); listWrap.id = "completedTasksPanel"; listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : ""); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, true, true)); }); listWrap.appendChild(list); toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); }); section.append(toggle, listWrap); return section; }
     function createSection(title, taskArray, showMeta = false, completedSection = false) { const section = document.createElement("section"); section.className = "section"; const head = document.createElement("div"); head.className = "section-head"; const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title; const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length; head.append(titleEl, count); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); }); section.append(head, list); return section; }
-    
-    function reorderVisibleTasks(list, draggedTaskId) {
-      if (!list || !draggedTaskId) return;
-      
-      const visibleIds = [...list.querySelectorAll(".task")]
-        .map(el => el.dataset.taskId)
-        .filter(Boolean);
-      
-      if (visibleIds.length < 2) return;
-      
-      const draggedIndex = tasks.findIndex(task => task.id === draggedTaskId);
-      if (draggedIndex === -1) return;
-      
-      const [draggedTask] = tasks.splice(draggedIndex, 1);
-      
-      const newIndex = visibleIds.indexOf(draggedTaskId);
-      
-      if (newIndex === -1) {
-        tasks.push(draggedTask);
-      } else {
-        tasks.splice(newIndex, 0, draggedTask);
-      }
-      
-      saveTasks();
-    }
 
     function createTaskElement(task, showMeta = false, completedSection = false) {
       const article = document.createElement("article");
@@ -1069,21 +1016,19 @@
 
     function setupDragAndDrop(article, task) {
       let longPressTimer = null;
-      let pointerId = null;
-      let pointerDown = false;
       let dragState = null;
+      let pointerDown = false;
       let didMove = false;
       let startX = 0;
       let startY = 0;
       let lastClientY = 0;
       let autoScrollFrame = null;
       let autoScrollDirection = 0;
-      let autoScrollSpeed = 0;
 
       const LONG_PRESS_MS = 250;
-      const MOVE_CANCEL_DISTANCE = 10;
-      const EDGE_ZONE = 80;
-      const MAX_AUTO_SCROLL = 15;
+      const MOVE_CANCEL_DISTANCE = 8;
+      const EDGE_ZONE = 70;
+      const MAX_AUTO_SCROLL = 18;
 
       function clearLongPress() {
         if (longPressTimer !== null) {
@@ -1100,7 +1045,6 @@
 
       function stopAutoScroll() {
         autoScrollDirection = 0;
-        autoScrollSpeed = 0;
         if (autoScrollFrame !== null) {
           cancelAnimationFrame(autoScrollFrame);
           autoScrollFrame = null;
@@ -1109,22 +1053,16 @@
 
       function setAutoScroll(clientY) {
         if (!dragState) return;
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const viewportHeight = window.innerHeight;
         let direction = 0;
-        let speed = 0;
 
         if (clientY < EDGE_ZONE) {
           direction = -1;
-          const intensity = Math.min(1, Math.max(0, (EDGE_ZONE - clientY) / EDGE_ZONE));
-          speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
         } else if (clientY > viewportHeight - EDGE_ZONE) {
           direction = 1;
-          const intensity = Math.min(1, Math.max(0, (clientY - (viewportHeight - EDGE_ZONE)) / EDGE_ZONE));
-          speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
         }
 
         autoScrollDirection = direction;
-        autoScrollSpeed = speed;
 
         if (direction !== 0 && autoScrollFrame === null) {
           autoScrollFrame = requestAnimationFrame(autoScrollLoop);
@@ -1138,12 +1076,12 @@
           autoScrollFrame = null;
           return;
         }
-        window.scrollBy(0, autoScrollDirection * autoScrollSpeed);
-        updateDropIndicator(lastClientY);
+        window.scrollBy(0, autoScrollDirection * MAX_AUTO_SCROLL);
+        updateDropPosition(lastClientY);
         autoScrollFrame = requestAnimationFrame(autoScrollLoop);
       }
 
-      function updateDropIndicator(clientY) {
+      function updateDropPosition(clientY) {
         if (!dragState) return;
         const { list, indicator } = dragState;
         const items = [...list.querySelectorAll(".task:not(.completed):not(.drag-source)")].filter(el => el !== article);
@@ -1158,13 +1096,9 @@
         }
 
         if (before) {
-          if (indicator.parentNode !== list || indicator.nextElementSibling !== before) {
-            list.insertBefore(indicator, before);
-          }
+          list.insertBefore(indicator, before);
         } else {
-          if (indicator.parentNode !== list || indicator !== list.lastElementChild) {
-            list.appendChild(indicator);
-          }
+          list.appendChild(indicator);
         }
       }
 
@@ -1176,8 +1110,6 @@
         const rect = article.getBoundingClientRect();
         const indicator = document.createElement("div");
         indicator.className = "drag-indicator";
-        indicator.style.width = `${rect.width}px`;
-        indicator.setAttribute("aria-hidden", "true");
 
         const ghost = article.cloneNode(true);
         ghost.classList.add("drag-ghost");
@@ -1206,8 +1138,6 @@
 
         didMove = false;
         lockDragSurface(true);
-        updateDropIndicator(event.clientY);
-        setAutoScroll(event.clientY);
 
         if (navigator.vibrate) {
           try { navigator.vibrate(10); } catch {}
@@ -1227,7 +1157,7 @@
         dragState.ghost.style.left = `${x}px`;
         dragState.ghost.style.top = `${y}px`;
 
-        updateDropIndicator(event.clientY);
+        updateDropPosition(event.clientY);
         setAutoScroll(event.clientY);
       }
 
@@ -1237,31 +1167,40 @@
 
         if (!dragState) {
           pointerDown = false;
-          pointerId = null;
           return;
         }
 
         const { list, indicator, ghost, draggedTaskId } = dragState;
 
         if (!cancelled && didMove) {
-          reorderVisibleTasks(list, draggedTaskId);
+          const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
+          const activeTasks = tasks.filter(t => !t.completed);
+          const completedTasks = tasks.filter(t => t.completed);
+          const taskMap = new Map();
+          activeTasks.forEach(t => taskMap.set(t.id, t));
+          
+          const reorderedActive = [];
+          newOrder.forEach(id => {
+            if (taskMap.has(id)) {
+              reorderedActive.push(taskMap.get(id));
+              taskMap.delete(id);
+            }
+          });
+          taskMap.forEach(t => reorderedActive.push(t));
+          
+          tasks = [...reorderedActive, ...completedTasks];
+          saveTasks();
           render();
         } else {
           article.classList.remove("drag-source");
-        }
-
-        article.dataset.dragMoved = didMove ? "true" : "false";
-
-        if (indicator.parentNode) {
-          indicator.parentNode.removeChild(indicator);
-        }
-        if (ghost.parentNode) {
-          ghost.parentNode.removeChild(ghost);
+          article.dataset.dragMoved = "false";
+          
+          if (indicator.parentNode) indicator.parentNode.removeChild(indicator);
+          if (ghost.parentNode) ghost.parentNode.removeChild(ghost);
         }
 
         dragState = null;
         pointerDown = false;
-        pointerId = null;
         lockDragSurface(false);
 
         if (didMove) {
@@ -1277,38 +1216,51 @@
         }
       }
 
-      article.addEventListener("pointerdown", event => {
-        if (event.pointerType === "mouse" && event.button !== 0) return;
+      article.addEventListener("mousedown", event => {
+        if (event.button !== 0) return;
         if (event.target.closest("button")) return;
         if (dragState) return;
 
         pointerDown = true;
-        pointerId = event.pointerId;
         startX = event.clientX;
         startY = event.clientY;
         lastClientY = event.clientY;
         didMove = false;
 
         clearLongPress();
-
         longPressTimer = setTimeout(() => {
           if (!pointerDown || dragState) return;
           startDrag(event);
         }, LONG_PRESS_MS);
       });
 
-      article.addEventListener("pointermove", event => {
+      article.addEventListener("touchstart", event => {
+        if (event.touches.length !== 1) return;
+        if (event.target.closest("button")) return;
+        if (dragState) return;
+
+        const touch = event.touches[0];
+        pointerDown = true;
+        startX = touch.clientX;
+        startY = touch.clientY;
+        lastClientY = touch.clientY;
+        didMove = false;
+
+        clearLongPress();
+        longPressTimer = setTimeout(() => {
+          if (!pointerDown || dragState) return;
+          startDrag(touch);
+        }, LONG_PRESS_MS);
+      }, { passive: true });
+
+      article.addEventListener("mousemove", event => {
         if (!pointerDown) return;
 
         if (!dragState) {
-          const dx = event.clientX - startX;
-          const dy = event.clientY - startY;
-          const distance = Math.hypot(dx, dy);
-
+          const distance = Math.hypot(event.clientX - startX, event.clientY - startY);
           if (distance > MOVE_CANCEL_DISTANCE) {
             clearLongPress();
             pointerDown = false;
-            pointerId = null;
           }
           return;
         }
@@ -1316,12 +1268,28 @@
         moveDrag(event);
       });
 
-      article.addEventListener("pointerup", () => finishDrag(false));
-      article.addEventListener("pointercancel", () => finishDrag(true));
+      article.addEventListener("touchmove", event => {
+        if (!pointerDown) return;
+        if (event.touches.length !== 1) return;
 
-      article.addEventListener("lostpointercapture", () => {
-        if (dragState) finishDrag(true);
-      });
+        const touch = event.touches[0];
+
+        if (!dragState) {
+          const distance = Math.hypot(touch.clientX - startX, touch.clientY - startY);
+          if (distance > MOVE_CANCEL_DISTANCE) {
+            clearLongPress();
+            pointerDown = false;
+          }
+          return;
+        }
+
+        event.preventDefault();
+        moveDrag(touch);
+      }, { passive: false });
+
+      article.addEventListener("mouseup", () => finishDrag(false));
+      article.addEventListener("touchend", () => finishDrag(false));
+      article.addEventListener("touchcancel", () => finishDrag(true));
     }
 
     function createEmptyState(symbol, title, message) { const box = document.createElement("div"); box.className = "task-empty"; box.innerHTML = `<div class="empty-symbol">${escapeHtml(symbol)}</div><div class="empty-title">${escapeHtml(title)}</div><div class="empty-text">${escapeHtml(message)}</div>`; return box; }
