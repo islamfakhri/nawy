@@ -967,7 +967,8 @@
       buffer: "",
       newPin: "",
       newPinConfirm: "",
-      currentPin: ""
+      currentPin: "",
+      tempPin: "" // إضافة متغير مؤقت لحفظ الرمز أثناء إعداد سنة الميلاد
     };
 
     const $ = selector => document.querySelector(selector);
@@ -2047,7 +2048,8 @@
             pinSaveBtn.classList.add("hidden");
           } else {
             if (enteredPin === pinState.newPin) {
-              // الرمز صحيح، ننتقل إلى خطوة سنة الميلاد
+              // حفظ الرمز في متغير مؤقت قبل الانتقال لسنة الميلاد
+              pinState.tempPin = enteredPin;
               showPinOverlay("setupBirthYear");
             } else {
               pinError.textContent = t("pinErrorMismatch");
@@ -2057,10 +2059,10 @@
           }
           break;
         case "setupBirthYear":
-          if (enteredPin.length === 4 && /^\d{4}$/.test(enteredPin)) {
+          if (/^\d{4}$/.test(enteredPin)) {
             settings.birthYear = enteredPin;
+            settings.pin = pinState.tempPin; // استرجاع الرمز المحفوظ
             settings.lockEnabled = true;
-            settings.pin = pinState.newPin; // حفظ الرمز الذي تم تأكيده
             saveSettings();
             updatePinButtonText();
             hidePinOverlay();
@@ -2167,7 +2169,11 @@
     });
     pinCloseBtn.addEventListener("click", hidePinOverlay);
     changeBirthYearBtn.addEventListener("click", () => {
-      if (settings.lockEnabled) showPinOverlay("setupBirthYear");
+      if (settings.lockEnabled) {
+        // حفظ الرمز الحالي مؤقتًا حتى لا يضيع
+        pinState.tempPin = settings.pin;
+        showPinOverlay("setupBirthYear");
+      }
     });
 
     // Keyboard support for PIN
