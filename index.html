@@ -44,6 +44,7 @@
       --shadow-soft: 0 1px 3px rgba(0,0,0,.03);
       --shadow-card: 0 2px 8px rgba(0,0,0,.04);
       --shadow-sheet: 0 16px 50px rgba(0,0,0,.12);
+      --shadow-drag: 0 12px 32px rgba(0,0,0,.18);
       --radius-sm: 10px;
       --radius-md: 14px;
       --radius-lg: 18px;
@@ -68,6 +69,7 @@
       --touch-checkbox: 32px;
       --touch-star: 46px;
       --fab-size: 56px;
+      --drop-indicator-color: #4285f4;
     }
 
     html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; --fs-hero: 19px; }
@@ -78,11 +80,13 @@
       --bg: #0e1010; --surface: #1a1d1d; --surface-2: #222626; --surface-3: #2c3131;
       --text: #eef1f1; --muted: #8b9494; --border: rgba(255,255,255,.05); --border-strong: rgba(255,255,255,.08);
       --shadow-soft: 0 1px 4px rgba(0,0,0,.15); --shadow-card: 0 4px 12px rgba(0,0,0,.20); --shadow-sheet: 0 20px 60px rgba(0,0,0,.40);
+      --shadow-drag: 0 16px 40px rgba(0,0,0,.50);
     }
-    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,.08); }
-    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,.08); }
-    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,.10); }
-    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,.08); }
+    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,.08); --drop-indicator-color: #3b82f6; }
+    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,.08); --drop-indicator-color: #8b5cf6; }
+    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,.10); --drop-indicator-color: #f59e0b; }
+    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,.08); --drop-indicator-color: #ec4899; }
+    html[data-accent="green"] { --drop-indicator-color: #19a974; }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { min-height: 100%; background: var(--bg); scroll-behavior: smooth; }
@@ -145,26 +149,21 @@
     .section-title { color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); letter-spacing: .2px; }
     .section-count { min-width: 22px; height: 22px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--surface-2); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); }
 
-    .task-list { display: flex; flex-direction: column; overflow: visible; border-radius: 0; background: transparent; border: 0; }
-    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease; cursor: pointer; touch-action: pan-y; }
+    .task-list { display: flex; flex-direction: column; overflow: visible; border-radius: 0; background: transparent; border: 0; position: relative; }
+    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease, transform .2s cubic-bezier(.2,.8,.2,1); cursor: pointer; touch-action: pan-y; }
     .task:last-child { border-bottom: 0; }
     .task.just-completed { animation: completeRow .5s ease; }
     @keyframes completeRow { 0% { background: transparent; } 42% { background: var(--accent-soft); } 100% { background: transparent; } }
     .task.completed { opacity: .55; }
 
     .task.drag-source {
-      visibility: hidden;
+      opacity: .35 !important;
       pointer-events: none;
     }
 
-    .task-placeholder {
-      min-height: 56px;
-      border-radius: var(--radius-md);
-      background: var(--accent-soft);
-      border: 1px dashed color-mix(in srgb, var(--accent) 35%, transparent);
-      opacity: .75;
+    .task.dragging {
+      opacity: .35;
       pointer-events: none;
-      transition: height .12s ease, opacity .12s ease;
     }
 
     .drag-ghost {
@@ -176,10 +175,26 @@
       background: var(--surface) !important;
       border: 1px solid var(--border-strong) !important;
       border-radius: var(--radius-md) !important;
-      box-shadow: 0 14px 34px rgba(0,0,0,.16) !important;
+      box-shadow: var(--shadow-drag) !important;
       will-change: left, top, transform;
       transition: none !important;
       cursor: grabbing !important;
+      transform: scale(1.02) !important;
+    }
+
+    .drag-indicator {
+      position: relative;
+      height: 3px;
+      background: var(--drop-indicator-color);
+      border-radius: var(--radius-full);
+      margin: 0;
+      animation: dropIndicatorGrow .2s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 0 8px rgba(66, 133, 244, .3);
+    }
+
+    @keyframes dropIndicatorGrow {
+      0% { transform: scaleX(0); opacity: 0; }
+      100% { transform: scaleX(1); opacity: 1; }
     }
 
     html.nawy-drag-active,
@@ -818,31 +833,25 @@
     function renderFavorites() { const favorites = getFavorites(); if (favorites.length === 0) { content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint"))); return; } content.appendChild(createSection(t("favoriteSection"), favorites)); }
     function createCompletedToggleSection(taskArray) { const section = document.createElement("section"); section.className = "completed-section"; const toggle = document.createElement("button"); toggle.type = "button"; toggle.className = "completed-toggle" + (completedExpanded ? " open" : ""); toggle.setAttribute("aria-expanded", String(completedExpanded)); toggle.setAttribute("aria-controls", "completedTasksPanel"); const title = document.createElement("span"); title.className = "completed-toggle-title"; title.textContent = t("completedSection"); const count = document.createElement("span"); count.className = "completed-toggle-count"; count.textContent = taskArray.length; const chevron = document.createElement("span"); chevron.className = "completed-toggle-chevron"; chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; toggle.append(title, count, chevron); const listWrap = document.createElement("div"); listWrap.id = "completedTasksPanel"; listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : ""); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, true, true)); }); listWrap.appendChild(list); toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); }); section.append(toggle, listWrap); return section; }
     function createSection(title, taskArray, showMeta = false, completedSection = false) { const section = document.createElement("section"); section.className = "section"; const head = document.createElement("div"); head.className = "section-head"; const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title; const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length; head.append(titleEl, count); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); }); section.append(head, list); return section; }
+    
     function reorderVisibleTasks(list) {
       if (!list) return;
-
       const visibleIds = [...list.querySelectorAll(".task:not(.completed)")]
         .map(el => el.dataset.taskId)
         .filter(Boolean);
-
       if (visibleIds.length < 2) return;
-
       const visibleIdSet = new Set(visibleIds);
       const visibleTasks = visibleIds
         .map(id => tasks.find(task => task.id === id))
         .filter(Boolean);
-
       if (visibleTasks.length !== visibleIds.length) return;
-
       const activeTasks = tasks.filter(task => !task.completed);
       const completedTasks = tasks.filter(task => task.completed);
-
       let visibleIndex = 0;
       const reorderedActive = activeTasks.map(task => {
         if (!visibleIdSet.has(task.id)) return task;
         return visibleTasks[visibleIndex++];
       });
-
       tasks = [...reorderedActive, ...completedTasks];
       saveTasks();
     }
@@ -874,11 +883,9 @@
       if (task.repeat && task.repeat !== "none") {
         const meta = document.createElement("div");
         meta.className = "task-meta";
-
         const repeatText = document.createElement("span");
         repeatText.className = "task-meta-day";
         repeatText.textContent = `🔁 ${t("repeat" + task.repeat.charAt(0).toUpperCase() + task.repeat.slice(1))}`;
-
         meta.appendChild(repeatText);
         main.appendChild(meta);
       }
@@ -890,7 +897,6 @@
           event.preventDefault();
           return;
         }
-
         openAction(task.id);
       });
 
@@ -898,12 +904,7 @@
       star.type = "button";
       star.className = "task-star" + (task.starred ? " active" : "");
       star.innerHTML = task.starred ? "★" : "☆";
-      star.setAttribute(
-        "aria-label",
-        task.starred
-          ? (settings.language === "en" ? "Remove favorite" : "إزالة من المفضلة")
-          : (settings.language === "en" ? "Favorite" : "إضافة للمفضلة")
-      );
+      star.setAttribute("aria-label", task.starred ? (settings.language === "en" ? "Remove favorite" : "إزالة من المفضلة") : (settings.language === "en" ? "Favorite" : "إضافة للمفضلة"));
       star.setAttribute("aria-pressed", String(task.starred));
       star.addEventListener("click", event => {
         event.stopPropagation();
@@ -912,279 +913,271 @@
 
       article.append(checkbox, main, star);
 
-      /*
-       * Reordering interaction:
-       * - quick tap -> normal task actions
-       * - long press -> drag
-       * - drag can start from any non-button area of the task
-       * - normal vertical scroll is never blocked outside an active drag
-       * - the dragged item becomes a floating ghost
-       * - a placeholder keeps the list stable
-       * - order is committed only after release
-       */
       if (!task.completed && !completedSection) {
-        let longPressTimer = null;
-        let pointerId = null;
-        let pointerDown = false;
-        let dragState = null;
-        let didMove = false;
-        let startX = 0;
-        let startY = 0;
-        let lastClientY = 0;
-        let autoScrollFrame = null;
-        let autoScrollDirection = 0;
-        let autoScrollSpeed = 0;
-
-        const LONG_PRESS_MS = 330;
-        const MOVE_CANCEL_DISTANCE = 12;
-        const EDGE_ZONE = 72;
-        const MAX_AUTO_SCROLL = 13;
-
-        function clearLongPress() {
-          if (longPressTimer !== null) {
-            clearTimeout(longPressTimer);
-            longPressTimer = null;
-          }
-        }
-
-        function lockDragSurface(locked) {
-          document.documentElement.classList.toggle("nawy-drag-active", locked);
-          document.body.classList.toggle("nawy-drag-active", locked);
-          document.body.style.userSelect = locked ? "none" : "";
-        }
-
-        function stopAutoScroll() {
-          autoScrollDirection = 0;
-          autoScrollSpeed = 0;
-
-          if (autoScrollFrame !== null) {
-            cancelAnimationFrame(autoScrollFrame);
-            autoScrollFrame = null;
-          }
-        }
-
-        function setAutoScroll(clientY) {
-          if (!dragState) return;
-
-          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-          let direction = 0;
-          let speed = 0;
-
-          if (clientY < EDGE_ZONE) {
-            direction = -1;
-            const intensity = Math.min(1, Math.max(0, (EDGE_ZONE - clientY) / EDGE_ZONE));
-            speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
-          } else if (clientY > viewportHeight - EDGE_ZONE) {
-            direction = 1;
-            const intensity = Math.min(1, Math.max(0, (clientY - (viewportHeight - EDGE_ZONE)) / EDGE_ZONE));
-            speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
-          }
-
-          autoScrollDirection = direction;
-          autoScrollSpeed = speed;
-
-          if (direction !== 0 && autoScrollFrame === null) {
-            autoScrollFrame = requestAnimationFrame(autoScrollLoop);
-          } else if (direction === 0) {
-            stopAutoScroll();
-          }
-        }
-
-        function autoScrollLoop() {
-          if (!dragState || autoScrollDirection === 0) {
-            autoScrollFrame = null;
-            return;
-          }
-
-          window.scrollBy(0, autoScrollDirection * autoScrollSpeed);
-          updateDropTarget(lastClientY);
-          autoScrollFrame = requestAnimationFrame(autoScrollLoop);
-        }
-
-        function updateDropTarget(clientY) {
-          if (!dragState) return;
-
-          const { list, placeholder } = dragState;
-          const items = [...list.querySelectorAll(".task:not(.completed)")]
-            .filter(el => el !== article && el !== placeholder);
-
-          let before = null;
-
-          for (const item of items) {
-            const rect = item.getBoundingClientRect();
-            if (clientY < rect.top + rect.height / 2) {
-              before = item;
-              break;
-            }
-          }
-
-          if (before) {
-            if (placeholder.nextElementSibling !== before) {
-              list.insertBefore(placeholder, before);
-            }
-          } else if (placeholder.parentNode === list && placeholder !== list.lastElementChild) {
-            list.appendChild(placeholder);
-          }
-        }
-
-        function startDrag(event) {
-          if (dragState || !pointerDown) return;
-
-          const list = article.closest(".task-list");
-          if (!list) return;
-
-          const rect = article.getBoundingClientRect();
-
-          const placeholder = document.createElement("div");
-          placeholder.className = "task-placeholder";
-          placeholder.style.height = `${rect.height}px`;
-          placeholder.style.width = `${rect.width}px`;
-          placeholder.setAttribute("aria-hidden", "true");
-
-          const ghost = article.cloneNode(true);
-          ghost.classList.add("drag-ghost");
-          ghost.style.width = `${rect.width}px`;
-          ghost.style.height = `${rect.height}px`;
-          ghost.style.left = `${rect.left}px`;
-          ghost.style.top = `${rect.top}px`;
-          ghost.style.transform = "scale(1.015)";
-
-          ghost.querySelectorAll("button").forEach(button => {
-            button.tabIndex = -1;
-            button.setAttribute("aria-hidden", "true");
-          });
-
-          document.body.appendChild(ghost);
-          list.insertBefore(placeholder, article);
-          article.classList.add("drag-source");
-
-          dragState = {
-            list,
-            placeholder,
-            ghost,
-            offsetX: event.clientX - rect.left,
-            offsetY: event.clientY - rect.top
-          };
-
-          didMove = false;
-          lockDragSurface(true);
-          updateDropTarget(event.clientY);
-          setAutoScroll(event.clientY);
-        }
-
-        function moveDrag(event) {
-          if (!dragState) return;
-
-          event.preventDefault();
-
-          lastClientY = event.clientY;
-          didMove = true;
-          article.dataset.dragMoved = "true";
-
-          const x = event.clientX - dragState.offsetX;
-          const y = event.clientY - dragState.offsetY;
-
-          dragState.ghost.style.left = `${x}px`;
-          dragState.ghost.style.top = `${y}px`;
-
-          updateDropTarget(event.clientY);
-          setAutoScroll(event.clientY);
-        }
-
-        function finishDrag(cancelled = false) {
-          clearLongPress();
-          stopAutoScroll();
-
-          if (!dragState) {
-            pointerDown = false;
-            pointerId = null;
-            return;
-          }
-
-          const { list, placeholder, ghost } = dragState;
-
-          if (cancelled) {
-            placeholder.replaceWith(article);
-          } else {
-            placeholder.replaceWith(article);
-            reorderVisibleTasks(list);
-          }
-
-          article.classList.remove("drag-source");
-          article.dataset.dragMoved = didMove ? "true" : "false";
-
-          if (ghost.parentNode) {
-            ghost.parentNode.removeChild(ghost);
-          }
-
-          dragState = null;
-          pointerDown = false;
-          pointerId = null;
-          lockDragSurface(false);
-
-          if (didMove) {
-            swipeSuppressClick = true;
-            setTimeout(() => {
-              swipeSuppressClick = false;
-            }, 250);
-
-            setTimeout(() => {
-              article.dataset.dragMoved = "false";
-            }, 250);
-          }
-        }
-
-        article.addEventListener("pointerdown", event => {
-          if (event.pointerType === "mouse" && event.button !== 0) return;
-          if (event.target.closest("button")) return;
-          if (dragState) return;
-
-          pointerDown = true;
-          pointerId = event.pointerId;
-          startX = event.clientX;
-          startY = event.clientY;
-          lastClientY = event.clientY;
-          didMove = false;
-
-          clearLongPress();
-
-          longPressTimer = setTimeout(() => {
-            if (!pointerDown || dragState) return;
-            startDrag(event);
-          }, LONG_PRESS_MS);
-        });
-
-        article.addEventListener("pointermove", event => {
-          if (!pointerDown) return;
-
-          if (!dragState) {
-            const distance = Math.hypot(
-              event.clientX - startX,
-              event.clientY - startY
-            );
-
-            if (distance > MOVE_CANCEL_DISTANCE) {
-              clearLongPress();
-              pointerDown = false;
-              pointerId = null;
-            }
-
-            return;
-          }
-
-          moveDrag(event);
-        });
-
-        article.addEventListener("pointerup", () => finishDrag(false));
-        article.addEventListener("pointercancel", () => finishDrag(true));
-
-        article.addEventListener("lostpointercapture", () => {
-          if (dragState) finishDrag(true);
-        });
+        setupDragAndDrop(article, task);
       }
 
       return article;
     }
+
+    function setupDragAndDrop(article, task) {
+      let longPressTimer = null;
+      let pointerId = null;
+      let pointerDown = false;
+      let dragState = null;
+      let didMove = false;
+      let startX = 0;
+      let startY = 0;
+      let lastClientY = 0;
+      let autoScrollFrame = null;
+      let autoScrollDirection = 0;
+      let autoScrollSpeed = 0;
+
+      const LONG_PRESS_MS = 200;
+      const MOVE_CANCEL_DISTANCE = 8;
+      const EDGE_ZONE = 72;
+      const MAX_AUTO_SCROLL = 13;
+
+      function clearLongPress() {
+        if (longPressTimer !== null) {
+          clearTimeout(longPressTimer);
+          longPressTimer = null;
+        }
+      }
+
+      function lockDragSurface(locked) {
+        document.documentElement.classList.toggle("nawy-drag-active", locked);
+        document.body.classList.toggle("nawy-drag-active", locked);
+        document.body.style.userSelect = locked ? "none" : "";
+      }
+
+      function stopAutoScroll() {
+        autoScrollDirection = 0;
+        autoScrollSpeed = 0;
+        if (autoScrollFrame !== null) {
+          cancelAnimationFrame(autoScrollFrame);
+          autoScrollFrame = null;
+        }
+      }
+
+      function setAutoScroll(clientY) {
+        if (!dragState) return;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        let direction = 0;
+        let speed = 0;
+
+        if (clientY < EDGE_ZONE) {
+          direction = -1;
+          const intensity = Math.min(1, Math.max(0, (EDGE_ZONE - clientY) / EDGE_ZONE));
+          speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
+        } else if (clientY > viewportHeight - EDGE_ZONE) {
+          direction = 1;
+          const intensity = Math.min(1, Math.max(0, (clientY - (viewportHeight - EDGE_ZONE)) / EDGE_ZONE));
+          speed = 2 + intensity * (MAX_AUTO_SCROLL - 2);
+        }
+
+        autoScrollDirection = direction;
+        autoScrollSpeed = speed;
+
+        if (direction !== 0 && autoScrollFrame === null) {
+          autoScrollFrame = requestAnimationFrame(autoScrollLoop);
+        } else if (direction === 0) {
+          stopAutoScroll();
+        }
+      }
+
+      function autoScrollLoop() {
+        if (!dragState || autoScrollDirection === 0) {
+          autoScrollFrame = null;
+          return;
+        }
+        window.scrollBy(0, autoScrollDirection * autoScrollSpeed);
+        updateDropIndicator(lastClientY);
+        autoScrollFrame = requestAnimationFrame(autoScrollLoop);
+      }
+
+      function updateDropIndicator(clientY) {
+        if (!dragState) return;
+        const { list, indicator } = dragState;
+        const items = [...list.querySelectorAll(".task:not(.completed):not(.drag-source)")].filter(el => el !== article);
+
+        let before = null;
+        for (const item of items) {
+          const rect = item.getBoundingClientRect();
+          if (clientY < rect.top + rect.height / 2) {
+            before = item;
+            break;
+          }
+        }
+
+        if (before) {
+          if (indicator.parentNode !== list || indicator.nextElementSibling !== before) {
+            list.insertBefore(indicator, before);
+          }
+        } else {
+          if (indicator.parentNode !== list || indicator !== list.lastElementChild) {
+            list.appendChild(indicator);
+          }
+        }
+      }
+
+      function startDrag(event) {
+        if (dragState || !pointerDown) return;
+        const list = article.closest(".task-list");
+        if (!list) return;
+
+        const rect = article.getBoundingClientRect();
+        const indicator = document.createElement("div");
+        indicator.className = "drag-indicator";
+        indicator.style.width = `${rect.width}px`;
+        indicator.setAttribute("aria-hidden", "true");
+
+        const ghost = article.cloneNode(true);
+        ghost.classList.add("drag-ghost");
+        ghost.style.width = `${rect.width}px`;
+        ghost.style.height = `${rect.height}px`;
+        ghost.style.left = `${rect.left}px`;
+        ghost.style.top = `${rect.top}px`;
+
+        ghost.querySelectorAll("button").forEach(button => {
+          button.tabIndex = -1;
+          button.setAttribute("aria-hidden", "true");
+        });
+
+        document.body.appendChild(ghost);
+        list.insertBefore(indicator, article.nextElementSibling);
+        article.classList.add("drag-source");
+
+        dragState = {
+          list,
+          indicator,
+          ghost,
+          offsetX: event.clientX - rect.left,
+          offsetY: event.clientY - rect.top
+        };
+
+        didMove = false;
+        lockDragSurface(true);
+        updateDropIndicator(event.clientY);
+        setAutoScroll(event.clientY);
+
+        if (navigator.vibrate) {
+          try { navigator.vibrate(10); } catch {}
+        }
+      }
+
+      function moveDrag(event) {
+        if (!dragState) return;
+        event.preventDefault();
+        lastClientY = event.clientY;
+        didMove = true;
+        article.dataset.dragMoved = "true";
+
+        const x = event.clientX - dragState.offsetX;
+        const y = event.clientY - dragState.offsetY;
+
+        dragState.ghost.style.left = `${x}px`;
+        dragState.ghost.style.top = `${y}px`;
+
+        updateDropIndicator(event.clientY);
+        setAutoScroll(event.clientY);
+      }
+
+      function finishDrag(cancelled = false) {
+        clearLongPress();
+        stopAutoScroll();
+
+        if (!dragState) {
+          pointerDown = false;
+          pointerId = null;
+          return;
+        }
+
+        const { list, indicator, ghost } = dragState;
+
+        if (!cancelled) {
+          reorderVisibleTasks(list);
+        }
+
+        article.classList.remove("drag-source");
+        article.dataset.dragMoved = didMove ? "true" : "false";
+
+        if (indicator.parentNode) {
+          indicator.parentNode.removeChild(indicator);
+        }
+        if (ghost.parentNode) {
+          ghost.parentNode.removeChild(ghost);
+        }
+
+        dragState = null;
+        pointerDown = false;
+        pointerId = null;
+        lockDragSurface(false);
+
+        if (didMove) {
+          swipeSuppressClick = true;
+          setTimeout(() => {
+            swipeSuppressClick = false;
+            article.dataset.dragMoved = "false";
+          }, 250);
+        }
+
+        if (navigator.vibrate) {
+          try { navigator.vibrate(10); } catch {}
+        }
+      }
+
+      article.addEventListener("pointerdown", event => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        if (event.target.closest("button")) return;
+        if (dragState) return;
+
+        pointerDown = true;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        lastClientY = event.clientY;
+        didMove = false;
+
+        clearLongPress();
+
+        longPressTimer = setTimeout(() => {
+          if (!pointerDown || dragState) return;
+          startDrag(event);
+        }, LONG_PRESS_MS);
+      });
+
+      article.addEventListener("pointermove", event => {
+        if (!pointerDown) return;
+
+        if (!dragState) {
+          const dx = event.clientX - startX;
+          const dy = event.clientY - startY;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance > MOVE_CANCEL_DISTANCE) {
+            const absX = Math.abs(dx);
+            const absY = Math.abs(dy);
+            if (absY > absX) {
+              clearLongPress();
+              pointerDown = false;
+              pointerId = null;
+            }
+          }
+          return;
+        }
+
+        moveDrag(event);
+      });
+
+      article.addEventListener("pointerup", () => finishDrag(false));
+      article.addEventListener("pointercancel", () => finishDrag(true));
+
+      article.addEventListener("lostpointercapture", () => {
+        if (dragState) finishDrag(true);
+      });
+    }
+
     function createEmptyState(symbol, title, message) { const box = document.createElement("div"); box.className = "task-empty"; box.innerHTML = `<div class="empty-symbol">${escapeHtml(symbol)}</div><div class="empty-title">${escapeHtml(title)}</div><div class="empty-text">${escapeHtml(message)}</div>`; return box; }
     function updateHeaderNavState() { $$(".header-tab").forEach(button => { const active = button.dataset.view === currentView; button.classList.toggle("active", active); if (active) button.setAttribute("aria-current","page"); else button.removeAttribute("aria-current"); }); }
     function updateHeaderTabIndicator() { if (!headerNav || !headerTabIndicator) return; const activeTab = headerNav.querySelector(`.header-tab[data-view="${currentView}"]`); if (!activeTab) return; const navRect = headerNav.getBoundingClientRect(); const tabRect = activeTab.getBoundingClientRect(); const indicatorWidth = Math.max(22, Math.min(36, tabRect.width * .32)); const left = (tabRect.left - navRect.left + (tabRect.width - indicatorWidth)/2); headerNav.style.setProperty("--tab-indicator-width", `${indicatorWidth}px`); headerNav.style.setProperty("--tab-indicator-left", `${left}px`); }
