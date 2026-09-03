@@ -1,5 +1,5 @@
 // sw.js - Service Worker for ناوي (NAWY)
-const CACHE_NAME = 'nawy-cache-v3';
+const CACHE_NAME = 'nawy-cache-v4';
 const APP_SHELL = [
   './',
   './index.html',
