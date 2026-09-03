@@ -205,10 +205,6 @@
       border-radius: 10px;
     }
 
-    /* =========================
-       APP
-    ========================= */
-
     .app {
       width: min(100%, 760px);
       min-height: 100vh;
@@ -222,10 +218,6 @@
 
       touch-action: pan-y;
     }
-
-    /* =========================
-       HEADER
-    ========================= */
 
     .header {
       min-height: var(--header-height);
@@ -342,10 +334,6 @@
       transform: scale(.92);
     }
 
-    /* =========================
-       PRIMARY NAV
-    ========================= */
-
     .header-nav {
       width: 100%;
 
@@ -438,10 +426,6 @@
         background .18s ease;
     }
 
-    /* =========================
-       HERO
-    ========================= */
-
     .hero {
       padding:
         18px 4px 10px;
@@ -468,10 +452,6 @@
       font-size: 13px;
       font-weight: 500;
     }
-
-    /* =========================
-       PROGRESS
-    ========================= */
 
     .progress-wrap {
       margin-top: 20px;
@@ -533,10 +513,6 @@
         width .45s cubic-bezier(.2,.8,.2,1);
     }
 
-    /* =========================
-       CONTENT
-    ========================= */
-
     .content {
       margin-top: 16px;
 
@@ -583,10 +559,6 @@
       }
     }
 
-    /* =========================
-       SECTION
-    ========================= */
-
     .section {
       margin-top: 20px;
     }
@@ -631,10 +603,6 @@
       font-size: 10px;
       font-weight: 800;
     }
-
-    /* =========================
-       TASK LIST
-    ========================= */
 
     .task-list {
       display: flex;
@@ -874,10 +842,6 @@
       background: rgba(232,163,23,.08);
     }
 
-    /* =========================
-       COMPLETED
-    ========================= */
-
     .completed-section {
       margin-top: 16px;
 
@@ -1032,10 +996,6 @@
       border: 1px solid var(--border);
     }
 
-    /* =========================
-       EMPTY
-    ========================= */
-
     .task-empty {
       padding:
         48px 20px;
@@ -1088,10 +1048,6 @@
       font-size: 12px;
       line-height: 1.7;
     }
-
-    /* =========================
-       COMPOSER
-    ========================= */
 
     .composer-wrap {
       position: fixed;
@@ -1212,10 +1168,6 @@
     .send-btn.disabled {
       opacity: .4;
     }
-
-    /* =========================
-       OVERLAY
-    ========================= */
 
     .overlay {
       position: fixed;
@@ -1679,10 +1631,6 @@
     .orange { background: #f59e0b; }
     .pink { background: #e94f9b; }
 
-    /* =========================
-       ARCHIVE (TRASH) LIST
-    ========================= */
-
     .trash-list {
       display: flex;
       flex-direction: column;
@@ -1747,10 +1695,6 @@
       color:
         var(--danger);
     }
-
-    /* =========================
-       TOAST
-    ========================= */
 
     .toast {
       position: fixed;
@@ -1859,10 +1803,6 @@
       white-space:
         nowrap;
     }
-
-    /* =========================
-       INSTALL
-    ========================= */
 
     .install-banner {
       position:
@@ -2070,10 +2010,17 @@
         var(--surface-2);
     }
 
-    /* =========================
-       PIN LOCK STYLES
-    ========================= */
+    .hidden {
+      display:
+        none !important;
+    }
 
+    .no-scroll {
+      overflow:
+        hidden;
+    }
+
+    /* PIN OVERLAY */
     .pin-overlay {
       position: fixed;
       inset: 0;
@@ -2194,16 +2141,31 @@
       font-size: 15px;
     }
 
-    /* =========================
-       UTILITIES
-    ========================= */
-
-    .hidden {
-      display: none !important;
+    .pin-forgot-link {
+      margin-top: 16px;
+      background: transparent;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
     }
 
-    .no-scroll {
-      overflow: hidden;
+    .pin-security-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 15px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .pin-security-input:focus {
+      border-color: var(--accent);
     }
 
     @media (max-width: 480px) {
@@ -2332,10 +2294,19 @@
         <div class="pin-dot"></div>
       </div>
       <div class="pin-keypad" id="pinKeypad">
-        <!-- تم بناؤها بالجافاسكريبت -->
+        <!-- يتم بناؤها بالجافاسكريبت -->
       </div>
+      <input 
+        class="pin-security-input hidden" 
+        id="pinSecurityInput" 
+        type="text" 
+        maxlength="100"
+        placeholder="الإجابة"
+        autocomplete="off"
+      >
       <div class="pin-error" id="pinError"></div>
       <button class="pin-save-btn hidden" id="pinSaveBtn">حفظ الرمز</button>
+      <button class="pin-forgot-link" id="pinForgotBtn">نسيت الرمز؟</button>
     </div>
   </div>
 
@@ -3226,6 +3197,15 @@
         pinEnter: "أدخل رمز النوايا",
         pinSubtitle: "أدخل رمزك السري لفتح نواياك",
         pinSave: "حفظ الرمز",
+        pinForgot: "نسيت الرمز؟",
+        pinSecurityQuestion: "سؤال الأمان",
+        pinSecurityAnswer: "الإجابة",
+        pinSecurityError: "الإجابة غير صحيحة",
+        pinSecurityPlaceholder: "أدخل الإجابة هنا",
+        pinSetupQuestion: "سؤال الأمان (مثل: اسم أول حيوان أليف؟)",
+        pinSetupAnswer: "إجابة سؤال الأمان",
+        pinSetupAnswerPlaceholder: "أدخل الإجابة",
+        pinReset: "حدد رمزًا جديدًا",
       },
 
       en: {
@@ -3319,6 +3299,15 @@
         pinEnter: "Enter Intention Lock",
         pinSubtitle: "Enter your secret PIN to unlock your intentions",
         pinSave: "Save PIN",
+        pinForgot: "Forgot PIN?",
+        pinSecurityQuestion: "Security Question",
+        pinSecurityAnswer: "Answer",
+        pinSecurityError: "Wrong answer",
+        pinSecurityPlaceholder: "Enter your answer here",
+        pinSetupQuestion: "Security Question (e.g., First pet name?)",
+        pinSetupAnswer: "Security Answer",
+        pinSetupAnswerPlaceholder: "Enter answer",
+        pinReset: "Set new PIN",
       }
 
     };
@@ -3360,7 +3349,9 @@
       accent: "green",
       language: "ar",
       lockEnabled: false,
-      pin: null
+      pin: null,
+      securityQuestion: null,
+      securityAnswer: null
     };
 
     let tasks = [];
@@ -3393,7 +3384,7 @@
     let swipeSuppressClick = false;
 
     let pinState = {
-      mode: "idle", // idle | setup | verify | change | disable
+      mode: "idle",
       buffer: "",
       newPin: "",
       newPinConfirm: "",
@@ -3446,6 +3437,8 @@
     const pinKeypad = $("#pinKeypad");
     const pinError = $("#pinError");
     const pinSaveBtn = $("#pinSaveBtn");
+    const pinForgotBtn = $("#pinForgotBtn");
+    const pinSecurityInput = $("#pinSecurityInput");
 
     const pinToggleBtn = $("#pinToggleBtn");
     const pinChangeRow = $("#pinChangeRow");
@@ -6791,11 +6784,15 @@
       pinError.textContent = "";
 
       pinSaveBtn.classList.add("hidden");
+      pinSecurityInput.classList.add("hidden");
+      pinForgotBtn.classList.add("hidden");
+      pinKeypad.classList.remove("hidden");
 
       switch (mode) {
         case "verify":
           pinTitle.textContent = t("pinEnter");
           pinSubtitle.textContent = t("pinSubtitle");
+          pinForgotBtn.classList.remove("hidden");
           break;
         case "setup":
           pinTitle.textContent = t("pinEnable");
@@ -6809,6 +6806,22 @@
         case "disable":
           pinTitle.textContent = t("pinDisable");
           pinSubtitle.textContent = t("pinCurrent");
+          break;
+        case "forgot":
+          pinTitle.textContent = t("pinSecurityQuestion");
+          pinSubtitle.textContent = settings.securityQuestion || t("pinSecurityQuestion");
+          pinKeypad.classList.add("hidden");
+          pinSecurityInput.classList.remove("hidden");
+          pinSecurityInput.placeholder = t("pinSecurityPlaceholder");
+          pinSecurityInput.value = "";
+          pinSaveBtn.classList.remove("hidden");
+          pinSaveBtn.textContent = t("save");
+          pinForgotBtn.classList.remove("hidden");
+          break;
+        case "reset":
+          pinTitle.textContent = t("pinReset");
+          pinSubtitle.textContent = t("pinNew");
+          pinSaveBtn.classList.remove("hidden");
           break;
       }
 
@@ -6930,6 +6943,44 @@
             pinError.textContent = t("pinErrorWrong");
           }
           break;
+
+        case "forgot":
+          // handled by verifySecurityAnswer() via pinSaveBtn
+          break;
+
+        case "reset":
+          if (!pinState.newPin) {
+            pinState.newPin = enteredPin;
+            pinSubtitle.textContent = t("pinConfirm");
+          } else {
+            if (enteredPin === pinState.newPin) {
+              settings.pin = pinState.newPin;
+              saveSettings();
+              hidePinOverlay();
+              showToast(t("pinSuccess"));
+            } else {
+              pinError.textContent = t("pinErrorMismatch");
+              pinState.newPin = "";
+              pinSubtitle.textContent = t("pinNew");
+            }
+          }
+          break;
+      }
+    }
+
+    function verifySecurityAnswer() {
+
+      const answer = pinSecurityInput.value.trim();
+
+      if (!answer) {
+        pinError.textContent = t("pinSecurityError");
+        return;
+      }
+
+      if (answer === settings.securityAnswer) {
+        showPinOverlay("reset");
+      } else {
+        pinError.textContent = t("pinSecurityError");
       }
     }
 
@@ -6974,10 +7025,23 @@
       showPinOverlay("change");
     });
 
+    pinForgotBtn.addEventListener("click", () => {
+      showPinOverlay("forgot");
+    });
+
     pinSaveBtn.addEventListener("click", () => {
-      if (pinState.mode === "setup" && pinState.newPin) {
-        // Save only if newPin has been set and confirmed (already handled in processPinComplete)
+      if (pinState.mode === "forgot") {
+        verifySecurityAnswer();
+      } else if (pinState.mode === "setup" && pinState.newPin) {
+        // Already handled in processPinComplete
         showToast(t("pinSuccess"));
+      }
+    });
+
+    pinSecurityInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        verifySecurityAnswer();
       }
     });
 
