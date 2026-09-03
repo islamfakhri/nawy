@@ -290,6 +290,9 @@
     .date-input::-webkit-calendar-picker-indicator { filter: var(--date-icon-filter, none); opacity: .65; cursor: pointer; padding: 6px; }
     html[data-theme="dark"] .date-input::-webkit-calendar-picker-indicator { filter: invert(1); }
     .date-input:focus { border-color: var(--accent); }
+    .time-input { width: 120px; min-height: 40px; padding: 0 var(--sp-sm); border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: var(--fs-md); font-weight: var(--fw-semibold); text-align: center; }
+    .time-input::-webkit-calendar-picker-indicator { filter: var(--date-icon-filter, none); opacity: .65; cursor: pointer; }
+    html[data-theme="dark"] .time-input::-webkit-calendar-picker-indicator { filter: invert(1); }
     .modal-actions { display: flex; gap: var(--sp-sm); margin-top: var(--sp-sm); }
     .modal-btn { flex: 1; min-height: 48px; border-radius: var(--radius-md); font-size: var(--fs-base); font-weight: var(--fw-semibold); }
     .modal-btn.primary { background: var(--accent); color: #fff; }
@@ -314,7 +317,7 @@
     .trash-item { padding: var(--sp-md); border-radius: var(--radius-md); background: var(--surface-2); display: flex; align-items: center; gap: var(--sp-sm); }
     .trash-text { flex: 1; min-width: 0; font-size: var(--fs-md); line-height: 1.45; overflow-wrap: anywhere; }
     .small-btn { min-height: 36px; padding: 0 var(--sp-md); border-radius: var(--radius-sm); background: var(--surface); font-size: var(--fs-sm); font-weight: var(--fw-semibold); }
-    .small-btn.danger { color: var(--danger); }
+    .small-btn.danger { color: var(--danger); background: rgba(229,72,77,.08); }
 
     .toast { position: fixed; z-index: 200; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom)); width: min(calc(100% - 32px), 440px); transform: translate(-50%, 16px) scale(.97); opacity: 0; visibility: hidden; padding: var(--sp-md) var(--sp-lg); display: flex; align-items: center; gap: var(--sp-sm); border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-soft); transition: opacity .2s ease, transform .2s ease, visibility .2s ease; }
     .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
@@ -380,6 +383,7 @@
       .task-list { border-radius: 0; }
       .brand-mark { width: 32px; height: 32px; }
       .menu-btn { width: 42px; height: 42px; font-size: 24px; }
+      .time-input { width: 100px; min-height: 36px; font-size: var(--fs-sm); }
     }
     @media (min-width: 700px) {
       .app { padding-left: var(--sp-xl); padding-right: var(--sp-xl); }
@@ -613,6 +617,21 @@
         </div>
       </div>
       <div class="setting-group">
+        <div class="setting-label">التذكير اليومي</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">إشعار الصباح</div>
+            <button class="small-btn" id="notificationToggleBtn" type="button">
+              <span data-i18n="notificationEnable">تفعيل</span>
+            </button>
+          </div>
+          <div class="setting-row hidden" id="notificationTimeRow">
+            <div class="setting-name">الوقت</div>
+            <input type="time" class="time-input" id="notificationTimeInput" value="09:00">
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
         <div class="setting-label" data-i18n="pinSection">الخصوصية</div>
         <div class="setting-box">
           <div class="setting-row">
@@ -689,6 +708,7 @@
         restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد", dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.", removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
         installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.", install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
         updateAvailable: "تحديث جديد من ناوي متاح.", update: "تحديث", undo: "استرجاع",
+        notificationEnable: "تفعيل", notificationDisable: "تعطيل", notificationSection: "التذكير اليومي", notificationTime: "الوقت", notificationSuccess: "تم تفعيل الإشعارات", notificationDisabled: "تم تعطيل الإشعارات", notificationDenied: "تم رفض الإذن", notificationBlocked: "تم حظر الإشعارات. فعلها من إعدادات المتصفح", notificationNotSupported: "المتصفح لا يدعم الإشعارات", notificationUpdated: "تم تحديث وقت الإشعار",
         pinSection: "الخصوصية", pinName: "قفل ناوي", pinEnable: "تفعيل", pinDisable: "تعطيل", pinChange: "تغيير الرمز", pinCurrent: "أدخل الرمز الحالي", pinNew: "أدخل رمزًا جديدًا (4 أرقام)", pinConfirm: "أعد إدخال الرمز الجديد", pinSuccess: "تم تحديث رمز ناوي", pinErrorMismatch: "الرمزان غير متطابقين", pinErrorWrong: "الرمز غير صحيح",
         pinEnter: "أدخل رمز ناوي", pinSubtitle: "أدخل رمزك السري لفتح نواياك", pinSave: "حفظ", pinForgot: "نسيت الرمز؟", pinSecurityQuestion: "استرجاع رمز ناوي", pinSecuritySubtitle: "كل النوايا بتبدأ من لحظة ميلادك. اكتب سنة الميلاد.", pinSecurityError: "السنة غير صحيحة", pinReset: "حدد رمزًا جديدًا", pinResetNew: "أدخل رمزًا جديدًا (4 أرقام)", pinResetConfirm: "أعد إدخال الرمز الجديد", pinResetSuccess: "تم استرجاع الرمز بنجاح", pinStartOver: "أبدأ من جديد", pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟", pinStartOverDone: "تم مسح جميع البيانات. أعد التطبيق من جديد.",
         pinSetupBirthYearTitle: "سؤال الأمان", pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام) لتتمكن من استرجاع رمزك إذا نسيته.", pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام).",
@@ -711,6 +731,7 @@
         restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day you want this intention to appear.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
         installTitle: "Install NAWY on your device", installText: "Keep it faster and easier than opening the browser.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
         updateAvailable: "A new NAWY update is available.", update: "Update", undo: "Restore",
+        notificationEnable: "Enable", notificationDisable: "Disable", notificationSection: "Daily Reminder", notificationTime: "Time", notificationSuccess: "Notifications enabled", notificationDisabled: "Notifications disabled", notificationDenied: "Permission denied", notificationBlocked: "Notifications blocked. Enable them from browser settings", notificationNotSupported: "Browser doesn't support notifications", notificationUpdated: "Notification time updated",
         pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable", pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated successfully", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
         pinEnter: "Enter NAWY PIN", pinSubtitle: "Enter your secret PIN to unlock your intentions", pinSave: "Save", pinForgot: "Forgot PIN?", pinSecurityQuestion: "Recover NAWY PIN", pinSecuritySubtitle: "All intentions start from the moment you were born. Enter your birth year.", pinSecurityError: "Wrong year", pinReset: "Set new PIN", pinResetNew: "Enter new PIN (4 digits)", pinResetConfirm: "Re-enter new PIN", pinResetSuccess: "PIN recovered successfully", pinStartOver: "Start over", pinStartOverConfirm: "This will delete all intentions and settings. Are you sure?", pinStartOverDone: "All data cleared. Restart the app.",
         pinSetupBirthYearTitle: "Security Question", pinSetupBirthYearSubtitle: "Enter your birth year (4 digits) to recover your PIN if forgotten.", pinBirthYearWrong: "Enter a valid year (4 digits).",
@@ -721,7 +742,7 @@
 
     function t(key, vars = {}) { const language = settings && settings.language === "en" ? "en" : "ar"; const dict = TRANSLATIONS[language]; let value = dict[key] ?? TRANSLATIONS.ar[key] ?? key; Object.entries(vars).forEach(([keyName, valueToReplace]) => { value = value.replaceAll(`{${keyName}}`, String(valueToReplace)); }); return value; }
 
-    const DEFAULT_SETTINGS = { theme: "dark", accent: "green", language: "ar", fontSize: "medium", lockEnabled: false, pin: null, birthYear: null };
+    const DEFAULT_SETTINGS = { theme: "dark", accent: "green", language: "ar", fontSize: "medium", lockEnabled: false, pin: null, birthYear: null, notificationEnabled: false, notificationTime: "09:00" };
     let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
     let currentView = "today", selectedTaskId = null, completedExpanded = false;
     let undoTimer = null, undoAction = null, typingAudioContext = null, lastTypingSound = 0, lastKnownDay = null;
@@ -729,6 +750,7 @@
     let swipeStartX = 0, swipeStartY = 0, swipeTracking = false, swipeSuppressClick = false;
     let pinState = { mode: "idle", buffer: "", newPin: "", newPinConfirm: "", currentPin: "", tempPin: "" };
     let composerState = { starred: false, scheduledDate: null, repeat: 'none' };
+    let notificationTimeout = null;
 
     const $ = selector => document.querySelector(selector);
     const $$ = selector => [...document.querySelectorAll(selector)];
@@ -742,10 +764,11 @@
     const headerNav = $("#headerNav"); const headerTabIndicator = $("#headerTabIndicator"); const brandName = $("#brandName"); const menuSheetTitle = $("#menuSheetTitle");
     const pinOverlay = $("#pinOverlay"); const pinTitle = $("#pinTitle"); const pinSubtitle = $("#pinSubtitle"); const pinDots = $("#pinDots"); const pinKeypad = $("#pinKeypad"); const pinError = $("#pinError"); const pinSaveBtn = $("#pinSaveBtn"); const pinForgotBtn = $("#pinForgotBtn"); const pinResetLink = $("#pinResetLink"); const pinCloseBtn = $("#pinCloseBtn");
     const pinToggleBtn = $("#pinToggleBtn"); const pinChangeRow = $("#pinChangeRow"); const pinChangeBtn = $("#pinChangeBtn"); const birthYearRow = $("#birthYearRow"); const changeBirthYearBtn = $("#changeBirthYearBtn");
+    const notificationToggleBtn = $("#notificationToggleBtn"); const notificationTimeRow = $("#notificationTimeRow"); const notificationTimeInput = $("#notificationTimeInput");
     let deferredInstallPrompt = null; let installBannerDismissed = false;
     const installBanner = $("#installBanner"); const installTitle = $("#installTitle"); const installText = $("#installText"); const installAction = $("#installAction"); const installDismiss = $("#installDismiss");
 
-    function applyLanguage() { const lang = settings.language === "en" ? "en" : "ar"; document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"; document.documentElement.setAttribute("data-language", lang); if (brandName) brandName.textContent = lang === "en" ? "NAWY" : "ناوي"; if (menuSheetTitle) menuSheetTitle.textContent = lang === "en" ? "NAWY" : "ناوي"; $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); }); $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); }); $$("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); }); $$("[data-language-choice]").forEach(btn => { const active = btn.dataset.languageChoice === lang; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); }); updateDynamicLanguageText(); requestAnimationFrame(updateHeaderTabIndicator); updatePinButtonText(); }
+    function applyLanguage() { const lang = settings.language === "en" ? "en" : "ar"; document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"; document.documentElement.setAttribute("data-language", lang); if (brandName) brandName.textContent = lang === "en" ? "NAWY" : "ناوي"; if (menuSheetTitle) menuSheetTitle.textContent = lang === "en" ? "NAWY" : "ناوي"; $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); }); $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); }); $$("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); }); $$("[data-language-choice]").forEach(btn => { const active = btn.dataset.languageChoice === lang; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); }); updateDynamicLanguageText(); updateNotificationUI(); requestAnimationFrame(updateHeaderTabIndicator); updatePinButtonText(); }
     function updateDynamicLanguageText() { if (selectedTaskId) { const task = tasks.find(item => item.id === selectedTaskId); if (task) { const actionButton = $("#actionComplete"); const text = actionButton?.querySelector(".action-text"); if (text) text.textContent = task.completed ? t("cancelDone") : t("done"); updateActionDateText(task); } } $$(".trash-delete-button").forEach(btn => { btn.textContent = t("deleteForever"); }); if (installTitle) { if (deferredInstallPrompt) { installTitle.textContent = t("installTitle"); installText.textContent = t("installText"); } else { installTitle.textContent = t("installGuideTitle"); installText.textContent = t("installGuideText"); } installAction.textContent = t("install"); installDismiss.textContent = t("continue"); } if (toastUpdate) toastUpdate.textContent = t("update"); }
     function updatePinButtonText() { if (settings.lockEnabled) { pinToggleBtn.innerHTML = `<span>${t("pinDisable")}</span>`; pinChangeRow.classList.remove("hidden"); birthYearRow.classList.remove("hidden"); } else { pinToggleBtn.innerHTML = `<span>${t("pinEnable")}</span>`; pinChangeRow.classList.add("hidden"); birthYearRow.classList.add("hidden"); } }
 
@@ -761,7 +784,7 @@
     function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
     function safeParse(value, fallback) { try { const parsed = JSON.parse(value); return parsed ?? fallback; } catch { return fallback; } }
 
-    function loadData() { const savedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const savedTrash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []); const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}); tasks = Array.isArray(savedTasks) ? savedTasks.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; trash = Array.isArray(savedTrash) ? savedTrash.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; settings = { ...DEFAULT_SETTINGS, ...(savedSettings || {}) }; if (!["dark","light"].includes(settings.theme)) settings.theme = "dark"; if (!["green","blue","purple","orange","pink"].includes(settings.accent)) settings.accent = "green"; if (!["ar","en"].includes(settings.language)) settings.language = "ar"; if (!["small","medium","large"].includes(settings.fontSize)) settings.fontSize = "medium"; if (typeof settings.lockEnabled !== "boolean") settings.lockEnabled = false; if (settings.lockEnabled && !settings.pin) settings.lockEnabled = false; }
+    function loadData() { const savedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const savedTrash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []); const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}); tasks = Array.isArray(savedTasks) ? savedTasks.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; trash = Array.isArray(savedTrash) ? savedTrash.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; settings = { ...DEFAULT_SETTINGS, ...(savedSettings || {}) }; if (!["dark","light"].includes(settings.theme)) settings.theme = "dark"; if (!["green","blue","purple","orange","pink"].includes(settings.accent)) settings.accent = "green"; if (!["ar","en"].includes(settings.language)) settings.language = "ar"; if (!["small","medium","large"].includes(settings.fontSize)) settings.fontSize = "medium"; if (typeof settings.lockEnabled !== "boolean") settings.lockEnabled = false; if (settings.lockEnabled && !settings.pin) settings.lockEnabled = false; if (typeof settings.notificationEnabled !== "boolean") settings.notificationEnabled = false; if (typeof settings.notificationTime !== "string" || !/^\d{2}:\d{2}$/.test(settings.notificationTime)) settings.notificationTime = "09:00"; }
     function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
     function saveTrash() { localStorage.setItem(STORAGE_KEYS.trash, JSON.stringify(trash)); }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
@@ -1247,7 +1270,139 @@
     document.addEventListener("keydown", event => { if (event.key === "Escape") { if (composerPanel.classList.contains("open")) { closeComposer(); history.back(); } else { closeAllOverlays(); } } });
     window.addEventListener("popstate", () => { if (composerPanel.classList.contains("open")) { closeComposer(); } });
     window.addEventListener("resize", () => { requestAnimationFrame(updateHeaderTabIndicator); }); window.addEventListener("orientationchange", () => { setTimeout(updateHeaderTabIndicator, 100); });
-    function init() { loadData(); applySettings(); currentView = "today"; lastKnownDay = getDateKey(); render(); updateComposer(); autoResizeTextarea(); requestAnimationFrame(updateHeaderTabIndicator); if (settings.lockEnabled) showPinOverlay("verify"); }
+
+    /* ===== Notification Functions ===== */
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        showToast(t("notificationNotSupported"));
+        return false;
+      }
+      
+      if (Notification.permission === "granted") {
+        return true;
+      }
+      
+      if (Notification.permission === "denied") {
+        showToast(t("notificationBlocked"));
+        return false;
+      }
+      
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          settings.notificationEnabled = true;
+          saveSettings();
+          updateNotificationUI();
+          scheduleNotification();
+          showToast(t("notificationSuccess"));
+        } else {
+          showToast(t("notificationDenied"));
+        }
+      });
+      
+      return false;
+    }
+
+    function scheduleNotification() {
+      if (!settings.notificationEnabled) return;
+      
+      if (!("Notification" in window) || Notification.permission !== "granted") {
+        settings.notificationEnabled = false;
+        saveSettings();
+        updateNotificationUI();
+        return;
+      }
+      
+      if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+      }
+      
+      const now = new Date();
+      const [hours, minutes] = settings.notificationTime.split(":").map(Number);
+      
+      let scheduledTime = new Date(now);
+      scheduledTime.setHours(hours, minutes, 0, 0);
+      
+      if (scheduledTime <= now) {
+        scheduledTime.setDate(scheduledTime.getDate() + 1);
+      }
+      
+      const delay = scheduledTime.getTime() - now.getTime();
+      
+      notificationTimeout = setTimeout(() => {
+        showMorningNotification();
+        scheduleNotification();
+      }, delay);
+    }
+
+    function showMorningNotification() {
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      
+      const notificationOptions = {
+        body: settings.language === "en" ? "What are you up to today?" : "ناوي على إيه النهارده؟",
+        icon: "./icon-512.png",
+        badge: "./icon-512.png",
+        dir: settings.language === "en" ? "ltr" : "rtl",
+        lang: settings.language,
+        tag: "nawy-morning-reminder",
+        requireInteraction: true,
+        vibrate: [100, 50, 100]
+      };
+      
+      if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.showNotification("ناوي 🌱", notificationOptions);
+        });
+      } else {
+        const notification = new Notification("ناوي 🌱", notificationOptions);
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+      }
+    }
+
+    function updateNotificationUI() {
+      if (!notificationToggleBtn || !notificationTimeRow || !notificationTimeInput) return;
+      
+      if (settings.notificationEnabled) {
+        notificationToggleBtn.innerHTML = `<span>${t("notificationDisable")}</span>`;
+        notificationToggleBtn.classList.add("danger");
+        notificationTimeRow.classList.remove("hidden");
+        notificationTimeInput.value = settings.notificationTime;
+      } else {
+        notificationToggleBtn.innerHTML = `<span>${t("notificationEnable")}</span>`;
+        notificationToggleBtn.classList.remove("danger");
+        notificationTimeRow.classList.add("hidden");
+      }
+    }
+
+    notificationToggleBtn?.addEventListener("click", () => {
+      if (settings.notificationEnabled) {
+        settings.notificationEnabled = false;
+        saveSettings();
+        if (notificationTimeout) {
+          clearTimeout(notificationTimeout);
+        }
+        updateNotificationUI();
+        showToast(t("notificationDisabled"));
+      } else {
+        requestNotificationPermission();
+      }
+    });
+
+    notificationTimeInput?.addEventListener("change", (event) => {
+      const time = event.target.value;
+      if (time && /^\d{2}:\d{2}$/.test(time)) {
+        settings.notificationTime = time;
+        saveSettings();
+        if (settings.notificationEnabled) {
+          scheduleNotification();
+        }
+        showToast(t("notificationUpdated"));
+      }
+    });
+
+    function init() { loadData(); applySettings(); currentView = "today"; lastKnownDay = getDateKey(); render(); updateComposer(); autoResizeTextarea(); requestAnimationFrame(updateHeaderTabIndicator); updateNotificationUI(); if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") { scheduleNotification(); } if (settings.lockEnabled) showPinOverlay("verify"); }
     function showPinOverlay(mode) { pinState.mode = mode; pinState.buffer = ""; pinState.newPin = ""; pinState.newPinConfirm = ""; pinState.currentPin = ""; pinError.textContent = ""; pinSaveBtn.classList.add("hidden"); pinForgotBtn.classList.add("hidden"); pinResetLink.classList.add("hidden"); pinKeypad.classList.remove("hidden"); switch (mode) { case "verify": pinTitle.textContent = t("pinEnter"); pinSubtitle.textContent = t("pinSubtitle"); pinForgotBtn.classList.remove("hidden"); break; case "setup": pinTitle.textContent = t("pinEnable"); pinSubtitle.textContent = t("pinNew"); pinSaveBtn.classList.remove("hidden"); break; case "change": pinTitle.textContent = t("pinChange"); pinSubtitle.textContent = t("pinCurrent"); break; case "disable": pinTitle.textContent = t("pinDisable"); pinSubtitle.textContent = t("pinCurrent"); break; case "forgot": pinTitle.textContent = t("pinSecurityQuestion"); pinSubtitle.textContent = t("pinSecuritySubtitle"); pinSaveBtn.classList.remove("hidden"); pinForgotBtn.classList.remove("hidden"); pinResetLink.classList.remove("hidden"); break; case "reset": pinTitle.textContent = t("pinReset"); pinSubtitle.textContent = t("pinResetNew"); pinSaveBtn.classList.remove("hidden"); break; case "setupBirthYear": pinTitle.textContent = t("pinSetupBirthYearTitle"); pinSubtitle.textContent = t("pinSetupBirthYearSubtitle"); pinSaveBtn.classList.remove("hidden"); break; } updatePinDots(); pinOverlay.classList.add("show"); pinOverlay.setAttribute("aria-hidden","false"); }
     function hidePinOverlay() { pinOverlay.classList.remove("show"); pinOverlay.setAttribute("aria-hidden","true"); }
     function updatePinDots() { const dots = pinDots.querySelectorAll(".pin-dot"); const filledCount = pinState.buffer.length; dots.forEach((dot,index) => { dot.classList.toggle("filled", index < filledCount); }); }
