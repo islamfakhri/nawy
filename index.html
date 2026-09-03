@@ -54,12 +54,6 @@
       --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
       --tab-indicator-width: 24px;
       --tab-indicator-left: 0px;
-      --fs-xs: 11px;
-      --fs-sm: 13px;
-      --fs-md: 14px;
-      --fs-base: 15px;
-      --fs-lg: 16px;
-      --fs-hero: 20px;
       --fw-normal: 400;
       --fw-medium: 500;
       --fw-semibold: 600;
@@ -74,6 +68,34 @@
       --touch-checkbox: 32px;
       --touch-star: 46px;
       --fab-size: 56px;
+    }
+
+    /* ============ FONT SIZE SYSTEM ============ */
+    html[data-font="small"] {
+      --fs-xs: 10px;
+      --fs-sm: 12px;
+      --fs-md: 13px;
+      --fs-base: 14px;
+      --fs-lg: 15px;
+      --fs-hero: 18px;
+    }
+
+    html[data-font="medium"], html:not([data-font]) {
+      --fs-xs: 11px;
+      --fs-sm: 13px;
+      --fs-md: 14px;
+      --fs-base: 16px;
+      --fs-lg: 17px;
+      --fs-hero: 20px;
+    }
+
+    html[data-font="large"] {
+      --fs-xs: 12px;
+      --fs-sm: 14px;
+      --fs-md: 16px;
+      --fs-base: 18px;
+      --fs-lg: 19px;
+      --fs-hero: 22px;
     }
 
     html[data-theme="dark"] {
@@ -197,7 +219,7 @@
     .section-count {
       min-width: 20px; height: 20px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center;
       border-radius: var(--radius-full); background: var(--surface-2); color: var(--muted);
-      font-size: 10px; font-weight: var(--fw-bold);
+      font-size: var(--fs-xs); font-weight: var(--fw-bold);
     }
 
     .task-list {
@@ -277,7 +299,7 @@
     .empty-title { color: var(--text); font-size: var(--fs-md); font-weight: var(--fw-bold); }
     .empty-text { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); line-height: 1.7; }
 
-    /* ============ FAB & COMPOSER ============ */
+    /* ============ FAB & BOTTOM SHEET ============ */
     .composer-wrap {
       position: fixed; z-index: 30; left: 50%; bottom: 0; width: min(760px, 100%);
       transform: translateX(-50%); padding: 0 var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom));
@@ -306,8 +328,8 @@
     }
     .composer-input-row textarea {
       flex: 1; min-height: 48px; max-height: 110px; resize: none; overflow-y: auto;
-      padding: var(--sp-md); border: 1px solid var(--border); border-radius: var(--radius-md);
-      background: var(--surface-2); color: var(--text); font-size: var(--fs-base); line-height: 1.5;
+      padding: var(--sp-md); border: none; border-radius: 0;
+      background: transparent; color: var(--text); font-size: var(--fs-base); line-height: 1.5;
     }
     .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
     .composer-input-row .send-btn {
@@ -329,7 +351,7 @@
     .toolbar-star.active { color: var(--warning); border-color: var(--warning); }
     .toolbar-item {
       display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-full);
-      background: var(--surface-2); font-size: 12px; font-weight: var(--fw-semibold); color: var(--text);
+      background: var(--surface-2); font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text);
       cursor: pointer; transition: background .15s ease;
     }
     .toolbar-item:hover { background: var(--surface-3); }
@@ -542,7 +564,6 @@
       .section { margin-top: var(--sp-md); }
       .task-list { border-radius: 0; }
       .brand-mark { width: 28px; height: 28px; }
-      .hero-title { font-size: 18px; }
     }
 
     @media (min-width: 700px) {
@@ -736,6 +757,14 @@
               <button class="segment" data-theme-choice="dark" type="button" data-i18n="dark">داكن</button>
             </div>
           </div>
+          <div class="setting-row">
+            <div class="setting-name" data-i18n="fontSizeName">حجم الخط</div>
+            <div class="segmented">
+              <button class="segment" data-font-choice="small" type="button">صغير</button>
+              <button class="segment" data-font-choice="medium" type="button">متوسط</button>
+              <button class="segment" data-font-choice="large" type="button">كبير</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -821,6 +850,10 @@
         languageName: "لغة ناوي",
         appearanceSection: "المظهر",
         modeName: "الوضع",
+        fontSizeName: "حجم الخط",
+        fontSizeSmall: "صغير",
+        fontSizeMedium: "متوسط",
+        fontSizeLarge: "كبير",
         colorSection: "اللون",
         settings: "الإعدادات",
         trash: "أرشيف النوايا",
@@ -938,6 +971,10 @@
         languageName: "NAWY language",
         appearanceSection: "Appearance",
         modeName: "Mode",
+        fontSizeName: "Font size",
+        fontSizeSmall: "Small",
+        fontSizeMedium: "Medium",
+        fontSizeLarge: "Large",
         colorSection: "Color",
         settings: "Settings",
         trash: "Intention Archive",
@@ -1065,6 +1102,7 @@
       theme: "dark",
       accent: "green",
       language: "ar",
+      fontSize: "medium",
       lockEnabled: false,
       pin: null,
       birthYear: null
@@ -1296,6 +1334,7 @@
       if (!["dark", "light"].includes(settings.theme)) settings.theme = "dark";
       if (!["green", "blue", "purple", "orange", "pink"].includes(settings.accent)) settings.accent = "green";
       if (!["ar", "en"].includes(settings.language)) settings.language = "ar";
+      if (!["small", "medium", "large"].includes(settings.fontSize)) settings.fontSize = "medium";
       if (typeof settings.lockEnabled !== "boolean") settings.lockEnabled = false;
       if (settings.lockEnabled && !settings.pin) settings.lockEnabled = false;
     }
@@ -1306,6 +1345,7 @@
     function applySettings() {
       document.documentElement.setAttribute("data-theme", settings.theme);
       document.documentElement.setAttribute("data-accent", settings.accent);
+      document.documentElement.setAttribute("data-font", settings.fontSize);
       $$("[data-theme-choice]").forEach(btn => {
         const active = btn.dataset.themeChoice === settings.theme;
         btn.classList.toggle("active", active);
@@ -1314,6 +1354,11 @@
       $$("[data-accent-choice]").forEach(btn => {
         const active = btn.dataset.accentChoice === settings.accent;
         btn.classList.toggle("active", active);
+      });
+      $$("[data-font-choice]").forEach(btn => {
+        const active = btn.dataset.fontChoice === settings.fontSize;
+        btn.classList.toggle("active", active);
+        btn.setAttribute("aria-pressed", String(active));
       });
       applyLanguage();
       updatePinButtonText();
@@ -1460,11 +1505,11 @@
       const completedText = task.completed ? (settings.language === "en" ? "Yes" : "نعم") : (settings.language === "en" ? "No" : "لا");
       detailsContent.innerHTML = `
         <div class="action-task-preview">${escapeHtml(task.text)}</div>
-        <div class="trash-item"><span class="trash-text">${t("createdAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:13px;">${created}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("completedAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:13px;">${completed}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("setDate")}:</span><span style="margin-right:auto;font-weight:600;font-size:13px;">${scheduled}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("favorites")}:</span><span style="margin-right:auto;font-weight:600;font-size:13px;">${starredText}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("completed")}:</span><span style="margin-right:auto;font-weight:600;font-size:13px;">${completedText}</span></div>
+        <div class="trash-item"><span class="trash-text">${t("createdAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${created}</span></div>
+        <div class="trash-item"><span class="trash-text">${t("completedAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completed}</span></div>
+        <div class="trash-item"><span class="trash-text">${t("setDate")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${scheduled}</span></div>
+        <div class="trash-item"><span class="trash-text">${t("favorites")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${starredText}</span></div>
+        <div class="trash-item"><span class="trash-text">${t("completed")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completedText}</span></div>
       `;
       closeOverlay(actionOverlay);
       openOverlay(detailsOverlay);
@@ -1888,6 +1933,14 @@
         saveSettings();
         applySettings();
         requestAnimationFrame(updateHeaderTabIndicator);
+      });
+    });
+    $$("[data-font-choice]").forEach(button => {
+      button.addEventListener("click", () => {
+        settings.fontSize = button.dataset.fontChoice;
+        saveSettings();
+        applySettings();
+        render();
       });
     });
     $$("[data-language-choice]").forEach(button => {
