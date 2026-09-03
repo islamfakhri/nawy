@@ -34,6 +34,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
   <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 
+  <!-- Flatpickr Calendar -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -67,7 +75,6 @@
       --radius-full: 9999px;
       --header-height: 116px;
       --bottom-space: 80px;
-      --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
       --tab-indicator-width: 28px;
       --tab-indicator-left: 0px;
       --fw-normal: 400;
@@ -80,7 +87,6 @@
       --sp-md: 12px;
       --sp-lg: 16px;
       --sp-xl: 24px;
-      --sp-xxl: 32px;
       --touch-checkbox: 32px;
       --touch-star: 46px;
       --fab-size: 56px;
@@ -115,6 +121,7 @@
     button { border: 0; cursor: pointer; color: inherit; background: none; -webkit-tap-highlight-color: transparent; }
     textarea, input { outline: none; }
     ::selection { background: var(--accent); color: #fff; }
+    .lucide { width: 20px; height: 20px; stroke-width: 2; }
 
     .app {
       width: min(100%, 760px); min-height: 100vh; margin: 0 auto;
@@ -130,17 +137,17 @@
     }
     .header-main { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); }
     .brand { display: flex; align-items: center; gap: var(--sp-sm); min-width: 0; }
-    .brand-mark { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-md); }
+    .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-md); }
     .brand-mark-img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .brand-mark-fallback { display: grid; place-items: center; width: 100%; height: 100%; font-size: 18px; font-weight: 800; color: var(--accent); }
     .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-extrabold); letter-spacing: -.3px; }
-    .menu-btn { width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; font-size: 26px; line-height: 1; color: var(--muted); box-shadow: var(--shadow-soft); transition: transform .14s ease, background var(--transition-theme), color var(--transition-theme); }
-    .menu-btn:active { transform: scale(.93); background: var(--surface-2); color: var(--text); }
+    .menu-btn { width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); box-shadow: var(--shadow-soft); transition: transform .14s ease; }
+    .menu-btn:active { transform: scale(.93); }
 
-    .header-nav { width: 100%; position: relative; margin-top: var(--sp-xs); padding: 0; display: flex; align-items: stretch; gap: 0; }
-    .header-tab { position: relative; z-index: 2; min-height: 52px; flex: 1 1 0; padding: 0 var(--sp-sm) 6px; border-radius: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: transparent; color: var(--muted); white-space: nowrap; font-size: var(--fs-base); font-weight: var(--fw-semibold); transition: color .18s ease; }
+    .header-nav { width: 100%; position: relative; margin-top: var(--sp-xs); display: flex; align-items: stretch; }
+    .header-tab { position: relative; z-index: 2; min-height: 52px; flex: 1 1 0; padding: 0 var(--sp-sm) 6px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: var(--muted); font-size: var(--fs-base); font-weight: var(--fw-semibold); transition: color .18s ease; }
     .header-tab.active { color: var(--accent); }
-    .header-tab-star { font-size: 20px; line-height: 1; }
+    .header-tab-star { font-size: 20px; }
     .header-tab-indicator { position: absolute; z-index: 3; left: var(--tab-indicator-left); bottom: 0; width: var(--tab-indicator-width); height: 3px; border-radius: var(--radius-full); background: var(--accent); pointer-events: none; transition: left .28s cubic-bezier(.22,.75,.25,1), width .28s cubic-bezier(.22,.75,.25,1); }
 
     .hero { padding: var(--sp-lg) 2px var(--sp-md); }
@@ -148,10 +155,6 @@
     .hero-date { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
 
     .content { margin-top: var(--sp-md); }
-    .content.view-transition-next { animation: viewSlideNext .24s cubic-bezier(.22,.75,.25,1); }
-    .content.view-transition-previous { animation: viewSlidePrevious .24s cubic-bezier(.22,.75,.25,1); }
-    @keyframes viewSlideNext { 0% { opacity: .7; transform: translateX(12px); } 100% { opacity: 1; transform: translateX(0); } }
-    @keyframes viewSlidePrevious { 0% { opacity: .7; transform: translateX(-12px); } 100% { opacity: 1; transform: translateX(0); } }
 
     .section {
       margin-top: var(--sp-md);
@@ -170,42 +173,30 @@
       justify-content: space-between;
       padding: var(--sp-sm) var(--sp-md);
       border-bottom: 1px solid var(--border);
-      transition: border-color var(--transition-theme);
     }
     .section-title {
       display: flex;
       align-items: center;
       gap: var(--sp-sm);
-      color: var(--text);
       font-size: var(--fs-sm);
       font-weight: var(--fw-bold);
     }
     .section-count {
-      min-width: 22px;
-      height: 22px;
-      padding: 0 5px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      min-width: 22px; height: 22px; padding: 0 5px;
+      display: inline-flex; align-items: center; justify-content: center;
       border-radius: var(--radius-full);
-      background: var(--surface-3);
-      color: var(--muted);
-      font-size: var(--fs-xs);
-      font-weight: var(--fw-bold);
-      transition: background var(--transition-theme), color var(--transition-theme);
+      background: var(--surface-3); color: var(--muted);
+      font-size: var(--fs-xs); font-weight: var(--fw-bold);
     }
     .task-list {
       padding: 0 var(--sp-md);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      min-height: 20px;
+      display: flex; flex-direction: column;
+      position: relative; min-height: 20px;
     }
 
-    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 52px; padding: var(--sp-xs) 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: background var(--transition-theme), opacity .18s ease, border-color var(--transition-theme); }
+    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 52px; padding: var(--sp-xs) 0; border-bottom: 1px solid var(--border); cursor: pointer; }
     .task:last-child { border-bottom: 0; }
     .task.completed { opacity: .55; }
-
     .task.drag-source { opacity: .35 !important; }
     .drag-ghost {
       opacity: .95 !important;
@@ -215,17 +206,19 @@
       box-shadow: var(--shadow-drag) !important;
     }
 
-    .task-checkbox { width: var(--touch-checkbox); height: var(--touch-checkbox); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); border: 1.5px solid var(--muted); background: transparent; transition: background .18s ease, border-color .18s ease; }
+    .task-checkbox { width: var(--touch-checkbox); height: var(--touch-checkbox); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); border: 1.5px solid var(--muted); background: transparent; transition: all .18s ease; }
     .task.completed .task-checkbox { background: var(--accent); border-color: var(--accent); }
-    .check-icon { width: 12px; height: 12px; opacity: 0; transform: scale(.5); transition: opacity .16s ease, transform .16s ease; }
-    .task.completed .check-icon { opacity: 1; transform: scale(1); }
+    .task-checkbox .lucide { width: 14px; height: 14px; color: #fff; opacity: 0; transform: scale(.5); transition: all .16s ease; }
+    .task.completed .task-checkbox .lucide { opacity: 1; transform: scale(1); }
 
     .task-main { min-width: 0; flex: 1; padding: var(--sp-xs) 0; cursor: pointer; }
-    .task-text { margin: 0; font-size: var(--fs-base); line-height: 1.5; font-weight: var(--fw-medium); overflow-wrap: anywhere; transition: color var(--transition-theme); }
+    .task-text { margin: 0; font-size: var(--fs-base); font-weight: var(--fw-medium); overflow-wrap: anywhere; }
     .task.completed .task-text { color: var(--muted); text-decoration: line-through; }
 
-    .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); color: #b8bdbd; font-size: 24px; transition: color .16s ease, transform .14s ease; }
+    .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); color: #b8bdbd; transition: color .16s ease; }
+    .task-star .lucide { width: 22px; height: 22px; }
     .task-star.active { color: var(--warning); }
+    .task-star.active .lucide { fill: var(--warning); }
 
     .completed-section {
       margin-top: var(--sp-md);
@@ -235,55 +228,24 @@
       overflow: hidden;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: background var(--transition-theme), border-color var(--transition-theme);
     }
     .completed-toggle {
-      width: 100%;
-      min-height: 44px;
-      padding: var(--sp-xs) var(--sp-md);
-      display: flex;
-      align-items: center;
-      gap: var(--sp-sm);
+      width: 100%; min-height: 44px; padding: var(--sp-xs) var(--sp-md);
+      display: flex; align-items: center; gap: var(--sp-sm);
       border-bottom: 1px solid var(--border);
-      transition: border-color var(--transition-theme);
     }
-    .completed-toggle-title {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-sm);
-      font-size: var(--fs-sm);
-      font-weight: var(--fw-bold);
-    }
+    .completed-toggle-title { display: flex; align-items: center; gap: var(--sp-sm); font-size: var(--fs-sm); font-weight: var(--fw-bold); }
     .completed-toggle-count {
-      min-width: 22px;
-      height: 22px;
-      padding: 0 5px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      min-width: 22px; height: 22px; padding: 0 5px;
+      display: inline-flex; align-items: center; justify-content: center;
       border-radius: var(--radius-full);
-      background: var(--surface-3);
-      color: var(--muted);
-      font-size: var(--fs-xs);
-      font-weight: var(--fw-bold);
+      background: var(--surface-3); color: var(--muted);
+      font-size: var(--fs-xs); font-weight: var(--fw-bold);
     }
-    .completed-toggle-chevron {
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-size: 13px;
-      transition: transform .25s ease;
-      margin-right: auto;
-    }
-    .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); color: var(--accent); }
-    .completed-list-wrap {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height .30s ease, opacity .20s ease;
-    }
+    .completed-toggle-chevron { margin-right: auto; transition: transform .25s ease; }
+    .completed-toggle-chevron .lucide { width: 14px; height: 14px; }
+    .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); }
+    .completed-list-wrap { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .30s ease, opacity .20s ease; }
     .completed-list-wrap.open { max-height: 4000px; opacity: 1; }
 
     .task-empty { padding: 36px var(--sp-xl); text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--border); color: var(--muted); }
@@ -296,40 +258,53 @@
     .composer-fab:active { transform: scale(.93); }
     .composer-fab.hidden { display: none; }
 
-    .composer-panel { pointer-events: auto; position: fixed; z-index: 31; left: 50%; bottom: 0; transform: translateX(-50%) translateY(100%); width: min(100%, 760px); background: var(--surface); border-radius: var(--radius-xl) var(--radius-xl) 0 0; box-shadow: var(--shadow-sheet); border: 1px solid var(--border); transition: transform .28s cubic-bezier(.2,.8,.2,1), background var(--transition-theme); padding: var(--sp-lg) var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom)); }
+    .composer-panel { pointer-events: auto; position: fixed; z-index: 31; left: 50%; bottom: 0; transform: translateX(-50%) translateY(100%); width: min(100%, 760px); background: var(--surface); border-radius: var(--radius-xl) var(--radius-xl) 0 0; box-shadow: var(--shadow-sheet); border: 1px solid var(--border); transition: transform .28s ease; padding: var(--sp-lg) var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom)); }
     .composer-panel.open { transform: translateX(-50%) translateY(0); }
     .composer-input-row { display: flex; align-items: center; gap: var(--sp-sm); }
     .composer-input-row textarea { flex: 1; min-height: 52px; max-height: 110px; resize: none; padding: var(--sp-md); border: none; background: transparent; color: var(--text); font-size: var(--fs-base); }
     .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
-    .composer-input-row .send-btn { width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 20px; transition: transform .14s ease, opacity .18s ease; }
-    .composer-input-row .send-btn.disabled { opacity: .4; }
+    .send-btn { width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--accent); color: #fff; display: grid; place-items: center; transition: opacity .18s ease; }
+    .send-btn .lucide { width: 20px; height: 20px; }
+    .send-btn.disabled { opacity: .4; }
 
     .overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; padding: var(--sp-lg); background: rgba(0,0,0,.40); opacity: 0; visibility: hidden; transition: opacity .20s ease, visibility .20s ease; }
     .overlay.show { opacity: 1; visibility: visible; }
-    .sheet { width: min(100%, 520px); max-height: min(82vh, 680px); overflow-y: auto; padding: var(--sp-lg); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sheet); transform: translateY(18px); transition: transform .24s ease, background var(--transition-theme); position: relative; }
+    .sheet { width: min(100%, 520px); max-height: min(82vh, 680px); overflow-y: auto; padding: var(--sp-lg); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sheet); transform: translateY(18px); transition: transform .24s ease; position: relative; }
     .overlay.show .sheet { transform: translateY(0); }
     .sheet-handle { width: 36px; height: 5px; margin: 2px auto 14px; border-radius: var(--radius-full); background: var(--surface-3); }
     .sheet-close-btn { position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--surface-2); display: grid; place-items: center; color: var(--muted); z-index: 2; }
+    .sheet-close-btn .lucide { width: 16px; height: 16px; }
     .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: var(--fw-bold); }
 
-    .menu-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
-    .menu-item:active { background: var(--surface-2); }
-    .menu-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--surface-2); color: var(--muted); }
-    .menu-text { flex: 1; font-weight: var(--fw-medium); }
+    .action-task-preview {
+      width: 100%; margin: 4px 4px 8px; padding: var(--sp-md);
+      border-radius: var(--radius-md); background: var(--surface-2);
+      display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm);
+      cursor: pointer;
+    }
+    .action-task-preview-text { flex: 1; font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+    .action-task-edit-input { width: 100%; min-height: 60px; padding: var(--sp-sm); border: 0; background: transparent; color: var(--text); resize: none; font-size: var(--fs-md); }
 
     .action-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
     .action-item:active { background: var(--surface-2); }
     .action-item.danger { color: var(--danger); }
+    .action-item .lucide { width: 20px; height: 20px; color: var(--muted); }
+    .action-item.danger .lucide { color: var(--danger); }
     .action-text { flex: 1; font-weight: var(--fw-medium); }
+
+    .menu-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
+    .menu-item:active { background: var(--surface-2); }
+    .menu-item .lucide { width: 20px; height: 20px; color: var(--muted); }
+    .menu-text { flex: 1; font-weight: var(--fw-medium); }
 
     .setting-group { margin-bottom: var(--sp-md); }
     .setting-label { padding: 0 var(--sp-sm) var(--sp-sm); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); }
-    .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); transition: background var(--transition-theme); }
+    .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
     .setting-row { min-height: 54px; padding: 0 var(--sp-md); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm); border-bottom: 1px solid var(--border); }
     .setting-row:last-child { border-bottom: 0; }
     .setting-name { font-size: var(--fs-base); font-weight: var(--fw-medium); }
     .segmented { display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-sm); background: var(--surface-2); }
-    .segment { min-height: 32px; padding: 0 var(--sp-sm); border-radius: 7px; background: transparent; color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); transition: background .16s ease, color .16s ease; }
+    .segment { min-height: 32px; padding: 0 var(--sp-sm); border-radius: 7px; background: transparent; color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); transition: all .16s ease; }
     .segment.active { background: var(--accent); color: #fff; }
     .colors { display: flex; align-items: center; gap: var(--sp-sm); }
     .color-btn { width: 28px; height: 28px; border-radius: var(--radius-full); border: 2px solid var(--surface); outline: 1px solid var(--border); position: relative; }
@@ -338,6 +313,9 @@
 
     .time-input { width: 110px; min-height: 36px; padding: 0 var(--sp-sm); border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-align: center; }
 
+    .flatpickr-calendar { font-family: "Cairo", sans-serif !important; }
+    .flatpickr-day.selected { background: var(--accent) !important; border-color: var(--accent) !important; }
+
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
@@ -345,7 +323,8 @@
       .app { padding-left: var(--sp-md); padding-right: var(--sp-md); }
       .task { min-height: 48px; gap: var(--sp-sm); }
       .task-checkbox { width: 28px; height: 28px; }
-      .task-star { width: 40px; height: 40px; font-size: 20px; }
+      .task-star { width: 40px; height: 40px; }
+      .task-star .lucide { width: 18px; height: 18px; }
       .section-head { padding: var(--sp-xs) var(--sp-sm); }
       .task-list { padding: 0 var(--sp-sm); }
       .segment { padding: 0 var(--sp-xs); font-size: var(--fs-xs); }
@@ -363,12 +342,12 @@
           </div>
           <div class="brand-name" id="brandName">ناوي</div>
         </div>
-        <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">⋯</button>
+        <button class="menu-btn" id="menuBtn" type="button"><i data-lucide="more-horizontal"></i></button>
       </div>
       <nav class="header-nav" id="headerNav">
         <button class="header-tab" data-view="all" type="button">نواياي</button>
         <button class="header-tab active" data-view="today" type="button">اليوم</button>
-        <button class="header-tab" data-view="favorites" type="button"><span class="header-tab-star">★</span></button>
+        <button class="header-tab" data-view="favorites" type="button"><i data-lucide="star" style="width:18px;height:18px;"></i></button>
         <span class="header-tab-indicator" id="headerTabIndicator"></span>
       </nav>
     </header>
@@ -382,29 +361,29 @@
   </div>
 
   <div class="composer-wrap" id="composerWrap">
-    <button class="composer-fab" id="composerFab" type="button" aria-label="أضف نية">+</button>
+    <button class="composer-fab" id="composerFab" type="button"><i data-lucide="plus"></i></button>
   </div>
 
   <div class="composer-panel" id="composerPanel">
     <form id="composer" autocomplete="off">
       <div class="composer-input-row">
         <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..."></textarea>
-        <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف">↑</button>
+        <button class="send-btn disabled" id="sendBtn" type="submit"><i data-lucide="arrow-up"></i></button>
       </div>
     </form>
   </div>
 
   <div class="overlay" id="menuOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="menuOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="menuOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">ناوي</div>
       <button class="menu-item" id="settingsBtn" type="button">
-        <span class="menu-icon">⚙️</span>
+        <i data-lucide="settings"></i>
         <span class="menu-text">الإعدادات</span>
       </button>
       <button class="menu-item" id="menuTrashBtn" type="button">
-        <span class="menu-icon">🗑</span>
+        <i data-lucide="trash-2"></i>
         <span class="menu-text">أرشيف النوايا</span>
       </button>
     </div>
@@ -412,18 +391,23 @@
 
   <div class="overlay" id="actionOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="actionOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="actionOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
-      <button type="button" class="action-item" id="actionComplete">
+      <div id="actionPreviewContainer"></div>
+      <button class="action-item" id="actionComplete" type="button">
+        <i data-lucide="check"></i>
         <span class="action-text">أتمم النية</span>
       </button>
-      <button type="button" class="action-item" id="actionRepeat">
+      <button class="action-item" id="actionRepeat" type="button">
+        <i data-lucide="repeat"></i>
         <span class="action-text">تكرار</span>
       </button>
-      <button type="button" class="action-item" id="actionDate">
+      <button class="action-item" id="actionDate" type="button">
+        <i data-lucide="calendar"></i>
         <span class="action-text" id="actionDateText">تحديد موعد</span>
       </button>
-      <button type="button" class="action-item danger" id="actionDelete">
+      <button class="action-item danger" id="actionDelete" type="button">
+        <i data-lucide="trash-2"></i>
         <span class="action-text">تراجع عن النية</span>
       </button>
     </div>
@@ -431,7 +415,7 @@
 
   <div class="overlay" id="repeatOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="repeatOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="repeatOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">اختر التكرار</div>
       <button class="action-item" data-repeat="none" type="button"><span class="action-text">بدون تكرار</span></button>
@@ -443,21 +427,24 @@
 
   <div class="overlay" id="dateOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="dateOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="dateOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">تحديد موعد</div>
-      <input class="date-input" id="taskDateInput" type="date" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;">
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button class="quick-date" data-date="today" type="button" style="flex:1;min-height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;">اليوم</button>
+        <button class="quick-date" data-date="tomorrow" type="button" style="flex:1;min-height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;">بكرة</button>
+      </div>
+      <input class="date-input" id="taskDateInput" type="text" placeholder="اختر تاريخ" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;">
       <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="modal-btn danger" id="dateClear" type="button" style="flex:1;min-height:44px;border-radius:12px;background:rgba(229,72,77,.08);color:var(--danger);">إزالة</button>
-        <button class="modal-btn secondary" id="dateCancel" type="button" style="flex:1;min-height:44px;border-radius:12px;background:var(--surface-2);color:var(--text);">إلغاء</button>
-        <button class="modal-btn primary" id="dateSave" type="button" style="flex:1;min-height:44px;border-radius:12px;background:var(--accent);color:#fff;">حفظ</button>
+        <button id="dateClear" type="button" style="flex:1;min-height:44px;border-radius:12px;background:rgba(229,72,77,.08);color:var(--danger);font-size:14px;font-weight:700;">إزالة</button>
+        <button id="dateSave" type="button" style="flex:1;min-height:44px;border-radius:12px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;">حفظ</button>
       </div>
     </div>
   </div>
 
   <div class="overlay" id="settingsOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="settingsOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="settingsOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">الإعدادات</div>
       <div class="setting-group">
@@ -513,7 +500,7 @@
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name">إشعار الصباح</div>
-            <button class="small-btn" id="notificationToggleBtn" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px;font-weight:600;">تفعيل</button>
+            <button id="notificationToggleBtn" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px;font-weight:600;">تفعيل</button>
           </div>
           <div class="setting-row hidden" id="notificationTimeRow">
             <div class="setting-name">الوقت</div>
@@ -526,24 +513,10 @@
 
   <div class="overlay" id="trashOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="trashOverlay">✕</button>
+      <button class="sheet-close-btn" type="button" data-close-overlay="trashOverlay"><i data-lucide="x"></i></button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">أرشيف النوايا</div>
-      <div class="trash-list" id="trashList"></div>
-    </div>
-  </div>
-
-  <div class="install-banner" id="installBanner" style="position:fixed;z-index:180;left:50%;bottom:12px;transform:translate(-50%,20px);opacity:0;visibility:hidden;width:min(calc(100% - 28px),560px);display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-soft);transition:opacity .22s ease,transform .22s ease,visibility .22s ease;">
-    <div class="install-icon" style="width:40px;height:40px;display:grid;place-items:center;overflow:hidden;border-radius:12px;">
-      <img src="./icon-512.png" alt="ناوي" width="40" height="40" style="width:100%;height:100%;object-fit:contain;">
-    </div>
-    <div style="min-width:0;flex:1;">
-      <div style="font-size:14px;font-weight:700;">ثبّت ناوي على جهازك</div>
-      <div style="color:var(--muted);font-size:11px;">خليه معاك أسرع وأسهل.</div>
-    </div>
-    <div style="display:flex;gap:5px;">
-      <button id="installDismiss" type="button" style="min-height:34px;padding:0 12px;border-radius:8px;background:var(--surface-2);font-size:13px;font-weight:700;">متابعة</button>
-      <button id="installAction" type="button" style="min-height:34px;padding:0 12px;border-radius:8px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;">تثبيت</button>
+      <div id="trashList"></div>
     </div>
   </div>
 
@@ -555,8 +528,6 @@
     
     let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
     let currentView = "today", selectedTaskId = null, completedExpanded = false;
-    let undoAction = null;
-    let notificationTimeout = null;
     let swipeStartX = 0, swipeStartY = 0, swipeTracking = false;
 
     const $ = s => document.querySelector(s);
@@ -568,8 +539,7 @@
     const menuOverlay = $("#menuOverlay"), actionOverlay = $("#actionOverlay"), repeatOverlay = $("#repeatOverlay"), dateOverlay = $("#dateOverlay"), settingsOverlay = $("#settingsOverlay"), trashOverlay = $("#trashOverlay");
     const taskDateInput = $("#taskDateInput"), trashList = $("#trashList");
     const notificationToggleBtn = $("#notificationToggleBtn"), notificationTimeRow = $("#notificationTimeRow"), notificationTimeInput = $("#notificationTimeInput");
-    let deferredInstallPrompt = null;
-    const installBanner = $("#installBanner"), installAction = $("#installAction"), installDismiss = $("#installDismiss");
+    const actionPreviewContainer = $("#actionPreviewContainer");
 
     function pad(n) { return String(n).padStart(2, "0"); }
     function getDateKey(d = new Date()) { return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join("-"); }
@@ -694,6 +664,7 @@
       updateHeaderNav();
       requestAnimationFrame(updateIndicator);
       setTimeout(initSortable, 50);
+      lucide.createIcons();
     }
 
     function createSection(title, taskArray) {
@@ -731,7 +702,7 @@
       title.appendChild(count);
       const chevron = document.createElement("span");
       chevron.className = "completed-toggle-chevron";
-      chevron.innerHTML = "▼";
+      chevron.innerHTML = '<i data-lucide="chevron-down"></i>';
       toggle.append(title, chevron);
       const listWrap = document.createElement("div");
       listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : "");
@@ -749,11 +720,9 @@
       article.className = "task" + (task.completed ? " completed" : "");
       article.dataset.taskId = task.id;
       article.innerHTML = `
-        <button class="task-checkbox" type="button">
-          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4 4L19 7"></path></svg>
-        </button>
+        <button class="task-checkbox" type="button"><i data-lucide="check"></i></button>
         <div class="task-main"><p class="task-text">${task.text}</p></div>
-        <button class="task-star" type="button">${task.starred ? "★" : "☆"}</button>
+        <button class="task-star" type="button"><i data-lucide="star"></i></button>
       `;
       article.querySelector(".task-checkbox").addEventListener("click", e => { e.stopPropagation(); completeTask(task.id); });
       article.querySelector(".task-star").addEventListener("click", e => { e.stopPropagation(); toggleStar(task.id); });
@@ -824,8 +793,41 @@
       const task = tasks.find(t => t.id === id);
       if (!task) return;
       selectedTaskId = id;
+      
+      actionPreviewContainer.innerHTML = `
+        <button class="action-task-preview" id="actionTaskPreview" type="button">
+          <span class="action-task-preview-text">${task.text}</span>
+          <i data-lucide="pencil"></i>
+        </button>
+      `;
+      
       $("#actionComplete .action-text").textContent = task.completed ? "أعد فتح النية" : "أتمم النية";
+      $("#actionDateText").textContent = task.scheduledDate ? `تغيير الموعد - ${task.scheduledDate}` : "تحديد موعد";
+      
+      $("#actionTaskPreview").addEventListener("click", () => {
+        const preview = $("#actionTaskPreview");
+        const editArea = document.createElement("textarea");
+        editArea.className = "action-task-edit-input";
+        editArea.value = task.text;
+        preview.replaceWith(editArea);
+        editArea.focus();
+        editArea.setSelectionRange(editArea.value.length, editArea.value.length);
+        
+        editArea.addEventListener("blur", () => {
+          const newText = editArea.value.trim();
+          if (newText && newText !== task.text) {
+            task.text = newText;
+            saveTasks();
+            render();
+            showToast("تم التعديل ✏️", 'success');
+          }
+          closeOverlay(actionOverlay);
+          selectedTaskId = null;
+        });
+      });
+      
       openOverlay(actionOverlay);
+      lucide.createIcons();
     }
 
     function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
@@ -862,11 +864,50 @@
     $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     $("#actionRepeat").addEventListener("click", () => { closeOverlay(actionOverlay); openOverlay(repeatOverlay); });
-    $("#actionDate").addEventListener("click", () => { closeOverlay(actionOverlay); taskDateInput.value = ""; openOverlay(dateOverlay); });
-    repeatOverlay.querySelectorAll("[data-repeat]").forEach(btn => btn.addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(t => t.id === selectedTaskId); if (task) { task.repeat = btn.dataset.repeat; saveTasks(); } } closeOverlay(repeatOverlay); selectedTaskId = null; render(); }));
-    $("#dateSave").addEventListener("click", () => { if (selectedTaskId && taskDateInput.value) { const task = tasks.find(t => t.id === selectedTaskId); if (task) { task.scheduledDate = taskDateInput.value; saveTasks(); } } closeOverlay(dateOverlay); selectedTaskId = null; render(); });
-    $("#dateClear").addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(t => t.id === selectedTaskId); if (task) { task.scheduledDate = null; saveTasks(); } } closeOverlay(dateOverlay); selectedTaskId = null; render(); });
-    $("#dateCancel").addEventListener("click", () => { closeOverlay(dateOverlay); selectedTaskId = null; });
+    $("#actionDate").addEventListener("click", () => { closeOverlay(actionOverlay); openOverlay(dateOverlay); initFlatpickr(); });
+
+    repeatOverlay.querySelectorAll("[data-repeat]").forEach(btn => btn.addEventListener("click", () => {
+      if (selectedTaskId) {
+        const task = tasks.find(t => t.id === selectedTaskId);
+        if (task) { task.repeat = btn.dataset.repeat; saveTasks(); }
+      }
+      closeOverlay(repeatOverlay); selectedTaskId = null; render();
+    }));
+
+    function initFlatpickr() {
+      if (taskDateInput._flatpickr) taskDateInput._flatpickr.destroy();
+      flatpickr(taskDateInput, {
+        dateFormat: "Y-m-d",
+        locale: settings.language === "ar" ? "ar" : "en",
+        clickOpens: true,
+      });
+    }
+
+    $$(".quick-date").forEach(btn => btn.addEventListener("click", () => {
+      const today = new Date();
+      let date = today;
+      if (btn.dataset.date === "tomorrow") {
+        date = new Date(today);
+        date.setDate(date.getDate() + 1);
+      }
+      taskDateInput.value = getDateKey(date);
+    }));
+
+    $("#dateSave").addEventListener("click", () => {
+      if (selectedTaskId && taskDateInput.value) {
+        const task = tasks.find(t => t.id === selectedTaskId);
+        if (task) { task.scheduledDate = taskDateInput.value; saveTasks(); }
+      }
+      closeOverlay(dateOverlay); selectedTaskId = null; render();
+    });
+
+    $("#dateClear").addEventListener("click", () => {
+      if (selectedTaskId) {
+        const task = tasks.find(t => t.id === selectedTaskId);
+        if (task) { task.scheduledDate = null; saveTasks(); }
+      }
+      closeOverlay(dateOverlay); selectedTaskId = null; render();
+    });
 
     function renderTrash() {
       trashList.innerHTML = "";
@@ -899,7 +940,7 @@
       });
     }
 
-    // ============ Swipe Navigation (بدون conflict مع SortableJS) ============
+    // ============ Swipe Navigation ============
     document.addEventListener("touchstart", function(e) {
       if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel")) return;
       const touch = e.touches[0];
@@ -934,7 +975,6 @@
     $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
     $$("[data-language-choice]").forEach(btn => btn.addEventListener("click", () => { settings.language = btn.dataset.languageChoice; saveSettings(); applySettings(); render(); }));
 
-    // ============ System Theme Listener ============
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       if (settings.theme === "system") applySettings();
     });
@@ -946,7 +986,6 @@
         settings.notificationEnabled = !settings.notificationEnabled;
         saveSettings();
         updateNotificationUI();
-        showToast(settings.notificationEnabled ? "تم تفعيل الإشعارات" : "تم تعطيل الإشعارات", settings.notificationEnabled ? 'success' : 'info');
       } else {
         Notification.requestPermission().then(permission => {
           if (permission === "granted") {
@@ -973,27 +1012,6 @@
       showToast("تم تحديث وقت الإشعار", 'success');
     });
 
-    // ============ Install ============
-    window.addEventListener("beforeinstallprompt", e => {
-      e.preventDefault();
-      deferredInstallPrompt = e;
-      installBanner.style.opacity = "1";
-      installBanner.style.visibility = "visible";
-      installBanner.style.transform = "translate(-50%,0)";
-    });
-    installAction.addEventListener("click", async () => {
-      if (!deferredInstallPrompt) return;
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-      installBanner.style.opacity = "0";
-      installBanner.style.visibility = "hidden";
-    });
-    installDismiss.addEventListener("click", () => {
-      installBanner.style.opacity = "0";
-      installBanner.style.visibility = "hidden";
-    });
-
     // ============ Init ============
     function init() {
       loadData();
@@ -1001,6 +1019,7 @@
       updateNotificationUI();
       render();
       requestAnimationFrame(updateIndicator);
+      lucide.createIcons();
     }
 
     init();
