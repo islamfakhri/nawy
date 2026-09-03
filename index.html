@@ -19,15 +19,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<script src="./Sortable.min.js"></script>
-<script>
-  if (typeof Sortable === 'undefined') {
-    document.write('<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"><\/script>');
-  }
-</script>
+  <!-- SortableJS -->
+  <script src="./Sortable.min.js"></script>
+  <script>
+    if (typeof Sortable === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"><\/script>');
+    }
+  </script>
 
-  <!-- SortableJS Library -->
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
   <script>
@@ -171,15 +172,18 @@
       border-bottom: 1px solid var(--border);
     }
     .section-title {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
       color: var(--text);
       font-size: var(--fs-sm);
       font-weight: var(--fw-bold);
       letter-spacing: -.1px;
     }
     .section-count {
-      min-width: 24px;
-      height: 24px;
-      padding: 0 6px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -260,6 +264,9 @@
       background: var(--surface-2);
     }
     .completed-toggle-title {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
       color: var(--text);
       font-size: var(--fs-sm);
       font-weight: var(--fw-bold);
@@ -325,6 +332,31 @@
     .composer-input-row .send-btn { width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 20px; font-weight: var(--fw-bold); transition: transform .14s ease, opacity .18s ease; }
     .composer-input-row .send-btn:active { transform: scale(.93); }
     .composer-input-row .send-btn.disabled { opacity: .4; }
+    .voice-btn {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border-radius: var(--radius-full);
+      background: var(--surface-2);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      transition: all .2s ease;
+    }
+    .voice-btn:active {
+      transform: scale(.93);
+      background: var(--surface-3);
+    }
+    .voice-btn.listening {
+      background: var(--danger);
+      color: #fff;
+      animation: voicePulse 1s infinite;
+    }
+    @keyframes voicePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, .4); }
+      50% { box-shadow: 0 0 0 10px rgba(229, 72, 77, 0); }
+    }
 
     /* ============ OVERLAYS & SHEETS ============ */
     .overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; padding: var(--sp-lg); background: rgba(0,0,0,.40); opacity: 0; visibility: hidden; transition: opacity .20s ease, visibility .20s ease; touch-action: auto; }
@@ -462,6 +494,7 @@
       .brand-mark { width: 32px; height: 32px; }
       .menu-btn { width: 42px; height: 42px; font-size: 24px; }
       .time-input { width: 100px; min-height: 36px; font-size: var(--fs-sm); }
+      .voice-btn { width: 42px; height: 42px; font-size: 18px; }
     }
     @media (min-width: 700px) {
       .app { padding-left: var(--sp-xl); padding-right: var(--sp-xl); }
@@ -528,6 +561,7 @@
     <form id="composer" autocomplete="off">
       <div class="composer-input-row">
         <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." aria-label="أضف نية جديدة"></textarea>
+        <button class="voice-btn" id="voiceBtn" type="button" aria-label="تسجيل صوتي">🎤</button>
         <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف">↑</button>
       </div>
     </form>
@@ -618,10 +652,9 @@
       </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">تحديد موعد</div>
-      <div class="sheet-subtitle">اختر اليوم الذي تريد أن تظهر فيه النية.</div>
       <input class="date-input" id="taskDateInput" type="date">
       <div class="modal-actions">
-        <button class="modal-btn danger" id="dateClear" type="button">إزالة الموعد</button>
+        <button class="modal-btn danger" id="dateClear" type="button">إزالة</button>
         <button class="modal-btn secondary" id="dateCancel" type="button">إلغاء</button>
         <button class="modal-btn primary" id="dateSave" type="button">حفظ</button>
       </div>
@@ -707,10 +740,6 @@
             <div class="setting-name">تغيير الرمز</div>
             <button class="small-btn" id="pinChangeBtn" type="button"><span>تغيير</span></button>
           </div>
-          <div class="setting-row hidden" id="birthYearRow">
-            <div class="setting-name">سنة الميلاد (سؤال الأمان)</div>
-            <button class="small-btn" id="changeBirthYearBtn" type="button">تغيير</button>
-          </div>
         </div>
       </div>
     </div>
@@ -724,7 +753,6 @@
       </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title">أرشيف النوايا</div>
-      <div class="sheet-subtitle">نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.</div>
       <div class="trash-list" id="trashList"></div>
     </div>
   </div>
@@ -755,74 +783,13 @@
     "use strict";
 
     const STORAGE_KEYS = { tasks: "nawy_tasks_v9", trash: "nawy_trash_v2", settings: "nawy_settings_v2" };
-    const EDIT_ICON_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>';
     
-    const TRANSLATIONS = {
-      ar: {
-        languageSection: "اللغة", languageName: "لغة ناوي", appearanceSection: "المظهر", modeName: "الوضع", fontSizeName: "حجم الخط", colorSection: "اللون",
-        settings: "الإعدادات", trash: "أرشيف النوايا", trashSubtitle: "نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.",
-        today: "اليوم", all: "نواياي", favorites: "مفضلاتي", completed: "المكتملة", completedSection: "المكتملة", mainNavigation: "التنقل الرئيسي",
-        heroToday: "ناوي على إيه النهارده؟",
-        done: "أتمم النية", cancelDone: "أعد فتح النية", delete: "تراجع عن النية", deleteForever: "حذف نهائي",
-        cancel: "إلغاء", save: "حفظ", add: "أضف نية", newIntent: "اكتب نية جديدة", taskPlaceholder: "اكتب النية اللي في بالك...", menu: "القائمة",
-        light: "فاتح", dark: "داكن", green: "أخضر", blue: "أزرق", purple: "بنفسجي", orange: "برتقالي", pink: "وردي", nawyColor: "لون ناوي",
-        yesterday: "أمس", daysAgo: "منذ {n} أيام",
-        deleted: "تم التراجع عن النية", restored: "تم استرجاع النية", deletedForever: "تم الحذف نهائيًا", edited: "تم تعديل النية بنجاح", writeFirst: "اكتب النية الأول",
-        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.", noIntentionsAll: "لسه مفيش نوايا", everyThingStarts: "كل حاجة تبدأ بنية.",
-        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
-        currentIntentions: "نواياي", favoriteSection: "المفضلة النشطة", favoriteCompletedSection: "المفضلة المكتملة", allDoneSection: "المكتملة", trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
-        restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد", dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.", removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
-        installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.", install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
-        updateAvailable: "تحديث جديد من ناوي متاح.", update: "تحديث", undo: "استرجاع",
-        notificationEnable: "تفعيل", notificationDisable: "تعطيل", notificationTime: "الوقت", notificationSuccess: "تم تفعيل الإشعارات", notificationDisabled: "تم تعطيل الإشعارات", notificationDenied: "تم رفض الإذن", notificationBlocked: "تم حظر الإشعارات", notificationNotSupported: "المتصفح لا يدعم الإشعارات", notificationUpdated: "تم تحديث وقت الإشعار",
-        pinSection: "الخصوصية", pinName: "قفل ناوي", pinEnable: "تفعيل", pinDisable: "تعطيل", pinChange: "تغيير الرمز", pinCurrent: "أدخل الرمز الحالي", pinNew: "أدخل رمزًا جديدًا (4 أرقام)", pinConfirm: "أعد إدخال الرمز الجديد", pinSuccess: "تم تحديث رمز ناوي", pinErrorMismatch: "الرمزان غير متطابقين", pinErrorWrong: "الرمز غير صحيح",
-        pinEnter: "أدخل رمز ناوي", pinSubtitle: "أدخل رمزك السري لفتح نواياك", pinSave: "حفظ", pinForgot: "نسيت الرمز؟", pinSecurityQuestion: "استرجاع رمز ناوي", pinSecuritySubtitle: "اكتب سنة الميلاد.", pinSecurityError: "السنة غير صحيحة", pinReset: "حدد رمزًا جديدًا", pinResetNew: "أدخل رمزًا جديدًا (4 أرقام)", pinResetConfirm: "أعد إدخال الرمز الجديد", pinResetSuccess: "تم استرجاع الرمز بنجاح", pinStartOver: "أبدأ من جديد", pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟",
-        pinSetupBirthYearTitle: "سؤال الأمان", pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام).", pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام).",
-        createdAt: "أُضيفت في", completedAt: "أُتمت في", detailsTitle: "تفاصيل النية",
-        schedule: "جدولة", repeat: "تكرار", repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا"
-      },
-      en: {
-        languageSection: "Language", languageName: "NAWY language", appearanceSection: "Appearance", modeName: "Mode", fontSizeName: "Font size", colorSection: "Color",
-        settings: "Settings", trash: "Intention Archive", trashSubtitle: "Intentions you've stepped back from.",
-        today: "Today", all: "My intentions", favorites: "My favorites", completed: "Completed", completedSection: "Completed", mainNavigation: "Main navigation",
-        heroToday: "What are you up to today?",
-        done: "Complete intention", cancelDone: "Reopen intention", delete: "Step back from intention", deleteForever: "Delete permanently",
-        cancel: "Cancel", save: "Save", add: "Add intention", newIntent: "Write a new intention", taskPlaceholder: "Write the intention on your mind...", menu: "Menu",
-        light: "Light", dark: "Dark", green: "Green", blue: "Blue", purple: "Purple", orange: "Orange", pink: "Pink", nawyColor: "NAWY color",
-        yesterday: "Yesterday", daysAgo: "{n} days ago",
-        deleted: "Stepped back from intention", restored: "Intention restored", deletedForever: "Deleted permanently", edited: "Intention updated successfully", writeFirst: "Write the intention first",
-        noIntentions: "No intentions yet", firstIntent: "Write the first intention you have for today.", noIntentionsAll: "No intentions yet", everyThingStarts: "Everything starts with an intention.",
-        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
-        currentIntentions: "My intentions", favoriteSection: "Active favorites", favoriteCompletedSection: "Completed favorites", allDoneSection: "Completed", trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
-        restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
-        installTitle: "Install NAWY on your device", installText: "Keep it faster and easier.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
-        updateAvailable: "A new NAWY update is available.", update: "Update", undo: "Restore",
-        notificationEnable: "Enable", notificationDisable: "Disable", notificationTime: "Time", notificationSuccess: "Notifications enabled", notificationDisabled: "Notifications disabled", notificationDenied: "Permission denied", notificationBlocked: "Notifications blocked", notificationNotSupported: "Browser doesn't support notifications", notificationUpdated: "Notification time updated",
-        pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable", pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
-        pinEnter: "Enter NAWY PIN", pinSubtitle: "Enter your secret PIN", pinSave: "Save", pinForgot: "Forgot PIN?", pinSecurityQuestion: "Recover NAWY PIN", pinSecuritySubtitle: "Enter your birth year.", pinSecurityError: "Wrong year", pinReset: "Set new PIN", pinResetNew: "Enter new PIN (4 digits)", pinResetConfirm: "Re-enter new PIN", pinResetSuccess: "PIN recovered", pinStartOver: "Start over", pinStartOverConfirm: "This will delete all data. Are you sure?",
-        pinSetupBirthYearTitle: "Security Question", pinSetupBirthYearSubtitle: "Enter your birth year (4 digits).", pinBirthYearWrong: "Enter a valid year (4 digits).",
-        createdAt: "Created", completedAt: "Completed", detailsTitle: "Intention Details",
-        schedule: "Schedule", repeat: "Repeat", repeatNone: "No repeat", repeatDaily: "Daily", repeatWeekly: "Weekly", repeatMonthly: "Monthly"
-      }
-    };
-
-    function t(key, vars = {}) {
-      const lang = settings.language === "en" ? "en" : "ar";
-      const dict = TRANSLATIONS[lang];
-      let value = dict[key] ?? TRANSLATIONS.ar[key] ?? key;
-      Object.entries(vars).forEach(([k, v]) => { value = value.replaceAll(`{${k}}`, String(v)); });
-      return value;
-    }
-
     const DEFAULT_SETTINGS = { theme: "dark", accent: "green", language: "ar", fontSize: "medium", lockEnabled: false, pin: null, birthYear: null, notificationEnabled: false, notificationTime: "09:00" };
     let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
     let currentView = "today", selectedTaskId = null, completedExpanded = false;
-    let undoTimer = null, undoAction = null, typingAudioContext = null, lastTypingSound = 0, lastKnownDay = null;
-    const SWIPE_VIEWS = ["all", "today", "favorites"];
-    let swipeStartX = 0, swipeStartY = 0, swipeTracking = false, swipeSuppressClick = false;
-    let pinState = { mode: "idle", buffer: "", newPin: "", newPinConfirm: "", currentPin: "", tempPin: "" };
-    let composerState = { starred: false, scheduledDate: null, repeat: 'none' };
+    let undoTimer = null, undoAction = null, lastKnownDay = null;
     let notificationTimeout = null;
+    let recognition = null;
 
     const $ = selector => document.querySelector(selector);
     const $$ = selector => [...document.querySelectorAll(selector)];
@@ -831,12 +798,13 @@
     const heroDate = $("#heroDate"); const heroTitle = $("#heroTitle");
     const menuOverlay = $("#menuOverlay"); const actionOverlay = $("#actionOverlay"); const dateOverlay = $("#dateOverlay"); const settingsOverlay = $("#settingsOverlay"); const trashOverlay = $("#trashOverlay"); const detailsOverlay = $("#detailsOverlay"); const detailsContent = $("#detailsContent");
     const repeatOverlay = $("#repeatOverlay");
-    const actionTaskPreview = $("#actionTaskPreview"); const actionDateText = $("#actionDateText"); const taskDateInput = $("#taskDateInput"); const trashList = $("#trashList");
+    const actionTaskPreview = $("#actionTaskPreview"); const taskDateInput = $("#taskDateInput"); const trashList = $("#trashList");
     const toast = $("#toast"); const toastMessage = $("#toastMessage"); const toastUndo = $("#toastUndo"); const toastUpdate = $("#toastUpdate");
-    const headerNav = $("#headerNav"); const headerTabIndicator = $("#headerTabIndicator"); const brandName = $("#brandName");
+    const headerNav = $("#headerNav"); const headerTabIndicator = $("#headerTabIndicator");
     const pinOverlay = $("#pinOverlay"); const pinTitle = $("#pinTitle"); const pinSubtitle = $("#pinSubtitle"); const pinDots = $("#pinDots"); const pinKeypad = $("#pinKeypad"); const pinError = $("#pinError"); const pinSaveBtn = $("#pinSaveBtn"); const pinForgotBtn = $("#pinForgotBtn"); const pinResetLink = $("#pinResetLink"); const pinCloseBtn = $("#pinCloseBtn");
-    const pinToggleBtn = $("#pinToggleBtn"); const pinChangeRow = $("#pinChangeRow"); const pinChangeBtn = $("#pinChangeBtn"); const birthYearRow = $("#birthYearRow"); const changeBirthYearBtn = $("#changeBirthYearBtn");
+    const pinToggleBtn = $("#pinToggleBtn"); const pinChangeRow = $("#pinChangeRow"); const pinChangeBtn = $("#pinChangeBtn");
     const notificationToggleBtn = $("#notificationToggleBtn"); const notificationTimeRow = $("#notificationTimeRow"); const notificationTimeInput = $("#notificationTimeInput");
+    const voiceBtn = $("#voiceBtn");
     let deferredInstallPrompt = null; let installBannerDismissed = false;
     const installBanner = $("#installBanner"); const installTitle = $("#installTitle"); const installText = $("#installText"); const installAction = $("#installAction"); const installDismiss = $("#installDismiss");
 
@@ -858,10 +826,10 @@
     function saveTrash() { localStorage.setItem(STORAGE_KEYS.trash, JSON.stringify(trash)); }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
 
-    function addTask(text, options = {}) {
+    function addTask(text) {
       const cleanText = String(text || "").trim();
       if (!cleanText) return false;
-      const task = { id: createId(), text: cleanText, completed: false, starred: options.starred || false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: options.scheduledDate || null, completedAt: null, repeat: options.repeat || 'none' };
+      const task = { id: createId(), text: cleanText, completed: false, starred: false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: null, completedAt: null, repeat: 'none' };
       tasks.unshift(task);
       saveTasks();
       render();
@@ -875,6 +843,22 @@
       task.completedAt = task.completed ? Date.now() : null;
       saveTasks();
       render();
+      
+      if (task.completed) {
+        // Confetti 🎉
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 80,
+            spread: 60,
+            origin: { y: 0.7 },
+            colors: ['#19a974', '#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1']
+          });
+        }
+        // Vibration
+        if (navigator.vibrate) {
+          navigator.vibrate([50, 30, 50]);
+        }
+      }
     }
 
     function toggleStar(id) {
@@ -903,18 +887,13 @@
       });
     }
 
-    function getTodayTasks() { const today = getDateKey(); return tasks.filter(t => !t.completed && (t.scheduledDate ? t.scheduledDate === today : t.taskDay === today)); }
-    function getCompletedToday() { const today = getDateKey(); return tasks.filter(t => t.completed && t.completedAt && getDateKey(new Date(t.completedAt)) === today); }
-    function getAllActive() { return tasks.filter(t => !t.completed); }
-    function getAllCompleted() { return tasks.filter(t => t.completed); }
-
     function render() {
       heroDate.textContent = new Intl.DateTimeFormat(settings.language === "en" ? "en-US" : "ar-EG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
       content.innerHTML = "";
       
       if (currentView === "today") {
-        const active = getTodayTasks();
-        const completed = getCompletedToday();
+        const active = tasks.filter(t => !t.completed && (t.scheduledDate ? t.scheduledDate === getDateKey() : t.taskDay === getDateKey()));
+        const completed = tasks.filter(t => t.completed && t.completedAt && getDateKey(new Date(t.completedAt)) === getDateKey());
         if (active.length === 0 && completed.length === 0) {
           content.appendChild(createEmptyState("ن", "مفيش نوايا لسه", "اكتب أول نية ناوي تعملها النهارده."));
         } else {
@@ -922,8 +901,8 @@
           if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
         }
       } else if (currentView === "all") {
-        const active = getAllActive();
-        const completed = getAllCompleted();
+        const active = tasks.filter(t => !t.completed);
+        const completed = tasks.filter(t => t.completed);
         if (active.length > 0) content.appendChild(createSection("نواياي", active));
         if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
       } else if (currentView === "favorites") {
@@ -953,7 +932,8 @@
       const count = document.createElement("span");
       count.className = "section-count";
       count.textContent = taskArray.length;
-      head.append(titleEl, count);
+      titleEl.appendChild(count);
+      head.appendChild(titleEl);
       const list = document.createElement("div");
       list.className = "task-list";
       taskArray.forEach(task => list.appendChild(createTaskElement(task)));
@@ -973,10 +953,11 @@
       const count = document.createElement("span");
       count.className = "completed-toggle-count";
       count.textContent = taskArray.length;
+      title.appendChild(count);
       const chevron = document.createElement("span");
       chevron.className = "completed-toggle-chevron";
       chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
-      toggle.append(title, count, chevron);
+      toggle.append(title, chevron);
       const listWrap = document.createElement("div");
       listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : "");
       const list = document.createElement("div");
@@ -1074,7 +1055,7 @@
     }
 
     function setView(view) {
-      if (!SWIPE_VIEWS.includes(view)) return;
+      if (!["all", "today", "favorites"].includes(view)) return;
       currentView = view;
       closeAllOverlays();
       closeComposer();
@@ -1096,7 +1077,7 @@
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
     function openComposer() { composerFab.classList.add("hidden"); composerPanel.classList.add("open"); taskInput.focus(); }
-    function closeComposer() { composerFab.classList.remove("hidden"); composerPanel.classList.remove("open"); taskInput.value = ""; }
+    function closeComposer() { composerFab.classList.remove("hidden"); composerPanel.classList.remove("open"); taskInput.value = ""; sendBtn.classList.add("disabled"); }
 
     function showToast(message, canUndo = false, undoCallback = null) {
       clearTimeout(undoTimer);
@@ -1108,14 +1089,55 @@
     }
 
     function navigateBySwipe(direction) {
-      const index = SWIPE_VIEWS.indexOf(currentView);
+      const views = ["all", "today", "favorites"];
+      const index = views.indexOf(currentView);
       let next;
-      if (direction === "next") next = (index+1)%SWIPE_VIEWS.length;
-      else next = (index-1+SWIPE_VIEWS.length)%SWIPE_VIEWS.length;
-      setView(SWIPE_VIEWS[next]);
+      if (direction === "next") next = (index+1)%views.length;
+      else next = (index-1+views.length)%views.length;
+      setView(views[next]);
     }
 
-    // Event Listeners
+    // ============ Voice Input ============
+    function initVoiceInput() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        voiceBtn.style.display = "none";
+        return;
+      }
+      
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.lang = settings.language === "en" ? 'en-US' : 'ar-EG';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        taskInput.value = transcript;
+        sendBtn.classList.remove("disabled");
+      };
+      
+      recognition.onstart = function() {
+        voiceBtn.classList.add("listening");
+      };
+      
+      recognition.onend = function() {
+        voiceBtn.classList.remove("listening");
+      };
+      
+      recognition.onerror = function() {
+        voiceBtn.classList.remove("listening");
+      };
+      
+      voiceBtn.addEventListener("click", () => {
+        if (voiceBtn.classList.contains("listening")) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      });
+    }
+
+    // ============ Event Listeners ============
     composerFab.addEventListener("click", openComposer);
     $("#composer").addEventListener("submit", e => {
       e.preventDefault();
@@ -1130,14 +1152,46 @@
     $$(".header-tab").forEach(btn => btn.addEventListener("click", () => setView(btn.dataset.view)));
     $("#menuBtn").addEventListener("click", () => openOverlay(menuOverlay));
     $("#settingsBtn").addEventListener("click", () => { closeOverlay(menuOverlay); openOverlay(settingsOverlay); });
-    $("#menuTrashBtn").addEventListener("click", () => { closeOverlay(menuOverlay); openOverlay(trashOverlay); });
+    $("#menuTrashBtn").addEventListener("click", () => { closeOverlay(menuOverlay); renderTrash(); openOverlay(trashOverlay); });
     $$("[data-close-overlay]").forEach(btn => btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.closeOverlay))));
     $$(".overlay").forEach(overlay => overlay.addEventListener("click", e => { if (e.target === overlay) closeOverlay(overlay); }));
     $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
     toastUndo.addEventListener("click", () => { if (undoAction) undoAction(); toast.classList.remove("show"); });
 
-    // Touch swipe for tab navigation
+    function renderTrash() {
+      trashList.innerHTML = "";
+      if (trash.length === 0) {
+        trashList.innerHTML = `<div class="task-empty"><div class="empty-title">الأرشيف فاضي</div><div class="empty-text">مفيش نوايا متراجع عنها.</div></div>`;
+        return;
+      }
+      trash.forEach(task => {
+        const item = document.createElement("div");
+        item.className = "trash-item";
+        const text = document.createElement("div");
+        text.className = "trash-text";
+        text.textContent = task.text;
+        const restore = document.createElement("button");
+        restore.className = "small-btn";
+        restore.textContent = "استرجاع";
+        restore.addEventListener("click", () => {
+          const index = trash.findIndex(t => t.id === task.id);
+          if (index !== -1) {
+            const [restored] = trash.splice(index, 1);
+            delete restored.deletedAt;
+            tasks.unshift(restored);
+            saveTasks();
+            saveTrash();
+            renderTrash();
+            showToast("تم استرجاع النية");
+          }
+        });
+        item.append(text, restore);
+        trashList.appendChild(item);
+      });
+    }
+
+    // ============ Swipe Navigation ============
     document.addEventListener("touchstart", e => {
       if (e.target.closest("button, input, textarea, .overlay")) return;
       const touch = e.touches[0];
@@ -1158,14 +1212,7 @@
       }
     }, { passive: true });
 
-    function init() {
-      loadData();
-      applySettings();
-      lastKnownDay = getDateKey();
-      render();
-      requestAnimationFrame(updateHeaderTabIndicator);
-    }
-
+    // ============ Settings ============
     function applySettings() {
       document.documentElement.setAttribute("data-theme", settings.theme);
       document.documentElement.setAttribute("data-accent", settings.accent);
@@ -1178,6 +1225,16 @@
     $$("[data-theme-choice]").forEach(btn => btn.addEventListener("click", () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); }));
     $$("[data-accent-choice]").forEach(btn => btn.addEventListener("click", () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); }));
     $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
+
+    // ============ Init ============
+    function init() {
+      loadData();
+      applySettings();
+      lastKnownDay = getDateKey();
+      render();
+      initVoiceInput();
+      requestAnimationFrame(updateHeaderTabIndicator);
+    }
 
     init();
   </script>
