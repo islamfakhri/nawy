@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -15,7 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <meta name="description"
-        content="ناوي — مكان بسيط لكل اللي ناوي تعمله.">
+        content="ناوي — مساحتك الخاصة لنواياك وأهدافك.">
 
   <title>ناوي</title>
 
@@ -345,7 +344,6 @@
 
     /* =========================
        PRIMARY NAV
-       Google Tasks inspired
     ========================= */
 
     .header-nav {
@@ -636,7 +634,6 @@
 
     /* =========================
        TASK LIST
-       Minimal dividers
     ========================= */
 
     .task-list {
@@ -879,7 +876,6 @@
 
     /* =========================
        COMPLETED
-       Minimal / Google-like
     ========================= */
 
     .completed-section {
@@ -1683,6 +1679,10 @@
     .orange { background: #f59e0b; }
     .pink { background: #e94f9b; }
 
+    /* =========================
+       ARCHIVE (TRASH) LIST
+    ========================= */
+
     .trash-list {
       display: flex;
       flex-direction: column;
@@ -1747,6 +1747,10 @@
       color:
         var(--danger);
     }
+
+    /* =========================
+       TOAST
+    ========================= */
 
     .toast {
       position: fixed;
@@ -1855,6 +1859,10 @@
       white-space:
         nowrap;
     }
+
+    /* =========================
+       INSTALL
+    ========================= */
 
     .install-banner {
       position:
@@ -2062,53 +2070,166 @@
         var(--surface-2);
     }
 
+    /* =========================
+       PIN LOCK STYLES
+    ========================= */
+
+    .pin-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
+    }
+
+    .pin-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .pin-box {
+      width: min(90%, 360px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-sheet);
+    }
+
+    .pin-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .pin-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      background: transparent;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+
+    .pin-dot.filled {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .pin-key {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      transition: background .15s ease, transform .1s ease;
+      cursor: pointer;
+    }
+
+    .pin-key:active {
+      transform: scale(.92);
+      background: var(--surface-3);
+    }
+
+    .pin-key.empty {
+      background: transparent;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .pin-backspace {
+      background: transparent;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .pin-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 16px;
+      min-height: 20px;
+    }
+
+    .pin-save-btn {
+      margin-top: 24px;
+      width: 100%;
+      min-height: 48px;
+      border-radius: 15px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    /* =========================
+       UTILITIES
+    ========================= */
+
     .hidden {
-      display:
-        none !important;
+      display: none !important;
     }
 
     .no-scroll {
-      overflow:
-        hidden;
+      overflow: hidden;
     }
 
     @media (max-width: 480px) {
 
       .app {
-        padding-left:
-          13px;
-
-        padding-right:
-          13px;
+        padding-left: 13px;
+        padding-right: 13px;
       }
 
       .header-tab {
-        padding:
-          0 7px 7px;
-
-        font-size:
-          11.5px;
+        padding: 0 7px 7px;
+        font-size: 11.5px;
       }
 
       .header-tab-star {
-        font-size:
-          17px;
+        font-size: 17px;
       }
 
       .hero {
-        padding-left:
-          3px;
-
-        padding-right:
-          3px;
+        padding-left: 3px;
+        padding-right: 3px;
       }
 
       .task {
-        min-height:
-          57px;
-
-        padding:
-          7px 8px;
+        min-height: 57px;
+        padding: 7px 8px;
       }
 
       .task + .task::before {
@@ -2117,99 +2238,69 @@
       }
 
       .task-text {
-        font-size:
-          14px;
+        font-size: 14px;
       }
 
       .task-checkbox {
-        width:
-          24px;
-
-        height:
-          24px;
+        width: 24px;
+        height: 24px;
       }
 
       .task-star {
-        width:
-          30px;
-
-        height:
-          30px;
-
-        font-size:
-          17px;
+        width: 30px;
+        height: 30px;
+        font-size: 17px;
       }
 
       .completed-toggle {
-        min-height:
-          39px;
+        min-height: 39px;
       }
 
       .composer-wrap {
-        padding-left:
-          13px;
-
-        padding-right:
-          13px;
+        padding-left: 13px;
+        padding-right: 13px;
       }
 
       .install-banner {
-        align-items:
-          flex-start;
-
-        gap:
-          8px;
-
-        padding:
-          9px;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 9px;
       }
 
       .install-icon {
-        width:
-          37px;
-
-        height:
-          37px;
-
-        border-radius:
-          11px;
+        width: 37px;
+        height: 37px;
+        border-radius: 11px;
       }
 
       .install-actions {
-        flex-direction:
-          column;
-
-        align-items:
-          stretch;
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .install-btn {
-        min-height:
-          32px;
+        min-height: 32px;
+      }
+
+      .pin-key {
+        font-size: 20px;
       }
     }
 
     @media (min-width: 700px) {
 
       .app {
-        padding-left:
-          20px;
-
-        padding-right:
-          20px;
+        padding-left: 20px;
+        padding-right: 20px;
       }
 
       .composer-wrap {
-        padding-left:
-          20px;
-
-        padding-right:
-          20px;
+        padding-left: 20px;
+        padding-right: 20px;
       }
 
       .overlay {
-        align-items:
-          center;
+        align-items: center;
       }
     }
 
@@ -2218,23 +2309,35 @@
       *,
       *::before,
       *::after {
-        scroll-behavior:
-          auto !important;
-
-        animation-duration:
-          .01ms !important;
-
-        animation-iteration-count:
-          1 !important;
-
-        transition-duration:
-          .01ms !important;
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- PIN LOCK OVERLAY -->
+  <div class="pin-overlay" id="pinOverlay" aria-hidden="true">
+    <div class="pin-box">
+      <div class="pin-title" id="pinTitle">أدخل رمز النوايا</div>
+      <div class="pin-subtitle" id="pinSubtitle">أدخل رمزك السري لفتح نواياك</div>
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin-keypad" id="pinKeypad">
+        <!-- تم بناؤها بالجافاسكريبت -->
+      </div>
+      <div class="pin-error" id="pinError"></div>
+      <button class="pin-save-btn hidden" id="pinSaveBtn">حفظ الرمز</button>
+    </div>
+  </div>
 
   <div class="app">
 
@@ -2349,7 +2452,7 @@
             class="progress-label"
             id="progressLabel"
           >
-            تقدمك اليوم
+            تقدم نواياك اليوم
           </span>
 
           <span
@@ -2393,9 +2496,9 @@
         id="taskInput"
         rows="1"
         maxlength="500"
-        placeholder="اكتب اللي ناوي عليه..."
+        placeholder="اكتب النية اللي في بالك..."
         data-i18n-placeholder="taskPlaceholder"
-        aria-label="اكتب نية جديدة"
+        aria-label="أضف نية جديدة"
         data-i18n-aria="newIntent"
       ></textarea>
 
@@ -2403,7 +2506,7 @@
         class="send-btn disabled"
         id="sendBtn"
         type="submit"
-        aria-label="إضافة"
+        aria-label="أضف نية"
         data-i18n-aria="add"
       >
         ↑
@@ -2448,13 +2551,13 @@
         id="menuTrashBtn"
         type="button"
       >
-        <span class="menu-icon">⌫</span>
+        <span class="menu-icon">📦</span>
 
         <span
           class="menu-text"
           data-i18n="trash"
         >
-          سلة المحذوفات
+          أرشيف النوايا
         </span>
 
       </button>
@@ -2487,7 +2590,7 @@
 
         <span>
           <span data-i18n="done">
-            تمت
+            أتمم النية
           </span>
         </span>
       </button>
@@ -2515,7 +2618,7 @@
         <span>✎</span>
 
         <span data-i18n="edit">
-          تعديل
+          تعديل النية
         </span>
       </button>
 
@@ -2524,10 +2627,10 @@
         id="actionDelete"
         type="button"
       >
-        <span>⌫</span>
+        <span>↩</span>
 
         <span data-i18n="delete">
-          حذف
+          تراجع عن النية
         </span>
       </button>
 
@@ -2614,7 +2717,7 @@
         class="date-input"
         id="taskDateInput"
         type="date"
-        aria-label="تاريخ المهمة"
+        aria-label="تاريخ النية"
         data-i18n-aria="taskDate"
       >
 
@@ -2837,6 +2940,59 @@
 
       </div>
 
+      <div class="setting-group">
+
+        <div
+          class="setting-label"
+          data-i18n="pinSection"
+        >
+          الخصوصية
+        </div>
+
+        <div class="setting-box">
+
+          <div class="setting-row">
+
+            <div
+              class="setting-name"
+              data-i18n="pinName"
+            >
+              قفل النوايا
+            </div>
+
+            <button
+              class="small-btn"
+              id="pinToggleBtn"
+              type="button"
+            >
+              <span data-i18n="pinEnable">تفعيل</span>
+            </button>
+
+          </div>
+
+          <div class="setting-row hidden" id="pinChangeRow">
+
+            <div
+              class="setting-name"
+              data-i18n="pinChange"
+            >
+              تغيير الرمز
+            </div>
+
+            <button
+              class="small-btn"
+              id="pinChangeBtn"
+              type="button"
+            >
+              <span data-i18n="pinChange">تغيير</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>
@@ -2855,14 +3011,14 @@
         class="sheet-title"
         data-i18n="trash"
       >
-        سلة المحذوفات
+        أرشيف النوايا
       </div>
 
       <div
         class="sheet-subtitle"
         data-i18n="trashSubtitle"
       >
-        يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.
+        نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.
       </div>
 
       <div
@@ -2954,7 +3110,7 @@
       type="button"
     >
       <span data-i18n="undo">
-        تراجع
+        استرجاع
       </span>
     </button>
 
@@ -2986,8 +3142,8 @@
         modeName: "الوضع",
         colorSection: "اللون",
         settings: "الإعدادات",
-        trash: "سلة المحذوفات",
-        trashSubtitle: "يمكنك استرجاع النوايا المحذوفة أو حذفها نهائيًا.",
+        trash: "أرشيف النوايا",
+        trashSubtitle: "نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.",
         today: "اليوم",
         all: "نواياي",
         favorites: "مفضلاتي",
@@ -2995,17 +3151,18 @@
         completedSection: "المكتملة",
         mainNavigation: "التنقل الرئيسي",
         heroToday: "ناوي على إيه النهارده؟",
-        progressToday: "تقدمك اليوم",
+        progressToday: "تقدم نواياك اليوم",
         editIntent: "تعديل النية",
-        done: "تمت",
-        cancelDone: "إلغاء الإنجاز",
-        edit: "تعديل",
-        delete: "حذف",
+        done: "أتمم النية",
+        cancelDone: "أعد فتح النية",
+        edit: "تعديل النية",
+        delete: "تراجع عن النية",
+        deleteForever: "حذف نهائي",
         cancel: "إلغاء",
         save: "حفظ",
-        add: "إضافة",
+        add: "أضف نية",
         newIntent: "اكتب نية جديدة",
-        taskPlaceholder: "اكتب اللي ناوي عليه...",
+        taskPlaceholder: "اكتب النية اللي في بالك...",
         menu: "القائمة",
         light: "فاتح",
         dark: "داكن",
@@ -3019,31 +3176,31 @@
         daysAgo: "منذ {n} أيام",
         startFirst: "ابدأ أول نية",
         allDone: "كل نواياك اتحققت ✨",
-        deleted: "اتحذفت من النوايا",
-        restored: "رجعت للنوايا",
-        deletedForever: "اتحذفت نهائيًا",
-        edited: "اتعدلت بنجاح",
+        deleted: "تم التراجع عن النية",
+        restored: "تم استرجاع النية",
+        deletedForever: "تم الحذف نهائيًا",
+        edited: "تم تعديل النية بنجاح",
         writeFirst: "اكتب النية الأول",
         noIntentions: "مفيش نوايا لسه",
-        firstIntent: "اكتب أول حاجة ناوي تعملها النهارده.",
+        firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
         noIntentionsAll: "لسه مفيش نوايا",
         everyThingStarts: "كل حاجة تبدأ بنية.",
         noFavorites: "مفيش مفضلات لسه",
         favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         noAchievements: "لسه مفيش إنجازات",
-        achievementHint: "أول ما تخلص حاجة هتظهر هنا.",
+        achievementHint: "أول ما تتمم نية هتظهر هنا.",
         currentIntentions: "نواياي",
         favoriteSection: "مفضلاتي",
         allDoneSection: "المكتملة",
-        trashEmpty: "السلة فاضية",
-        noDeleted: "مفيش نوايا محذوفة.",
-        restore: "استرجاع",
+        trashEmpty: "الأرشيف فاضي",
+        noDeleted: "مفيش نوايا متراجع عنها.",
+        restore: "استرجاع النية",
         setDate: "تحديد موعد",
         changeDate: "تغيير الموعد",
         dateTitle: "تحديد موعد",
         dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.",
         removeDate: "إزالة الموعد",
-        taskDate: "تاريخ المهمة",
+        taskDate: "تاريخ النية",
         dateSet: "تم تحديد الموعد",
         dateRemoved: "تمت إزالة الموعد",
         installTitle: "ثبّت ناوي على جهازك",
@@ -3054,7 +3211,21 @@
         installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
         updateAvailable: "تحديث جديد من ناوي متاح.",
         update: "تحديث",
-        undo: "تراجع"
+        undo: "استرجاع",
+        pinSection: "الخصوصية",
+        pinName: "قفل النوايا",
+        pinEnable: "تفعيل",
+        pinDisable: "تعطيل",
+        pinChange: "تغيير الرمز",
+        pinCurrent: "أدخل الرمز الحالي",
+        pinNew: "أدخل رمزًا جديدًا (4 أرقام)",
+        pinConfirm: "أعد إدخال الرمز الجديد",
+        pinSuccess: "تم تحديث رمز النوايا",
+        pinErrorMismatch: "الرمزان غير متطابقين",
+        pinErrorWrong: "الرمز غير صحيح",
+        pinEnter: "أدخل رمز النوايا",
+        pinSubtitle: "أدخل رمزك السري لفتح نواياك",
+        pinSave: "حفظ الرمز",
       },
 
       en: {
@@ -3064,8 +3235,8 @@
         modeName: "Mode",
         colorSection: "Color",
         settings: "Settings",
-        trash: "Trash",
-        trashSubtitle: "Restore deleted intentions or delete them permanently.",
+        trash: "Intention Archive",
+        trashSubtitle: "Intentions you've stepped back from. You can restore them anytime.",
         today: "Today",
         all: "My intentions",
         favorites: "My favorites",
@@ -3073,17 +3244,18 @@
         completedSection: "Completed",
         mainNavigation: "Main navigation",
         heroToday: "What are you up to today?",
-        progressToday: "Today's progress",
+        progressToday: "Today's intention progress",
         editIntent: "Edit intention",
-        done: "Done",
-        cancelDone: "Undo completion",
-        edit: "Edit",
-        delete: "Delete",
+        done: "Complete intention",
+        cancelDone: "Reopen intention",
+        edit: "Edit intention",
+        delete: "Step back from intention",
+        deleteForever: "Delete permanently",
         cancel: "Cancel",
         save: "Save",
-        add: "Add",
+        add: "Add intention",
         newIntent: "Write a new intention",
-        taskPlaceholder: "Write what you intend to do...",
+        taskPlaceholder: "Write the intention on your mind...",
         menu: "Menu",
         light: "Light",
         dark: "Dark",
@@ -3096,32 +3268,32 @@
         yesterday: "Yesterday",
         daysAgo: "{n} days ago",
         startFirst: "Start your first intention",
-        allDone: "All your intentions are done ✨",
-        deleted: "Removed from intentions",
-        restored: "Restored to intentions",
+        allDone: "All your intentions are fulfilled ✨",
+        deleted: "Stepped back from intention",
+        restored: "Intention restored",
         deletedForever: "Deleted permanently",
-        edited: "Updated successfully",
+        edited: "Intention updated successfully",
         writeFirst: "Write the intention first",
         noIntentions: "No intentions yet",
-        firstIntent: "Write the first thing you intend to do today.",
+        firstIntent: "Write the first intention you have for today.",
         noIntentionsAll: "No intentions yet",
         everyThingStarts: "Everything starts with an intention.",
         noFavorites: "No favorites yet",
         favoriteHint: "Star an intention and it will appear here.",
         noAchievements: "No achievements yet",
-        achievementHint: "Once you complete something, it will appear here.",
+        achievementHint: "Once you complete an intention, it will appear here.",
         currentIntentions: "My intentions",
         favoriteSection: "My favorites",
         allDoneSection: "Completed",
-        trashEmpty: "Trash is empty",
-        noDeleted: "No deleted intentions.",
-        restore: "Restore",
+        trashEmpty: "Archive is empty",
+        noDeleted: "No stepped-back intentions.",
+        restore: "Restore intention",
         setDate: "Set date",
         changeDate: "Change date",
         dateTitle: "Set date",
         dateSubtitle: "Choose the day you want this intention to appear.",
         removeDate: "Remove date",
-        taskDate: "Task date",
+        taskDate: "Intention date",
         dateSet: "Date set",
         dateRemoved: "Date removed",
         installTitle: "Install NAWY on your device",
@@ -3132,7 +3304,21 @@
         installGuideText: "Open your browser menu and choose Add to Home Screen.",
         updateAvailable: "A new NAWY update is available.",
         update: "Update",
-        undo: "Undo"
+        undo: "Restore",
+        pinSection: "Privacy",
+        pinName: "Intention Lock",
+        pinEnable: "Enable",
+        pinDisable: "Disable",
+        pinChange: "Change PIN",
+        pinCurrent: "Enter current PIN",
+        pinNew: "Enter new PIN (4 digits)",
+        pinConfirm: "Re-enter new PIN",
+        pinSuccess: "PIN updated successfully",
+        pinErrorMismatch: "PINs do not match",
+        pinErrorWrong: "Wrong PIN",
+        pinEnter: "Enter Intention Lock",
+        pinSubtitle: "Enter your secret PIN to unlock your intentions",
+        pinSave: "Save PIN",
       }
 
     };
@@ -3172,7 +3358,9 @@
     const DEFAULT_SETTINGS = {
       theme: "dark",
       accent: "green",
-      language: "ar"
+      language: "ar",
+      lockEnabled: false,
+      pin: null
     };
 
     let tasks = [];
@@ -3199,15 +3387,18 @@
       "favorites"
     ];
 
-    /* =========================
-       SWIPE STATE
-       Whole screen
-    ========================= */
-
     let swipeStartX = 0;
     let swipeStartY = 0;
     let swipeTracking = false;
     let swipeSuppressClick = false;
+
+    let pinState = {
+      mode: "idle", // idle | setup | verify | change | disable
+      buffer: "",
+      newPin: "",
+      newPinConfirm: "",
+      currentPin: ""
+    };
 
     const $ =
       selector =>
@@ -3247,6 +3438,18 @@
 
     const headerNav = $("#headerNav");
     const headerTabIndicator = $("#headerTabIndicator");
+
+    const pinOverlay = $("#pinOverlay");
+    const pinTitle = $("#pinTitle");
+    const pinSubtitle = $("#pinSubtitle");
+    const pinDots = $("#pinDots");
+    const pinKeypad = $("#pinKeypad");
+    const pinError = $("#pinError");
+    const pinSaveBtn = $("#pinSaveBtn");
+
+    const pinToggleBtn = $("#pinToggleBtn");
+    const pinChangeRow = $("#pinChangeRow");
+    const pinChangeBtn = $("#pinChangeBtn");
 
     let deferredInstallPrompt = null;
     let installBannerDismissed = false;
@@ -3328,6 +3531,7 @@
 
       updateDynamicLanguageText();
       requestAnimationFrame(updateHeaderTabIndicator);
+      updatePinButtonText();
     }
 
     function updateDynamicLanguageText() {
@@ -3373,7 +3577,7 @@
         .forEach(
           button => {
             button.textContent =
-              t("delete");
+              t("deleteForever");
           }
         );
 
@@ -3406,6 +3610,24 @@
       if (toastUpdate) {
         toastUpdate.textContent =
           t("update");
+      }
+    }
+
+    function updatePinButtonText() {
+
+      if (settings.lockEnabled) {
+
+        pinToggleBtn.innerHTML =
+          `<span>${t("pinDisable")}</span>`;
+
+        pinChangeRow.classList.remove("hidden");
+
+      } else {
+
+        pinToggleBtn.innerHTML =
+          `<span>${t("pinEnable")}</span>`;
+
+        pinChangeRow.classList.add("hidden");
       }
     }
 
@@ -3709,6 +3931,20 @@
       ) {
         settings.language = "ar";
       }
+
+      if (
+        typeof settings.lockEnabled !==
+        "boolean"
+      ) {
+        settings.lockEnabled = false;
+      }
+
+      if (
+        settings.lockEnabled &&
+        !settings.pin
+      ) {
+        settings.lockEnabled = false;
+      }
     }
 
     function saveTasks() {
@@ -3783,6 +4019,7 @@
         );
 
       applyLanguage();
+      updatePinButtonText();
     }
 
     function addTask(text) {
@@ -5103,10 +5340,6 @@
         );
     }
 
-    /* =========================
-       MOVING TAB INDICATOR
-    ========================= */
-
     function updateHeaderTabIndicator() {
 
       if (
@@ -5160,10 +5393,6 @@
         `${left}px`
       );
     }
-
-    /* =========================
-       WHOLE SCREEN SWIPE
-       ========================= */
 
     function navigateBySwipe(
       direction
@@ -5327,7 +5556,6 @@
       );
     }
 
-    /* document instead of content */
     document.addEventListener(
       "touchstart",
       handleSwipeStart,
@@ -5356,10 +5584,6 @@
         capture: true
       }
     );
-
-    /* =========================
-       MOUSE DRAG WHOLE PAGE
-    ========================= */
 
     function handleMouseDown(event) {
 
@@ -5463,10 +5687,6 @@
       },
       true
     );
-
-    /* =========================
-       ACTION SHEET
-    ========================= */
 
     function openAction(id) {
 
@@ -5822,7 +6042,7 @@
 
         trashList.appendChild(
           createEmptyState(
-            "⌫",
+            "📦",
             t("trashEmpty"),
             t("noDeleted")
           )
@@ -5879,7 +6099,7 @@
             "small-btn danger trash-delete-button";
 
           forever.textContent =
-            t("delete");
+            t("deleteForever");
 
           forever.addEventListener(
             "click",
@@ -6548,14 +6768,224 @@
       requestAnimationFrame(
         updateHeaderTabIndicator
       );
+
+      if (
+        settings.lockEnabled
+      ) {
+
+        showPinOverlay("verify");
+      }
     }
+
+    // =========================
+    // PIN LOCK LOGIC
+    // =========================
+
+    function showPinOverlay(mode) {
+
+      pinState.mode = mode;
+      pinState.buffer = "";
+      pinState.newPin = "";
+      pinState.newPinConfirm = "";
+      pinState.currentPin = "";
+      pinError.textContent = "";
+
+      pinSaveBtn.classList.add("hidden");
+
+      switch (mode) {
+        case "verify":
+          pinTitle.textContent = t("pinEnter");
+          pinSubtitle.textContent = t("pinSubtitle");
+          break;
+        case "setup":
+          pinTitle.textContent = t("pinEnable");
+          pinSubtitle.textContent = t("pinNew");
+          pinSaveBtn.classList.remove("hidden");
+          break;
+        case "change":
+          pinTitle.textContent = t("pinChange");
+          pinSubtitle.textContent = t("pinCurrent");
+          break;
+        case "disable":
+          pinTitle.textContent = t("pinDisable");
+          pinSubtitle.textContent = t("pinCurrent");
+          break;
+      }
+
+      updatePinDots();
+      pinOverlay.classList.add("show");
+      pinOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hidePinOverlay() {
+
+      pinOverlay.classList.remove("show");
+      pinOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function updatePinDots() {
+
+      const dots = pinDots.querySelectorAll(".pin-dot");
+
+      const filledCount = pinState.buffer.length;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("filled", index < filledCount);
+      });
+    }
+
+    function handlePinKey(value) {
+
+      if (pinState.buffer.length >= 4) return;
+
+      pinState.buffer += value;
+      updatePinDots();
+      pinError.textContent = "";
+
+      if (pinState.buffer.length === 4) {
+        setTimeout(() => {
+          processPinComplete();
+        }, 150);
+      }
+    }
+
+    function handlePinBackspace() {
+
+      if (pinState.buffer.length > 0) {
+        pinState.buffer = pinState.buffer.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function processPinComplete() {
+
+      const enteredPin = pinState.buffer;
+      pinState.buffer = "";
+      updatePinDots();
+
+      switch (pinState.mode) {
+        case "verify":
+          if (enteredPin === settings.pin) {
+            hidePinOverlay();
+          } else {
+            pinError.textContent = t("pinErrorWrong");
+          }
+          break;
+
+        case "setup":
+          if (!pinState.newPin) {
+            pinState.newPin = enteredPin;
+            pinSubtitle.textContent = t("pinConfirm");
+            pinSaveBtn.classList.add("hidden");
+          } else {
+            if (enteredPin === pinState.newPin) {
+              settings.lockEnabled = true;
+              settings.pin = enteredPin;
+              saveSettings();
+              updatePinButtonText();
+              hidePinOverlay();
+              showToast(t("pinSuccess"));
+            } else {
+              pinError.textContent = t("pinErrorMismatch");
+              pinState.newPin = "";
+              pinSubtitle.textContent = t("pinNew");
+            }
+          }
+          break;
+
+        case "change":
+          if (!pinState.currentPin) {
+            if (enteredPin === settings.pin) {
+              pinState.currentPin = enteredPin;
+              pinSubtitle.textContent = t("pinNew");
+            } else {
+              pinError.textContent = t("pinErrorWrong");
+            }
+          } else if (!pinState.newPin) {
+            pinState.newPin = enteredPin;
+            pinSubtitle.textContent = t("pinConfirm");
+          } else {
+            if (enteredPin === pinState.newPin) {
+              settings.pin = pinState.newPin;
+              saveSettings();
+              hidePinOverlay();
+              showToast(t("pinSuccess"));
+            } else {
+              pinError.textContent = t("pinErrorMismatch");
+              pinState.newPin = "";
+              pinSubtitle.textContent = t("pinNew");
+            }
+          }
+          break;
+
+        case "disable":
+          if (enteredPin === settings.pin) {
+            settings.lockEnabled = false;
+            settings.pin = null;
+            saveSettings();
+            updatePinButtonText();
+            hidePinOverlay();
+            showToast(t("pinDisable"));
+          } else {
+            pinError.textContent = t("pinErrorWrong");
+          }
+          break;
+      }
+    }
+
+    function buildPinKeypad() {
+
+      const keys = [
+        "1", "2", "3",
+        "4", "5", "6",
+        "7", "8", "9",
+        "empty", "0", "backspace"
+      ];
+
+      keys.forEach(key => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "pin-key";
+
+        if (key === "empty") {
+          button.classList.add("empty");
+        } else if (key === "backspace") {
+          button.classList.add("pin-backspace");
+          button.innerHTML = "⌫";
+          button.addEventListener("click", handlePinBackspace);
+        } else {
+          button.textContent = key;
+          button.addEventListener("click", () => handlePinKey(key));
+        }
+
+        pinKeypad.appendChild(button);
+      });
+    }
+
+    pinToggleBtn.addEventListener("click", () => {
+      if (settings.lockEnabled) {
+        showPinOverlay("disable");
+      } else {
+        showPinOverlay("setup");
+      }
+    });
+
+    pinChangeBtn.addEventListener("click", () => {
+      showPinOverlay("change");
+    });
+
+    pinSaveBtn.addEventListener("click", () => {
+      if (pinState.mode === "setup" && pinState.newPin) {
+        // Save only if newPin has been set and confirmed (already handled in processPinComplete)
+        showToast(t("pinSuccess"));
+      }
+    });
 
     init();
 
     /* =========================================================
        SERVICE WORKER
-       Compatible with NAWY sw.js v7
-       ========================================================= */
+    ========================================================= */
 
     let swReloading = false;
     let swUpdatePending = false;
@@ -6721,8 +7151,10 @@
           }
         );
     }
+
+    buildPinKeypad();
+
   </script>
 
 </body>
 </html>
-```
