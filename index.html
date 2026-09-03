@@ -95,7 +95,7 @@
     }
     html[lang="en"] body { font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
     button, textarea, input { font: inherit; }
-    button { border: 0; cursor: pointer; color: inherit; background: none; }
+    button { border: 0; cursor: pointer; color: inherit; background: none; -webkit-tap-highlight-color: transparent; }
     textarea, input { outline: none; }
     ::selection { background: var(--accent); color: #fff; }
     a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible, [tabindex]:focus-visible {
@@ -153,19 +153,19 @@
     .section-count { min-width: 22px; height: 22px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--surface-2); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); }
 
     .task-list { display: flex; flex-direction: column; overflow: visible; border-radius: 0; background: transparent; border: 0; }
-    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease; cursor: pointer; }
+    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 56px; padding: var(--sp-sm) 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); border-radius: 0; box-shadow: none; transition: background .15s ease, opacity .18s ease; cursor: pointer; touch-action: none; }
     .task:last-child { border-bottom: 0; }
     .task.just-completed { animation: completeRow .5s ease; }
     @keyframes completeRow { 0% { background: transparent; } 42% { background: var(--accent-soft); } 100% { background: transparent; } }
     .task.completed { opacity: .55; }
 
     .task.dragging {
-      opacity: .9;
+      opacity: .88;
       background: var(--surface);
-      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+      box-shadow: 0 8px 20px rgba(0,0,0,.10);
       z-index: 100;
       border-radius: var(--radius-md);
-      border: 1px solid var(--accent);
+      border: 1px solid var(--border);
       cursor: grabbing;
       transition: none;
     }
@@ -752,15 +752,14 @@
     function createSection(title, taskArray, showMeta = false, completedSection = false) { const section = document.createElement("section"); section.className = "section"; const head = document.createElement("div"); head.className = "section-head"; const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title; const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length; head.append(titleEl, count); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); }); section.append(head, list); return section; }
     function createTaskElement(task, showMeta = false, completedSection = false) { const article = document.createElement("article"); article.className = "task" + (task.completed ? " completed" : ""); article.dataset.taskId = task.id; const checkbox = document.createElement("button"); checkbox.type = "button"; checkbox.className = "task-checkbox"; checkbox.setAttribute("aria-label", task.completed ? t("cancelDone") : t("done")); checkbox.innerHTML = `<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4 4L19 7"></path></svg>`; checkbox.addEventListener("click", event => { event.stopPropagation(); completeTask(task.id); }); const main = document.createElement("div"); main.className = "task-main"; const text = document.createElement("p"); text.className = "task-text"; text.textContent = task.text; main.appendChild(text); if (task.repeat && task.repeat !== 'none') { const meta = document.createElement("div"); meta.className = "task-meta"; const repeatText = document.createElement("span"); repeatText.className = "task-meta-day"; repeatText.textContent = `🔁 ${t("repeat" + task.repeat.charAt(0).toUpperCase() + task.repeat.slice(1))}`; meta.appendChild(repeatText); main.appendChild(meta); } main.addEventListener("click", event => { if (swipeSuppressClick) { swipeSuppressClick = false; event.preventDefault(); return; } openAction(task.id); }); const star = document.createElement("button"); star.type = "button"; star.className = "task-star" + (task.starred ? " active" : ""); star.innerHTML = task.starred ? "★" : "☆"; star.setAttribute("aria-label", task.starred ? (settings.language === "en" ? "Remove favorite" : "إزالة من المفضلة") : (settings.language === "en" ? "Favorite" : "إضافة للمفضلة")); star.setAttribute("aria-pressed", String(task.starred)); star.addEventListener("click", event => { event.stopPropagation(); toggleStar(task.id); }); article.append(checkbox, main, star);
 
-      // Long-press drag support for active tasks
       if (!task.completed && !completedSection) {
         let longPressTimer = null;
-        let startX, startY;
+        let startX = 0, startY = 0;
         let isDragging = false;
 
         article.addEventListener('pointerdown', (e) => {
-          if (e.button !== 0 && e.pointerType === 'mouse') return;
-          if (e.target.closest('button')) return; // exclude checkbox, star
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          if (e.target.closest('button')) return;
           startX = e.clientX;
           startY = e.clientY;
           longPressTimer = setTimeout(() => {
@@ -780,12 +779,10 @@
             return;
           }
           e.preventDefault();
-          const draggingElement = article;
           const allTasks = [...document.querySelectorAll('.task:not(.completed)')];
-          const currentIndex = allTasks.indexOf(draggingElement);
           let target = null;
           for (let el of allTasks) {
-            if (el === draggingElement) continue;
+            if (el === article) continue;
             const rect = el.getBoundingClientRect();
             if (e.clientY < rect.top + rect.height / 2) {
               target = el;
@@ -793,14 +790,11 @@
             }
           }
           if (target) {
+            const currentIndex = allTasks.indexOf(article);
             const targetIndex = allTasks.indexOf(target);
             if (targetIndex !== currentIndex) {
-              // Move DOM element
-              if (targetIndex < currentIndex) {
-                target.before(draggingElement);
-              } else {
-                target.after(draggingElement);
-              }
+              if (targetIndex < currentIndex) target.before(article);
+              else target.after(article);
             }
           }
         });
@@ -812,7 +806,6 @@
           article.classList.remove('dragging');
           document.body.style.userSelect = '';
           document.body.style.touchAction = '';
-          // Get new order from DOM
           const orderedIds = [...document.querySelectorAll('.task:not(.completed)')].map(el => el.dataset.taskId);
           const activeTasks = tasks.filter(t => !t.completed);
           const activeMap = new Map(activeTasks.map(t => [t.id, t]));
@@ -820,7 +813,6 @@
           const completedTasks = tasks.filter(t => t.completed);
           tasks = [...newActiveOrder, ...completedTasks];
           saveTasks();
-          // Suppress click after drag
           setTimeout(() => { swipeSuppressClick = true; }, 0);
         };
 
