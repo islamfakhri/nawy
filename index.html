@@ -12,8 +12,8 @@
   <title>ناوي</title>
 
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./favicon.ico">
-  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" href="./icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./icon-512.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +50,7 @@
       --radius-xl: 24px;
       --radius-full: 9999px;
       --header-height: 104px;
-      --bottom-space: 130px;
+      --bottom-space: 80px;
       --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
       --tab-indicator-width: 24px;
       --tab-indicator-left: 0px;
@@ -59,7 +59,6 @@
       --fs-md: 14px;
       --fs-base: 15px;
       --fs-lg: 16px;
-      --fs-xl: 19px;
       --fs-hero: 24px;
       --fw-normal: 400;
       --fw-medium: 500;
@@ -72,9 +71,9 @@
       --sp-lg: 16px;
       --sp-xl: 24px;
       --sp-xxl: 32px;
-      --touch-min: 44px;
-      --touch-sm: 38px;
-      --touch-star: 40px;
+      --touch-checkbox: 32px;
+      --touch-star: 46px;
+      --fab-size: 56px;
     }
 
     html[data-theme="dark"] {
@@ -131,11 +130,11 @@
     }
     .brand { display: flex; align-items: center; gap: var(--sp-sm); min-width: 0; }
     .brand-mark {
-      width: 32px; height: 32px; flex: 0 0 auto; display: grid; place-items: center;
-      background: transparent; color: var(--accent); font-size: 20px; font-weight: var(--fw-extrabold);
+      width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center;
+      overflow: hidden; border-radius: var(--radius-md);
     }
     .brand-mark-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .brand-mark-fallback { display: grid; place-items: center; width: 100%; height: 100%; }
+    .brand-mark-fallback { display: grid; place-items: center; width: 100%; height: 100%; font-size: 18px; font-weight: 800; color: var(--accent); }
     .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-extrabold); letter-spacing: -.3px; }
     .menu-btn {
       width: 36px; height: 36px; flex: 0 0 auto; border-radius: var(--radius-full);
@@ -219,19 +218,18 @@
       transition: background .15s ease, opacity .18s ease;
     }
     .task:last-child { border-bottom: 0; }
-    .task:hover { background: transparent; }
     .task.just-completed { animation: completeRow .5s ease; }
     @keyframes completeRow { 0% { background: transparent; } 42% { background: var(--accent-soft); } 100% { background: transparent; } }
     .task.completed { opacity: .55; }
 
     .task-checkbox {
-      width: var(--touch-sm); height: var(--touch-sm); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full);
-      border: 2px solid var(--muted); background: transparent;
+      width: var(--touch-checkbox); height: var(--touch-checkbox); flex: 0 0 auto; display: grid; place-items: center;
+      border-radius: var(--radius-full); border: 1.5px solid var(--muted); background: transparent;
       transition: background .18s ease, border-color .18s ease, transform .14s ease;
     }
     .task-checkbox:active { transform: scale(.9); }
     .task.completed .task-checkbox { background: var(--accent); border-color: var(--accent); }
-    .check-icon { width: 12px; height: 12px; opacity: 0; transform: scale(.5); transition: opacity .16s ease, transform .16s ease; }
+    .check-icon { width: 11px; height: 11px; opacity: 0; transform: scale(.5); transition: opacity .16s ease, transform .16s ease; }
     .task.completed .check-icon { opacity: 1; transform: scale(1); }
 
     .task-main { min-width: 0; flex: 1; padding: var(--sp-xs) 0; cursor: pointer; }
@@ -240,7 +238,7 @@
 
     .task-star {
       width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center;
-      border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 21px;
+      border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 26px;
       transition: color .16s ease, background .16s ease, transform .14s ease;
     }
     .task-star:active { transform: scale(.9); }
@@ -254,7 +252,6 @@
       background: transparent; text-align: start;
       transition: color .15s ease, background .15s ease, transform .12s ease;
     }
-    .completed-toggle:hover { background: transparent; }
     .completed-toggle:active { transform: scale(.99); }
     .completed-toggle-title { color: var(--muted); font-size: var(--fs-sm); line-height: 1; font-weight: var(--fw-medium); }
     .completed-toggle-count {
@@ -289,33 +286,49 @@
     .empty-title { color: var(--text); font-size: var(--fs-base); font-weight: var(--fw-bold); }
     .empty-text { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); line-height: 1.7; }
 
-    /* ============ COMPOSER (DeepSeek-style) ============ */
+    /* ============ FAB & COMPOSER ============ */
     .composer-wrap {
       position: fixed; z-index: 30; left: 50%; bottom: 0; width: min(760px, 100%);
-      transform: translateX(-50%); padding: var(--sp-sm) var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom));
-      pointer-events: none;
+      transform: translateX(-50%); padding: 0 var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom));
+      pointer-events: none; display: flex; justify-content: flex-end;
     }
-    .composer {
-      pointer-events: auto; display: flex; align-items: center; gap: 0;
-      padding: 0; background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-xl); overflow: hidden;
-      box-shadow: none;
+    .composer-fab {
+      pointer-events: auto; width: var(--fab-size); height: var(--fab-size);
+      border-radius: var(--radius-full); background: var(--accent); color: #fff;
+      display: grid; place-items: center; font-size: 24px; font-weight: var(--fw-bold);
+      box-shadow: 0 4px 16px rgba(0,0,0,.18); transition: transform .15s ease, box-shadow .15s ease;
     }
-    .composer textarea {
-      flex: 1; min-width: 0; min-height: 50px; max-height: 130px; resize: none; overflow-y: auto;
-      padding: 13px var(--sp-lg); border: 0; background: transparent; color: var(--text);
-      font-size: var(--fs-base); line-height: 1.5; touch-action: auto;
+    .composer-fab:active { transform: scale(.93); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .composer-fab.open { transform: rotate(45deg); }
+
+    .composer-panel {
+      pointer-events: auto; position: absolute; bottom: calc(var(--sp-md) + var(--fab-size) + 12px + env(safe-area-inset-bottom));
+      right: var(--sp-lg); left: var(--sp-lg);
+      background: var(--surface); border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08); display: none; flex-direction: column;
+      border: 1px solid var(--border);
     }
-    .composer textarea::placeholder { color: var(--muted); opacity: .6; }
-    .send-btn {
-      width: 48px; height: 48px; flex: 0 0 auto; border-radius: var(--radius-full);
-      background: var(--accent); color: #fff; display: grid; place-items: center;
-      font-size: 18px; font-weight: var(--fw-bold); margin-left: var(--sp-xs);
-      transition: transform .14s ease, opacity .18s ease;
-      box-shadow: none;
+    .composer-panel.open { display: flex; animation: composerIn .22s cubic-bezier(.2,.8,.2,1); }
+    @keyframes composerIn {
+      0% { opacity: 0; transform: translateY(8px) scale(.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .send-btn:active { transform: scale(.93); }
-    .send-btn.disabled { opacity: .3; }
+    .composer-panel textarea {
+      width: 100%; min-height: 90px; max-height: 140px; resize: none; overflow-y: auto;
+      padding: var(--sp-lg); border: 0; background: transparent; color: var(--text);
+      font-size: var(--fs-base); line-height: 1.5;
+    }
+    .composer-panel textarea::placeholder { color: var(--muted); opacity: .6; }
+    .composer-panel-actions {
+      display: flex; justify-content: flex-end; gap: var(--sp-sm); padding: 0 var(--sp-md) var(--sp-md);
+    }
+    .composer-panel .send-btn {
+      min-height: 44px; padding: 0 var(--sp-xl); border-radius: var(--radius-md);
+      background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: var(--fw-bold);
+      transition: opacity .15s ease, transform .14s ease;
+    }
+    .composer-panel .send-btn:active { transform: scale(.96); }
+    .composer-panel .send-btn.disabled { opacity: .3; }
 
     /* ============ OVERLAYS & SHEETS ============ */
     .overlay {
@@ -442,9 +455,9 @@
     .install-banner.show { transform: translate(-50%, 0); opacity: 1; visibility: visible; pointer-events: auto; }
     .install-icon {
       width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; overflow: hidden;
-      border-radius: var(--radius-md); background: var(--accent); color: #fff; font-size: 17px; font-weight: var(--fw-bold);
+      border-radius: var(--radius-md);
     }
-    .install-icon-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .install-icon-img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .install-copy { min-width: 0; flex: 1; }
     .install-title { font-size: var(--fs-md); font-weight: var(--fw-bold); }
     .install-text { margin-top: 1px; color: var(--muted); font-size: var(--fs-xs); line-height: 1.45; }
@@ -514,12 +527,11 @@
       .hero { padding-left: 0; padding-right: 0; }
       .task { min-height: 52px; padding: var(--sp-xs) 0; gap: var(--sp-sm); }
       .task-text { font-size: var(--fs-md); }
-      .task-checkbox { width: 34px; height: 34px; }
-      .task-star { width: 36px; height: 36px; font-size: 18px; }
+      .task-checkbox { width: 28px; height: 28px; }
+      .task-star { width: 40px; height: 40px; font-size: 22px; }
       .completed-toggle { min-height: 44px; }
-      .composer-wrap { padding-left: var(--sp-md); padding-right: var(--sp-md); }
-      .composer textarea { padding: 12px var(--sp-md); min-height: 48px; }
-      .send-btn { width: 44px; height: 44px; }
+      .composer-wrap { padding: 0 var(--sp-md) calc(var(--sp-sm) + env(safe-area-inset-bottom)); }
+      .composer-panel { right: var(--sp-md); left: var(--sp-md); bottom: calc(var(--sp-sm) + var(--fab-size) + 8px + env(safe-area-inset-bottom)); }
       .install-banner { align-items: flex-start; gap: var(--sp-sm); padding: var(--sp-sm); }
       .install-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); }
       .install-actions { flex-direction: column; align-items: stretch; }
@@ -529,6 +541,7 @@
       .sheet-close-btn { top: 8px; right: 8px; }
       .section { margin-top: var(--sp-lg); }
       .task-list { border-radius: 0; }
+      .brand-mark { width: 32px; height: 32px; }
     }
 
     @media (min-width: 700px) {
@@ -574,7 +587,7 @@
       <div class="header-main">
         <div class="brand">
           <div class="brand-mark" id="brandMark">
-            <img class="brand-mark-img" id="brandMarkImg" src="./favicon.ico" alt="" width="32" height="32" onerror="this.remove(); var f=document.getElementById('brandMarkFallback'); if(f){ f.style.display='grid'; }">
+            <img class="brand-mark-img" id="brandMarkImg" src="./icon-512.png" alt="ناوي" width="36" height="36" onerror="this.remove(); document.getElementById('brandMarkFallback').style.display = 'grid';">
             <span class="brand-mark-fallback" id="brandMarkFallback" style="display:none;">ن</span>
           </div>
           <div class="brand-name" id="brandName">ناوي</div>
@@ -608,11 +621,17 @@
 
   </div>
 
-  <div class="composer-wrap">
-    <form class="composer" id="composer" autocomplete="off">
-      <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." data-i18n-placeholder="taskPlaceholder" aria-label="أضف نية جديدة" data-i18n-aria="newIntent"></textarea>
-      <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف نية" data-i18n-aria="add">↑</button>
-    </form>
+  <!-- FAB COMPOSER -->
+  <div class="composer-wrap" id="composerWrap">
+    <div class="composer-panel" id="composerPanel">
+      <form id="composer" autocomplete="off">
+        <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." data-i18n-placeholder="taskPlaceholder" aria-label="أضف نية جديدة" data-i18n-aria="newIntent"></textarea>
+        <div class="composer-panel-actions">
+          <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف نية" data-i18n-aria="add">أضف نية</button>
+        </div>
+      </form>
+    </div>
+    <button class="composer-fab" id="composerFab" type="button" aria-label="أضف نية">+</button>
   </div>
 
   <div class="overlay" id="menuOverlay" aria-hidden="true">
@@ -760,7 +779,7 @@
 
   <div class="install-banner" id="installBanner" role="dialog" aria-live="polite" aria-label="تثبيت ناوي">
     <div class="install-icon" id="installIcon">
-      <img class="install-icon-img" id="installIconImg" src="./icon-192.png" alt="" width="40" height="40" onerror="this.remove(); var i=document.getElementById('installIcon'); if(i){ i.textContent='ن'; }">
+      <img class="install-icon-img" id="installIconImg" src="./icon-512.png" alt="ناوي" width="40" height="40" onerror="this.remove(); document.getElementById('installIcon').textContent = 'ن';">
     </div>
     <div class="install-copy">
       <div class="install-title" id="installTitle">ثبّت ناوي على جهازك</div>
@@ -1063,6 +1082,8 @@
     const content = $("#content");
     const taskInput = $("#taskInput");
     const sendBtn = $("#sendBtn");
+    const composerFab = $("#composerFab");
+    const composerPanel = $("#composerPanel");
     const heroDate = $("#heroDate");
     const heroTitle = $("#heroTitle");
     const progressWrap = $("#progressWrap");
@@ -1426,6 +1447,7 @@
       }
       currentView = view;
       closeAllOverlays();
+      closeComposer();
       render(transitionDirection);
     }
     function getTodayTasks() {
@@ -1646,7 +1668,7 @@
       return dx > 0 ? "next" : "previous";
     }
     function isSwipeBlockedTarget(target) {
-      return Boolean(target?.closest("textarea, input, button, select, option, .overlay, .sheet"));
+      return Boolean(target?.closest("textarea, input, button, select, option, .overlay, .sheet, .composer-panel"));
     }
     function handleSwipeStart(event) {
       if (isSwipeBlockedTarget(event.target)) { swipeTracking = false; return; }
@@ -1863,6 +1885,26 @@
       }
     });
 
+    // ============ FAB COMPOSER LOGIC ============
+    function openComposer() {
+      composerFab.classList.add("open");
+      composerPanel.classList.add("open");
+      taskInput.focus();
+    }
+    function closeComposer() {
+      composerFab.classList.remove("open");
+      composerPanel.classList.remove("open");
+      taskInput.value = "";
+      updateComposer();
+    }
+    composerFab.addEventListener("click", () => {
+      if (composerPanel.classList.contains("open")) {
+        closeComposer();
+      } else {
+        openComposer();
+      }
+    });
+
     function updateComposer() {
       const hasText = taskInput.value.trim().length > 0;
       sendBtn.classList.toggle("disabled", !hasText);
@@ -1883,9 +1925,7 @@
       const text = taskInput.value.trim();
       if (!text) return;
       if (addTask(text)) {
-        taskInput.value = "";
-        autoResizeTextarea();
-        updateComposer();
+        closeComposer();
         taskInput.focus();
       }
     });
@@ -2031,7 +2071,13 @@
     setInterval(checkDayChange, 30000);
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeAllOverlays();
+      if (event.key === "Escape") {
+        if (composerPanel.classList.contains("open")) {
+          closeComposer();
+        } else {
+          closeAllOverlays();
+        }
+      }
     });
 
     window.addEventListener("resize", () => { requestAnimationFrame(updateHeaderTabIndicator); });
