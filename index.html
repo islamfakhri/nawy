@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- SortableJS Library -->
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script src="./Sortable.min.js"></script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
   <script>
@@ -202,38 +202,14 @@
 
     .task.drag-source {
       opacity: .35 !important;
-      pointer-events: none;
     }
 
     .drag-ghost {
-      position: fixed !important;
-      z-index: 9999 !important;
-      margin: 0 !important;
-      pointer-events: none !important;
       opacity: .95 !important;
       background: var(--surface) !important;
       border: 1px solid var(--border-strong) !important;
       border-radius: var(--radius-md) !important;
       box-shadow: var(--shadow-drag) !important;
-      will-change: left, top;
-      transition: none !important;
-      cursor: grabbing !important;
-    }
-
-    .drag-indicator {
-      height: 2px;
-      background: var(--accent);
-      opacity: .5;
-      border-radius: 2px;
-      margin: 0;
-      box-shadow: none;
-      animation: none;
-    }
-
-    html.nawy-drag-active,
-    body.nawy-drag-active {
-      overscroll-behavior: none;
-      touch-action: none;
     }
 
     .task-checkbox { width: var(--touch-checkbox); height: var(--touch-checkbox); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); border: 1.5px solid var(--muted); background: transparent; transition: background .18s ease, border-color .18s ease, transform .14s ease; }
@@ -490,7 +466,283 @@
   </style>
 </head>
 <body>
-  <!-- نفس الـ HTML body زي ما هو -->
+  <!-- ============ PIN OVERLAY ============ -->
+  <div class="pin-overlay" id="pinOverlay" aria-hidden="true">
+    <div class="pin-box">
+      <button class="pin-close-btn" id="pinCloseBtn" type="button" aria-label="إغلاق">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="pin-title" id="pinTitle">أدخل رمز ناوي</div>
+      <div class="pin-subtitle" id="pinSubtitle">أدخل رمزك السري لفتح نواياك</div>
+      <div class="pin-dots" id="pinDots"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div>
+      <div class="pin-keypad" id="pinKeypad"></div>
+      <div class="pin-error" id="pinError"></div>
+      <button class="pin-save-btn hidden" id="pinSaveBtn">حفظ</button>
+      <button class="pin-forgot-link hidden" id="pinForgotBtn">نسيت الرمز؟</button>
+      <button class="pin-reset-link hidden" id="pinResetLink">أبدأ من جديد</button>
+    </div>
+  </div>
+
+  <!-- ============ APP ============ -->
+  <div class="app">
+    <header class="header">
+      <div class="header-main">
+        <div class="brand">
+          <div class="brand-mark" id="brandMark">
+            <img class="brand-mark-img" id="brandMarkImg" src="./icon-512.png" alt="ناوي" width="36" height="36" onerror="this.remove(); document.getElementById('brandMarkFallback').style.display = 'grid';">
+            <span class="brand-mark-fallback" id="brandMarkFallback" style="display:none;">ن</span>
+          </div>
+          <div class="brand-name" id="brandName">ناوي</div>
+        </div>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">⋯</button>
+      </div>
+      <nav class="header-nav" id="headerNav" aria-label="التنقل الرئيسي">
+        <button class="header-tab" data-view="all" type="button">نواياي</button>
+        <button class="header-tab active" data-view="today" type="button" aria-current="page">اليوم</button>
+        <button class="header-tab" data-view="favorites" type="button" aria-label="مفضلاتي"><span class="header-tab-star">★</span></button>
+        <span class="header-tab-indicator" id="headerTabIndicator" aria-hidden="true"></span>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1 class="hero-title" id="heroTitle">ناوي على إيه النهارده؟</h1>
+      <div class="hero-date" id="heroDate"></div>
+    </section>
+
+    <main class="content" id="content"></main>
+  </div>
+
+  <!-- ============ FAB & COMPOSER ============ -->
+  <div class="composer-wrap" id="composerWrap">
+    <button class="composer-fab" id="composerFab" type="button" aria-label="أضف نية">+</button>
+  </div>
+
+  <div class="composer-panel" id="composerPanel" aria-hidden="true">
+    <form id="composer" autocomplete="off">
+      <div class="composer-input-row">
+        <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..." aria-label="أضف نية جديدة"></textarea>
+        <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="أضف">↑</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ============ MENU OVERLAY ============ -->
+  <div class="overlay" id="menuOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="menuOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">ناوي</div>
+      <button class="menu-item" id="settingsBtn" type="button">
+        <span class="menu-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        <span class="menu-text">الإعدادات</span>
+      </button>
+      <button class="menu-item" id="menuTrashBtn" type="button">
+        <span class="menu-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg></span>
+        <span class="menu-text">أرشيف النوايا</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ ACTION OVERLAY ============ -->
+  <div class="overlay" id="actionOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="actionOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <button type="button" class="action-task-preview" id="actionTaskPreview"></button>
+      <button class="action-item" id="actionComplete" type="button">
+        <span class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <span class="action-text">أتمم النية</span>
+      </button>
+      <button class="action-item" id="actionRepeat" type="button">
+        <span class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+        <span class="action-text">تكرار</span>
+      </button>
+      <button class="action-item" id="actionDate" type="button">
+        <span class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+        <span class="action-text" id="actionDateText">تحديد موعد</span>
+      </button>
+      <button class="action-item" id="actionDetails" type="button">
+        <span class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+        <span class="action-text">تفاصيل</span>
+      </button>
+      <button class="action-item danger" id="actionDelete" type="button">
+        <span class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+        <span class="action-text">تراجع عن النية</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ REPEAT OVERLAY ============ -->
+  <div class="overlay" id="repeatOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="repeatOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">اختر التكرار</div>
+      <button class="action-item" data-repeat="none" type="button"><span class="action-text">بدون تكرار</span></button>
+      <button class="action-item" data-repeat="daily" type="button"><span class="action-text">يوميًا</span></button>
+      <button class="action-item" data-repeat="weekly" type="button"><span class="action-text">أسبوعيًا</span></button>
+      <button class="action-item" data-repeat="monthly" type="button"><span class="action-text">شهريًا</span></button>
+    </div>
+  </div>
+
+  <!-- ============ DETAILS OVERLAY ============ -->
+  <div class="overlay" id="detailsOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="detailsOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">تفاصيل النية</div>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+
+  <!-- ============ DATE OVERLAY ============ -->
+  <div class="overlay" id="dateOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="dateOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">تحديد موعد</div>
+      <div class="sheet-subtitle">اختر اليوم الذي تريد أن تظهر فيه النية.</div>
+      <input class="date-input" id="taskDateInput" type="date">
+      <div class="modal-actions">
+        <button class="modal-btn danger" id="dateClear" type="button">إزالة الموعد</button>
+        <button class="modal-btn secondary" id="dateCancel" type="button">إلغاء</button>
+        <button class="modal-btn primary" id="dateSave" type="button">حفظ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS OVERLAY ============ -->
+  <div class="overlay" id="settingsOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="settingsOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">الإعدادات</div>
+      <div class="setting-group">
+        <div class="setting-label">اللغة</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">لغة ناوي</div>
+            <div class="segmented">
+              <button class="segment" data-language-choice="ar" type="button">العربية</button>
+              <button class="segment" data-language-choice="en" type="button">English</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">المظهر</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">الوضع</div>
+            <div class="segmented">
+              <button class="segment" data-theme-choice="light" type="button">فاتح</button>
+              <button class="segment" data-theme-choice="dark" type="button">داكن</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-name">حجم الخط</div>
+            <div class="segmented">
+              <button class="segment" data-font-choice="small" type="button">صغير</button>
+              <button class="segment" data-font-choice="medium" type="button">متوسط</button>
+              <button class="segment" data-font-choice="large" type="button">كبير</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">اللون</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">لون ناوي</div>
+            <div class="colors">
+              <button class="color-btn green" data-accent-choice="green" type="button"></button>
+              <button class="color-btn blue" data-accent-choice="blue" type="button"></button>
+              <button class="color-btn purple" data-accent-choice="purple" type="button"></button>
+              <button class="color-btn orange" data-accent-choice="orange" type="button"></button>
+              <button class="color-btn pink" data-accent-choice="pink" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">التذكير اليومي</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">إشعار الصباح</div>
+            <button class="small-btn" id="notificationToggleBtn" type="button"><span>تفعيل</span></button>
+          </div>
+          <div class="setting-row hidden" id="notificationTimeRow">
+            <div class="setting-name">الوقت</div>
+            <input type="time" class="time-input" id="notificationTimeInput" value="09:00">
+          </div>
+        </div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-label">الخصوصية</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name">قفل ناوي</div>
+            <button class="small-btn" id="pinToggleBtn" type="button"><span>تفعيل</span></button>
+          </div>
+          <div class="setting-row hidden" id="pinChangeRow">
+            <div class="setting-name">تغيير الرمز</div>
+            <button class="small-btn" id="pinChangeBtn" type="button"><span>تغيير</span></button>
+          </div>
+          <div class="setting-row hidden" id="birthYearRow">
+            <div class="setting-name">سنة الميلاد (سؤال الأمان)</div>
+            <button class="small-btn" id="changeBirthYearBtn" type="button">تغيير</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TRASH OVERLAY ============ -->
+  <div class="overlay" id="trashOverlay" aria-hidden="true">
+    <div class="sheet">
+      <button class="sheet-close-btn" type="button" aria-label="إغلاق" data-close-overlay="trashOverlay">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">أرشيف النوايا</div>
+      <div class="sheet-subtitle">نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.</div>
+      <div class="trash-list" id="trashList"></div>
+    </div>
+  </div>
+
+  <!-- ============ INSTALL BANNER ============ -->
+  <div class="install-banner" id="installBanner" role="dialog" aria-live="polite">
+    <div class="install-icon" id="installIcon">
+      <img class="install-icon-img" id="installIconImg" src="./icon-512.png" alt="ناوي" width="40" height="40" onerror="this.remove(); document.getElementById('installIcon').textContent = 'ن';">
+    </div>
+    <div class="install-copy">
+      <div class="install-title" id="installTitle">ثبّت ناوي على جهازك</div>
+      <div class="install-text" id="installText">خليه معاك أسرع وأسهل من المتصفح.</div>
+    </div>
+    <div class="install-actions">
+      <button class="install-btn secondary" id="installDismiss" type="button">متابعة</button>
+      <button class="install-btn primary" id="installAction" type="button">تثبيت</button>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-message" id="toastMessage"></div>
+    <button class="toast-undo hidden" id="toastUndo" type="button">استرجاع</button>
+    <button class="toast-update hidden" id="toastUpdate" type="button">تحديث</button>
+  </div>
 
   <script>
     "use strict";
@@ -500,7 +752,7 @@
     
     const TRANSLATIONS = {
       ar: {
-        languageSection: "اللغة", languageName: "لغة ناوي", appearanceSection: "المظهر", modeName: "الوضع", fontSizeName: "حجم الخط", fontSizeSmall: "صغير", fontSizeMedium: "متوسط", fontSizeLarge: "كبير", colorSection: "اللون",
+        languageSection: "اللغة", languageName: "لغة ناوي", appearanceSection: "المظهر", modeName: "الوضع", fontSizeName: "حجم الخط", colorSection: "اللون",
         settings: "الإعدادات", trash: "أرشيف النوايا", trashSubtitle: "نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.",
         today: "اليوم", all: "نواياي", favorites: "مفضلاتي", completed: "المكتملة", completedSection: "المكتملة", mainNavigation: "التنقل الرئيسي",
         heroToday: "ناوي على إيه النهارده؟",
@@ -510,21 +762,21 @@
         yesterday: "أمس", daysAgo: "منذ {n} أيام",
         deleted: "تم التراجع عن النية", restored: "تم استرجاع النية", deletedForever: "تم الحذف نهائيًا", edited: "تم تعديل النية بنجاح", writeFirst: "اكتب النية الأول",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.", noIntentionsAll: "لسه مفيش نوايا", everyThingStarts: "كل حاجة تبدأ بنية.",
-        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.", noAchievements: "لسه مفيش إنجازات", achievementHint: "أول ما تتمم نية هتظهر هنا.",
+        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         currentIntentions: "نواياي", favoriteSection: "المفضلة النشطة", favoriteCompletedSection: "المفضلة المكتملة", allDoneSection: "المكتملة", trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
         restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد", dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.", removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
         installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.", install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
         updateAvailable: "تحديث جديد من ناوي متاح.", update: "تحديث", undo: "استرجاع",
-        notificationEnable: "تفعيل", notificationDisable: "تعطيل", notificationSection: "التذكير اليومي", notificationTime: "الوقت", notificationSuccess: "تم تفعيل الإشعارات", notificationDisabled: "تم تعطيل الإشعارات", notificationDenied: "تم رفض الإذن", notificationBlocked: "تم حظر الإشعارات. فعلها من إعدادات المتصفح", notificationNotSupported: "المتصفح لا يدعم الإشعارات", notificationUpdated: "تم تحديث وقت الإشعار",
+        notificationEnable: "تفعيل", notificationDisable: "تعطيل", notificationTime: "الوقت", notificationSuccess: "تم تفعيل الإشعارات", notificationDisabled: "تم تعطيل الإشعارات", notificationDenied: "تم رفض الإذن", notificationBlocked: "تم حظر الإشعارات", notificationNotSupported: "المتصفح لا يدعم الإشعارات", notificationUpdated: "تم تحديث وقت الإشعار",
         pinSection: "الخصوصية", pinName: "قفل ناوي", pinEnable: "تفعيل", pinDisable: "تعطيل", pinChange: "تغيير الرمز", pinCurrent: "أدخل الرمز الحالي", pinNew: "أدخل رمزًا جديدًا (4 أرقام)", pinConfirm: "أعد إدخال الرمز الجديد", pinSuccess: "تم تحديث رمز ناوي", pinErrorMismatch: "الرمزان غير متطابقين", pinErrorWrong: "الرمز غير صحيح",
-        pinEnter: "أدخل رمز ناوي", pinSubtitle: "أدخل رمزك السري لفتح نواياك", pinSave: "حفظ", pinForgot: "نسيت الرمز؟", pinSecurityQuestion: "استرجاع رمز ناوي", pinSecuritySubtitle: "كل النوايا بتبدأ من لحظة ميلادك. اكتب سنة الميلاد.", pinSecurityError: "السنة غير صحيحة", pinReset: "حدد رمزًا جديدًا", pinResetNew: "أدخل رمزًا جديدًا (4 أرقام)", pinResetConfirm: "أعد إدخال الرمز الجديد", pinResetSuccess: "تم استرجاع الرمز بنجاح", pinStartOver: "أبدأ من جديد", pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟", pinStartOverDone: "تم مسح جميع البيانات. أعد التطبيق من جديد.",
-        pinSetupBirthYearTitle: "سؤال الأمان", pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام) لتتمكن من استرجاع رمزك إذا نسيته.", pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام).",
-        createdAt: "أُضيفت في", completedAt: "أُتمت في", detailsTitle: "تفاصيل النية", taskDetails: "التفاصيل",
+        pinEnter: "أدخل رمز ناوي", pinSubtitle: "أدخل رمزك السري لفتح نواياك", pinSave: "حفظ", pinForgot: "نسيت الرمز؟", pinSecurityQuestion: "استرجاع رمز ناوي", pinSecuritySubtitle: "اكتب سنة الميلاد.", pinSecurityError: "السنة غير صحيحة", pinReset: "حدد رمزًا جديدًا", pinResetNew: "أدخل رمزًا جديدًا (4 أرقام)", pinResetConfirm: "أعد إدخال الرمز الجديد", pinResetSuccess: "تم استرجاع الرمز بنجاح", pinStartOver: "أبدأ من جديد", pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟",
+        pinSetupBirthYearTitle: "سؤال الأمان", pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام).", pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام).",
+        createdAt: "أُضيفت في", completedAt: "أُتمت في", detailsTitle: "تفاصيل النية",
         schedule: "جدولة", repeat: "تكرار", repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا"
       },
       en: {
-        languageSection: "Language", languageName: "NAWY language", appearanceSection: "Appearance", modeName: "Mode", fontSizeName: "Font size", fontSizeSmall: "Small", fontSizeMedium: "Medium", fontSizeLarge: "Large", colorSection: "Color",
-        settings: "Settings", trash: "Intention Archive", trashSubtitle: "Intentions you've stepped back from. You can restore them anytime.",
+        languageSection: "Language", languageName: "NAWY language", appearanceSection: "Appearance", modeName: "Mode", fontSizeName: "Font size", colorSection: "Color",
+        settings: "Settings", trash: "Intention Archive", trashSubtitle: "Intentions you've stepped back from.",
         today: "Today", all: "My intentions", favorites: "My favorites", completed: "Completed", completedSection: "Completed", mainNavigation: "Main navigation",
         heroToday: "What are you up to today?",
         done: "Complete intention", cancelDone: "Reopen intention", delete: "Step back from intention", deleteForever: "Delete permanently",
@@ -533,36 +785,248 @@
         yesterday: "Yesterday", daysAgo: "{n} days ago",
         deleted: "Stepped back from intention", restored: "Intention restored", deletedForever: "Deleted permanently", edited: "Intention updated successfully", writeFirst: "Write the intention first",
         noIntentions: "No intentions yet", firstIntent: "Write the first intention you have for today.", noIntentionsAll: "No intentions yet", everyThingStarts: "Everything starts with an intention.",
-        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.", noAchievements: "No achievements yet", achievementHint: "Once you complete an intention, it will appear here.",
+        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         currentIntentions: "My intentions", favoriteSection: "Active favorites", favoriteCompletedSection: "Completed favorites", allDoneSection: "Completed", trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
-        restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day you want this intention to appear.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
-        installTitle: "Install NAWY on your device", installText: "Keep it faster and easier than opening the browser.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
+        restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
+        installTitle: "Install NAWY on your device", installText: "Keep it faster and easier.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
         updateAvailable: "A new NAWY update is available.", update: "Update", undo: "Restore",
-        notificationEnable: "Enable", notificationDisable: "Disable", notificationSection: "Daily Reminder", notificationTime: "Time", notificationSuccess: "Notifications enabled", notificationDisabled: "Notifications disabled", notificationDenied: "Permission denied", notificationBlocked: "Notifications blocked. Enable them from browser settings", notificationNotSupported: "Browser doesn't support notifications", notificationUpdated: "Notification time updated",
-        pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable", pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated successfully", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
-        pinEnter: "Enter NAWY PIN", pinSubtitle: "Enter your secret PIN to unlock your intentions", pinSave: "Save", pinForgot: "Forgot PIN?", pinSecurityQuestion: "Recover NAWY PIN", pinSecuritySubtitle: "All intentions start from the moment you were born. Enter your birth year.", pinSecurityError: "Wrong year", pinReset: "Set new PIN", pinResetNew: "Enter new PIN (4 digits)", pinResetConfirm: "Re-enter new PIN", pinResetSuccess: "PIN recovered successfully", pinStartOver: "Start over", pinStartOverConfirm: "This will delete all intentions and settings. Are you sure?", pinStartOverDone: "All data cleared. Restart the app.",
-        pinSetupBirthYearTitle: "Security Question", pinSetupBirthYearSubtitle: "Enter your birth year (4 digits) to recover your PIN if forgotten.", pinBirthYearWrong: "Enter a valid year (4 digits).",
-        createdAt: "Created", completedAt: "Completed", detailsTitle: "Intention Details", taskDetails: "Details",
+        notificationEnable: "Enable", notificationDisable: "Disable", notificationTime: "Time", notificationSuccess: "Notifications enabled", notificationDisabled: "Notifications disabled", notificationDenied: "Permission denied", notificationBlocked: "Notifications blocked", notificationNotSupported: "Browser doesn't support notifications", notificationUpdated: "Notification time updated",
+        pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable", pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
+        pinEnter: "Enter NAWY PIN", pinSubtitle: "Enter your secret PIN", pinSave: "Save", pinForgot: "Forgot PIN?", pinSecurityQuestion: "Recover NAWY PIN", pinSecuritySubtitle: "Enter your birth year.", pinSecurityError: "Wrong year", pinReset: "Set new PIN", pinResetNew: "Enter new PIN (4 digits)", pinResetConfirm: "Re-enter new PIN", pinResetSuccess: "PIN recovered", pinStartOver: "Start over", pinStartOverConfirm: "This will delete all data. Are you sure?",
+        pinSetupBirthYearTitle: "Security Question", pinSetupBirthYearSubtitle: "Enter your birth year (4 digits).", pinBirthYearWrong: "Enter a valid year (4 digits).",
+        createdAt: "Created", completedAt: "Completed", detailsTitle: "Intention Details",
         schedule: "Schedule", repeat: "Repeat", repeatNone: "No repeat", repeatDaily: "Daily", repeatWeekly: "Weekly", repeatMonthly: "Monthly"
       }
     };
 
-    // باقي الـ JavaScript زي ما هو مع تعديل السحب والإفلات
-    function setupDragAndDrop(article, task) {
-      // SortableJS هيتعامل مع كل حاجة
+    function t(key, vars = {}) {
+      const lang = settings.language === "en" ? "en" : "ar";
+      const dict = TRANSLATIONS[lang];
+      let value = dict[key] ?? TRANSLATIONS.ar[key] ?? key;
+      Object.entries(vars).forEach(([k, v]) => { value = value.replaceAll(`{${k}}`, String(v)); });
+      return value;
+    }
+
+    const DEFAULT_SETTINGS = { theme: "dark", accent: "green", language: "ar", fontSize: "medium", lockEnabled: false, pin: null, birthYear: null, notificationEnabled: false, notificationTime: "09:00" };
+    let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
+    let currentView = "today", selectedTaskId = null, completedExpanded = false;
+    let undoTimer = null, undoAction = null, typingAudioContext = null, lastTypingSound = 0, lastKnownDay = null;
+    const SWIPE_VIEWS = ["all", "today", "favorites"];
+    let swipeStartX = 0, swipeStartY = 0, swipeTracking = false, swipeSuppressClick = false;
+    let pinState = { mode: "idle", buffer: "", newPin: "", newPinConfirm: "", currentPin: "", tempPin: "" };
+    let composerState = { starred: false, scheduledDate: null, repeat: 'none' };
+    let notificationTimeout = null;
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+
+    const content = $("#content"); const taskInput = $("#taskInput"); const sendBtn = $("#sendBtn"); const composerFab = $("#composerFab"); const composerPanel = $("#composerPanel");
+    const heroDate = $("#heroDate"); const heroTitle = $("#heroTitle");
+    const menuOverlay = $("#menuOverlay"); const actionOverlay = $("#actionOverlay"); const dateOverlay = $("#dateOverlay"); const settingsOverlay = $("#settingsOverlay"); const trashOverlay = $("#trashOverlay"); const detailsOverlay = $("#detailsOverlay"); const detailsContent = $("#detailsContent");
+    const repeatOverlay = $("#repeatOverlay");
+    const actionTaskPreview = $("#actionTaskPreview"); const actionDateText = $("#actionDateText"); const taskDateInput = $("#taskDateInput"); const trashList = $("#trashList");
+    const toast = $("#toast"); const toastMessage = $("#toastMessage"); const toastUndo = $("#toastUndo"); const toastUpdate = $("#toastUpdate");
+    const headerNav = $("#headerNav"); const headerTabIndicator = $("#headerTabIndicator"); const brandName = $("#brandName");
+    const pinOverlay = $("#pinOverlay"); const pinTitle = $("#pinTitle"); const pinSubtitle = $("#pinSubtitle"); const pinDots = $("#pinDots"); const pinKeypad = $("#pinKeypad"); const pinError = $("#pinError"); const pinSaveBtn = $("#pinSaveBtn"); const pinForgotBtn = $("#pinForgotBtn"); const pinResetLink = $("#pinResetLink"); const pinCloseBtn = $("#pinCloseBtn");
+    const pinToggleBtn = $("#pinToggleBtn"); const pinChangeRow = $("#pinChangeRow"); const pinChangeBtn = $("#pinChangeBtn"); const birthYearRow = $("#birthYearRow"); const changeBirthYearBtn = $("#changeBirthYearBtn");
+    const notificationToggleBtn = $("#notificationToggleBtn"); const notificationTimeRow = $("#notificationTimeRow"); const notificationTimeInput = $("#notificationTimeInput");
+    let deferredInstallPrompt = null; let installBannerDismissed = false;
+    const installBanner = $("#installBanner"); const installTitle = $("#installTitle"); const installText = $("#installText"); const installAction = $("#installAction"); const installDismiss = $("#installDismiss");
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function getDateKey(date = new Date()) { return [date.getFullYear(), pad(date.getMonth()+1), pad(date.getDate())].join("-"); }
+    function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
+    function safeParse(value, fallback) { try { const parsed = JSON.parse(value); return parsed ?? fallback; } catch { return fallback; } }
+    function escapeHtml(value) { return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"); }
+
+    function loadData() {
+      const savedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const savedTrash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []);
+      const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
+      tasks = Array.isArray(savedTasks) ? savedTasks.filter(t => t && t.text) : [];
+      trash = Array.isArray(savedTrash) ? savedTrash.filter(t => t && t.text) : [];
+      settings = { ...DEFAULT_SETTINGS, ...(savedSettings || {}) };
+    }
+    function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
+    function saveTrash() { localStorage.setItem(STORAGE_KEYS.trash, JSON.stringify(trash)); }
+    function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
+
+    function addTask(text, options = {}) {
+      const cleanText = String(text || "").trim();
+      if (!cleanText) return false;
+      const task = { id: createId(), text: cleanText, completed: false, starred: options.starred || false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: options.scheduledDate || null, completedAt: null, repeat: options.repeat || 'none' };
+      tasks.unshift(task);
+      saveTasks();
+      render();
+      return true;
+    }
+
+    function completeTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      task.completed = !task.completed;
+      task.completedAt = task.completed ? Date.now() : null;
+      saveTasks();
+      render();
+    }
+
+    function toggleStar(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      task.starred = !task.starred;
+      saveTasks();
+      render();
+    }
+
+    function deleteTask(id) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index === -1) return;
+      const [deleted] = tasks.splice(index, 1);
+      trash.unshift({ ...deleted, deletedAt: Date.now() });
+      saveTasks();
+      saveTrash();
+      render();
+      showToast("تم التراجع عن النية", true, () => {
+        const trashIndex = trash.findIndex(t => t.id === deleted.id);
+        if (trashIndex !== -1) trash.splice(trashIndex, 1);
+        tasks.unshift(deleted);
+        saveTasks();
+        saveTrash();
+        render();
+      });
+    }
+
+    function getTodayTasks() { const today = getDateKey(); return tasks.filter(t => !t.completed && (t.scheduledDate ? t.scheduledDate === today : t.taskDay === today)); }
+    function getCompletedToday() { const today = getDateKey(); return tasks.filter(t => t.completed && t.completedAt && getDateKey(new Date(t.completedAt)) === today); }
+    function getAllActive() { return tasks.filter(t => !t.completed); }
+    function getAllCompleted() { return tasks.filter(t => t.completed); }
+
+    function render() {
+      heroDate.textContent = new Intl.DateTimeFormat(settings.language === "en" ? "en-US" : "ar-EG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
+      content.innerHTML = "";
+      
+      if (currentView === "today") {
+        const active = getTodayTasks();
+        const completed = getCompletedToday();
+        if (active.length === 0 && completed.length === 0) {
+          content.appendChild(createEmptyState("ن", "مفيش نوايا لسه", "اكتب أول نية ناوي تعملها النهارده."));
+        } else {
+          if (active.length > 0) content.appendChild(createSection("اليوم", active));
+          if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
+        }
+      } else if (currentView === "all") {
+        const active = getAllActive();
+        const completed = getAllCompleted();
+        if (active.length > 0) content.appendChild(createSection("نواياي", active));
+        if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
+      } else if (currentView === "favorites") {
+        const favActive = tasks.filter(t => t.starred && !t.completed);
+        const favCompleted = tasks.filter(t => t.starred && t.completed);
+        if (favActive.length === 0 && favCompleted.length === 0) {
+          content.appendChild(createEmptyState("★", "مفيش مفضلات لسه", "علّم أي نية بنجمة وهتظهر هنا."));
+        } else {
+          if (favActive.length > 0) content.appendChild(createSection("المفضلة النشطة", favActive));
+          if (favCompleted.length > 0) content.appendChild(createCompletedToggleSection(favCompleted));
+        }
+      }
+      
+      updateHeaderNavState();
+      requestAnimationFrame(updateHeaderTabIndicator);
+      setTimeout(initSortable, 50);
+    }
+
+    function createSection(title, taskArray) {
+      const section = document.createElement("section");
+      section.className = "section";
+      const head = document.createElement("div");
+      head.className = "section-head";
+      const titleEl = document.createElement("div");
+      titleEl.className = "section-title";
+      titleEl.textContent = title;
+      const count = document.createElement("span");
+      count.className = "section-count";
+      count.textContent = taskArray.length;
+      head.append(titleEl, count);
+      const list = document.createElement("div");
+      list.className = "task-list";
+      taskArray.forEach(task => list.appendChild(createTaskElement(task)));
+      section.append(head, list);
+      return section;
+    }
+
+    function createCompletedToggleSection(taskArray) {
+      const section = document.createElement("section");
+      section.className = "completed-section";
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "completed-toggle" + (completedExpanded ? " open" : "");
+      const title = document.createElement("span");
+      title.className = "completed-toggle-title";
+      title.textContent = "المكتملة";
+      const count = document.createElement("span");
+      count.className = "completed-toggle-count";
+      count.textContent = taskArray.length;
+      const chevron = document.createElement("span");
+      chevron.className = "completed-toggle-chevron";
+      chevron.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+      toggle.append(title, count, chevron);
+      const listWrap = document.createElement("div");
+      listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : "");
+      const list = document.createElement("div");
+      list.className = "task-list";
+      taskArray.forEach(task => list.appendChild(createTaskElement(task, true)));
+      listWrap.appendChild(list);
+      toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); });
+      section.append(toggle, listWrap);
+      return section;
+    }
+
+    function createTaskElement(task, isCompleted = false) {
+      const article = document.createElement("article");
+      article.className = "task" + (task.completed ? " completed" : "");
+      article.dataset.taskId = task.id;
+
+      const checkbox = document.createElement("button");
+      checkbox.type = "button";
+      checkbox.className = "task-checkbox";
+      checkbox.innerHTML = `<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4 4L19 7"></path></svg>`;
+      checkbox.addEventListener("click", e => { e.stopPropagation(); completeTask(task.id); });
+
+      const main = document.createElement("div");
+      main.className = "task-main";
+      const text = document.createElement("p");
+      text.className = "task-text";
+      text.textContent = task.text;
+      main.appendChild(text);
+      main.addEventListener("click", () => openAction(task.id));
+
+      const star = document.createElement("button");
+      star.type = "button";
+      star.className = "task-star" + (task.starred ? " active" : "");
+      star.textContent = task.starred ? "★" : "☆";
+      star.addEventListener("click", e => { e.stopPropagation(); toggleStar(task.id); });
+
+      article.append(checkbox, main, star);
+      return article;
+    }
+
+    function createEmptyState(symbol, title, message) {
+      const box = document.createElement("div");
+      box.className = "task-empty";
+      box.innerHTML = `<div class="empty-symbol">${symbol}</div><div class="empty-title">${title}</div><div class="empty-text">${message}</div>`;
+      return box;
     }
 
     function initSortable() {
-      const lists = document.querySelectorAll(".task-list");
-      lists.forEach(list => {
-        new Sortable(list, {
+      document.querySelectorAll(".task-list").forEach(list => {
+        if (list.sortableInstance) list.sortableInstance.destroy();
+        list.sortableInstance = new Sortable(list, {
           animation: 150,
           ghostClass: 'drag-ghost',
           dragClass: 'drag-source',
           delay: 200,
           delayOnTouchOnly: true,
-          touchStartThreshold: 2,
-          onEnd: function(evt) {
+          onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
             const activeTasks = tasks.filter(t => !t.completed);
             const completedTasks = tasks.filter(t => t.completed);
@@ -583,11 +1047,132 @@
       });
     }
 
-    // استدعاء initSortable بعد render
-    function render() {
-      // ... render logic
-      setTimeout(initSortable, 50);
+    function updateHeaderNavState() {
+      $$(".header-tab").forEach(btn => {
+        const active = btn.dataset.view === currentView;
+        btn.classList.toggle("active", active);
+        if (active) btn.setAttribute("aria-current", "page"); else btn.removeAttribute("aria-current");
+      });
     }
+
+    function updateHeaderTabIndicator() {
+      const activeTab = headerNav.querySelector(`.header-tab[data-view="${currentView}"]`);
+      if (!activeTab) return;
+      const navRect = headerNav.getBoundingClientRect();
+      const tabRect = activeTab.getBoundingClientRect();
+      const w = Math.max(22, Math.min(36, tabRect.width * .32));
+      const left = (tabRect.left - navRect.left + (tabRect.width - w)/2);
+      headerNav.style.setProperty("--tab-indicator-width", `${w}px`);
+      headerNav.style.setProperty("--tab-indicator-left", `${left}px`);
+    }
+
+    function setView(view) {
+      if (!SWIPE_VIEWS.includes(view)) return;
+      currentView = view;
+      closeAllOverlays();
+      closeComposer();
+      render();
+    }
+
+    function openAction(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      selectedTaskId = id;
+      actionTaskPreview.innerHTML = `<span class="action-task-preview-text">${escapeHtml(task.text)}</span>`;
+      const actionBtn = $("#actionComplete");
+      actionBtn.querySelector(".action-text").textContent = task.completed ? "أعد فتح النية" : "أتمم النية";
+      openOverlay(actionOverlay);
+    }
+
+    function openOverlay(overlay) { overlay.classList.add("show"); overlay.setAttribute("aria-hidden","false"); document.body.classList.add("no-scroll"); }
+    function closeOverlay(overlay) { overlay.classList.remove("show"); overlay.setAttribute("aria-hidden","true"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
+    function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
+
+    function openComposer() { composerFab.classList.add("hidden"); composerPanel.classList.add("open"); taskInput.focus(); }
+    function closeComposer() { composerFab.classList.remove("hidden"); composerPanel.classList.remove("open"); taskInput.value = ""; }
+
+    function showToast(message, canUndo = false, undoCallback = null) {
+      clearTimeout(undoTimer);
+      undoAction = canUndo ? undoCallback : null;
+      toastMessage.textContent = message;
+      toastUndo.classList.toggle("hidden", !canUndo);
+      toast.classList.add("show");
+      undoTimer = setTimeout(() => toast.classList.remove("show"), 4500);
+    }
+
+    function navigateBySwipe(direction) {
+      const index = SWIPE_VIEWS.indexOf(currentView);
+      let next;
+      if (direction === "next") next = (index+1)%SWIPE_VIEWS.length;
+      else next = (index-1+SWIPE_VIEWS.length)%SWIPE_VIEWS.length;
+      setView(SWIPE_VIEWS[next]);
+    }
+
+    // Event Listeners
+    composerFab.addEventListener("click", openComposer);
+    $("#composer").addEventListener("submit", e => {
+      e.preventDefault();
+      const text = taskInput.value.trim();
+      if (!text) return;
+      addTask(text);
+      closeComposer();
+    });
+    taskInput.addEventListener("input", () => {
+      sendBtn.classList.toggle("disabled", !taskInput.value.trim().length);
+    });
+    $$(".header-tab").forEach(btn => btn.addEventListener("click", () => setView(btn.dataset.view)));
+    $("#menuBtn").addEventListener("click", () => openOverlay(menuOverlay));
+    $("#settingsBtn").addEventListener("click", () => { closeOverlay(menuOverlay); openOverlay(settingsOverlay); });
+    $("#menuTrashBtn").addEventListener("click", () => { closeOverlay(menuOverlay); openOverlay(trashOverlay); });
+    $$("[data-close-overlay]").forEach(btn => btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.closeOverlay))));
+    $$(".overlay").forEach(overlay => overlay.addEventListener("click", e => { if (e.target === overlay) closeOverlay(overlay); }));
+    $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
+    $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay(actionOverlay); selectedTaskId = null; } });
+    toastUndo.addEventListener("click", () => { if (undoAction) undoAction(); toast.classList.remove("show"); });
+
+    // Touch swipe for tab navigation
+    document.addEventListener("touchstart", e => {
+      if (e.target.closest("button, input, textarea, .overlay")) return;
+      const touch = e.touches[0];
+      swipeStartX = touch.clientX;
+      swipeStartY = touch.clientY;
+      swipeTracking = true;
+    }, { passive: true });
+
+    document.addEventListener("touchend", e => {
+      if (!swipeTracking) return;
+      swipeTracking = false;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - swipeStartX;
+      const dy = touch.clientY - swipeStartY;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        const isRTL = document.documentElement.dir === "rtl";
+        navigateBySwipe(isRTL ? (dx < 0 ? "next" : "previous") : (dx > 0 ? "next" : "previous"));
+      }
+    }, { passive: true });
+
+    function init() {
+      loadData();
+      applySettings();
+      lastKnownDay = getDateKey();
+      render();
+      requestAnimationFrame(updateHeaderTabIndicator);
+    }
+
+    function applySettings() {
+      document.documentElement.setAttribute("data-theme", settings.theme);
+      document.documentElement.setAttribute("data-accent", settings.accent);
+      document.documentElement.setAttribute("data-font", settings.fontSize);
+      $$("[data-theme-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.themeChoice === settings.theme));
+      $$("[data-accent-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.accentChoice === settings.accent));
+      $$("[data-font-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.fontChoice === settings.fontSize));
+    }
+
+    $$("[data-theme-choice]").forEach(btn => btn.addEventListener("click", () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); }));
+    $$("[data-accent-choice]").forEach(btn => btn.addEventListener("click", () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); }));
+    $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
+
+    init();
   </script>
 </body>
 </html>
