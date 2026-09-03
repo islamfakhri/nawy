@@ -79,7 +79,6 @@
       --text: #eef1f1; --muted: #8b9494; --border: rgba(255,255,255,.05); --border-strong: rgba(255,255,255,.08);
       --shadow-soft: 0 1px 4px rgba(0,0,0,.15); --shadow-card: 0 4px 12px rgba(0,0,0,.20); --shadow-sheet: 0 20px 60px rgba(0,0,0,.40);
     }
-
     html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,.08); }
     html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,.08); }
     html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,.10); }
@@ -239,7 +238,8 @@
     .action-item { width: 100%; min-height: 48px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); background: transparent; text-align: start; font-size: var(--fs-base); }
     .action-item:hover { background: var(--surface-2); }
     .action-item.danger { color: var(--danger); }
-    .action-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .action-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    .action-item .action-text { flex: 1; }
 
     .edit-input { width: 100%; min-height: 100px; padding: var(--sp-md); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); resize: vertical; font-size: var(--fs-base); line-height: 1.65; }
     .edit-input:focus { border-color: var(--accent); }
@@ -346,8 +346,6 @@
   </style>
 </head>
 <body>
-
-  <!-- PIN LOCK OVERLAY -->
   <div class="pin-overlay" id="pinOverlay" aria-hidden="true">
     <div class="pin-box">
       <button class="pin-close-btn" id="pinCloseBtn" type="button" aria-label="إغلاق">✕</button>
@@ -443,15 +441,15 @@
       <div class="action-task-preview" id="actionTaskPreview"></div>
       <button class="action-item" id="actionComplete" type="button">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-        <span><span data-i18n="done">أتمم النية</span></span>
+        <span class="action-text"><span data-i18n="done">أتمم النية</span></span>
       </button>
       <button class="action-item" id="actionDate" type="button">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span id="actionDateText" data-i18n="setDate">تحديد موعد</span>
+        <span class="action-text" id="actionDateText" data-i18n="setDate">تحديد موعد</span>
       </button>
       <button class="action-item" id="actionRepeat" type="button">
         <svg viewBox="0 0 24 24"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
-        <span>تكرار</span>
+        <span class="action-text">تكرار</span>
         <div class="action-repeat-options hidden" id="actionRepeatOptions">
           <button data-repeat="none" type="button">بدون تكرار</button>
           <button data-repeat="daily" type="button">يوميًا</button>
@@ -461,15 +459,15 @@
       </button>
       <button class="action-item" id="actionEdit" type="button">
         <svg viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-        <span data-i18n="edit">تعديل النية</span>
+        <span class="action-text" data-i18n="edit">تعديل النية</span>
       </button>
       <button class="action-item" id="actionDetails" type="button">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span>تفاصيل</span>
+        <span class="action-text">تفاصيل</span>
       </button>
       <button class="action-item danger" id="actionDelete" type="button">
         <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-        <span data-i18n="delete">تراجع عن النية</span>
+        <span class="action-text" data-i18n="delete">تراجع عن النية</span>
       </button>
     </div>
   </div>
@@ -623,92 +621,47 @@
   <script>
     "use strict";
 
-    const STORAGE_KEYS = {
-      tasks: "nawy_tasks_v9",
-      trash: "nawy_trash_v2",
-      settings: "nawy_settings_v2"
-    };
-
+    const STORAGE_KEYS = { tasks: "nawy_tasks_v9", trash: "nawy_trash_v2", settings: "nawy_settings_v2" };
     const TRANSLATIONS = {
       ar: {
-        languageSection: "اللغة", languageName: "لغة ناوي",
-        appearanceSection: "المظهر", modeName: "الوضع",
-        fontSizeName: "حجم الخط", fontSizeSmall: "صغير", fontSizeMedium: "متوسط", fontSizeLarge: "كبير",
-        colorSection: "اللون",
-        settings: "الإعدادات",
-        trash: "أرشيف النوايا", trashSubtitle: "نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.",
-        today: "اليوم", all: "نواياي", favorites: "مفضلاتي",
-        completed: "المكتملة", completedSection: "المكتملة",
-        mainNavigation: "التنقل الرئيسي",
-        heroToday: "ناوي على إيه النهارده؟", progressToday: "تقدم نواياك اليوم",
-        editIntent: "تعديل النية",
-        done: "أتمم النية", cancelDone: "أعد فتح النية",
-        edit: "تعديل النية", delete: "تراجع عن النية", deleteForever: "حذف نهائي",
-        cancel: "إلغاء", save: "حفظ", add: "أضف نية",
-        newIntent: "اكتب نية جديدة", taskPlaceholder: "اكتب النية اللي في بالك...",
-        menu: "القائمة", light: "فاتح", dark: "داكن",
-        green: "أخضر", blue: "أزرق", purple: "بنفسجي", orange: "برتقالي", pink: "وردي",
-        nawyColor: "لون ناوي",
-        yesterday: "أمس", daysAgo: "منذ {n} أيام",
-        startFirst: "ابدأ أول نية", allDone: "كل نواياك اتحققت ✨",
-        deleted: "تم التراجع عن النية", restored: "تم استرجاع النية", deletedForever: "تم الحذف نهائيًا",
-        edited: "تم تعديل النية بنجاح", writeFirst: "اكتب النية الأول",
-        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
-        noIntentionsAll: "لسه مفيش نوايا", everyThingStarts: "كل حاجة تبدأ بنية.",
-        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
-        noAchievements: "لسه مفيش إنجازات", achievementHint: "أول ما تتمم نية هتظهر هنا.",
-        currentIntentions: "نواياي", favoriteSection: "مفضلاتي", allDoneSection: "المكتملة",
-        trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
-        restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد",
-        dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.",
-        removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
-        installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.",
-        install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
+        languageSection: "اللغة", languageName: "لغة ناوي", appearanceSection: "المظهر", modeName: "الوضع", fontSizeName: "حجم الخط", fontSizeSmall: "صغير", fontSizeMedium: "متوسط", fontSizeLarge: "كبير", colorSection: "اللون",
+        settings: "الإعدادات", trash: "أرشيف النوايا", trashSubtitle: "نواياك المتراجع عنها. يمكنك استرجاعها في أي وقت.",
+        today: "اليوم", all: "نواياي", favorites: "مفضلاتي", completed: "المكتملة", completedSection: "المكتملة", mainNavigation: "التنقل الرئيسي",
+        heroToday: "ناوي على إيه النهارده؟", progressToday: "تقدم نواياك اليوم", editIntent: "تعديل النية",
+        done: "أتمم النية", cancelDone: "أعد فتح النية", edit: "تعديل النية", delete: "تراجع عن النية", deleteForever: "حذف نهائي",
+        cancel: "إلغاء", save: "حفظ", add: "أضف نية", newIntent: "اكتب نية جديدة", taskPlaceholder: "اكتب النية اللي في بالك...", menu: "القائمة",
+        light: "فاتح", dark: "داكن", green: "أخضر", blue: "أزرق", purple: "بنفسجي", orange: "برتقالي", pink: "وردي", nawyColor: "لون ناوي",
+        yesterday: "أمس", daysAgo: "منذ {n} أيام", startFirst: "ابدأ أول نية", allDone: "كل نواياك اتحققت ✨",
+        deleted: "تم التراجع عن النية", restored: "تم استرجاع النية", deletedForever: "تم الحذف نهائيًا", edited: "تم تعديل النية بنجاح", writeFirst: "اكتب النية الأول",
+        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.", noIntentionsAll: "لسه مفيش نوايا", everyThingStarts: "كل حاجة تبدأ بنية.",
+        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.", noAchievements: "لسه مفيش إنجازات", achievementHint: "أول ما تتمم نية هتظهر هنا.",
+        currentIntentions: "نواياي", favoriteSection: "مفضلاتي", allDoneSection: "المكتملة", trashEmpty: "الأرشيف فاضي", noDeleted: "مفيش نوايا متراجع عنها.",
+        restore: "استرجاع النية", setDate: "تحديد موعد", changeDate: "تغيير الموعد", dateTitle: "تحديد موعد", dateSubtitle: "اختر اليوم الذي تريد أن تظهر فيه النية.", removeDate: "إزالة الموعد", taskDate: "تاريخ النية", dateSet: "تم تحديد الموعد", dateRemoved: "تمت إزالة الموعد",
+        installTitle: "ثبّت ناوي على جهازك", installText: "خليه معاك أسرع وأسهل من المتصفح.", install: "تثبيت", continue: "متابعة", installGuideTitle: "أضف ناوي إلى الشاشة الرئيسية", installGuideText: "من قائمة المتصفح اختر إضافة إلى الشاشة الرئيسية.",
         updateAvailable: "تحديث جديد من ناوي متاح.", update: "تحديث", undo: "استرجاع",
-        pinSection: "الخصوصية", pinName: "قفل ناوي", pinEnable: "تفعيل", pinDisable: "تعطيل",
-        pinChange: "تغيير الرمز", pinCurrent: "أدخل الرمز الحالي", pinNew: "أدخل رمزًا جديدًا (4 أرقام)", pinConfirm: "أعد إدخال الرمز الجديد", pinSuccess: "تم تحديث رمز ناوي", pinErrorMismatch: "الرمزان غير متطابقين", pinErrorWrong: "الرمز غير صحيح",
+        pinSection: "الخصوصية", pinName: "قفل ناوي", pinEnable: "تفعيل", pinDisable: "تعطيل", pinChange: "تغيير الرمز", pinCurrent: "أدخل الرمز الحالي", pinNew: "أدخل رمزًا جديدًا (4 أرقام)", pinConfirm: "أعد إدخال الرمز الجديد", pinSuccess: "تم تحديث رمز ناوي", pinErrorMismatch: "الرمزان غير متطابقين", pinErrorWrong: "الرمز غير صحيح",
         pinEnter: "أدخل رمز ناوي", pinSubtitle: "أدخل رمزك السري لفتح نواياك", pinSave: "حفظ", pinForgot: "نسيت الرمز؟", pinSecurityQuestion: "استرجاع رمز ناوي", pinSecuritySubtitle: "كل النوايا بتبدأ من لحظة ميلادك. اكتب سنة الميلاد.", pinSecurityError: "السنة غير صحيحة", pinReset: "حدد رمزًا جديدًا", pinResetNew: "أدخل رمزًا جديدًا (4 أرقام)", pinResetConfirm: "أعد إدخال الرمز الجديد", pinResetSuccess: "تم استرجاع الرمز بنجاح", pinStartOver: "أبدأ من جديد", pinStartOverConfirm: "سيتم مسح جميع النوايا والإعدادات. هل أنت متأكد؟", pinStartOverDone: "تم مسح جميع البيانات. أعد التطبيق من جديد.",
         pinSetupBirthYearTitle: "سؤال الأمان", pinSetupBirthYearSubtitle: "اكتب سنة ميلادك (4 أرقام) لتتمكن من استرجاع رمزك إذا نسيته.", pinBirthYearWrong: "أدخل سنة صحيحة (4 أرقام).",
         createdAt: "أُضيفت في", completedAt: "أُتمت في", detailsTitle: "تفاصيل النية", taskDetails: "التفاصيل",
         schedule: "جدولة", repeat: "تكرار", repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا"
       },
       en: {
-        languageSection: "Language", languageName: "NAWY language",
-        appearanceSection: "Appearance", modeName: "Mode",
-        fontSizeName: "Font size", fontSizeSmall: "Small", fontSizeMedium: "Medium", fontSizeLarge: "Large",
-        colorSection: "Color",
-        settings: "Settings",
-        trash: "Intention Archive", trashSubtitle: "Intentions you've stepped back from. You can restore them anytime.",
-        today: "Today", all: "My intentions", favorites: "My favorites",
-        completed: "Completed", completedSection: "Completed",
-        mainNavigation: "Main navigation",
-        heroToday: "What are you up to today?", progressToday: "Today's intention progress",
-        editIntent: "Edit intention",
-        done: "Complete intention", cancelDone: "Reopen intention",
-        edit: "Edit intention", delete: "Step back from intention", deleteForever: "Delete permanently",
-        cancel: "Cancel", save: "Save", add: "Add intention",
-        newIntent: "Write a new intention", taskPlaceholder: "Write the intention on your mind...",
-        menu: "Menu", light: "Light", dark: "Dark",
-        green: "Green", blue: "Blue", purple: "Purple", orange: "Orange", pink: "Pink",
-        nawyColor: "NAWY color",
-        yesterday: "Yesterday", daysAgo: "{n} days ago",
-        startFirst: "Start your first intention", allDone: "All your intentions are fulfilled ✨",
-        deleted: "Stepped back from intention", restored: "Intention restored", deletedForever: "Deleted permanently",
-        edited: "Intention updated successfully", writeFirst: "Write the intention first",
-        noIntentions: "No intentions yet", firstIntent: "Write the first intention you have for today.",
-        noIntentionsAll: "No intentions yet", everyThingStarts: "Everything starts with an intention.",
-        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
-        noAchievements: "No achievements yet", achievementHint: "Once you complete an intention, it will appear here.",
-        currentIntentions: "My intentions", favoriteSection: "My favorites", allDoneSection: "Completed",
-        trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
-        restore: "Restore intention", setDate: "Set date", changeDate: "Change date",
-        dateTitle: "Set date", dateSubtitle: "Choose the day you want this intention to appear.",
-        removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
-        installTitle: "Install NAWY on your device", installText: "Keep it faster and easier than opening the browser.",
-        install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
+        languageSection: "Language", languageName: "NAWY language", appearanceSection: "Appearance", modeName: "Mode", fontSizeName: "Font size", fontSizeSmall: "Small", fontSizeMedium: "Medium", fontSizeLarge: "Large", colorSection: "Color",
+        settings: "Settings", trash: "Intention Archive", trashSubtitle: "Intentions you've stepped back from. You can restore them anytime.",
+        today: "Today", all: "My intentions", favorites: "My favorites", completed: "Completed", completedSection: "Completed", mainNavigation: "Main navigation",
+        heroToday: "What are you up to today?", progressToday: "Today's intention progress", editIntent: "Edit intention",
+        done: "Complete intention", cancelDone: "Reopen intention", edit: "Edit intention", delete: "Step back from intention", deleteForever: "Delete permanently",
+        cancel: "Cancel", save: "Save", add: "Add intention", newIntent: "Write a new intention", taskPlaceholder: "Write the intention on your mind...", menu: "Menu",
+        light: "Light", dark: "Dark", green: "Green", blue: "Blue", purple: "Purple", orange: "Orange", pink: "Pink", nawyColor: "NAWY color",
+        yesterday: "Yesterday", daysAgo: "{n} days ago", startFirst: "Start your first intention", allDone: "All your intentions are fulfilled ✨",
+        deleted: "Stepped back from intention", restored: "Intention restored", deletedForever: "Deleted permanently", edited: "Intention updated successfully", writeFirst: "Write the intention first",
+        noIntentions: "No intentions yet", firstIntent: "Write the first intention you have for today.", noIntentionsAll: "No intentions yet", everyThingStarts: "Everything starts with an intention.",
+        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.", noAchievements: "No achievements yet", achievementHint: "Once you complete an intention, it will appear here.",
+        currentIntentions: "My intentions", favoriteSection: "My favorites", allDoneSection: "Completed", trashEmpty: "Archive is empty", noDeleted: "No stepped-back intentions.",
+        restore: "Restore intention", setDate: "Set date", changeDate: "Change date", dateTitle: "Set date", dateSubtitle: "Choose the day you want this intention to appear.", removeDate: "Remove date", taskDate: "Intention date", dateSet: "Date set", dateRemoved: "Date removed",
+        installTitle: "Install NAWY on your device", installText: "Keep it faster and easier than opening the browser.", install: "Install", continue: "Continue", installGuideTitle: "Add NAWY to your Home Screen", installGuideText: "Open your browser menu and choose Add to Home Screen.",
         updateAvailable: "A new NAWY update is available.", update: "Update", undo: "Restore",
-        pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable",
-        pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated successfully", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
+        pinSection: "Privacy", pinName: "NAWY Lock", pinEnable: "Enable", pinDisable: "Disable", pinChange: "Change PIN", pinCurrent: "Enter current PIN", pinNew: "Enter new PIN (4 digits)", pinConfirm: "Re-enter new PIN", pinSuccess: "NAWY PIN updated successfully", pinErrorMismatch: "PINs do not match", pinErrorWrong: "Wrong PIN",
         pinEnter: "Enter NAWY PIN", pinSubtitle: "Enter your secret PIN to unlock your intentions", pinSave: "Save", pinForgot: "Forgot PIN?", pinSecurityQuestion: "Recover NAWY PIN", pinSecuritySubtitle: "All intentions start from the moment you were born. Enter your birth year.", pinSecurityError: "Wrong year", pinReset: "Set new PIN", pinResetNew: "Enter new PIN (4 digits)", pinResetConfirm: "Re-enter new PIN", pinResetSuccess: "PIN recovered successfully", pinStartOver: "Start over", pinStartOverConfirm: "This will delete all intentions and settings. Are you sure?", pinStartOverDone: "All data cleared. Restart the app.",
         pinSetupBirthYearTitle: "Security Question", pinSetupBirthYearSubtitle: "Enter your birth year (4 digits) to recover your PIN if forgotten.", pinBirthYearWrong: "Enter a valid year (4 digits).",
         createdAt: "Created", completedAt: "Completed", detailsTitle: "Intention Details", taskDetails: "Details",
@@ -716,160 +669,34 @@
       }
     };
 
-    function t(key, vars = {}) {
-      const language = settings && settings.language === "en" ? "en" : "ar";
-      const dict = TRANSLATIONS[language];
-      let value = dict[key] ?? TRANSLATIONS.ar[key] ?? key;
-      Object.entries(vars).forEach(([keyName, valueToReplace]) => {
-        value = value.replaceAll(`{${keyName}}`, String(valueToReplace));
-      });
-      return value;
-    }
+    function t(key, vars = {}) { const language = settings && settings.language === "en" ? "en" : "ar"; const dict = TRANSLATIONS[language]; let value = dict[key] ?? TRANSLATIONS.ar[key] ?? key; Object.entries(vars).forEach(([keyName, valueToReplace]) => { value = value.replaceAll(`{${keyName}}`, String(valueToReplace)); }); return value; }
 
-    const DEFAULT_SETTINGS = {
-      theme: "dark",
-      accent: "green",
-      language: "ar",
-      fontSize: "medium",
-      lockEnabled: false,
-      pin: null,
-      birthYear: null
-    };
-
-    let tasks = [];
-    let trash = [];
-    let settings = { ...DEFAULT_SETTINGS };
-    let currentView = "today";
-    let selectedTaskId = null;
-    let completedExpanded = false;
-    let undoTimer = null;
-    let undoAction = null;
-    let typingAudioContext = null;
-    let lastTypingSound = 0;
-    let lastKnownDay = null;
-
+    const DEFAULT_SETTINGS = { theme: "dark", accent: "green", language: "ar", fontSize: "medium", lockEnabled: false, pin: null, birthYear: null };
+    let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
+    let currentView = "today", selectedTaskId = null, completedExpanded = false;
+    let undoTimer = null, undoAction = null, typingAudioContext = null, lastTypingSound = 0, lastKnownDay = null;
     const SWIPE_VIEWS = ["all", "today", "favorites"];
-    let swipeStartX = 0;
-    let swipeStartY = 0;
-    let swipeTracking = false;
-    let swipeSuppressClick = false;
-
+    let swipeStartX = 0, swipeStartY = 0, swipeTracking = false, swipeSuppressClick = false;
     let pinState = { mode: "idle", buffer: "", newPin: "", newPinConfirm: "", currentPin: "", tempPin: "" };
     let composerState = { starred: false, scheduledDate: null, repeat: 'none' };
 
     const $ = selector => document.querySelector(selector);
     const $$ = selector => [...document.querySelectorAll(selector)];
 
-    const content = $("#content");
-    const taskInput = $("#taskInput");
-    const sendBtn = $("#sendBtn");
-    const composerFab = $("#composerFab");
-    const composerPanel = $("#composerPanel");
-    const toolbarStar = $("#toolbarStar");
-    const toolbarRepeat = $("#toolbarRepeat");
-    const composerRepeatOptions = $("#composerRepeatOptions");
-    const actionRepeat = $("#actionRepeat");
-    const actionRepeatOptions = $("#actionRepeatOptions");
-    const heroDate = $("#heroDate");
-    const heroTitle = $("#heroTitle");
-    const progressWrap = $("#progressWrap");
-    const progressBar = $("#progressBar");
-    const progressValue = $("#progressValue");
-    const progressLabel = $("#progressLabel");
-    const menuOverlay = $("#menuOverlay");
-    const actionOverlay = $("#actionOverlay");
-    const editOverlay = $("#editOverlay");
-    const dateOverlay = $("#dateOverlay");
-    const settingsOverlay = $("#settingsOverlay");
-    const trashOverlay = $("#trashOverlay");
-    const detailsOverlay = $("#detailsOverlay");
-    const detailsContent = $("#detailsContent");
-    const actionTaskPreview = $("#actionTaskPreview");
-    const actionDateText = $("#actionDateText");
-    const editInput = $("#editInput");
-    const taskDateInput = $("#taskDateInput");
-    const trashList = $("#trashList");
-    const toast = $("#toast");
-    const toastMessage = $("#toastMessage");
-    const toastUndo = $("#toastUndo");
-    const toastUpdate = $("#toastUpdate");
-    const headerNav = $("#headerNav");
-    const headerTabIndicator = $("#headerTabIndicator");
-    const brandName = $("#brandName");
-    const menuSheetTitle = $("#menuSheetTitle");
-    const pinOverlay = $("#pinOverlay");
-    const pinTitle = $("#pinTitle");
-    const pinSubtitle = $("#pinSubtitle");
-    const pinDots = $("#pinDots");
-    const pinKeypad = $("#pinKeypad");
-    const pinError = $("#pinError");
-    const pinSaveBtn = $("#pinSaveBtn");
-    const pinForgotBtn = $("#pinForgotBtn");
-    const pinResetLink = $("#pinResetLink");
-    const pinCloseBtn = $("#pinCloseBtn");
-    const pinToggleBtn = $("#pinToggleBtn");
-    const pinChangeRow = $("#pinChangeRow");
-    const pinChangeBtn = $("#pinChangeBtn");
-    const birthYearRow = $("#birthYearRow");
-    const changeBirthYearBtn = $("#changeBirthYearBtn");
+    const content = $("#content"); const taskInput = $("#taskInput"); const sendBtn = $("#sendBtn"); const composerFab = $("#composerFab"); const composerPanel = $("#composerPanel"); const toolbarStar = $("#toolbarStar"); const toolbarRepeat = $("#toolbarRepeat"); const composerRepeatOptions = $("#composerRepeatOptions"); const actionRepeat = $("#actionRepeat"); const actionRepeatOptions = $("#actionRepeatOptions");
+    const heroDate = $("#heroDate"); const heroTitle = $("#heroTitle"); const progressWrap = $("#progressWrap"); const progressBar = $("#progressBar"); const progressValue = $("#progressValue"); const progressLabel = $("#progressLabel");
+    const menuOverlay = $("#menuOverlay"); const actionOverlay = $("#actionOverlay"); const editOverlay = $("#editOverlay"); const dateOverlay = $("#dateOverlay"); const settingsOverlay = $("#settingsOverlay"); const trashOverlay = $("#trashOverlay"); const detailsOverlay = $("#detailsOverlay"); const detailsContent = $("#detailsContent");
+    const actionTaskPreview = $("#actionTaskPreview"); const actionDateText = $("#actionDateText"); const editInput = $("#editInput"); const taskDateInput = $("#taskDateInput"); const trashList = $("#trashList");
+    const toast = $("#toast"); const toastMessage = $("#toastMessage"); const toastUndo = $("#toastUndo"); const toastUpdate = $("#toastUpdate");
+    const headerNav = $("#headerNav"); const headerTabIndicator = $("#headerTabIndicator"); const brandName = $("#brandName"); const menuSheetTitle = $("#menuSheetTitle");
+    const pinOverlay = $("#pinOverlay"); const pinTitle = $("#pinTitle"); const pinSubtitle = $("#pinSubtitle"); const pinDots = $("#pinDots"); const pinKeypad = $("#pinKeypad"); const pinError = $("#pinError"); const pinSaveBtn = $("#pinSaveBtn"); const pinForgotBtn = $("#pinForgotBtn"); const pinResetLink = $("#pinResetLink"); const pinCloseBtn = $("#pinCloseBtn");
+    const pinToggleBtn = $("#pinToggleBtn"); const pinChangeRow = $("#pinChangeRow"); const pinChangeBtn = $("#pinChangeBtn"); const birthYearRow = $("#birthYearRow"); const changeBirthYearBtn = $("#changeBirthYearBtn");
+    let deferredInstallPrompt = null; let installBannerDismissed = false;
+    const installBanner = $("#installBanner"); const installTitle = $("#installTitle"); const installText = $("#installText"); const installAction = $("#installAction"); const installDismiss = $("#installDismiss");
 
-    let deferredInstallPrompt = null;
-    let installBannerDismissed = false;
-    const installBanner = $("#installBanner");
-    const installTitle = $("#installTitle");
-    const installText = $("#installText");
-    const installAction = $("#installAction");
-    const installDismiss = $("#installDismiss");
-
-    function applyLanguage() {
-      const lang = settings.language === "en" ? "en" : "ar";
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-      document.documentElement.setAttribute("data-language", lang);
-      if (brandName) brandName.textContent = lang === "en" ? "NAWY" : "ناوي";
-      if (menuSheetTitle) menuSheetTitle.textContent = lang === "en" ? "NAWY" : "ناوي";
-      $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
-      $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
-      $$("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
-      $$("[data-language-choice]").forEach(btn => {
-        const active = btn.dataset.languageChoice === lang;
-        btn.classList.toggle("active", active);
-        btn.setAttribute("aria-pressed", String(active));
-      });
-      updateDynamicLanguageText();
-      requestAnimationFrame(updateHeaderTabIndicator);
-      updatePinButtonText();
-    }
-
-    function updateDynamicLanguageText() {
-      if (selectedTaskId) {
-        const task = tasks.find(item => item.id === selectedTaskId);
-        if (task) {
-          const actionButton = $("#actionComplete");
-          const text = actionButton?.querySelector("span:last-child");
-          if (text) text.textContent = task.completed ? t("cancelDone") : t("done");
-          updateActionDateText(task);
-        }
-      }
-      if (typeof updateProgress === "function") updateProgress();
-      $$(".trash-delete-button").forEach(btn => { btn.textContent = t("deleteForever"); });
-      if (installTitle) {
-        if (deferredInstallPrompt) { installTitle.textContent = t("installTitle"); installText.textContent = t("installText"); }
-        else { installTitle.textContent = t("installGuideTitle"); installText.textContent = t("installGuideText"); }
-        installAction.textContent = t("install"); installDismiss.textContent = t("continue");
-      }
-      if (toastUpdate) toastUpdate.textContent = t("update");
-    }
-
-    function updatePinButtonText() {
-      if (settings.lockEnabled) {
-        pinToggleBtn.innerHTML = `<span>${t("pinDisable")}</span>`;
-        pinChangeRow.classList.remove("hidden"); birthYearRow.classList.remove("hidden");
-      } else {
-        pinToggleBtn.innerHTML = `<span>${t("pinEnable")}</span>`;
-        pinChangeRow.classList.add("hidden"); birthYearRow.classList.add("hidden");
-      }
-    }
+    function applyLanguage() { const lang = settings.language === "en" ? "en" : "ar"; document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"; document.documentElement.setAttribute("data-language", lang); if (brandName) brandName.textContent = lang === "en" ? "NAWY" : "ناوي"; if (menuSheetTitle) menuSheetTitle.textContent = lang === "en" ? "NAWY" : "ناوي"; $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); }); $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); }); $$("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); }); $$("[data-language-choice]").forEach(btn => { const active = btn.dataset.languageChoice === lang; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); }); updateDynamicLanguageText(); requestAnimationFrame(updateHeaderTabIndicator); updatePinButtonText(); }
+    function updateDynamicLanguageText() { if (selectedTaskId) { const task = tasks.find(item => item.id === selectedTaskId); if (task) { const actionButton = $("#actionComplete"); const text = actionButton?.querySelector("span:last-child"); if (text) text.textContent = task.completed ? t("cancelDone") : t("done"); updateActionDateText(task); } } if (typeof updateProgress === "function") updateProgress(); $$(".trash-delete-button").forEach(btn => { btn.textContent = t("deleteForever"); }); if (installTitle) { if (deferredInstallPrompt) { installTitle.textContent = t("installTitle"); installText.textContent = t("installText"); } else { installTitle.textContent = t("installGuideTitle"); installText.textContent = t("installGuideText"); } installAction.textContent = t("install"); installDismiss.textContent = t("continue"); } if (toastUpdate) toastUpdate.textContent = t("update"); }
+    function updatePinButtonText() { if (settings.lockEnabled) { pinToggleBtn.innerHTML = `<span>${t("pinDisable")}</span>`; pinChangeRow.classList.remove("hidden"); birthYearRow.classList.remove("hidden"); } else { pinToggleBtn.innerHTML = `<span>${t("pinEnable")}</span>`; pinChangeRow.classList.add("hidden"); birthYearRow.classList.add("hidden"); } }
 
     function pad(number) { return String(number).padStart(2, "0"); }
     function getDateKey(date = new Date()) { return [date.getFullYear(), pad(date.getMonth()+1), pad(date.getDate())].join("-"); }
@@ -879,505 +706,105 @@
     function getTaskDisplayDate(task) { return task.scheduledDate || task.taskDay || ""; }
     function getTaskDisplayDay(task) { const dateKey = getTaskDisplayDate(task); if (!dateKey) return ""; if (dateKey === getDateKey()) return t("today"); const date = new Date(`${dateKey}T12:00:00`); const currentDate = new Date(); currentDate.setHours(12,0,0,0); const diff = Math.round((currentDate - date)/86400000); if (diff===1) return t("yesterday"); if (diff>1 && diff<7) return t("daysAgo",{n:diff}); return formatTaskDate(dateKey); }
 
-    function normalizeTask(task) {
-      if (!task || typeof task !== "object") return null;
-      const createdAt = Number(task.createdAt) || Date.now();
-      return {
-        id: String(task.id || createId()),
-        text: String(task.text || "").trim(),
-        completed: Boolean(task.completed),
-        starred: Boolean(task.starred),
-        createdAt,
-        taskDay: task.taskDay || getDateKey(new Date(createdAt)),
-        scheduledDate: typeof task.scheduledDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(task.scheduledDate) ? task.scheduledDate : null,
-        completedAt: task.completedAt ? Number(task.completedAt) : null,
-        repeat: task.repeat || 'none'
-      };
-    }
+    function normalizeTask(task) { if (!task || typeof task !== "object") return null; const createdAt = Number(task.createdAt) || Date.now(); return { id: String(task.id || createId()), text: String(task.text || "").trim(), completed: Boolean(task.completed), starred: Boolean(task.starred), createdAt, taskDay: task.taskDay || getDateKey(new Date(createdAt)), scheduledDate: typeof task.scheduledDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(task.scheduledDate) ? task.scheduledDate : null, completedAt: task.completedAt ? Number(task.completedAt) : null, repeat: task.repeat || 'none' }; }
     function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
     function safeParse(value, fallback) { try { const parsed = JSON.parse(value); return parsed ?? fallback; } catch { return fallback; } }
 
-    function loadData() {
-      const savedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
-      const savedTrash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []);
-      const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
-      tasks = Array.isArray(savedTasks) ? savedTasks.map(normalizeTask).filter(Boolean).filter(task => task.text) : [];
-      trash = Array.isArray(savedTrash) ? savedTrash.map(normalizeTask).filter(Boolean).filter(task => task.text) : [];
-      settings = { ...DEFAULT_SETTINGS, ...(savedSettings || {}) };
-      if (!["dark","light"].includes(settings.theme)) settings.theme = "dark";
-      if (!["green","blue","purple","orange","pink"].includes(settings.accent)) settings.accent = "green";
-      if (!["ar","en"].includes(settings.language)) settings.language = "ar";
-      if (!["small","medium","large"].includes(settings.fontSize)) settings.fontSize = "medium";
-      if (typeof settings.lockEnabled !== "boolean") settings.lockEnabled = false;
-      if (settings.lockEnabled && !settings.pin) settings.lockEnabled = false;
-    }
+    function loadData() { const savedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const savedTrash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []); const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}); tasks = Array.isArray(savedTasks) ? savedTasks.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; trash = Array.isArray(savedTrash) ? savedTrash.map(normalizeTask).filter(Boolean).filter(task => task.text) : []; settings = { ...DEFAULT_SETTINGS, ...(savedSettings || {}) }; if (!["dark","light"].includes(settings.theme)) settings.theme = "dark"; if (!["green","blue","purple","orange","pink"].includes(settings.accent)) settings.accent = "green"; if (!["ar","en"].includes(settings.language)) settings.language = "ar"; if (!["small","medium","large"].includes(settings.fontSize)) settings.fontSize = "medium"; if (typeof settings.lockEnabled !== "boolean") settings.lockEnabled = false; if (settings.lockEnabled && !settings.pin) settings.lockEnabled = false; }
     function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
     function saveTrash() { localStorage.setItem(STORAGE_KEYS.trash, JSON.stringify(trash)); }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
 
-    function applySettings() {
-      document.documentElement.setAttribute("data-theme", settings.theme);
-      document.documentElement.setAttribute("data-accent", settings.accent);
-      document.documentElement.setAttribute("data-font", settings.fontSize);
-      $$("[data-theme-choice]").forEach(btn => { const active = btn.dataset.themeChoice === settings.theme; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); });
-      $$("[data-accent-choice]").forEach(btn => { const active = btn.dataset.accentChoice === settings.accent; btn.classList.toggle("active", active); });
-      $$("[data-font-choice]").forEach(btn => { const active = btn.dataset.fontChoice === settings.fontSize; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); });
-      applyLanguage();
-      updatePinButtonText();
-    }
+    function applySettings() { document.documentElement.setAttribute("data-theme", settings.theme); document.documentElement.setAttribute("data-accent", settings.accent); document.documentElement.setAttribute("data-font", settings.fontSize); $$("[data-theme-choice]").forEach(btn => { const active = btn.dataset.themeChoice === settings.theme; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); }); $$("[data-accent-choice]").forEach(btn => { const active = btn.dataset.accentChoice === settings.accent; btn.classList.toggle("active", active); }); $$("[data-font-choice]").forEach(btn => { const active = btn.dataset.fontChoice === settings.fontSize; btn.classList.toggle("active", active); btn.setAttribute("aria-pressed", String(active)); }); applyLanguage(); updatePinButtonText(); }
 
-    function addTask(text, options = {}) {
-      const cleanText = String(text || "").trim();
-      if (!cleanText) return false;
-      const task = {
-        id: createId(), text: cleanText, completed: false, starred: options.starred || false,
-        createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: options.scheduledDate || null,
-        completedAt: null, repeat: options.repeat || 'none'
-      };
-      tasks.unshift(task);
-      saveTasks();
-      currentView = "today";
-      render();
-      playAddSound();
-      return true;
-    }
-    function completeTask(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      task.completed = !task.completed;
-      task.completedAt = task.completed ? Date.now() : null;
-      saveTasks();
-      render();
-      if (task.completed) { playCompleteSound(); requestAnimationFrame(() => { const element = document.querySelector(`[data-task-id="${CSS.escape(task.id)}"]`); if (element) { element.classList.add("just-completed"); setTimeout(() => element.classList.remove("just-completed"), 550); } }); }
-    }
-    function toggleStar(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      task.starred = !task.starred;
-      saveTasks();
-      render();
-    }
-    function deleteTask(id) {
-      const index = tasks.findIndex(item => item.id === id);
-      if (index === -1) return;
-      const [deleted] = tasks.splice(index, 1);
-      trash.unshift({ ...deleted, deletedAt: Date.now() });
-      saveTasks(); saveTrash(); render();
-      showToast(t("deleted"), true, () => {
-        const trashIndex = trash.findIndex(item => item.id === deleted.id);
-        if (trashIndex !== -1) trash.splice(trashIndex, 1);
-        tasks.unshift(deleted);
-        saveTasks(); saveTrash(); render();
-      });
-    }
-    function openEdit(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      selectedTaskId = id;
-      editInput.value = task.text;
-      closeOverlay(actionOverlay);
-      openOverlay(editOverlay);
-      setTimeout(() => { editInput.focus(); editInput.setSelectionRange(editInput.value.length, editInput.value.length); }, 100);
-    }
-    function saveEdit() {
-      if (!selectedTaskId) return;
-      const text = editInput.value.trim();
-      if (!text) { showToast(t("writeFirst")); return; }
-      const task = tasks.find(item => item.id === selectedTaskId);
-      if (!task) return;
-      task.text = text;
-      saveTasks();
-      closeOverlay(editOverlay);
-      render();
-      showToast(t("edited"));
-      selectedTaskId = null;
-    }
-    function openTaskDate(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      selectedTaskId = id;
-      taskDateInput.value = task.scheduledDate || "";
-      closeOverlay(actionOverlay);
-      openOverlay(dateOverlay);
-      setTimeout(() => { taskDateInput.focus(); if (taskDateInput.showPicker) { try { taskDateInput.showPicker(); } catch {} } }, 100);
-    }
-    function saveTaskDate() {
-      if (!selectedTaskId) return;
-      const task = tasks.find(item => item.id === selectedTaskId);
-      if (!task) return;
-      const value = taskDateInput.value;
-      if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return;
-      task.scheduledDate = value;
-      saveTasks();
-      closeOverlay(dateOverlay);
-      render();
-      showToast(t("dateSet"));
-      selectedTaskId = null;
-    }
-    function clearTaskDate() {
-      if (!selectedTaskId) return;
-      const task = tasks.find(item => item.id === selectedTaskId);
-      if (!task) return;
-      task.scheduledDate = null;
-      saveTasks();
-      closeOverlay(dateOverlay);
-      render();
-      showToast(t("dateRemoved"));
-      selectedTaskId = null;
-    }
-    function updateActionDateText(task) {
-      if (!actionDateText) return;
-      if (task?.scheduledDate) actionDateText.textContent = `${t("changeDate")} · ${formatTaskDate(task.scheduledDate)}`;
-      else actionDateText.textContent = t("setDate");
-    }
-    function openDetails(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      const created = formatFullDate(task.createdAt);
-      const completed = task.completedAt ? formatFullDate(task.completedAt) : "—";
-      const scheduled = task.scheduledDate ? formatTaskDate(task.scheduledDate) : "—";
-      const starredText = task.starred ? (settings.language === "en" ? "Yes" : "نعم") : (settings.language === "en" ? "No" : "لا");
-      const completedText = task.completed ? (settings.language === "en" ? "Yes" : "نعم") : (settings.language === "en" ? "No" : "لا");
-      detailsContent.innerHTML = `
-        <div class="action-task-preview">${escapeHtml(task.text)}</div>
-        <div class="trash-item"><span class="trash-text">${t("createdAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${created}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("completedAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completed}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("setDate")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${scheduled}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("favorites")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${starredText}</span></div>
-        <div class="trash-item"><span class="trash-text">${t("completed")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completedText}</span></div>
-      `;
-      closeOverlay(actionOverlay);
-      openOverlay(detailsOverlay);
-    }
-    function restoreTask(id) {
-      const index = trash.findIndex(item => item.id === id);
-      if (index === -1) return;
-      const [task] = trash.splice(index, 1);
-      delete task.deletedAt;
-      tasks.unshift(task);
-      saveTasks(); saveTrash(); renderTrash();
-      showToast(t("restored"));
-    }
-    function deleteForever(id) {
-      trash = trash.filter(item => item.id !== id);
-      saveTrash(); renderTrash();
-      showToast(t("deletedForever"));
-    }
-    function setView(view, transitionDirection = null) {
-      if (!SWIPE_VIEWS.includes(view)) return;
-      if (!transitionDirection) {
-        const previousIndex = SWIPE_VIEWS.indexOf(currentView);
-        const nextIndex = SWIPE_VIEWS.indexOf(view);
-        if (nextIndex > previousIndex) transitionDirection = "next";
-        else if (nextIndex < previousIndex) transitionDirection = "previous";
-      }
-      currentView = view;
-      closeAllOverlays();
-      closeComposer();
-      render(transitionDirection);
-    }
+    function addTask(text, options = {}) { const cleanText = String(text || "").trim(); if (!cleanText) return false; const task = { id: createId(), text: cleanText, completed: false, starred: options.starred || false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: options.scheduledDate || null, completedAt: null, repeat: options.repeat || 'none' }; tasks.unshift(task); saveTasks(); currentView = "today"; render(); playAddSound(); return true; }
+    function completeTask(id) { const task = tasks.find(item => item.id === id); if (!task) return; task.completed = !task.completed; task.completedAt = task.completed ? Date.now() : null; saveTasks(); render(); if (task.completed) { playCompleteSound(); requestAnimationFrame(() => { const element = document.querySelector(`[data-task-id="${CSS.escape(task.id)}"]`); if (element) { element.classList.add("just-completed"); setTimeout(() => element.classList.remove("just-completed"), 550); } }); } }
+    function toggleStar(id) { const task = tasks.find(item => item.id === id); if (!task) return; task.starred = !task.starred; saveTasks(); render(); }
+    function deleteTask(id) { const index = tasks.findIndex(item => item.id === id); if (index === -1) return; const [deleted] = tasks.splice(index, 1); trash.unshift({ ...deleted, deletedAt: Date.now() }); saveTasks(); saveTrash(); render(); showToast(t("deleted"), true, () => { const trashIndex = trash.findIndex(item => item.id === deleted.id); if (trashIndex !== -1) trash.splice(trashIndex, 1); tasks.unshift(deleted); saveTasks(); saveTrash(); render(); }); }
+    function openEdit(id) { const task = tasks.find(item => item.id === id); if (!task) return; selectedTaskId = id; editInput.value = task.text; closeOverlay(actionOverlay); openOverlay(editOverlay); setTimeout(() => { editInput.focus(); editInput.setSelectionRange(editInput.value.length, editInput.value.length); }, 100); }
+    function saveEdit() { if (!selectedTaskId) return; const text = editInput.value.trim(); if (!text) { showToast(t("writeFirst")); return; } const task = tasks.find(item => item.id === selectedTaskId); if (!task) return; task.text = text; saveTasks(); closeOverlay(editOverlay); render(); showToast(t("edited")); selectedTaskId = null; }
+    function openTaskDate(id) { const task = tasks.find(item => item.id === id); if (!task) return; selectedTaskId = id; taskDateInput.value = task.scheduledDate || ""; closeOverlay(actionOverlay); openOverlay(dateOverlay); setTimeout(() => { taskDateInput.focus(); if (taskDateInput.showPicker) { try { taskDateInput.showPicker(); } catch {} } }, 100); }
+    function saveTaskDate() { if (!selectedTaskId) return; const task = tasks.find(item => item.id === selectedTaskId); if (!task) return; const value = taskDateInput.value; if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return; task.scheduledDate = value; saveTasks(); closeOverlay(dateOverlay); render(); showToast(t("dateSet")); selectedTaskId = null; }
+    function clearTaskDate() { if (!selectedTaskId) return; const task = tasks.find(item => item.id === selectedTaskId); if (!task) return; task.scheduledDate = null; saveTasks(); closeOverlay(dateOverlay); render(); showToast(t("dateRemoved")); selectedTaskId = null; }
+    function updateActionDateText(task) { if (!actionDateText) return; if (task?.scheduledDate) actionDateText.textContent = `${t("changeDate")} · ${formatTaskDate(task.scheduledDate)}`; else actionDateText.textContent = t("setDate"); }
+    function openDetails(id) { const task = tasks.find(item => item.id === id); if (!task) return; const created = formatFullDate(task.createdAt); const completed = task.completedAt ? formatFullDate(task.completedAt) : "—"; const scheduled = task.scheduledDate ? formatTaskDate(task.scheduledDate) : "—"; const starredText = task.starred ? (settings.language === "en" ? "Yes" : "نعم") : (settings.language === "en" ? "No" : "لا"); const completedText = task.completed ? (settings.language === "en" ? "Yes" : "نعم") : (settings.language === "en" ? "No" : "لا"); detailsContent.innerHTML = `<div class="action-task-preview">${escapeHtml(task.text)}</div><div class="trash-item"><span class="trash-text">${t("createdAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${created}</span></div><div class="trash-item"><span class="trash-text">${t("completedAt")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completed}</span></div><div class="trash-item"><span class="trash-text">${t("setDate")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${scheduled}</span></div><div class="trash-item"><span class="trash-text">${t("favorites")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${starredText}</span></div><div class="trash-item"><span class="trash-text">${t("completed")}:</span><span style="margin-right:auto;font-weight:600;font-size:var(--fs-sm);">${completedText}</span></div>`; closeOverlay(actionOverlay); openOverlay(detailsOverlay); }
+    function restoreTask(id) { const index = trash.findIndex(item => item.id === id); if (index === -1) return; const [task] = trash.splice(index, 1); delete task.deletedAt; tasks.unshift(task); saveTasks(); saveTrash(); renderTrash(); showToast(t("restored")); }
+    function deleteForever(id) { trash = trash.filter(item => item.id !== id); saveTrash(); renderTrash(); showToast(t("deletedForever")); }
+    function setView(view, transitionDirection = null) { if (!SWIPE_VIEWS.includes(view)) return; if (!transitionDirection) { const previousIndex = SWIPE_VIEWS.indexOf(currentView); const nextIndex = SWIPE_VIEWS.indexOf(view); if (nextIndex > previousIndex) transitionDirection = "next"; else if (nextIndex < previousIndex) transitionDirection = "previous"; } currentView = view; closeAllOverlays(); closeComposer(); render(transitionDirection); }
     function getTodayTasks() { const today = getDateKey(); return tasks.filter(task => !task.completed && (task.scheduledDate ? task.scheduledDate === today : task.taskDay === today)); }
     function getCompletedToday() { const today = getDateKey(); return tasks.filter(task => task.completed && task.completedAt && getDateKey(new Date(task.completedAt)) === today); }
     function getAllActive() { return tasks.filter(task => !task.completed); }
     function getAllCompleted() { return tasks.filter(task => task.completed); }
     function getFavorites() { return tasks.filter(task => task.starred); }
 
-    function render(transitionDirection = null) {
-      heroDate.textContent = formatDate();
-      updateHero();
-      updateProgress();
-      content.innerHTML = "";
-      if (currentView === "today") renderToday();
-      else if (currentView === "all") renderAll();
-      else if (currentView === "favorites") renderFavorites();
-      updateHeaderNavState();
-      updateDynamicLanguageText();
-      playViewTransition(transitionDirection);
-      requestAnimationFrame(updateHeaderTabIndicator);
-    }
-    function playViewTransition(direction) {
-      content.classList.remove("view-transition-next", "view-transition-previous");
-      if (!direction) return;
-      void content.offsetWidth;
-      content.classList.add(direction === "next" ? "view-transition-next" : "view-transition-previous");
-      content.addEventListener("animationend", () => { content.classList.remove("view-transition-next","view-transition-previous"); }, { once: true });
-    }
+    function render(transitionDirection = null) { heroDate.textContent = formatDate(); updateHero(); updateProgress(); content.innerHTML = ""; if (currentView === "today") renderToday(); else if (currentView === "all") renderAll(); else if (currentView === "favorites") renderFavorites(); updateHeaderNavState(); updateDynamicLanguageText(); playViewTransition(transitionDirection); requestAnimationFrame(updateHeaderTabIndicator); }
+    function playViewTransition(direction) { content.classList.remove("view-transition-next", "view-transition-previous"); if (!direction) return; void content.offsetWidth; content.classList.add(direction === "next" ? "view-transition-next" : "view-transition-previous"); content.addEventListener("animationend", () => { content.classList.remove("view-transition-next","view-transition-previous"); }, { once: true }); }
     function updateHero() { const titles = { today: t("heroToday"), all: t("all"), favorites: t("favorites") }; heroTitle.textContent = titles[currentView] || titles.today; }
-
-    function renderToday() {
-      const today = getTodayTasks(); const completed = getCompletedToday();
-      if (today.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentions"), t("firstIntent"))); return; }
-      if (today.length > 0) content.appendChild(createSection(t("today"), today));
-      if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
-    }
-    function renderAll() {
-      const active = getAllActive(); const completed = getAllCompleted();
-      if (active.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentionsAll"), t("everyThingStarts"))); return; }
-      if (active.length > 0) content.appendChild(createSection(t("currentIntentions"), active));
-      if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed));
-    }
-    function renderFavorites() {
-      const favorites = getFavorites();
-      if (favorites.length === 0) { content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint"))); return; }
-      content.appendChild(createSection(t("favoriteSection"), favorites));
-    }
-
-    function createCompletedToggleSection(taskArray) {
-      const section = document.createElement("section");
-      section.className = "completed-section";
-      const toggle = document.createElement("button");
-      toggle.type = "button";
-      toggle.className = "completed-toggle" + (completedExpanded ? " open" : "");
-      toggle.setAttribute("aria-expanded", String(completedExpanded));
-      toggle.setAttribute("aria-controls", "completedTasksPanel");
-      const title = document.createElement("span"); title.className = "completed-toggle-title"; title.textContent = t("completedSection");
-      const count = document.createElement("span"); count.className = "completed-toggle-count"; count.textContent = taskArray.length;
-      const chevron = document.createElement("span"); chevron.className = "completed-toggle-chevron";
-      chevron.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
-      toggle.append(title, count, chevron);
-      const listWrap = document.createElement("div"); listWrap.id = "completedTasksPanel"; listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : "");
-      const list = document.createElement("div"); list.className = "task-list";
-      taskArray.forEach(task => { list.appendChild(createTaskElement(task, true, true)); });
-      listWrap.appendChild(list);
-      toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); });
-      section.append(toggle, listWrap);
-      return section;
-    }
-    function createSection(title, taskArray, showMeta = false, completedSection = false) {
-      const section = document.createElement("section"); section.className = "section";
-      const head = document.createElement("div"); head.className = "section-head";
-      const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title;
-      const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length;
-      head.append(titleEl, count);
-      const list = document.createElement("div"); list.className = "task-list";
-      taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); });
-      section.append(head, list);
-      return section;
-    }
-    function createTaskElement(task, showMeta = false, completedSection = false) {
-      const article = document.createElement("article");
-      article.className = "task" + (task.completed ? " completed" : "");
-      article.dataset.taskId = task.id;
-      const checkbox = document.createElement("button"); checkbox.type = "button"; checkbox.className = "task-checkbox";
-      checkbox.setAttribute("aria-label", task.completed ? t("cancelDone") : t("done"));
-      checkbox.innerHTML = `<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4 4L19 7"></path></svg>`;
-      checkbox.addEventListener("click", event => { event.stopPropagation(); completeTask(task.id); });
-      const main = document.createElement("div"); main.className = "task-main";
-      const text = document.createElement("p"); text.className = "task-text"; text.textContent = task.text;
-      main.appendChild(text);
-      if (task.repeat && task.repeat !== 'none') {
-        const meta = document.createElement("div"); meta.className = "task-meta";
-        const repeatText = document.createElement("span"); repeatText.className = "task-meta-day";
-        repeatText.textContent = `🔁 ${t("repeat" + task.repeat.charAt(0).toUpperCase() + task.repeat.slice(1))}`;
-        meta.appendChild(repeatText); main.appendChild(meta);
-      }
-      main.addEventListener("click", event => {
-        if (swipeSuppressClick) { swipeSuppressClick = false; event.preventDefault(); return; }
-        openAction(task.id);
-      });
-      const star = document.createElement("button"); star.type = "button"; star.className = "task-star" + (task.starred ? " active" : "");
-      star.innerHTML = task.starred ? "★" : "☆";
-      star.setAttribute("aria-label", task.starred ? (settings.language === "en" ? "Remove favorite" : "إزالة من المفضلة") : (settings.language === "en" ? "Favorite" : "إضافة للمفضلة"));
-      star.setAttribute("aria-pressed", String(task.starred));
-      star.addEventListener("click", event => { event.stopPropagation(); toggleStar(task.id); });
-      article.append(checkbox, main, star);
-      let pressTimer = null;
-      article.addEventListener("pointerdown", event => { if (event.target.closest("button")) return; pressTimer = setTimeout(() => { openAction(task.id); }, 550); });
-      ["pointerup","pointercancel","pointerleave"].forEach(type => { article.addEventListener(type, () => { clearTimeout(pressTimer); }); });
-      return article;
-    }
-    function createEmptyState(symbol, title, message) {
-      const box = document.createElement("div"); box.className = "task-empty";
-      box.innerHTML = `<div class="empty-symbol">${escapeHtml(symbol)}</div><div class="empty-title">${escapeHtml(title)}</div><div class="empty-text">${escapeHtml(message)}</div>`;
-      return box;
-    }
-    function updateProgress() {
-      const isToday = currentView === "today";
-      progressWrap.classList.toggle("hidden", !isToday);
-      if (!isToday) return;
-      const today = tasks.filter(task => (task.scheduledDate ? task.scheduledDate === getDateKey() : task.taskDay === getDateKey()));
-      const total = today.length; const completed = today.filter(task => task.completed).length;
-      let percentage = 0; if (total > 0) percentage = Math.round((completed/total)*100);
-      progressBar.style.width = `${percentage}%`; progressValue.textContent = `${percentage}%`;
-      if (total === 0) progressLabel.textContent = t("startFirst");
-      else if (percentage === 100) progressLabel.textContent = t("allDone");
-      else progressLabel.textContent = t("progressToday");
-    }
-    function updateHeaderNavState() {
-      $$(".header-tab").forEach(button => {
-        const active = button.dataset.view === currentView;
-        button.classList.toggle("active", active);
-        if (active) button.setAttribute("aria-current","page"); else button.removeAttribute("aria-current");
-      });
-    }
-    function updateHeaderTabIndicator() {
-      if (!headerNav || !headerTabIndicator) return;
-      const activeTab = headerNav.querySelector(`.header-tab[data-view="${currentView}"]`);
-      if (!activeTab) return;
-      const navRect = headerNav.getBoundingClientRect();
-      const tabRect = activeTab.getBoundingClientRect();
-      const indicatorWidth = Math.max(20, Math.min(32, tabRect.width * .30));
-      const left = (tabRect.left - navRect.left + (tabRect.width - indicatorWidth)/2);
-      headerNav.style.setProperty("--tab-indicator-width", `${indicatorWidth}px`);
-      headerNav.style.setProperty("--tab-indicator-left", `${left}px`);
-    }
-
-    function navigateBySwipe(direction) {
-      const currentIndex = SWIPE_VIEWS.indexOf(currentView);
-      if (currentIndex === -1) return;
-      let nextIndex;
-      if (direction === "next") nextIndex = (currentIndex+1)%SWIPE_VIEWS.length;
-      else nextIndex = (currentIndex-1+SWIPE_VIEWS.length)%SWIPE_VIEWS.length;
-      setView(SWIPE_VIEWS[nextIndex], direction);
-    }
-    function getSwipeDirection(dx) {
-      const isRTL = document.documentElement.dir === "rtl";
-      if (isRTL) return dx < 0 ? "next" : "previous";
-      return dx > 0 ? "next" : "previous";
-    }
+    function renderToday() { const today = getTodayTasks(); const completed = getCompletedToday(); if (today.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentions"), t("firstIntent"))); return; } if (today.length > 0) content.appendChild(createSection(t("today"), today)); if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed)); }
+    function renderAll() { const active = getAllActive(); const completed = getAllCompleted(); if (active.length === 0 && completed.length === 0) { content.appendChild(createEmptyState("ن", t("noIntentionsAll"), t("everyThingStarts"))); return; } if (active.length > 0) content.appendChild(createSection(t("currentIntentions"), active)); if (completed.length > 0) content.appendChild(createCompletedToggleSection(completed)); }
+    function renderFavorites() { const favorites = getFavorites(); if (favorites.length === 0) { content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint"))); return; } content.appendChild(createSection(t("favoriteSection"), favorites)); }
+    function createCompletedToggleSection(taskArray) { const section = document.createElement("section"); section.className = "completed-section"; const toggle = document.createElement("button"); toggle.type = "button"; toggle.className = "completed-toggle" + (completedExpanded ? " open" : ""); toggle.setAttribute("aria-expanded", String(completedExpanded)); toggle.setAttribute("aria-controls", "completedTasksPanel"); const title = document.createElement("span"); title.className = "completed-toggle-title"; title.textContent = t("completedSection"); const count = document.createElement("span"); count.className = "completed-toggle-count"; count.textContent = taskArray.length; const chevron = document.createElement("span"); chevron.className = "completed-toggle-chevron"; chevron.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; toggle.append(title, count, chevron); const listWrap = document.createElement("div"); listWrap.id = "completedTasksPanel"; listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : ""); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, true, true)); }); listWrap.appendChild(list); toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); }); section.append(toggle, listWrap); return section; }
+    function createSection(title, taskArray, showMeta = false, completedSection = false) { const section = document.createElement("section"); section.className = "section"; const head = document.createElement("div"); head.className = "section-head"; const titleEl = document.createElement("div"); titleEl.className = "section-title"; titleEl.textContent = title; const count = document.createElement("span"); count.className = "section-count"; count.textContent = taskArray.length; head.append(titleEl, count); const list = document.createElement("div"); list.className = "task-list"; taskArray.forEach(task => { list.appendChild(createTaskElement(task, showMeta, completedSection)); }); section.append(head, list); return section; }
+    function createTaskElement(task, showMeta = false, completedSection = false) { const article = document.createElement("article"); article.className = "task" + (task.completed ? " completed" : ""); article.dataset.taskId = task.id; const checkbox = document.createElement("button"); checkbox.type = "button"; checkbox.className = "task-checkbox"; checkbox.setAttribute("aria-label", task.completed ? t("cancelDone") : t("done")); checkbox.innerHTML = `<svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4 4L19 7"></path></svg>`; checkbox.addEventListener("click", event => { event.stopPropagation(); completeTask(task.id); }); const main = document.createElement("div"); main.className = "task-main"; const text = document.createElement("p"); text.className = "task-text"; text.textContent = task.text; main.appendChild(text); if (task.repeat && task.repeat !== 'none') { const meta = document.createElement("div"); meta.className = "task-meta"; const repeatText = document.createElement("span"); repeatText.className = "task-meta-day"; repeatText.textContent = `🔁 ${t("repeat" + task.repeat.charAt(0).toUpperCase() + task.repeat.slice(1))}`; meta.appendChild(repeatText); main.appendChild(meta); } main.addEventListener("click", event => { if (swipeSuppressClick) { swipeSuppressClick = false; event.preventDefault(); return; } openAction(task.id); }); const star = document.createElement("button"); star.type = "button"; star.className = "task-star" + (task.starred ? " active" : ""); star.innerHTML = task.starred ? "★" : "☆"; star.setAttribute("aria-label", task.starred ? (settings.language === "en" ? "Remove favorite" : "إزالة من المفضلة") : (settings.language === "en" ? "Favorite" : "إضافة للمفضلة")); star.setAttribute("aria-pressed", String(task.starred)); star.addEventListener("click", event => { event.stopPropagation(); toggleStar(task.id); }); article.append(checkbox, main, star); let pressTimer = null; article.addEventListener("pointerdown", event => { if (event.target.closest("button")) return; pressTimer = setTimeout(() => { openAction(task.id); }, 550); }); ["pointerup","pointercancel","pointerleave"].forEach(type => { article.addEventListener(type, () => { clearTimeout(pressTimer); }); }); return article; }
+    function createEmptyState(symbol, title, message) { const box = document.createElement("div"); box.className = "task-empty"; box.innerHTML = `<div class="empty-symbol">${escapeHtml(symbol)}</div><div class="empty-title">${escapeHtml(title)}</div><div class="empty-text">${escapeHtml(message)}</div>`; return box; }
+    function updateProgress() { const isToday = currentView === "today"; progressWrap.classList.toggle("hidden", !isToday); if (!isToday) return; const today = tasks.filter(task => (task.scheduledDate ? task.scheduledDate === getDateKey() : task.taskDay === getDateKey())); const total = today.length; const completed = today.filter(task => task.completed).length; let percentage = 0; if (total > 0) percentage = Math.round((completed/total)*100); progressBar.style.width = `${percentage}%`; progressValue.textContent = `${percentage}%`; if (total === 0) progressLabel.textContent = t("startFirst"); else if (percentage === 100) progressLabel.textContent = t("allDone"); else progressLabel.textContent = t("progressToday"); }
+    function updateHeaderNavState() { $$(".header-tab").forEach(button => { const active = button.dataset.view === currentView; button.classList.toggle("active", active); if (active) button.setAttribute("aria-current","page"); else button.removeAttribute("aria-current"); }); }
+    function updateHeaderTabIndicator() { if (!headerNav || !headerTabIndicator) return; const activeTab = headerNav.querySelector(`.header-tab[data-view="${currentView}"]`); if (!activeTab) return; const navRect = headerNav.getBoundingClientRect(); const tabRect = activeTab.getBoundingClientRect(); const indicatorWidth = Math.max(20, Math.min(32, tabRect.width * .30)); const left = (tabRect.left - navRect.left + (tabRect.width - indicatorWidth)/2); headerNav.style.setProperty("--tab-indicator-width", `${indicatorWidth}px`); headerNav.style.setProperty("--tab-indicator-left", `${left}px`); }
+    function navigateBySwipe(direction) { const currentIndex = SWIPE_VIEWS.indexOf(currentView); if (currentIndex === -1) return; let nextIndex; if (direction === "next") nextIndex = (currentIndex+1)%SWIPE_VIEWS.length; else nextIndex = (currentIndex-1+SWIPE_VIEWS.length)%SWIPE_VIEWS.length; setView(SWIPE_VIEWS[nextIndex], direction); }
+    function getSwipeDirection(dx) { const isRTL = document.documentElement.dir === "rtl"; if (isRTL) return dx < 0 ? "next" : "previous"; return dx > 0 ? "next" : "previous"; }
     function isSwipeBlockedTarget(target) { return Boolean(target?.closest("textarea, input, button, select, option, .overlay, .sheet, .composer-panel, .repeat-options, .action-repeat-options")); }
-    function handleSwipeStart(event) {
-      if (isSwipeBlockedTarget(event.target)) { swipeTracking = false; return; }
-      if (event.touches && event.touches.length !== 1) { swipeTracking = false; return; }
-      const touch = event.touches[0]; swipeStartX = touch.clientX; swipeStartY = touch.clientY; swipeTracking = true;
-    }
-    function handleSwipeEnd(event) {
-      if (!swipeTracking) return; swipeTracking = false;
-      if (event.changedTouches && event.changedTouches.length !== 1) return;
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - swipeStartX; const dy = touch.clientY - swipeStartY;
-      const absX = Math.abs(dx); const absY = Math.abs(dy);
-      if (absX < 55 || absX <= absY*1.2) return;
-      swipeSuppressClick = true; navigateBySwipe(getSwipeDirection(dx));
-      setTimeout(() => { swipeSuppressClick = false; }, 500);
-    }
-    document.addEventListener("touchstart", handleSwipeStart, { passive: true, capture: true });
-    document.addEventListener("touchend", handleSwipeEnd, { passive: true, capture: true });
-    document.addEventListener("touchcancel", () => { swipeTracking = false; }, { passive: true, capture: true });
-
-    function handleMouseDown(event) {
-      if (event.button !== 0 || isSwipeBlockedTarget(event.target)) { swipeTracking = false; return; }
-      swipeStartX = event.clientX; swipeStartY = event.clientY; swipeTracking = true;
-    }
-    function handleMouseUp(event) {
-      if (!swipeTracking) return; swipeTracking = false;
-      const dx = event.clientX - swipeStartX; const dy = event.clientY - swipeStartY;
-      const absX = Math.abs(dx); const absY = Math.abs(dy);
-      if (absX < 65 || absX <= absY*1.2) return;
-      swipeSuppressClick = true; navigateBySwipe(getSwipeDirection(dx));
-      setTimeout(() => { swipeSuppressClick = false; }, 500);
-    }
+    function handleSwipeStart(event) { if (isSwipeBlockedTarget(event.target)) { swipeTracking = false; return; } if (event.touches && event.touches.length !== 1) { swipeTracking = false; return; } const touch = event.touches[0]; swipeStartX = touch.clientX; swipeStartY = touch.clientY; swipeTracking = true; }
+    function handleSwipeEnd(event) { if (!swipeTracking) return; swipeTracking = false; if (event.changedTouches && event.changedTouches.length !== 1) return; const touch = event.changedTouches[0]; const dx = touch.clientX - swipeStartX; const dy = touch.clientY - swipeStartY; const absX = Math.abs(dx); const absY = Math.abs(dy); if (absX < 55 || absX <= absY*1.2) return; swipeSuppressClick = true; navigateBySwipe(getSwipeDirection(dx)); setTimeout(() => { swipeSuppressClick = false; }, 500); }
+    document.addEventListener("touchstart", handleSwipeStart, { passive: true, capture: true }); document.addEventListener("touchend", handleSwipeEnd, { passive: true, capture: true }); document.addEventListener("touchcancel", () => { swipeTracking = false; }, { passive: true, capture: true });
+    function handleMouseDown(event) { if (event.button !== 0 || isSwipeBlockedTarget(event.target)) { swipeTracking = false; return; } swipeStartX = event.clientX; swipeStartY = event.clientY; swipeTracking = true; }
+    function handleMouseUp(event) { if (!swipeTracking) return; swipeTracking = false; const dx = event.clientX - swipeStartX; const dy = event.clientY - swipeStartY; const absX = Math.abs(dx); const absY = Math.abs(dy); if (absX < 65 || absX <= absY*1.2) return; swipeSuppressClick = true; navigateBySwipe(getSwipeDirection(dx)); setTimeout(() => { swipeSuppressClick = false; }, 500); }
     function handleMouseLeave() { swipeTracking = false; }
-    document.addEventListener("mousedown", handleMouseDown, true);
-    document.addEventListener("mouseup", handleMouseUp, true);
-    document.addEventListener("mouseleave", handleMouseLeave, true);
-    document.addEventListener("click", event => { if (!swipeSuppressClick) return; event.preventDefault(); event.stopPropagation(); swipeSuppressClick = false; }, true);
+    document.addEventListener("mousedown", handleMouseDown, true); document.addEventListener("mouseup", handleMouseUp, true); document.addEventListener("mouseleave", handleMouseLeave, true); document.addEventListener("click", event => { if (!swipeSuppressClick) return; event.preventDefault(); event.stopPropagation(); swipeSuppressClick = false; }, true);
 
-    function openAction(id) {
-      const task = tasks.find(item => item.id === id);
-      if (!task) return;
-      selectedTaskId = id;
-      actionTaskPreview.textContent = task.text;
-      const actionButton = $("#actionComplete");
-      const text = actionButton.querySelector("span:last-child");
-      if (text) text.textContent = task.completed ? t("cancelDone") : t("done");
-      updateActionDateText(task);
-      // hide repeat popover if open
-      actionRepeatOptions.classList.add("hidden");
-      openOverlay(actionOverlay);
-    }
-
-    $("#actionComplete").addEventListener("click", () => {
-      if (!selectedTaskId) return;
-      const id = selectedTaskId; completeTask(id); closeOverlay(actionOverlay); selectedTaskId = null;
-    });
+    function openAction(id) { const task = tasks.find(item => item.id === id); if (!task) return; selectedTaskId = id; actionTaskPreview.textContent = task.text; const actionButton = $("#actionComplete"); const text = actionButton.querySelector(".action-text"); if (text) text.textContent = task.completed ? t("cancelDone") : t("done"); updateActionDateText(task); actionRepeatOptions.classList.add("hidden"); openOverlay(actionOverlay); }
+    $("#actionComplete").addEventListener("click", () => { if (!selectedTaskId) return; const id = selectedTaskId; completeTask(id); closeOverlay(actionOverlay); selectedTaskId = null; });
     $("#actionDate").addEventListener("click", () => { if (!selectedTaskId) return; openTaskDate(selectedTaskId); });
     $("#actionRepeat").addEventListener("click", () => { if (!selectedTaskId) return; actionRepeatOptions.classList.toggle("hidden"); });
     $("#actionEdit").addEventListener("click", () => { if (!selectedTaskId) return; openEdit(selectedTaskId); });
     $("#actionDetails").addEventListener("click", () => { if (!selectedTaskId) return; openDetails(selectedTaskId); });
-    $("#actionDelete").addEventListener("click", () => {
-      if (!selectedTaskId) return;
-      const id = selectedTaskId; closeOverlay(actionOverlay); selectedTaskId = null; deleteTask(id);
-    });
-    $("#dateSave").addEventListener("click", saveTaskDate);
-    $("#dateClear").addEventListener("click", clearTaskDate);
-    $("#dateCancel").addEventListener("click", () => { closeOverlay(dateOverlay); selectedTaskId = null; });
-
+    $("#actionDelete").addEventListener("click", () => { if (!selectedTaskId) return; const id = selectedTaskId; closeOverlay(actionOverlay); selectedTaskId = null; deleteTask(id); });
+    $("#dateSave").addEventListener("click", saveTaskDate); $("#dateClear").addEventListener("click", clearTaskDate); $("#dateCancel").addEventListener("click", () => { closeOverlay(dateOverlay); selectedTaskId = null; });
     function openOverlay(overlay) { overlay.classList.add("show"); overlay.setAttribute("aria-hidden","false"); document.body.classList.add("no-scroll"); }
     function closeOverlay(overlay) { overlay.classList.remove("show"); overlay.setAttribute("aria-hidden","true"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
     $$(".overlay").forEach(overlay => { overlay.addEventListener("click", event => { if (event.target === overlay) { closeOverlay(overlay); selectedTaskId = null; } }); });
     $$("[data-close-overlay]").forEach(btn => { btn.addEventListener("click", (event) => { event.stopPropagation(); const overlayId = btn.dataset.closeOverlay; const overlay = document.getElementById(overlayId); if (overlay) closeOverlay(overlay); selectedTaskId = null; }); });
-
-    $("#menuBtn").addEventListener("click", () => { openOverlay(menuOverlay); });
-    $$(".header-tab").forEach(button => { button.addEventListener("click", () => { setView(button.dataset.view); }); });
-    $("#settingsBtn").addEventListener("click", () => { closeOverlay(menuOverlay); renderSettings(); openOverlay(settingsOverlay); });
-    $("#menuTrashBtn").addEventListener("click", () => { renderTrash(); closeOverlay(menuOverlay); openOverlay(trashOverlay); });
+    $("#menuBtn").addEventListener("click", () => { openOverlay(menuOverlay); }); $$(".header-tab").forEach(button => { button.addEventListener("click", () => { setView(button.dataset.view); }); });
+    $("#settingsBtn").addEventListener("click", () => { closeOverlay(menuOverlay); renderSettings(); openOverlay(settingsOverlay); }); $("#menuTrashBtn").addEventListener("click", () => { renderTrash(); closeOverlay(menuOverlay); openOverlay(trashOverlay); });
     $$("[data-theme-choice]").forEach(button => { button.addEventListener("click", () => { settings.theme = button.dataset.themeChoice; saveSettings(); applySettings(); }); });
     $$("[data-accent-choice]").forEach(button => { button.addEventListener("click", () => { settings.accent = button.dataset.accentChoice; saveSettings(); applySettings(); requestAnimationFrame(updateHeaderTabIndicator); }); });
     $$("[data-font-choice]").forEach(button => { button.addEventListener("click", () => { settings.fontSize = button.dataset.fontChoice; saveSettings(); applySettings(); render(); }); });
     $$("[data-language-choice]").forEach(button => { button.addEventListener("click", () => { const newLanguage = button.dataset.languageChoice === "en" ? "en" : "ar"; if (settings.language === newLanguage) { applyLanguage(); return; } settings.language = newLanguage; saveSettings(); render(); applyLanguage(); renderSettings(); renderTrash(); }); });
     function renderSettings() { applySettings(); }
-
-    function renderTrash() {
-      trashList.innerHTML = "";
-      if (trash.length === 0) { trashList.appendChild(createEmptyState("📦", t("trashEmpty"), t("noDeleted"))); return; }
-      trash.forEach(task => {
-        const item = document.createElement("div"); item.className = "trash-item";
-        const text = document.createElement("div"); text.className = "trash-text"; text.textContent = task.text;
-        const restore = document.createElement("button"); restore.type = "button"; restore.className = "small-btn"; restore.textContent = t("restore");
-        restore.addEventListener("click", () => { restoreTask(task.id); });
-        const forever = document.createElement("button"); forever.type = "button"; forever.className = "small-btn danger trash-delete-button"; forever.textContent = t("deleteForever");
-        forever.addEventListener("click", () => { deleteForever(task.id); });
-        item.append(text, restore, forever); trashList.appendChild(item);
-      });
-    }
-
-    $("#editSave").addEventListener("click", saveEdit);
-    $("#editCancel").addEventListener("click", () => { closeOverlay(editOverlay); selectedTaskId = null; });
-    editInput.addEventListener("keydown", event => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); saveEdit(); } });
-
-    // ============ FAB & BOTTOM SHEET ============
+    function renderTrash() { trashList.innerHTML = ""; if (trash.length === 0) { trashList.appendChild(createEmptyState("📦", t("trashEmpty"), t("noDeleted"))); return; } trash.forEach(task => { const item = document.createElement("div"); item.className = "trash-item"; const text = document.createElement("div"); text.className = "trash-text"; text.textContent = task.text; const restore = document.createElement("button"); restore.type = "button"; restore.className = "small-btn"; restore.textContent = t("restore"); restore.addEventListener("click", () => { restoreTask(task.id); }); const forever = document.createElement("button"); forever.type = "button"; forever.className = "small-btn danger trash-delete-button"; forever.textContent = t("deleteForever"); forever.addEventListener("click", () => { deleteForever(task.id); }); item.append(text, restore, forever); trashList.appendChild(item); }); }
+    $("#editSave").addEventListener("click", saveEdit); $("#editCancel").addEventListener("click", () => { closeOverlay(editOverlay); selectedTaskId = null; }); editInput.addEventListener("keydown", event => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); saveEdit(); } });
     function openComposer() { composerFab.classList.add("hidden"); composerPanel.classList.add("open"); composerPanel.setAttribute("aria-hidden","false"); taskInput.focus(); history.pushState({ composerOpen: true }, ""); }
     function closeComposer() { composerFab.classList.remove("hidden"); composerPanel.classList.remove("open"); composerPanel.setAttribute("aria-hidden","true"); taskInput.value = ""; composerState = { starred: false, scheduledDate: null, repeat: 'none' }; updateComposer(); toolbarStar.textContent = "☆"; toolbarStar.classList.remove("active"); toolbarRepeat.classList.remove("active"); composerRepeatOptions.classList.add("hidden"); }
     composerFab.addEventListener("click", () => { openComposer(); });
     document.addEventListener("click", (event) => { if (composerPanel.classList.contains("open")) { const isClickInsidePanel = composerPanel.contains(event.target); const isClickOnFab = composerFab.contains(event.target); if (!isClickInsidePanel && !isClickOnFab) { closeComposer(); history.back(); } } });
-
     function updateComposer() { const hasText = taskInput.value.trim().length > 0; sendBtn.classList.toggle("disabled", !hasText); }
     taskInput.addEventListener("input", () => { autoResizeTextarea(); updateComposer(); playTypingSound(); });
     taskInput.addEventListener("keydown", event => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); $("#composer").requestSubmit(); } });
     $("#composer").addEventListener("submit", event => { event.preventDefault(); const text = taskInput.value.trim(); if (!text) return; if (addTask(text, { starred: composerState.starred, scheduledDate: composerState.scheduledDate, repeat: composerState.repeat })) { closeComposer(); history.back(); } });
     function autoResizeTextarea() { taskInput.style.height = "auto"; taskInput.style.height = Math.min(taskInput.scrollHeight, 130) + "px"; }
-
     toolbarStar.addEventListener("click", () => { composerState.starred = !composerState.starred; toolbarStar.classList.toggle("active", composerState.starred); toolbarStar.textContent = composerState.starred ? "★" : "☆"; });
     toolbarRepeat.addEventListener("click", (e) => { e.stopPropagation(); composerRepeatOptions.classList.toggle("hidden"); });
     composerRepeatOptions.addEventListener("click", (e) => { const btn = e.target.closest("button"); if (btn) { composerState.repeat = btn.dataset.repeat; composerRepeatOptions.classList.add("hidden"); toolbarRepeat.classList.toggle("active", composerState.repeat !== 'none'); } });
-
-    actionRepeatOptions.addEventListener("click", (e) => {
-      const btn = e.target.closest("button");
-      if (btn) {
-        if (selectedTaskId) {
-          const task = tasks.find(item => item.id === selectedTaskId);
-          if (task) { task.repeat = btn.dataset.repeat; saveTasks(); }
-        }
-        actionRepeatOptions.classList.add("hidden");
-        closeOverlay(actionOverlay);
-        selectedTaskId = null;
-        render();
-      }
-    });
-
+    actionRepeatOptions.addEventListener("click", (e) => { const btn = e.target.closest("button"); if (btn) { if (selectedTaskId) { const task = tasks.find(item => item.id === selectedTaskId); if (task) { task.repeat = btn.dataset.repeat; saveTasks(); } } actionRepeatOptions.classList.add("hidden"); closeOverlay(actionOverlay); selectedTaskId = null; render(); } });
     function showToast(message, canUndo = false, undoCallback = null) { clearTimeout(undoTimer); undoAction = canUndo ? undoCallback : null; toastMessage.textContent = message; toastUndo.classList.toggle("hidden", !canUndo); toastUpdate.classList.add("hidden"); toast.classList.add("show"); undoTimer = setTimeout(hideToast, 4500); }
     function showUpdateToast() { clearTimeout(undoTimer); undoAction = null; toastMessage.textContent = t("updateAvailable"); toastUndo.classList.add("hidden"); toastUpdate.classList.remove("hidden"); toastUpdate.textContent = t("update"); toast.classList.add("show"); }
     function hideToast() { toast.classList.remove("show"); undoAction = null; toastUpdate.classList.add("hidden"); }
     toastUndo.addEventListener("click", () => { if (typeof undoAction === "function") undoAction(); hideToast(); });
-
     function getAudioContext() { if (!typingAudioContext) { const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return null; typingAudioContext = new AudioContext(); } if (typingAudioContext.state === "suspended") typingAudioContext.resume().catch(() => {}); return typingAudioContext; }
     function playTone(frequency, duration, volume, type = "sine") { const ctx = getAudioContext(); if (!ctx) return; try { const oscillator = ctx.createOscillator(); const gain = ctx.createGain(); oscillator.type = type; oscillator.frequency.value = frequency; gain.gain.setValueAtTime(0.0001, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(Math.max(volume,0.0002), ctx.currentTime + .008); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration); oscillator.connect(gain); gain.connect(ctx.destination); oscillator.start(); oscillator.stop(ctx.currentTime + duration + .01); } catch {} }
     function playTypingSound() { const now = performance.now(); if (now - lastTypingSound < 55) return; lastTypingSound = now; const frequency = 145 + Math.random()*40; playTone(frequency, .035, .018, "sine"); }
     function playAddSound() { playTone(230, .055, .025, "sine"); }
     function playCompleteSound() { const ctx = getAudioContext(); if (!ctx) return; playTone(520, .09, .045, "sine"); setTimeout(() => { playTone(700, .12, .035, "sine"); }, 55); }
-
     function escapeHtml(value) { return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;"); }
     function isStandalone() { return (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true); }
     function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
@@ -1388,47 +815,18 @@
     installAction.addEventListener("click", async () => { if (!deferredInstallPrompt) { if (isIOS()) showToast(t("installGuideText")); return; } const promptEvent = deferredInstallPrompt; deferredInstallPrompt = null; hideInstallBanner(); try { await promptEvent.prompt(); await promptEvent.userChoice; } catch {} });
     installDismiss.addEventListener("click", () => { installBannerDismissed = true; hideInstallBanner(); });
     window.addEventListener("load", () => { setTimeout(showInstallBanner, 700); requestAnimationFrame(updateHeaderTabIndicator); });
-
     function checkDayChange() { const today = getDateKey(); if (lastKnownDay === null) { lastKnownDay = today; return; } if (today !== lastKnownDay) { lastKnownDay = today; completedExpanded = false; currentView = "today"; render(); } }
     setInterval(checkDayChange, 30000);
-
     document.addEventListener("keydown", event => { if (event.key === "Escape") { if (composerPanel.classList.contains("open")) { closeComposer(); history.back(); } else { closeAllOverlays(); } } });
-
     window.addEventListener("popstate", () => { if (composerPanel.classList.contains("open")) { closeComposer(); } });
-    window.addEventListener("resize", () => { requestAnimationFrame(updateHeaderTabIndicator); });
-    window.addEventListener("orientationchange", () => { setTimeout(updateHeaderTabIndicator, 100); });
-
+    window.addEventListener("resize", () => { requestAnimationFrame(updateHeaderTabIndicator); }); window.addEventListener("orientationchange", () => { setTimeout(updateHeaderTabIndicator, 100); });
     function init() { loadData(); applySettings(); currentView = "today"; lastKnownDay = getDateKey(); render(); updateComposer(); autoResizeTextarea(); requestAnimationFrame(updateHeaderTabIndicator); if (settings.lockEnabled) showPinOverlay("verify"); }
-
-    // ========================= PIN LOGIC =========================
-    function showPinOverlay(mode) { pinState.mode = mode; pinState.buffer = ""; pinState.newPin = ""; pinState.newPinConfirm = ""; pinState.currentPin = ""; pinError.textContent = ""; pinSaveBtn.classList.add("hidden"); pinForgotBtn.classList.add("hidden"); pinResetLink.classList.add("hidden"); pinKeypad.classList.remove("hidden");
-      switch (mode) {
-        case "verify": pinTitle.textContent = t("pinEnter"); pinSubtitle.textContent = t("pinSubtitle"); pinForgotBtn.classList.remove("hidden"); break;
-        case "setup": pinTitle.textContent = t("pinEnable"); pinSubtitle.textContent = t("pinNew"); pinSaveBtn.classList.remove("hidden"); break;
-        case "change": pinTitle.textContent = t("pinChange"); pinSubtitle.textContent = t("pinCurrent"); break;
-        case "disable": pinTitle.textContent = t("pinDisable"); pinSubtitle.textContent = t("pinCurrent"); break;
-        case "forgot": pinTitle.textContent = t("pinSecurityQuestion"); pinSubtitle.textContent = t("pinSecuritySubtitle"); pinSaveBtn.classList.remove("hidden"); pinForgotBtn.classList.remove("hidden"); pinResetLink.classList.remove("hidden"); break;
-        case "reset": pinTitle.textContent = t("pinReset"); pinSubtitle.textContent = t("pinResetNew"); pinSaveBtn.classList.remove("hidden"); break;
-        case "setupBirthYear": pinTitle.textContent = t("pinSetupBirthYearTitle"); pinSubtitle.textContent = t("pinSetupBirthYearSubtitle"); pinSaveBtn.classList.remove("hidden"); break;
-      }
-      updatePinDots(); pinOverlay.classList.add("show"); pinOverlay.setAttribute("aria-hidden","false");
-    }
+    function showPinOverlay(mode) { pinState.mode = mode; pinState.buffer = ""; pinState.newPin = ""; pinState.newPinConfirm = ""; pinState.currentPin = ""; pinError.textContent = ""; pinSaveBtn.classList.add("hidden"); pinForgotBtn.classList.add("hidden"); pinResetLink.classList.add("hidden"); pinKeypad.classList.remove("hidden"); switch (mode) { case "verify": pinTitle.textContent = t("pinEnter"); pinSubtitle.textContent = t("pinSubtitle"); pinForgotBtn.classList.remove("hidden"); break; case "setup": pinTitle.textContent = t("pinEnable"); pinSubtitle.textContent = t("pinNew"); pinSaveBtn.classList.remove("hidden"); break; case "change": pinTitle.textContent = t("pinChange"); pinSubtitle.textContent = t("pinCurrent"); break; case "disable": pinTitle.textContent = t("pinDisable"); pinSubtitle.textContent = t("pinCurrent"); break; case "forgot": pinTitle.textContent = t("pinSecurityQuestion"); pinSubtitle.textContent = t("pinSecuritySubtitle"); pinSaveBtn.classList.remove("hidden"); pinForgotBtn.classList.remove("hidden"); pinResetLink.classList.remove("hidden"); break; case "reset": pinTitle.textContent = t("pinReset"); pinSubtitle.textContent = t("pinResetNew"); pinSaveBtn.classList.remove("hidden"); break; case "setupBirthYear": pinTitle.textContent = t("pinSetupBirthYearTitle"); pinSubtitle.textContent = t("pinSetupBirthYearSubtitle"); pinSaveBtn.classList.remove("hidden"); break; } updatePinDots(); pinOverlay.classList.add("show"); pinOverlay.setAttribute("aria-hidden","false"); }
     function hidePinOverlay() { pinOverlay.classList.remove("show"); pinOverlay.setAttribute("aria-hidden","true"); }
     function updatePinDots() { const dots = pinDots.querySelectorAll(".pin-dot"); const filledCount = pinState.buffer.length; dots.forEach((dot,index) => { dot.classList.toggle("filled", index < filledCount); }); }
     function handlePinKey(value) { if (pinState.buffer.length >= 4) return; pinState.buffer += value; updatePinDots(); pinError.textContent = ""; if (pinState.buffer.length === 4) setTimeout(() => processPinComplete(), 150); }
     function handlePinBackspace() { if (pinState.buffer.length > 0) { pinState.buffer = pinState.buffer.slice(0,-1); updatePinDots(); } }
-    function processPinComplete() {
-      const enteredPin = pinState.buffer; pinState.buffer = ""; updatePinDots();
-      switch (pinState.mode) {
-        case "verify": if (enteredPin === settings.pin) hidePinOverlay(); else pinError.textContent = t("pinErrorWrong"); break;
-        case "setup": if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinConfirm"); pinSaveBtn.classList.add("hidden"); } else { if (enteredPin === pinState.newPin) { pinState.tempPin = enteredPin; showPinOverlay("setupBirthYear"); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinNew"); } } break;
-        case "setupBirthYear": if (/^\d{4}$/.test(enteredPin)) { settings.birthYear = enteredPin; settings.pin = pinState.tempPin; settings.lockEnabled = true; saveSettings(); updatePinButtonText(); hidePinOverlay(); showToast(t("pinSuccess")); } else { pinError.textContent = t("pinBirthYearWrong"); } break;
-        case "change": if (!pinState.currentPin) { if (enteredPin === settings.pin) { pinState.currentPin = enteredPin; pinSubtitle.textContent = t("pinNew"); } else pinError.textContent = t("pinErrorWrong"); } else if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinConfirm"); } else { if (enteredPin === pinState.newPin) { settings.pin = pinState.newPin; saveSettings(); hidePinOverlay(); showToast(t("pinSuccess")); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinNew"); } } break;
-        case "disable": if (enteredPin === settings.pin) { settings.lockEnabled = false; settings.pin = null; saveSettings(); updatePinButtonText(); hidePinOverlay(); showToast(t("pinDisable")); } else pinError.textContent = t("pinErrorWrong"); break;
-        case "forgot": if (enteredPin === settings.birthYear) { showPinOverlay("reset"); } else { pinError.textContent = t("pinSecurityError"); } break;
-        case "reset": if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinResetConfirm"); pinSaveBtn.classList.add("hidden"); } else { if (enteredPin === pinState.newPin) { settings.pin = pinState.newPin; saveSettings(); hidePinOverlay(); showToast(t("pinResetSuccess")); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinResetNew"); } } break;
-      }
-    }
+    function processPinComplete() { const enteredPin = pinState.buffer; pinState.buffer = ""; updatePinDots(); switch (pinState.mode) { case "verify": if (enteredPin === settings.pin) hidePinOverlay(); else pinError.textContent = t("pinErrorWrong"); break; case "setup": if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinConfirm"); pinSaveBtn.classList.add("hidden"); } else { if (enteredPin === pinState.newPin) { pinState.tempPin = enteredPin; showPinOverlay("setupBirthYear"); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinNew"); } } break; case "setupBirthYear": if (/^\d{4}$/.test(enteredPin)) { settings.birthYear = enteredPin; settings.pin = pinState.tempPin; settings.lockEnabled = true; saveSettings(); updatePinButtonText(); hidePinOverlay(); showToast(t("pinSuccess")); } else { pinError.textContent = t("pinBirthYearWrong"); } break; case "change": if (!pinState.currentPin) { if (enteredPin === settings.pin) { pinState.currentPin = enteredPin; pinSubtitle.textContent = t("pinNew"); } else pinError.textContent = t("pinErrorWrong"); } else if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinConfirm"); } else { if (enteredPin === pinState.newPin) { settings.pin = pinState.newPin; saveSettings(); hidePinOverlay(); showToast(t("pinSuccess")); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinNew"); } } break; case "disable": if (enteredPin === settings.pin) { settings.lockEnabled = false; settings.pin = null; saveSettings(); updatePinButtonText(); hidePinOverlay(); showToast(t("pinDisable")); } else pinError.textContent = t("pinErrorWrong"); break; case "forgot": if (enteredPin === settings.birthYear) { showPinOverlay("reset"); } else { pinError.textContent = t("pinSecurityError"); } break; case "reset": if (!pinState.newPin) { pinState.newPin = enteredPin; pinSubtitle.textContent = t("pinResetConfirm"); pinSaveBtn.classList.add("hidden"); } else { if (enteredPin === pinState.newPin) { settings.pin = pinState.newPin; saveSettings(); hidePinOverlay(); showToast(t("pinResetSuccess")); } else { pinError.textContent = t("pinErrorMismatch"); pinState.newPin = ""; pinSubtitle.textContent = t("pinResetNew"); } } break; } }
     function buildPinKeypad() { const keys = ["1","2","3","4","5","6","7","8","9","empty","0","backspace"]; keys.forEach(key => { const button = document.createElement("button"); button.type = "button"; button.className = "pin-key"; if (key === "empty") button.classList.add("empty"); else if (key === "backspace") { button.classList.add("pin-backspace"); button.innerHTML = "⌫"; button.addEventListener("click", handlePinBackspace); } else { button.textContent = key; button.addEventListener("click", () => handlePinKey(key)); } pinKeypad.appendChild(button); }); }
     pinToggleBtn.addEventListener("click", () => { if (settings.lockEnabled) showPinOverlay("disable"); else showPinOverlay("setup"); });
     pinChangeBtn.addEventListener("click", () => { showPinOverlay("change"); });
@@ -1438,26 +836,9 @@
     pinCloseBtn.addEventListener("click", hidePinOverlay);
     changeBirthYearBtn.addEventListener("click", () => { if (settings.lockEnabled) { pinState.tempPin = settings.pin; showPinOverlay("setupBirthYear"); } });
     document.addEventListener("keydown", (event) => { if (!pinOverlay.classList.contains("show")) return; if (event.key >= "0" && event.key <= "9") handlePinKey(event.key); else if (event.key === "Backspace") handlePinBackspace(); else if (event.key === "Enter") { if (pinState.buffer.length === 4) processPinComplete(); } });
-
-    init();
-    buildPinKeypad();
-
-    // Service Worker
-    let swReloading = false; let swUpdatePending = false;
-    function requestServiceWorkerUpdate(registration) { if (!registration) return; registration.update().catch(() => {}); }
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", async () => {
-        try {
-          const registration = await navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" });
-          requestServiceWorkerUpdate(registration);
-          registration.addEventListener("updatefound", () => { const worker = registration.installing; if (!worker) return; worker.addEventListener("statechange", () => { if (worker.state === "installed" && navigator.serviceWorker.controller) { if (swUpdatePending) return; swUpdatePending = true; showUpdateToast(); } }); });
-          toastUpdate.addEventListener("click", () => { const waiting = registration.waiting; if (!waiting) { requestServiceWorkerUpdate(registration); return; } toastUpdate.disabled = true; toastUpdate.textContent = t("update"); waiting.postMessage({ type: "SKIP_WAITING" }); });
-          setInterval(() => { requestServiceWorkerUpdate(registration); }, 60*60*1000);
-          document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") requestServiceWorkerUpdate(registration); });
-        } catch (error) { console.warn("NAWY SW registration failed:", error); }
-      });
-      navigator.serviceWorker.addEventListener("controllerchange", () => { if (swReloading) return; swReloading = true; window.location.reload(); });
-    }
+    init(); buildPinKeypad();
+    let swReloading = false; let swUpdatePending = false; function requestServiceWorkerUpdate(registration) { if (!registration) return; registration.update().catch(() => {}); }
+    if ("serviceWorker" in navigator) { window.addEventListener("load", async () => { try { const registration = await navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }); requestServiceWorkerUpdate(registration); registration.addEventListener("updatefound", () => { const worker = registration.installing; if (!worker) return; worker.addEventListener("statechange", () => { if (worker.state === "installed" && navigator.serviceWorker.controller) { if (swUpdatePending) return; swUpdatePending = true; showUpdateToast(); } }); }); toastUpdate.addEventListener("click", () => { const waiting = registration.waiting; if (!waiting) { requestServiceWorkerUpdate(registration); return; } toastUpdate.disabled = true; toastUpdate.textContent = t("update"); waiting.postMessage({ type: "SKIP_WAITING" }); }); setInterval(() => { requestServiceWorkerUpdate(registration); }, 60*60*1000); document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") requestServiceWorkerUpdate(registration); }); } catch (error) { console.warn("NAWY SW registration failed:", error); } }); navigator.serviceWorker.addEventListener("controllerchange", () => { if (swReloading) return; swReloading = true; window.location.reload(); }); }
   </script>
 </body>
 </html>
