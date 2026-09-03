@@ -58,8 +58,9 @@
       --fs-sm: 13px;
       --fs-md: 14px;
       --fs-base: 15px;
-      --fs-lg: 17px;
-      --fs-hero: clamp(26px, 6vw, 34px);
+      --fs-lg: 16px;
+      --fs-xl: 19px;
+      --fs-hero: 24px;
       --fw-normal: 400;
       --fw-medium: 500;
       --fw-semibold: 600;
@@ -72,7 +73,8 @@
       --sp-xl: 24px;
       --sp-xxl: 32px;
       --touch-min: 44px;
-      --touch-sm: 36px;
+      --touch-sm: 38px;
+      --touch-star: 40px;
     }
 
     html[data-theme="dark"] {
@@ -223,13 +225,13 @@
     .task.completed { opacity: .55; }
 
     .task-checkbox {
-      width: 44px; height: 44px; flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full);
+      width: var(--touch-sm); height: var(--touch-sm); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full);
       border: 2px solid var(--muted); background: transparent;
       transition: background .18s ease, border-color .18s ease, transform .14s ease;
     }
     .task-checkbox:active { transform: scale(.9); }
     .task.completed .task-checkbox { background: var(--accent); border-color: var(--accent); }
-    .check-icon { width: 13px; height: 13px; opacity: 0; transform: scale(.5); transition: opacity .16s ease, transform .16s ease; }
+    .check-icon { width: 12px; height: 12px; opacity: 0; transform: scale(.5); transition: opacity .16s ease, transform .16s ease; }
     .task.completed .check-icon { opacity: 1; transform: scale(1); }
 
     .task-main { min-width: 0; flex: 1; padding: var(--sp-xs) 0; cursor: pointer; }
@@ -237,8 +239,8 @@
     .task.completed .task-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1.2px; }
 
     .task-star {
-      width: 44px; height: 44px; flex: 0 0 auto; display: grid; place-items: center;
-      border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 18px;
+      width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center;
+      border-radius: var(--radius-full); background: transparent; color: #b8bdbd; font-size: 21px;
       transition: color .16s ease, background .16s ease, transform .14s ease;
     }
     .task-star:active { transform: scale(.9); }
@@ -512,8 +514,8 @@
       .hero { padding-left: 0; padding-right: 0; }
       .task { min-height: 52px; padding: var(--sp-xs) 0; gap: var(--sp-sm); }
       .task-text { font-size: var(--fs-md); }
-      .task-checkbox { width: 40px; height: 40px; }
-      .task-star { width: 40px; height: 40px; font-size: 16px; }
+      .task-checkbox { width: 34px; height: 34px; }
+      .task-star { width: 36px; height: 36px; font-size: 18px; }
       .completed-toggle { min-height: 44px; }
       .composer-wrap { padding-left: var(--sp-md); padding-right: var(--sp-md); }
       .composer textarea { padding: 12px var(--sp-md); min-height: 48px; }
