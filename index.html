@@ -42,6 +42,9 @@
   <!-- Lucide Icons -->
   <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 
+  <!-- Tone.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3612TKY0RT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -139,15 +142,14 @@
     .brand { display: flex; align-items: center; gap: var(--sp-sm); min-width: 0; }
     .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-md); }
     .brand-mark-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .brand-mark-fallback { display: grid; place-items: center; width: 100%; height: 100%; font-size: 18px; font-weight: 800; color: var(--accent); }
     .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-extrabold); letter-spacing: -.3px; }
     .menu-btn { width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); box-shadow: var(--shadow-soft); transition: transform .14s ease; }
     .menu-btn:active { transform: scale(.93); }
 
     .header-nav { width: 100%; position: relative; margin-top: var(--sp-xs); display: flex; align-items: stretch; }
-    .header-tab { position: relative; z-index: 2; min-height: 52px; flex: 1 1 0; padding: 0 var(--sp-sm) 6px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: var(--muted); font-size: var(--fs-base); font-weight: var(--fw-semibold); transition: color .18s ease; }
+    .header-tab { position: relative; z-index: 2; min-height: 52px; flex: 1 1 0; padding: 0 var(--sp-sm) 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); transition: color .18s ease; }
+    .header-tab .lucide { width: 20px; height: 20px; }
     .header-tab.active { color: var(--accent); }
-    .header-tab-star { font-size: 20px; }
     .header-tab-indicator { position: absolute; z-index: 3; left: var(--tab-indicator-left); bottom: 0; width: var(--tab-indicator-width); height: 3px; border-radius: var(--radius-full); background: var(--accent); pointer-events: none; transition: left .28s cubic-bezier(.22,.75,.25,1), width .28s cubic-bezier(.22,.75,.25,1); }
 
     .hero { padding: var(--sp-lg) 2px var(--sp-md); }
@@ -218,7 +220,7 @@
     .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); color: #b8bdbd; transition: color .16s ease; }
     .task-star .lucide { width: 22px; height: 22px; }
     .task-star.active { color: var(--warning); }
-    .task-star.active .lucide { fill: var(--warning); }
+    .task-star.active .lucide { fill: var(--warning); stroke: var(--warning); }
 
     .completed-section {
       margin-top: var(--sp-md);
@@ -254,7 +256,7 @@
     .empty-text { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); }
 
     .composer-wrap { position: fixed; z-index: 30; left: 50%; bottom: 0; width: min(760px, 100%); transform: translateX(-50%); padding: 0 var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom)); pointer-events: none; display: flex; justify-content: flex-end; }
-    .composer-fab { pointer-events: auto; width: var(--fab-size); height: var(--fab-size); border-radius: var(--radius-full); background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.18); transition: transform .15s ease; }
+    .composer-fab { pointer-events: auto; width: var(--fab-size); height: var(--fab-size); border-radius: var(--radius-full); background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.18); transition: transform .15s ease; }
     .composer-fab:active { transform: scale(.93); }
     .composer-fab.hidden { display: none; }
 
@@ -264,7 +266,6 @@
     .composer-input-row textarea { flex: 1; min-height: 52px; max-height: 110px; resize: none; padding: var(--sp-md); border: none; background: transparent; color: var(--text); font-size: var(--fs-base); }
     .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
     .send-btn { width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--accent); color: #fff; display: grid; place-items: center; transition: opacity .18s ease; }
-    .send-btn .lucide { width: 20px; height: 20px; }
     .send-btn.disabled { opacity: .4; }
 
     .overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; padding: var(--sp-lg); background: rgba(0,0,0,.40); opacity: 0; visibility: hidden; transition: opacity .20s ease, visibility .20s ease; }
@@ -273,7 +274,6 @@
     .overlay.show .sheet { transform: translateY(0); }
     .sheet-handle { width: 36px; height: 5px; margin: 2px auto 14px; border-radius: var(--radius-full); background: var(--surface-3); }
     .sheet-close-btn { position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--surface-2); display: grid; place-items: center; color: var(--muted); z-index: 2; }
-    .sheet-close-btn .lucide { width: 16px; height: 16px; }
     .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: var(--fw-bold); }
 
     .action-task-preview {
@@ -283,7 +283,7 @@
       cursor: pointer;
     }
     .action-task-preview-text { flex: 1; font-size: var(--fs-md); font-weight: var(--fw-semibold); }
-    .action-task-edit-input { width: 100%; min-height: 60px; padding: var(--sp-sm); border: 0; background: transparent; color: var(--text); resize: none; font-size: var(--fs-md); }
+    .action-task-edit-input { width: 100%; min-height: 50px; padding: var(--sp-sm); border: 1px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); resize: none; font-size: var(--fs-md); }
 
     .action-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
     .action-item:active { background: var(--surface-2); }
@@ -319,6 +319,11 @@
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 480px) {
       .app { padding-left: var(--sp-md); padding-right: var(--sp-md); }
       .task { min-height: 48px; gap: var(--sp-sm); }
@@ -328,6 +333,8 @@
       .section-head { padding: var(--sp-xs) var(--sp-sm); }
       .task-list { padding: 0 var(--sp-sm); }
       .segment { padding: 0 var(--sp-xs); font-size: var(--fs-xs); }
+      .header-tab { font-size: 11px; }
+      .header-tab .lucide { width: 18px; height: 18px; }
     }
   </style>
 </head>
@@ -345,9 +352,18 @@
         <button class="menu-btn" id="menuBtn" type="button"><i data-lucide="more-horizontal"></i></button>
       </div>
       <nav class="header-nav" id="headerNav">
-        <button class="header-tab" data-view="all" type="button">نواياي</button>
-        <button class="header-tab active" data-view="today" type="button">اليوم</button>
-        <button class="header-tab" data-view="favorites" type="button"><i data-lucide="star" style="width:18px;height:18px;"></i></button>
+        <button class="header-tab" data-view="all" type="button">
+          <i data-lucide="sprout"></i>
+          <span>نواياي</span>
+        </button>
+        <button class="header-tab active" data-view="today" type="button">
+          <i data-lucide="sun"></i>
+          <span>ناوي على إيه النهارده؟</span>
+        </button>
+        <button class="header-tab" data-view="favorites" type="button">
+          <i data-lucide="star"></i>
+          <span>مفضلاتي</span>
+        </button>
         <span class="header-tab-indicator" id="headerTabIndicator"></span>
       </nav>
     </header>
@@ -525,30 +541,67 @@
 
     const STORAGE_KEYS = { tasks: "nawy_tasks_v9", trash: "nawy_trash_v2", settings: "nawy_settings_v2" };
     const DEFAULT_SETTINGS = { theme: "system", accent: "green", language: "ar", fontSize: "medium", notificationEnabled: false, notificationTime: "09:00" };
-    
+
+    const TRANSLATIONS = {
+      ar: {
+        appName: "ناوي", all: "نواياي", today: "اليوم", favorites: "مفضلاتي", completed: "المكتملة",
+        heroToday: "ناوي على إيه النهارده؟", settings: "الإعدادات", trash: "أرشيف النوايا",
+        done: "أتمم النية", cancelDone: "أعد فتح النية", repeat: "تكرار", setDate: "تحديد موعد", delete: "تراجع عن النية",
+        language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع", light: "فاتح", dark: "داكن", system: "النظام",
+        fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير", color: "اللون", nawyColor: "لون ناوي",
+        notification: "التذكير اليومي", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
+        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
+        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
+        archiveEmpty: "الأرشيف فاضي", restore: "استرجاع", taskPlaceholder: "اكتب النية اللي في بالك...",
+        activeFavorites: "المفضلة النشطة", completedFavorites: "المفضلة المكتملة",
+        repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا",
+        quickToday: "اليوم", quickTomorrow: "بكرة", removeDate: "إزالة", save: "حفظ",
+        addedToast: "تمت إضافة النية ✨", completedToast: "تم إتمام النية 🎉", deletedToast: "تم التراجع - اضغط للاسترجاع",
+        restoredToast: "تم الاسترجاع ✅", editedToast: "تم التعديل ✏️"
+      },
+      en: {
+        appName: "NAWY", all: "My Intentions", today: "Today", favorites: "Favorites", completed: "Completed",
+        heroToday: "What are you up to today?", settings: "Settings", trash: "Archive",
+        done: "Complete", cancelDone: "Reopen", repeat: "Repeat", setDate: "Set Date", delete: "Delete",
+        language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode", light: "Light", dark: "Dark", system: "System",
+        fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large", color: "Color", nawyColor: "NAWY Color",
+        notification: "Daily Reminder", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
+        noIntentions: "No intentions yet", firstIntent: "Write your first intention for today.",
+        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
+        archiveEmpty: "Archive is empty", restore: "Restore", taskPlaceholder: "Write the intention on your mind...",
+        activeFavorites: "Active Favorites", completedFavorites: "Completed Favorites",
+        repeatNone: "No Repeat", repeatDaily: "Daily", repeatWeekly: "Weekly", repeatMonthly: "Monthly",
+        quickToday: "Today", quickTomorrow: "Tomorrow", removeDate: "Remove", save: "Save",
+        addedToast: "Intention added ✨", completedToast: "Intention completed 🎉", deletedToast: "Deleted - tap to undo",
+        restoredToast: "Restored ✅", editedToast: "Edited ✏️"
+      }
+    };
+
     let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
     let currentView = "today", selectedTaskId = null, completedExpanded = false;
     let swipeStartX = 0, swipeStartY = 0, swipeTracking = false;
+    let completeSynth = null;
 
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
 
     const content = $("#content"), taskInput = $("#taskInput"), sendBtn = $("#sendBtn"), composerFab = $("#composerFab"), composerPanel = $("#composerPanel");
     const heroDate = $("#heroDate"), heroTitle = $("#heroTitle");
-    const headerNav = $("#headerNav"), headerTabIndicator = $("#headerTabIndicator");
+    const headerNav = $("#headerNav"), headerTabIndicator = $("#headerTabIndicator"), brandName = $("#brandName");
     const menuOverlay = $("#menuOverlay"), actionOverlay = $("#actionOverlay"), repeatOverlay = $("#repeatOverlay"), dateOverlay = $("#dateOverlay"), settingsOverlay = $("#settingsOverlay"), trashOverlay = $("#trashOverlay");
     const taskDateInput = $("#taskDateInput"), trashList = $("#trashList");
     const notificationToggleBtn = $("#notificationToggleBtn"), notificationTimeRow = $("#notificationTimeRow"), notificationTimeInput = $("#notificationTimeInput");
     const actionPreviewContainer = $("#actionPreviewContainer");
 
+    function t(key) { return TRANSLATIONS[settings.language]?.[key] || TRANSLATIONS.ar[key] || key; }
     function pad(n) { return String(n).padStart(2, "0"); }
     function getDateKey(d = new Date()) { return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join("-"); }
     function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
     function safeParse(v, f) { try { return JSON.parse(v) ?? f; } catch { return f; } }
 
     function loadData() {
-      tasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []).filter(t => t && t.text);
-      trash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []).filter(t => t && t.text);
+      tasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []).filter(x => x && x.text);
+      trash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []).filter(x => x && x.text);
       settings = { ...DEFAULT_SETTINGS, ...safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}) };
     }
     function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
@@ -558,25 +611,31 @@
     function showToast(message, type = 'success', canUndo = false, undoCallback = null) {
       const colors = { success: '#19a974', error: '#e5484d', warning: '#e8a317', info: '#3b82f6' };
       const toast = Toastify({
-        text: message,
-        duration: canUndo ? 5000 : 3000,
-        close: true,
-        gravity: 'bottom',
-        position: 'center',
-        style: {
-          background: colors[type] || colors.success,
-          borderRadius: '14px',
-          padding: '12px 20px',
-          fontFamily: '"Cairo", sans-serif',
-          fontWeight: '600',
-          fontSize: '14px',
-          boxShadow: '0 8px 24px rgba(0,0,0,.15)',
-        }
+        text: message, duration: canUndo ? 5000 : 3000, close: true, gravity: 'bottom', position: 'center',
+        style: { background: colors[type] || colors.success, borderRadius: '14px', padding: '12px 20px', fontFamily: '"Cairo", sans-serif', fontWeight: '600', fontSize: '14px', boxShadow: '0 8px 24px rgba(0,0,0,.15)' }
       });
-      if (canUndo && undoCallback) {
-        toast.options.onClick = function() { undoCallback(); toast.hideToast(); };
-      }
+      if (canUndo && undoCallback) { toast.options.onClick = function() { undoCallback(); toast.hideToast(); }; }
       toast.showToast();
+    }
+
+    function initCompleteSound() {
+      if (completeSynth) return;
+      completeSynth = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "sine" },
+        envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 0.4 }
+      }).toDestination();
+      completeSynth.volume.value = -12;
+    }
+
+    function playCompleteSound() {
+      try {
+        initCompleteSound();
+        const now = Tone.now();
+        completeSynth.triggerAttackRelease("C5", "16n", now);
+        completeSynth.triggerAttackRelease("E5", "16n", now + 0.04);
+        completeSynth.triggerAttackRelease("G5", "8n", now + 0.08);
+        completeSynth.triggerAttackRelease("C6", "4n", now + 0.12);
+      } catch(e) {}
     }
 
     function addTask(text) {
@@ -585,28 +644,29 @@
       tasks.unshift({ id: createId(), text: clean, completed: false, starred: false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: null, completedAt: null, repeat: 'none' });
       saveTasks();
       render();
-      showToast("تمت إضافة النية ✨", 'success');
+      showToast(t("addedToast"), 'success');
       return true;
     }
 
     function completeTask(id) {
-      const task = tasks.find(t => t.id === id);
+      const task = tasks.find(x => x.id === id);
       if (!task) return;
       task.completed = !task.completed;
       task.completedAt = task.completed ? Date.now() : null;
-      saveTasks();
-      render();
       if (task.completed) {
+        playCompleteSound();
+        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
         if (typeof confetti === 'function') {
           confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 }, colors: ['#19a974', '#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1'] });
         }
-        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
-        showToast("تم إتمام النية 🎉", 'success');
       }
+      saveTasks();
+      render();
+      if (task.completed) showToast(t("completedToast"), 'success');
     }
 
     function toggleStar(id) {
-      const task = tasks.find(t => t.id === id);
+      const task = tasks.find(x => x.id === id);
       if (!task) return;
       task.starred = !task.starred;
       saveTasks();
@@ -614,21 +674,19 @@
     }
 
     function deleteTask(id) {
-      const index = tasks.findIndex(t => t.id === id);
+      const index = tasks.findIndex(x => x.id === id);
       if (index === -1) return;
       const [deleted] = tasks.splice(index, 1);
       trash.unshift({ ...deleted, deletedAt: Date.now() });
       saveTasks();
       saveTrash();
       render();
-      showToast("تم التراجع - اضغط للاسترجاع", 'warning', true, () => {
-        const ti = trash.findIndex(t => t.id === deleted.id);
+      showToast(t("deletedToast"), 'warning', true, () => {
+        const ti = trash.findIndex(x => x.id === deleted.id);
         if (ti !== -1) trash.splice(ti, 1);
         tasks.unshift(deleted);
-        saveTasks();
-        saveTrash();
-        render();
-        showToast("تم الاسترجاع ✅", 'success');
+        saveTasks(); saveTrash(); render();
+        showToast(t("restoredToast"), 'success');
       });
     }
 
@@ -637,26 +695,26 @@
       content.innerHTML = "";
       
       if (currentView === "today") {
-        const active = tasks.filter(t => !t.completed && (t.scheduledDate ? t.scheduledDate === getDateKey() : t.taskDay === getDateKey()));
-        const completed = tasks.filter(t => t.completed && t.completedAt && getDateKey(new Date(t.completedAt)) === getDateKey());
+        const active = tasks.filter(x => !x.completed && (x.scheduledDate ? x.scheduledDate === getDateKey() : x.taskDay === getDateKey()));
+        const completed = tasks.filter(x => x.completed && x.completedAt && getDateKey(new Date(x.completedAt)) === getDateKey());
         if (active.length === 0 && completed.length === 0) {
-          content.appendChild(createEmptyState("ن", "مفيش نوايا لسه", "اكتب أول نية ناوي تعملها النهارده."));
+          content.appendChild(createEmptyState("ن", t("noIntentions"), t("firstIntent")));
         } else {
-          if (active.length > 0) content.appendChild(createSection("اليوم", active));
+          if (active.length > 0) content.appendChild(createSection(t("today"), active));
           if (completed.length > 0) content.appendChild(createCompletedSection(completed));
         }
       } else if (currentView === "all") {
-        const active = tasks.filter(t => !t.completed);
-        const completed = tasks.filter(t => t.completed);
-        if (active.length > 0) content.appendChild(createSection("نواياي", active));
+        const active = tasks.filter(x => !x.completed);
+        const completed = tasks.filter(x => x.completed);
+        if (active.length > 0) content.appendChild(createSection(t("all"), active));
         if (completed.length > 0) content.appendChild(createCompletedSection(completed));
       } else if (currentView === "favorites") {
-        const favActive = tasks.filter(t => t.starred && !t.completed);
-        const favCompleted = tasks.filter(t => t.starred && t.completed);
+        const favActive = tasks.filter(x => x.starred && !x.completed);
+        const favCompleted = tasks.filter(x => x.starred && x.completed);
         if (favActive.length === 0 && favCompleted.length === 0) {
-          content.appendChild(createEmptyState("★", "مفيش مفضلات لسه", "علّم أي نية بنجمة وهتظهر هنا."));
+          content.appendChild(createEmptyState("★", t("noFavorites"), t("favoriteHint")));
         } else {
-          if (favActive.length > 0) content.appendChild(createSection("المفضلة النشطة", favActive));
+          if (favActive.length > 0) content.appendChild(createSection(t("activeFavorites"), favActive));
           if (favCompleted.length > 0) content.appendChild(createCompletedSection(favCompleted));
         }
       }
@@ -695,7 +753,7 @@
       toggle.className = "completed-toggle" + (completedExpanded ? " open" : "");
       const title = document.createElement("span");
       title.className = "completed-toggle-title";
-      title.textContent = "المكتملة";
+      title.textContent = t("completed");
       const count = document.createElement("span");
       count.className = "completed-toggle-count";
       count.textContent = taskArray.length;
@@ -715,14 +773,14 @@
       return section;
     }
 
-    function createTaskElement(task, isCompleted = false) {
+    function createTaskElement(task) {
       const article = document.createElement("article");
       article.className = "task" + (task.completed ? " completed" : "");
       article.dataset.taskId = task.id;
       article.innerHTML = `
         <button class="task-checkbox" type="button"><i data-lucide="check"></i></button>
         <div class="task-main"><p class="task-text">${task.text}</p></div>
-        <button class="task-star" type="button"><i data-lucide="star"></i></button>
+        <button class="task-star ${task.starred ? 'active' : ''}" type="button"><i data-lucide="star"></i></button>
       `;
       article.querySelector(".task-checkbox").addEventListener("click", e => { e.stopPropagation(); completeTask(task.id); });
       article.querySelector(".task-star").addEventListener("click", e => { e.stopPropagation(); toggleStar(task.id); });
@@ -741,20 +799,16 @@
       document.querySelectorAll(".task-list").forEach(list => {
         if (list.sortableInstance) list.sortableInstance.destroy();
         list.sortableInstance = new Sortable(list, {
-          animation: 150,
-          ghostClass: 'drag-ghost',
-          dragClass: 'drag-source',
-          delay: 200,
-          delayOnTouchOnly: true,
+          animation: 150, ghostClass: 'drag-ghost', dragClass: 'drag-source', delay: 200, delayOnTouchOnly: true,
           onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
-            const activeTasks = tasks.filter(t => !t.completed);
-            const completedTasks = tasks.filter(t => t.completed);
+            const activeTasks = tasks.filter(x => !x.completed);
+            const completedTasks = tasks.filter(x => x.completed);
             const taskMap = new Map();
-            activeTasks.forEach(t => taskMap.set(t.id, t));
+            activeTasks.forEach(x => taskMap.set(x.id, x));
             const reordered = [];
             newOrder.forEach(id => { if (taskMap.has(id)) { reordered.push(taskMap.get(id)); taskMap.delete(id); } });
-            taskMap.forEach(t => reordered.push(t));
+            taskMap.forEach(x => reordered.push(x));
             tasks = [...reordered, ...completedTasks];
             saveTasks();
           }
@@ -768,6 +822,9 @@
         btn.classList.toggle("active", active);
         if (active) btn.setAttribute("aria-current", "page"); else btn.removeAttribute("aria-current");
       });
+      const views = ["all", "today", "favorites"];
+      const currentIndex = views.indexOf(currentView);
+      heroTitle.textContent = [t("all"), t("heroToday"), t("favorites")][currentIndex] || t("heroToday");
     }
 
     function updateIndicator() {
@@ -790,7 +847,7 @@
     }
 
     function openAction(id) {
-      const task = tasks.find(t => t.id === id);
+      const task = tasks.find(x => x.id === id);
       if (!task) return;
       selectedTaskId = id;
       
@@ -801,28 +858,41 @@
         </button>
       `;
       
-      $("#actionComplete .action-text").textContent = task.completed ? "أعد فتح النية" : "أتمم النية";
-      $("#actionDateText").textContent = task.scheduledDate ? `تغيير الموعد - ${task.scheduledDate}` : "تحديد موعد";
+      $("#actionComplete .action-text").textContent = task.completed ? t("cancelDone") : t("done");
+      $("#actionDateText").textContent = task.scheduledDate ? task.scheduledDate : t("setDate");
       
       $("#actionTaskPreview").addEventListener("click", () => {
         const preview = $("#actionTaskPreview");
+        const editContainer = document.createElement("div");
+        editContainer.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;";
         const editArea = document.createElement("textarea");
         editArea.className = "action-task-edit-input";
         editArea.value = task.text;
-        preview.replaceWith(editArea);
+        const doneBtn = document.createElement("button");
+        doneBtn.type = "button";
+        doneBtn.style.cssText = "width:44px;height:44px;flex:0 0 auto;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;";
+        doneBtn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i>';
+        editContainer.append(editArea, doneBtn);
+        preview.replaceWith(editContainer);
         editArea.focus();
         editArea.setSelectionRange(editArea.value.length, editArea.value.length);
+        lucide.createIcons();
         
-        editArea.addEventListener("blur", () => {
+        function saveEdit() {
           const newText = editArea.value.trim();
           if (newText && newText !== task.text) {
             task.text = newText;
             saveTasks();
             render();
-            showToast("تم التعديل ✏️", 'success');
+            showToast(t("editedToast"), 'success');
           }
           closeOverlay(actionOverlay);
           selectedTaskId = null;
+        }
+        
+        doneBtn.addEventListener("click", saveEdit);
+        editArea.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveEdit(); }
         });
       });
       
@@ -839,16 +909,29 @@
 
     function applySettings() {
       let theme = settings.theme;
-      if (theme === "system") {
-        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      }
+      if (theme === "system") theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", theme);
       document.documentElement.setAttribute("data-accent", settings.accent);
       document.documentElement.setAttribute("data-font", settings.fontSize);
+      document.documentElement.lang = settings.language;
+      document.documentElement.dir = settings.language === "ar" ? "rtl" : "ltr";
+      brandName.textContent = t("appName");
       $$("[data-theme-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.themeChoice === settings.theme));
       $$("[data-accent-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.accentChoice === settings.accent));
       $$("[data-font-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.fontChoice === settings.fontSize));
       $$("[data-language-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.languageChoice === settings.language));
+      updateTabLabels();
+    }
+
+    function updateTabLabels() {
+      $$(".header-tab").forEach(tab => {
+        const view = tab.dataset.view;
+        const label = tab.querySelector("span");
+        if (label) {
+          label.textContent = view === "all" ? t("all") : view === "today" ? t("today") : t("favorites");
+        }
+      });
+      taskInput.placeholder = t("taskPlaceholder");
     }
 
     // ============ Event Listeners ============
@@ -868,7 +951,7 @@
 
     repeatOverlay.querySelectorAll("[data-repeat]").forEach(btn => btn.addEventListener("click", () => {
       if (selectedTaskId) {
-        const task = tasks.find(t => t.id === selectedTaskId);
+        const task = tasks.find(x => x.id === selectedTaskId);
         if (task) { task.repeat = btn.dataset.repeat; saveTasks(); }
       }
       closeOverlay(repeatOverlay); selectedTaskId = null; render();
@@ -886,16 +969,13 @@
     $$(".quick-date").forEach(btn => btn.addEventListener("click", () => {
       const today = new Date();
       let date = today;
-      if (btn.dataset.date === "tomorrow") {
-        date = new Date(today);
-        date.setDate(date.getDate() + 1);
-      }
+      if (btn.dataset.date === "tomorrow") { date = new Date(today); date.setDate(date.getDate() + 1); }
       taskDateInput.value = getDateKey(date);
     }));
 
     $("#dateSave").addEventListener("click", () => {
       if (selectedTaskId && taskDateInput.value) {
-        const task = tasks.find(t => t.id === selectedTaskId);
+        const task = tasks.find(x => x.id === selectedTaskId);
         if (task) { task.scheduledDate = taskDateInput.value; saveTasks(); }
       }
       closeOverlay(dateOverlay); selectedTaskId = null; render();
@@ -903,7 +983,7 @@
 
     $("#dateClear").addEventListener("click", () => {
       if (selectedTaskId) {
-        const task = tasks.find(t => t.id === selectedTaskId);
+        const task = tasks.find(x => x.id === selectedTaskId);
         if (task) { task.scheduledDate = null; saveTasks(); }
       }
       closeOverlay(dateOverlay); selectedTaskId = null; render();
@@ -912,7 +992,7 @@
     function renderTrash() {
       trashList.innerHTML = "";
       if (trash.length === 0) {
-        trashList.innerHTML = `<div class="task-empty"><div class="empty-title">الأرشيف فاضي</div></div>`;
+        trashList.innerHTML = `<div class="task-empty"><div class="empty-title">${t("archiveEmpty")}</div></div>`;
         return;
       }
       trash.forEach(task => {
@@ -923,16 +1003,16 @@
         text.textContent = task.text;
         text.style.cssText = "flex:1;min-width:0;font-size:14px;";
         const restore = document.createElement("button");
-        restore.textContent = "استرجاع";
+        restore.textContent = t("restore");
         restore.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
         restore.addEventListener("click", () => {
-          const index = trash.findIndex(t => t.id === task.id);
+          const index = trash.findIndex(x => x.id === task.id);
           if (index !== -1) {
             const [restored] = trash.splice(index, 1);
             delete restored.deletedAt;
             tasks.unshift(restored);
             saveTasks(); saveTrash(); renderTrash();
-            showToast("تم الاسترجاع ✅", 'success');
+            showToast(t("restoredToast"), 'success');
           }
         });
         item.append(text, restore);
@@ -981,7 +1061,7 @@
 
     // ============ Notifications ============
     notificationToggleBtn.addEventListener("click", () => {
-      if (!("Notification" in window)) { showToast("المتصفح لا يدعم الإشعارات", 'error'); return; }
+      if (!("Notification" in window)) { showToast("Browser doesn't support notifications", 'error'); return; }
       if (Notification.permission === "granted") {
         settings.notificationEnabled = !settings.notificationEnabled;
         saveSettings();
@@ -992,16 +1072,14 @@
             settings.notificationEnabled = true;
             saveSettings();
             updateNotificationUI();
-            showToast("تم تفعيل الإشعارات 🔔", 'success');
-          } else {
-            showToast("تم رفض الإذن", 'error');
+            showToast("Notifications enabled 🔔", 'success');
           }
         });
       }
     });
 
     function updateNotificationUI() {
-      notificationToggleBtn.textContent = settings.notificationEnabled ? "تعطيل" : "تفعيل";
+      notificationToggleBtn.textContent = settings.notificationEnabled ? t("notificationDisable") : t("notificationEnable");
       notificationTimeRow.classList.toggle("hidden", !settings.notificationEnabled);
       notificationTimeInput.value = settings.notificationTime;
     }
@@ -1009,7 +1087,7 @@
     notificationTimeInput.addEventListener("change", () => {
       settings.notificationTime = notificationTimeInput.value;
       saveSettings();
-      showToast("تم تحديث وقت الإشعار", 'success');
+      showToast("Notification time updated", 'success');
     });
 
     // ============ Init ============
