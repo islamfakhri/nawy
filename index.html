@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark" data-accent="blue" data-font="medium">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="description" content="ناوي - مساحتك الشخصية لنواياك وأهدافك">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ناوي</title>
+  
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <!-- الخط -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- SortableJS -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+      --fab-size: 56px;
+      --bottom-space: 90px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html[data-theme="light"] {
+      --bg: #FAF9F7;
+      --surface: #FFFFFF;
+      --surface-2: #F5F5F4;
+      --surface-3: #E7E5E4;
+      --text: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --shadow-soft: 0 1px 3px rgba(0,0,0,0.03);
+      --shadow-card: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-sheet: 0 16px 50px rgba(0,0,0,0.12);
+      --shadow-drag: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    html[data-theme="dark"] {
+      --bg: #0F1115;
+      --surface: #181B20;
+      --surface-2: #1F2329;
+      --surface-3: #2A2F36;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --border: #272A30;
+      --border-strong: #3A3F46;
+      --shadow-soft: 0 1px 4px rgba(0,0,0,0.15);
+      --shadow-card: 0 4px 12px rgba(0,0,0,0.20);
+      --shadow-sheet: 0 20px 60px rgba(0,0,0,0.40);
+      --shadow-drag: 0 12px 32px rgba(0,0,0,0.40);
+    }
+
+    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.10); }
+    html[data-accent="green"] { --accent: #10b981; --accent-soft: rgba(16,185,129,0.10); }
+    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,0.10); }
+    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,0.12); }
+    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,0.10); }
+
+    html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; --fs-hero: 19px; }
+    html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; --fs-hero: 22px; }
+    html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; --fs-hero: 25px; }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Cairo", "Segoe UI", system-ui, sans-serif;
+      font-size: var(--fs-base);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+      overscroll-behavior-y: none;
+      touch-action: pan-y;
+    }
+    button { border: 0; cursor: pointer; color: inherit; background: none; font: inherit; }
+    input, textarea { outline: none; font: inherit; border: none; background: none; color: inherit; }
+    ::selection { background: var(--accent); color: #fff; }
+    .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    .app {
+      width: min(100%, 760px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: env(safe-area-inset-top) 16px calc(var(--bottom-space) + env(safe-area-inset-bottom));
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 12px 0 8px;
+      background: linear-gradient(to bottom, var(--bg) 85%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; background: var(--accent-soft); }
+    .brand-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-name { font-size: var(--fs-lg); font-weight: 800; letter-spacing: -0.3px; }
+    .menu-btn {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      color: var(--muted);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.14s ease;
+    }
+    .menu-btn:active { transform: scale(0.93); }
+
+    .tabs {
+      display: flex;
+      gap: 24px;
+      padding: 8px 0;
+      margin-top: 8px;
+    }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 8px 0;
+      position: relative;
+      transition: color 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .tab-icon {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+    .tab.active { color: var(--accent); }
+    .tab.active .tab-icon { fill: var(--accent-soft); stroke: var(--accent); }
+    .tab:not(.active) .tab-icon { fill: none; stroke: var(--muted); }
+
+    .hero { padding: 20px 4px 12px; }
+    .hero-title {
+      margin: 0;
+      font-size: var(--fs-hero);
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+      font-weight: 700;
+    }
+
+    .content { margin-top: 8px; }
+
+    .section { margin-top: 16px; background: transparent; border: none; border-radius: 0; }
+    .section:first-child { margin-top: 0; }
+    .section-header {
+      min-height: 40px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .section-chevron { margin-right: auto; transition: transform 0.25s ease; }
+    .section-chevron .icon { width: 14px; height: 14px; }
+    .section.collapsed .section-chevron { transform: rotate(180deg); }
+    .section-body {
+      max-height: 5000px;
+      opacity: 1;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+      overflow: hidden;
+    }
+    .section.collapsed .section-body { max-height: 0; opacity: 0; }
+
+    .task-list { padding: 0; display: flex; flex-direction: column; }
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 48px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .task:last-child { border-bottom: 0; }
+    .task:active { background: var(--surface-2); }
+    .task.drag-source { opacity: 0.35 !important; }
+    .drag-ghost {
+      opacity: 0.95 !important;
+      background: var(--surface) !important;
+      border: 1px solid var(--border-strong) !important;
+      border-radius: var(--radius-md) !important;
+      box-shadow: var(--shadow-drag) !important;
+    }
+
+    .task-checkbox {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      background: transparent;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .task-checkbox .icon { width: 12px; height: 12px; color: #fff; opacity: 0; transform: scale(0.5); transition: all 0.2s ease; }
+    .task.completed .task-checkbox { background: var(--accent); border-color: var(--accent); }
+    .task.completed .task-checkbox .icon { opacity: 1; transform: scale(1); }
+    .task.completed { opacity: 0.7; }
+
+    .task-main { flex: 1; min-width: 0; }
+    .task-text {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+    .task.completed .task-text { color: var(--muted); text-decoration: line-through; }
+
+    .task-star {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--surface-3);
+      transition: color 0.2s ease, transform 0.15s ease;
+      padding: 0;
+    }
+    .task-star:active { transform: scale(0.85); }
+    .task-star .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .task-star.active { color: #f59e0b; }
+    .task-star.active .icon { fill: #f59e0b; stroke: #f59e0b; }
+
+    .empty {
+      padding: 36px 24px;
+      text-align: center;
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border-strong);
+      color: var(--muted);
+    }
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-md);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 24px;
+    }
+    .empty-title { color: var(--text); font-size: var(--fs-md); font-weight: 700; }
+    .empty-text { margin-top: 4px; color: var(--muted); font-size: var(--fs-sm); }
+
+    .fab-wrap {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      bottom: 0;
+      width: min(760px, 100%);
+      transform: translateX(-50%);
+      padding: 0 16px calc(16px + env(safe-area-inset-bottom));
+      pointer-events: none;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .fab {
+      pointer-events: auto;
+      width: var(--fab-size);
+      height: var(--fab-size);
+      border-radius: var(--radius-full);
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease;
+    }
+    .fab:active { transform: scale(0.93); }
+    .fab.hidden { display: none; }
+    .fab .icon { width: 24px; height: 24px; }
+
+    .composer-panel {
+      pointer-events: auto;
+      position: fixed;
+      z-index: 31;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%) translateY(100%);
+      width: min(100%, 760px);
+      background: var(--surface);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      box-shadow: var(--shadow-sheet);
+      border: 1px solid var(--border);
+      transition: transform 0.28s ease;
+      padding: 16px 16px calc(12px + env(safe-area-inset-bottom));
+    }
+    .composer-panel.open { transform: translateX(-50%) translateY(0); }
+    .composer-row { display: flex; align-items: center; gap: 8px; }
+    .composer-row textarea {
+      flex: 1;
+      min-height: 52px;
+      max-height: 110px;
+      resize: none;
+      padding: 12px;
+      font-size: var(--fs-base);
+    }
+    .composer-row textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .send-btn {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: var(--radius-full);
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      transition: opacity 0.18s ease, transform 0.15s ease;
+    }
+    .send-btn:active { transform: scale(0.9); }
+    .send-btn.disabled { opacity: 0.4; }
+    .send-btn .icon { width: 18px; height: 18px; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0,0,0,0.40);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .overlay.show { opacity: 1; visibility: visible; }
+    .sheet {
+      width: min(100%, 520px);
+      max-height: min(82vh, 680px);
+      overflow-y: auto;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sheet);
+      transform: translateY(18px);
+      transition: transform 0.24s ease;
+      position: relative;
+    }
+    .overlay.show .sheet { transform: translateY(0); }
+    .sheet-handle { width: 36px; height: 5px; margin: 2px auto 14px; border-radius: var(--radius-full); background: var(--surface-3); }
+    .sheet-close {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      z-index: 2;
+    }
+    .sheet-close .icon { width: 16px; height: 16px; }
+    .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: 700; }
+
+    .menu-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s ease;
+    }
+    .menu-item:active { background: var(--surface-2); }
+    .menu-item .icon { color: var(--muted); }
+    .menu-text { flex: 1; font-weight: 500; }
+
+    .action-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s ease;
+    }
+    .action-item:active { background: var(--surface-2); }
+    .action-item .icon { color: var(--muted); }
+    .action-item.danger { color: #ef4444; }
+    .action-item.danger .icon { color: #ef4444; }
+    .action-text { flex: 1; font-weight: 500; }
+
+    .action-task-preview {
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      margin-bottom: 8px;
+      font-size: var(--fs-md);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .setting-group { margin-bottom: 16px; }
+    .setting-label { padding: 0 4px 8px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+    .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+    .setting-row {
+      min-height: 54px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .setting-row:last-child { border-bottom: 0; }
+    .setting-info { flex: 1; min-width: 0; }
+    .setting-name { font-size: var(--fs-base); font-weight: 500; }
+    .setting-desc { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; opacity: 0.7; }
+    .segmented { display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-sm); background: var(--surface-2); }
+    .segment {
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 7px;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.16s ease;
+    }
+    .segment.active { background: var(--accent); color: #fff; }
+    .colors { display: flex; align-items: center; gap: 8px; }
+    .color-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--surface);
+      outline: 1px solid var(--border);
+      position: relative;
+      cursor: pointer;
+    }
+    .color-btn.active::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .color-btn.blue { background: #3b82f6; }
+    .color-btn.green { background: #10b981; }
+    .color-btn.purple { background: #8b5cf6; }
+    .color-btn.orange { background: #f59e0b; }
+    .color-btn.pink { background: #ec4899; }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      display: inline-block;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-3);
+      border-radius: var(--radius-full);
+      transition: background 0.3s ease;
+    }
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(-22px); }
+    html[dir="rtl"] .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+    html[dir="ltr"] .toggle-switch input:checked + .toggle-slider::before { transform: translateX(-22px); }
+
+    .time-input {
+      width: 120px;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .time-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .time-input:hover {
+      border-color: var(--accent);
+    }
+
+    .install-banner {
+      position: fixed;
+      z-index: 180;
+      left: 50%;
+      bottom: 12px;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      visibility: hidden;
+      width: min(calc(100% - 28px), 420px);
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    }
+    .install-banner.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .install-banner-inner { display: flex; align-items: center; gap: 12px; width: 100%; }
+    .install-banner-icon {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      flex-shrink: 0;
+    }
+    .install-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .install-banner-text { flex: 1; min-width: 0; }
+    .install-banner-title { font-size: 16px; font-weight: 800; color: var(--text); }
+    .install-banner-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .install-banner-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .install-banner-actions button {
+      flex: 1;
+      min-height: 42px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .install-dismiss { background: var(--surface-2); color: var(--muted); }
+    .install-dismiss:hover { background: var(--surface-3); }
+    .install-action { background: var(--accent); color: #fff; }
+    .install-action:hover { opacity: 0.9; }
+
+    .hidden { display: none !important; }
+    .no-scroll { overflow: hidden; }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .app { padding-left: 12px; padding-right: 12px; }
+      .task { min-height: 44px; gap: 12px; padding: 6px 12px; }
+      .task-checkbox { width: 20px; height: 20px; }
+      .task-star { width: 32px; height: 32px; }
+      .task-star .icon { width: 18px; height: 18px; }
+      .segment { padding: 0 8px; font-size: var(--fs-xs); }
+      .tab { font-size: 13px; }
+      .tab-icon { width: 16px; height: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- نفس body زي ما هو بالظبط -->
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-icon">
+          <img src="icon-192.png" alt="ناوي" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-name" id="brandName">ناوي</div>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </header>
+
+    <nav class="tabs" id="tabsNav">
+      <button class="tab active" data-view="all" type="button">
+        <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 8 14 4 20 4C20 10 16 12 12 12Z"/><path d="M12 12C12 8 10 4 4 4C4 10 8 12 12 12Z"/></svg>
+        <span data-i18n="all">نواياي</span>
+      </button>
+      <button class="tab" data-view="favorites" type="button">
+        <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        <span data-i18n="favorites">مفضلاتي</span>
+      </button>
+    </nav>
+
+    <section class="hero">
+      <h1 class="hero-title" id="heroTitle">ناوي على إيه النهارده؟</h1>
+    </section>
+
+    <main class="content" id="content"></main>
+  </div>
+
+  <!-- باقي الـ HTML زي ما هو -->
+  <div class="fab-wrap" id="fabWrap">
+    <button class="fab" id="fabBtn" type="button" aria-label="أضف نية">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
+    </button>
+  </div>
+
+  <div class="composer-panel" id="composerPanel">
+    <form id="composerForm" autocomplete="off">
+      <div class="composer-row">
+        <textarea id="taskInput" rows="1" maxlength="500" placeholder="أنا ناوي..." data-i18n-placeholder="taskPlaceholder"></textarea>
+        <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="إرسال">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12L12 5L19 12"/></svg>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="overlay" id="menuOverlay">
+    <div class="sheet">
+      <button class="sheet-close" type="button" data-close="menuOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" data-i18n="appName">ناوي</div>
+      <button class="menu-item" id="settingsBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+        <span class="menu-text" data-i18n="settings">الإعدادات</span>
+      </button>
+      <button class="menu-item" id="archiveBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8V21H20V8"/><path d="M10 12H14"/></svg>
+        <span class="menu-text" data-i18n="archive">أرشيف ناوي</span>
+      </button>
+      <button class="menu-item" id="exportBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M7 10L12 15L17 10"/><path d="M12 15V3"/></svg>
+        <span class="menu-text" data-i18n="exportData">تصدير البيانات</span>
+      </button>
+      <button class="menu-item" id="importBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M17 8L12 3L7 8"/><path d="M12 3V15"/></svg>
+        <span class="menu-text" data-i18n="importData">استيراد البيانات</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="overlay" id="taskOverlay">
+    <div class="sheet">
+      <button class="sheet-close" type="button" data-close="taskOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div id="taskPreviewText" class="action-task-preview"></div>
+      <div id="taskActions"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="settingsOverlay">
+    <div class="sheet">
+      <button class="sheet-close" type="button" data-close="settingsOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" data-i18n="settings">الإعدادات</div>
+      
+      <div class="setting-group">
+        <div class="setting-label" data-i18n="language">اللغة</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name" data-i18n="languageName">لغة ناوي</div>
+            <div class="segmented">
+              <button class="segment" data-language="ar" type="button">العربية</button>
+              <button class="segment" data-language="en" type="button">English</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-label" data-i18n="appearance">المظهر</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name" data-i18n="mode">الوضع</div>
+            <div class="segmented">
+              <button class="segment" data-theme="dark" type="button" data-i18n="dark">داكن</button>
+              <button class="segment" data-theme="light" type="button" data-i18n="light">نهاري</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-name" data-i18n="fontSize">حجم الخط</div>
+            <div class="segmented">
+              <button class="segment" data-font="small" type="button" data-i18n="small">صغير</button>
+              <button class="segment" data-font="medium" type="button" data-i18n="medium">متوسط</button>
+              <button class="segment" data-font="large" type="button" data-i18n="large">كبير</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-label" data-i18n="color">لون ناوي</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-name" data-i18n="nawyColor">سمة ناوي</div>
+            <div class="colors">
+              <button class="color-btn blue active" data-accent="blue" type="button" aria-label="أزرق"></button>
+              <button class="color-btn green" data-accent="green" type="button" aria-label="أخضر"></button>
+              <button class="color-btn purple" data-accent="purple" type="button" aria-label="بنفسجي"></button>
+              <button class="color-btn orange" data-accent="orange" type="button" aria-label="برتقالي"></button>
+              <button class="color-btn pink" data-accent="pink" type="button" aria-label="وردي"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <div class="setting-label">⏰ إشعار الصباح</div>
+        <div class="setting-box">
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name" data-i18n="notification">تذكير يومي</div>
+              <div class="setting-desc" id="notifDesc">فعّل عشان يجيلك تذكير يومي</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="notifToggleCheckbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-row hidden" id="notifTimeRow">
+            <div class="setting-info">
+              <div class="setting-name">⏰ معاد الإشعار</div>
+              <div class="setting-desc">اختار الوقت اللي يناسبك</div>
+            </div>
+            <input type="time" class="time-input" id="notifTime" value="08:00">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="archiveOverlay">
+    <div class="sheet">
+      <button class="sheet-close" type="button" data-close="archiveOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" data-i18n="archive">أرشيف ناوي</div>
+      <div id="archiveList"></div>
+    </div>
+  </div>
+
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-inner">
+      <div class="install-banner-icon">
+        <img src="icon-192.png" alt="ناوي">
+      </div>
+      <div class="install-banner-text">
+        <div class="install-banner-title" data-i18n="installTitle">نزّل ناوي 🌱</div>
+        <div class="install-banner-sub" data-i18n="installSub">نواياك هتكون أسهل معاك 📌</div>
+      </div>
+    </div>
+    <div class="install-banner-actions">
+      <button class="install-dismiss" id="installDismiss" type="button" data-i18n="installDismiss">متابعة للموقع</button>
+      <button class="install-action" id="installAction" type="button" data-i18n="installAction">تثبيت ⚡</button>
+    </div>
+  </div>
+
+  <input type="file" id="importFileInput" accept=".json" style="display:none;">
+
+  <script>
+    "use strict";
+
+    const APP_VERSION = "1.0.0";
+    const STORAGE_KEYS = {
+      tasks: "nawy_tasks_v2",
+      archive: "nawy_archive_v2",
+      settings: "nawy_settings_v2"
+    };
+
+    const DEFAULT_SETTINGS = {
+      theme: "dark",
+      accent: "blue",
+      language: "ar",
+      fontSize: "medium",
+      notificationEnabled: false,
+      notificationTime: "08:00",
+      sectionsCollapsed: {
+        active: false,
+        achieved: true
+      }
+    };
+
+    const TRANSLATIONS = {
+      ar: {
+        appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
+        heroTitle: "ناوي على إيه النهارده؟",
+        active: "حالية", achieved: "محققة",
+        taskPlaceholder: "أنا ناوي...",
+        achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
+        edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
+        copy: "نسخ النص", share: "مشاركة كصورة",
+        settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "تصدير البيانات", importData: "استيراد البيانات",
+        language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع",
+        dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
+        color: "اللون", nawyColor: "سمة ناوي", notification: "إشعار الصباح",
+        time: "الوقت",
+        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها.",
+        noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
+        noArchive: "الأرشيف فاضي",
+        addedToast: "تمت إضافة النية ✨", achievedToast: "نية اتحققت 🌱",
+        reactivatedToast: "تم إعادة فتح النية 🔄", editedToast: "تم التعديل ✏️",
+        deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
+        exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
+        copiedToast: "تم نسخ النص 📋",
+        morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
+        installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡",
+        notifEnabledToast: "تم تفعيل الإشعارات 🔔", notifDisabledToast: "تم تعطيل الإشعارات",
+        notifDeniedToast: "تم رفض إذن الإشعارات"
+      },
+      en: {
+        appName: "NAWY", all: "Intentions", favorites: "Favorites",
+        heroTitle: "What are you up to today?",
+        active: "Current", achieved: "Achieved",
+        taskPlaceholder: "I intend to...",
+        achievedAction: "Achieved", reactivateAction: "Reopen",
+        edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
+        copy: "Copy Text", share: "Share as Image",
+        settings: "Settings", archive: "NAWY Archive", exportData: "Export Data", importData: "Import Data",
+        language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode",
+        dark: "Dark", light: "Light", fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large",
+        color: "Color", nawyColor: "NAWY Color", notification: "Morning Reminder",
+        time: "Time",
+        noIntentions: "No intentions yet", firstIntent: "Write your first intention.",
+        noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
+        noArchive: "Archive is empty",
+        addedToast: "Intention added ✨", achievedToast: "Intention achieved 🌱",
+        reactivatedToast: "Intention reopened 🔄", editedToast: "Edited ✏️",
+        deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
+        exported: "Data exported 💾", imported: "Data imported ✅",
+        copiedToast: "Text copied 📋",
+        morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
+        installSub: "Your intentions will be easier 📌", installDismiss: "Continue", installAction: "Install ⚡",
+        notifEnabledToast: "Notifications enabled 🔔", notifDisabledToast: "Notifications disabled",
+        notifDeniedToast: "Notification permission denied"
+      }
+    };
+
+    let tasks = [];
+    let archive = [];
+    let settings = { ...DEFAULT_SETTINGS };
+    let currentView = "all";
+    let selectedTaskId = null;
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeTracking = false;
+    let audioContext = null;
+    let deferredInstallPrompt = null;
+
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    function t(key) { return TRANSLATIONS[settings.language]?.[key] || TRANSLATIONS.ar[key] || key; }
+    function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 9); }
+    function safeParse(v, f) { try { return JSON.parse(v) ?? f; } catch { return f; } }
+
+    function loadData() {
+      const storedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const storedArchive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []);
+      tasks = Array.isArray(storedTasks) ? storedTasks.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
+      archive = Array.isArray(storedArchive) ? storedArchive.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
+      const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
+      settings = {
+        ...DEFAULT_SETTINGS,
+        ...savedSettings,
+        sectionsCollapsed: {
+          ...DEFAULT_SETTINGS.sectionsCollapsed,
+          ...(savedSettings.sectionsCollapsed || {})
+        }
+      };
+    }
+    function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
+    function saveArchive() { localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive)); }
+    function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
+
+    function showToast(message, canUndo = false, undoCallback = null) {
+      const existing = document.querySelector('.toastify');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'toastify';
+      toast.textContent = message;
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 14px;
+        font-family: "Cairo", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 200;
+        cursor: ${canUndo ? 'pointer' : 'default'};
+        animation: toastIn 0.3s ease;
+        max-width: calc(100% - 32px);
+        text-align: center;
+      `;
+      
+      if (canUndo && undoCallback) {
+        toast.addEventListener('click', () => {
+          undoCallback();
+          toast.remove();
+        });
+      }
+      
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, canUndo ? 5000 : 3000);
+    }
+
+    function playAchievedSound() {
+      try {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = audioContext;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.4);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + i * 0.08 + 0.4);
+        });
+      } catch(e) {}
+    }
+
+    function celebrate() {
+      playAchievedSound();
+      if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } });
+      }
+    }
+
+    function addTask(text) {
+      const clean = String(text || "").trim();
+      if (!clean) return false;
+      tasks.unshift({
+        id: createId(),
+        text: clean,
+        status: 'active',
+        starred: false,
+        createdAt: Date.now(),
+        achievedAt: null
+      });
+      saveTasks();
+      render();
+      showToast(t("addedToast"));
+      return true;
+    }
+
+    function achieveTask(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      task.status = 'achieved';
+      task.achievedAt = Date.now();
+      saveTasks();
+      render();
+      celebrate();
+      showToast(t("achievedToast"));
+    }
+
+    function reactivateTask(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      task.status = 'active';
+      task.achievedAt = null;
+      saveTasks();
+      render();
+      showToast(t("reactivatedToast"));
+    }
+
+    function toggleStar(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      task.starred = !task.starred;
+      saveTasks();
+      render();
+    }
+
+    function deleteTask(id) {
+      const index = tasks.findIndex(x => x.id === id);
+      if (index === -1) return;
+      const [deleted] = tasks.splice(index, 1);
+      archive.unshift({ ...deleted, archivedAt: Date.now() });
+      saveTasks();
+      saveArchive();
+      render();
+      showToast(t("deletedToast"), true, () => {
+        const ai = archive.findIndex(x => x.id === deleted.id);
+        if (ai !== -1) archive.splice(ai, 1);
+        tasks.unshift(deleted);
+        saveTasks();
+        saveArchive();
+        render();
+      });
+    }
+
+    function restoreFromArchive(id) {
+      const index = archive.findIndex(x => x.id === id);
+      if (index === -1) return;
+      const [restored] = archive.splice(index, 1);
+      delete restored.archivedAt;
+      restored.status = 'active';
+      restored.achievedAt = null;
+      tasks.unshift(restored);
+      saveTasks();
+      saveArchive();
+      render();
+      renderArchive();
+      showToast(t("restoredToast"));
+    }
+
+    function deleteForever(id) {
+      const index = archive.findIndex(x => x.id === id);
+      if (index === -1) return;
+      archive.splice(index, 1);
+      saveArchive();
+      renderArchive();
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand("copy"); } catch (e) { console.warn("Copy failed", e); }
+      textarea.remove();
+      showToast(t("copiedToast"));
+    }
+
+    function copyTaskText(text) {
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => showToast(t("copiedToast")))
+          .catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function shareAsImage(task) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 1080;
+      canvas.height = 1350;
+      const ctx = canvas.getContext("2d");
+      
+      const isDark = settings.theme === "dark";
+      const bg = isDark ? "#0F1115" : "#FAF9F7";
+      const textColor = isDark ? "#E5E7EB" : "#1A1A1A";
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#3b82f6";
+      
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const iconImg = new Image();
+      iconImg.src = "icon-192.png";
+      iconImg.onload = () => {
+        ctx.drawImage(iconImg, 80, 80, 100, 100);
+        drawShareContent(ctx, task, textColor, accentColor);
+      };
+      
+      iconImg.onerror = () => {
+        drawShareContent(ctx, task, textColor, accentColor);
+      };
+    }
+
+    function drawShareContent(ctx, task, textColor, accentColor) {
+      ctx.fillStyle = textColor;
+      ctx.font = "bold 50px Cairo, sans-serif";
+      ctx.direction = settings.language === "ar" ? "rtl" : "ltr";
+      ctx.textAlign = "right";
+      ctx.fillText("ناوي", 960, 130);
+      
+      ctx.fillStyle = textColor;
+      ctx.font = "bold 60px Cairo, sans-serif";
+      ctx.textAlign = "center";
+      const words = task.text.split(" ");
+      let lines = [];
+      let line = "";
+      for (const word of words) {
+        if ((line + word).length > 15) {
+          lines.push(line.trim());
+          line = word + " ";
+        } else {
+          line += word + " ";
+        }
+      }
+      if (line.trim()) lines.push(line.trim());
+      
+      let y = 500;
+      for (const l of lines) {
+        ctx.fillText(l, 540, y);
+        y += 80;
+      }
+      
+      ctx.fillStyle = accentColor;
+      ctx.font = "bold 40px Cairo, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("nawy.app", 540, 1250);
+      
+      const canvas = ctx.canvas;
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const file = new File([blob], "nawy.png", { type: "image/png" });
+        const canShareFiles = typeof navigator.share === "function" &&
+          typeof navigator.canShare === "function" &&
+          navigator.canShare({ files: [file] });
+        if (canShareFiles) {
+          navigator.share({
+            files: [file],
+            title: "ناوي",
+            text: task.text
+          }).catch(() => {});
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "nawy.png";
+          a.click();
+          URL.revokeObjectURL(url);
+        }
+      });
+    }
+
+    function render() {
+      const content = $("#content");
+      content.innerHTML = "";
+      
+      const activeTasks = tasks.filter(x => x.status === 'active');
+      const achievedTasks = tasks.filter(x => x.status === 'achieved');
+      
+      if (currentView === "all") {
+        $("#heroTitle").textContent = t("heroTitle");
+        
+        if (activeTasks.length === 0 && achievedTasks.length === 0) {
+          content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
+        } else {
+          if (activeTasks.length > 0) {
+            content.appendChild(createSection('active', t("active"), activeTasks, !settings.sectionsCollapsed.active));
+          }
+          if (achievedTasks.length > 0) {
+            content.appendChild(createSection('achieved', t("achieved"), achievedTasks, !settings.sectionsCollapsed.achieved));
+          }
+        }
+      } else if (currentView === "favorites") {
+        $("#heroTitle").textContent = t("favorites");
+        
+        const favTasks = tasks.filter(x => x.starred);
+        if (favTasks.length === 0) {
+          content.appendChild(createEmpty("⭐", t("noFavorites"), t("favoriteHint")));
+        } else {
+          const favActive = favTasks.filter(x => x.status === 'active');
+          const favAchieved = favTasks.filter(x => x.status === 'achieved');
+          
+          if (favActive.length > 0) {
+            content.appendChild(createSection('active', t("active"), favActive, true));
+          }
+          if (favAchieved.length > 0) {
+            content.appendChild(createSection('achieved', t("achieved"), favAchieved, true));
+          }
+        }
+      }
+      
+      updateTabs();
+      initSortable();
+    }
+
+    function createSection(type, title, taskArray, isOpen = true) {
+      const sortedTasks = taskArray;
+      
+      const section = document.createElement("section");
+      section.className = "section";
+      if (!isOpen) section.classList.add("collapsed");
+      
+      const header = document.createElement("div");
+      header.className = "section-header";
+      header.innerHTML = `
+        <span class="section-title">${title}</span>
+        <span class="section-count">${sortedTasks.length}</span>
+        <span class="section-chevron">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg>
+        </span>
+      `;
+      
+      const body = document.createElement("div");
+      body.className = "section-body";
+      const list = document.createElement("div");
+      list.className = "task-list";
+      list.dataset.type = type;
+      sortedTasks.forEach(task => list.appendChild(createTaskElement(task)));
+      body.appendChild(list);
+      
+      header.addEventListener("click", () => {
+        section.classList.toggle("collapsed");
+        settings.sectionsCollapsed[type] = section.classList.contains("collapsed");
+        saveSettings();
+      });
+      
+      section.append(header, body);
+      return section;
+    }
+
+    function createTaskElement(task) {
+      const article = document.createElement("article");
+      article.className = "task" + (task.status === 'achieved' ? " completed" : "");
+      article.dataset.taskId = task.id;
+      
+      const checkbox = document.createElement("button");
+      checkbox.className = "task-checkbox";
+      checkbox.type = "button";
+      checkbox.setAttribute("aria-label", task.status === "achieved" ? t("reactivateAction") : t("achievedAction"));
+      checkbox.setAttribute("aria-pressed", String(task.status === "achieved"));
+      checkbox.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M8 12.5L11 15.5L16 9"/></svg>';
+      checkbox.addEventListener("click", e => {
+        e.stopPropagation();
+        if (task.status === 'achieved') reactivateTask(task.id);
+        else achieveTask(task.id);
+      });
+      
+      const main = document.createElement("div");
+      main.className = "task-main";
+      const p = document.createElement("p");
+      p.className = "task-text";
+      p.textContent = task.text;
+      main.appendChild(p);
+      main.addEventListener("click", () => openTaskSheet(task.id));
+      
+      const star = document.createElement("button");
+      star.className = "task-star" + (task.starred ? " active" : "");
+      star.type = "button";
+      star.setAttribute("aria-label", task.starred ? "إزالة من المفضلة" : "إضافة إلى المفضلة");
+      star.setAttribute("aria-pressed", String(task.starred));
+      star.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
+      star.addEventListener("click", e => {
+        e.stopPropagation();
+        toggleStar(task.id);
+      });
+      
+      article.append(checkbox, main, star);
+      return article;
+    }
+
+    function createEmpty(icon, title, text) {
+      const div = document.createElement("div");
+      div.className = "empty";
+      div.innerHTML = `
+        <div class="empty-icon">${icon}</div>
+        <div class="empty-title">${title}</div>
+        <div class="empty-text">${text}</div>
+      `;
+      return div;
+    }
+
+    function updateTabs() {
+      $$(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.view === currentView);
+      });
+    }
+
+    function setView(view) {
+      if (currentView === view) return;
+      currentView = view;
+      closeAllOverlays();
+      closeComposer();
+      render();
+    }
+
+    function initSortable() {
+      $$(".task-list").forEach(list => {
+        if (list.sortableInstance) list.sortableInstance.destroy();
+        list.sortableInstance = new Sortable(list, {
+          animation: 150,
+          ghostClass: 'drag-ghost',
+          dragClass: 'drag-source',
+          delay: 200,
+          delayOnTouchOnly: true,
+          onEnd: function() {
+            const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
+            const reordered = [];
+            const taskMap = new Map();
+            tasks.forEach(x => taskMap.set(x.id, x));
+            newOrder.forEach(id => {
+              if (taskMap.has(id)) {
+                reordered.push(taskMap.get(id));
+                taskMap.delete(id);
+              }
+            });
+            taskMap.forEach(x => reordered.push(x));
+            tasks = reordered;
+            saveTasks();
+          }
+        });
+      });
+    }
+
+    function openTaskSheet(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      selectedTaskId = id;
+      
+      const preview = $("#taskPreviewText");
+      preview.textContent = task.text;
+      
+      const actions = $("#taskActions");
+      actions.innerHTML = "";
+      
+      const achieveBtn = document.createElement("button");
+      achieveBtn.className = "action-item";
+      achieveBtn.type = "button";
+      achieveBtn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5L11 15.5L16 9"/></svg>
+        <span class="action-text">${task.status === 'achieved' ? t("reactivateAction") : t("achievedAction")}</span>
+      `;
+      achieveBtn.addEventListener("click", () => {
+        if (task.status === 'achieved') reactivateTask(task.id);
+        else achieveTask(task.id);
+        closeOverlay($("#taskOverlay"));
+      });
+      actions.appendChild(achieveBtn);
+      
+      const editBtn = document.createElement("button");
+      editBtn.className = "action-item";
+      editBtn.type = "button";
+      editBtn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24"><path d="M17 3L21 7L8 20H4V16L17 3Z"/></svg>
+        <span class="action-text">${t("edit")}</span>
+      `;
+      editBtn.addEventListener("click", () => {
+        const editContainer = document.createElement("div");
+        const originalPreview = preview;
+        editContainer.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;margin-bottom:8px;";
+        
+        const editArea = document.createElement("textarea");
+        editArea.value = task.text;
+        editArea.style.cssText = "flex:1;min-height:50px;padding:12px;border:1px solid var(--accent);border-radius:10px;background:var(--surface);color:var(--text);resize:none;font-size:var(--fs-md);";
+        
+        const doneBtn = document.createElement("button");
+        doneBtn.type = "button";
+        doneBtn.style.cssText = "width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;";
+        doneBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M8 12.5L11 15.5L16 9"/></svg>';
+        
+        editContainer.append(editArea, doneBtn);
+        preview.replaceWith(editContainer);
+        editArea.focus();
+        
+        function saveEdit() {
+          const newText = editArea.value.trim();
+          if (newText && newText !== task.text) {
+            task.text = newText;
+            saveTasks();
+            render();
+            showToast(t("editedToast"));
+          }
+          if (editContainer.isConnected) {
+            originalPreview.textContent = task.text;
+            editContainer.replaceWith(originalPreview);
+          }
+          closeOverlay($("#taskOverlay"));
+          selectedTaskId = null;
+        }
+        
+        doneBtn.addEventListener("click", saveEdit);
+        editArea.addEventListener("keydown", e => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            saveEdit();
+          }
+        });
+      });
+      actions.appendChild(editBtn);
+      
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "action-item";
+      copyBtn.type = "button";
+      copyBtn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span class="action-text">${t("copy")}</span>
+      `;
+      copyBtn.addEventListener("click", () => copyTaskText(task.text));
+      actions.appendChild(copyBtn);
+      
+      const shareBtn = document.createElement("button");
+      shareBtn.className = "action-item";
+      shareBtn.type = "button";
+      shareBtn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 12V20H20V12"/><path d="M12 16V4M8 8L12 4L16 8"/></svg>
+        <span class="action-text">${t("share")}</span>
+      `;
+      shareBtn.addEventListener("click", () => shareAsImage(task));
+      actions.appendChild(shareBtn);
+      
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "action-item danger";
+      deleteBtn.type = "button";
+      deleteBtn.innerHTML = `
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 6H21"/><path d="M19 6V22H5V6"/><path d="M8 6V4H16V6"/></svg>
+        <span class="action-text">${t("retreat")}</span>
+      `;
+      deleteBtn.addEventListener("click", () => {
+        deleteTask(task.id);
+        closeOverlay($("#taskOverlay"));
+        selectedTaskId = null;
+      });
+      actions.appendChild(deleteBtn);
+      
+      openOverlay($("#taskOverlay"));
+    }
+
+    function renderArchive() {
+      const container = $("#archiveList");
+      container.innerHTML = "";
+      
+      if (archive.length === 0) {
+        container.innerHTML = `<div class="empty"><div class="empty-title">${t("noArchive")}</div></div>`;
+        return;
+      }
+      
+      archive.forEach(task => {
+        const item = document.createElement("div");
+        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;";
+        
+        const text = document.createElement("div");
+        text.textContent = task.text;
+        text.style.cssText = "flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+        
+        const btnGroup = document.createElement("div");
+        btnGroup.style.cssText = "display:flex;gap:4px;flex-shrink:0;";
+        
+        const restoreBtn = document.createElement("button");
+        restoreBtn.textContent = t("restore");
+        restoreBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
+        restoreBtn.addEventListener("click", () => restoreFromArchive(task.id));
+        
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = t("delete");
+        deleteBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:13px;font-weight:600;";
+        deleteBtn.addEventListener("click", () => deleteForever(task.id));
+        
+        btnGroup.append(restoreBtn, deleteBtn);
+        item.append(text, btnGroup);
+        container.appendChild(item);
+      });
+    }
+
+    function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
+    function closeOverlay(overlay) { overlay.classList.remove("show"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
+    function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
+
+    function openComposer() { $("#fabBtn").classList.add("hidden"); $("#composerPanel").classList.add("open"); $("#taskInput").focus(); }
+    function closeComposer() { $("#fabBtn").classList.remove("hidden"); $("#composerPanel").classList.remove("open"); $("#taskInput").value = ""; $("#sendBtn").classList.add("disabled"); }
+
+    function applySettings() {
+      document.documentElement.setAttribute("data-theme", settings.theme);
+      document.documentElement.setAttribute("data-accent", settings.accent);
+      document.documentElement.setAttribute("data-font", settings.fontSize);
+      document.documentElement.lang = settings.language;
+      document.documentElement.dir = settings.language === "ar" ? "rtl" : "ltr";
+      
+      $("#brandName").textContent = t("appName");
+      $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+      $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+      $("#taskInput").placeholder = t("taskPlaceholder");
+      $("#heroTitle").textContent = t("heroTitle");
+      
+      $$(".segment[data-theme]").forEach(btn => btn.classList.toggle("active", btn.dataset.theme === settings.theme));
+      $$(".color-btn[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
+      $$(".segment[data-font]").forEach(btn => btn.classList.toggle("active", btn.dataset.font === settings.fontSize));
+      $$("[data-language]").forEach(btn => btn.classList.toggle("active", btn.dataset.language === settings.language));
+      
+      updateNotifUI();
+    }
+
+    function updateNotifUI() {
+      const checkbox = $("#notifToggleCheckbox");
+      checkbox.checked = settings.notificationEnabled;
+      
+      const timeRow = $("#notifTimeRow");
+      const notifDesc = $("#notifDesc");
+      
+      if (settings.notificationEnabled) {
+        timeRow.classList.remove("hidden");
+        notifDesc.textContent = settings.language === "ar" ? 
+          `هيجيلك إشعار كل يوم الساعة ${settings.notificationTime}` : 
+          `You'll get a notification daily at ${settings.notificationTime}`;
+      } else {
+        timeRow.classList.add("hidden");
+        notifDesc.textContent = settings.language === "ar" ? 
+          "فعّل عشان يجيلك تذكير يومي" : 
+          "Enable to get daily reminders";
+      }
+      
+      $("#notifTime").value = settings.notificationTime;
+    }
+
+    async function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        showToast(t("notifDeniedToast"));
+        return false;
+      }
+      if (Notification.permission === "granted") return true;
+      if (Notification.permission === "denied") {
+        showToast(settings.language === "ar"
+          ? "الإشعارات مقفولة من إعدادات المتصفح"
+          : "Notifications are blocked in browser settings");
+        return false;
+      }
+      try {
+        return await Notification.requestPermission() === "granted";
+      } catch (error) {
+        console.warn("Notification permission error", error);
+        showToast(t("notifDeniedToast"));
+        return false;
+      }
+    }
+
+    function scheduleNotification() {
+      if (!settings.notificationEnabled) return;
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
+      
+      const now = new Date();
+      const [hours, minutes] = (settings.notificationTime || "08:00").split(":").map(Number);
+      let scheduledTime = new Date(now);
+      scheduledTime.setHours(hours, minutes, 0, 0);
+      if (scheduledTime <= now) scheduledTime.setDate(scheduledTime.getDate() + 1);
+      
+      const delay = scheduledTime.getTime() - now.getTime();
+      window.nawyNotifTimeout = setTimeout(() => {
+        showMorningNotification();
+        scheduleNotification();
+      }, delay);
+    }
+
+    function showMorningNotification() {
+      const body = t("morningNotif");
+      const options = {
+        body,
+        icon: "./icon-512.png",
+        badge: "./icon-192.png",
+        dir: settings.language === "en" ? "ltr" : "rtl",
+        lang: settings.language,
+        tag: "nawy-morning",
+        requireInteraction: true,
+        vibrate: [100, 50, 100]
+      };
+      
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => {
+          reg.showNotification("ناوي 🌱", options);
+        }).catch(() => {
+          if ("Notification" in window && Notification.permission === "granted") {
+            const notification = new Notification("ناوي 🌱", options);
+            notification.onclick = () => {
+              window.focus();
+              notification.close();
+            };
+          }
+        });
+      } else if ("Notification" in window && Notification.permission === "granted") {
+        const notification = new Notification("ناوي 🌱", options);
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
+      }
+    }
+
+    function exportData() {
+      const data = JSON.stringify({ tasks, archive, settings }, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nawy-backup-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(t("exported"));
+    }
+
+    function importData(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.tasks && data.archive && data.settings) {
+            tasks = data.tasks;
+            archive = data.archive;
+            settings = {
+              ...DEFAULT_SETTINGS,
+              ...data.settings,
+              sectionsCollapsed: {
+                ...DEFAULT_SETTINGS.sectionsCollapsed,
+                ...(data.settings.sectionsCollapsed || {})
+              }
+            };
+            saveTasks();
+            saveArchive();
+            saveSettings();
+            applySettings();
+            render();
+            showToast(t("imported"));
+          }
+        } catch(err) {
+          showToast("Error importing data");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    $("#fabBtn").addEventListener("click", openComposer);
+    $("#composerForm").addEventListener("submit", e => {
+      e.preventDefault();
+      if (addTask($("#taskInput").value)) closeComposer();
+    });
+    $("#taskInput").addEventListener("input", () => {
+      const hasText = $("#taskInput").value.trim().length > 0;
+      $("#sendBtn").classList.toggle("disabled", !hasText);
+      $("#sendBtn").disabled = !hasText;
+    });
+
+    $$(".tab").forEach(tab => {
+      tab.addEventListener("click", () => setView(tab.dataset.view));
+    });
+
+    $("#menuBtn").addEventListener("click", () => openOverlay($("#menuOverlay")));
+    $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#settingsOverlay")); });
+    $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); renderArchive(); openOverlay($("#archiveOverlay")); });
+    $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); exportData(); });
+    $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#importFileInput").click(); });
+    $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
+
+    $$("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.close)));
+    });
+
+    $$(".overlay").forEach(overlay => {
+      overlay.addEventListener("click", e => {
+        if (e.target === overlay) closeOverlay(overlay);
+      });
+    });
+
+    $$(".segment[data-theme]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.theme = btn.dataset.theme;
+        saveSettings();
+        applySettings();
+      });
+    });
+
+    $$(".color-btn[data-accent]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.accent = btn.dataset.accent;
+        saveSettings();
+        applySettings();
+      });
+    });
+
+    $$(".segment[data-font]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.fontSize = btn.dataset.font;
+        saveSettings();
+        applySettings();
+        render();
+      });
+    });
+
+    $$("[data-language]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.language = btn.dataset.language;
+        saveSettings();
+        applySettings();
+        render();
+      });
+    });
+
+    let notificationChanging = false;
+
+    $("#notifToggleCheckbox").addEventListener("change", async function () {
+      if (notificationChanging) return;
+      const checkbox = this;
+      const requestedState = checkbox.checked;
+      notificationChanging = true;
+      checkbox.disabled = true;
+
+      try {
+        if (requestedState) {
+          const granted = await requestNotificationPermission();
+          if (!granted) {
+            settings.notificationEnabled = false;
+            checkbox.checked = false;
+            updateNotifUI();
+            return;
+          }
+          settings.notificationEnabled = true;
+          saveSettings();
+          scheduleNotification();
+          showToast(`✅ ${t("notifEnabledToast")} - ${settings.notificationTime}`);
+          updateNotifUI();
+        } else {
+          settings.notificationEnabled = false;
+          saveSettings();
+          if (window.nawyNotifTimeout) {
+            clearTimeout(window.nawyNotifTimeout);
+            window.nawyNotifTimeout = null;
+          }
+          showToast(t("notifDisabledToast"));
+          updateNotifUI();
+        }
+      } finally {
+        checkbox.disabled = false;
+        notificationChanging = false;
+      }
+    });
+
+    $("#notifTime").addEventListener("change", () => {
+      settings.notificationTime = $("#notifTime").value;
+      saveSettings();
+      updateNotifUI();
+      if (settings.notificationEnabled) {
+        scheduleNotification();
+        showToast(`⏰ تم ضبط الإشعار على ${settings.notificationTime}`);
+      }
+    });
+
+    document.addEventListener("touchstart", e => {
+      if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel, .fab")) return;
+      const touch = e.touches[0];
+      swipeStartX = touch.clientX;
+      swipeStartY = touch.clientY;
+      swipeTracking = true;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", e => {
+      if (!swipeTracking) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - swipeStartX;
+      const dy = touch.clientY - swipeStartY;
+      if (Math.abs(dy) > Math.abs(dx) * 1.2) {
+        swipeTracking = false;
+        return;
+      }
+      if (Math.abs(dx) > 10) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener("touchend", e => {
+      if (!swipeTracking) return;
+      swipeTracking = false;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - swipeStartX;
+      
+      if (Math.abs(dx) > 60) {
+        const views = ["all", "favorites"];
+        const idx = views.indexOf(currentView);
+        const isRTL = document.documentElement.dir === "rtl";
+        
+        if (isRTL) {
+          if (dx > 0) setView(views[(idx + 1) % views.length]);
+          else setView(views[(idx - 1 + views.length) % views.length]);
+        } else {
+          if (dx > 0) setView(views[(idx - 1 + views.length) % views.length]);
+          else setView(views[(idx + 1) % views.length]);
+        }
+      }
+    }, { passive: true });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").then(registration => {
+          setInterval(() => {
+            registration.update().catch(() => {});
+          }, 5 * 60 * 1000);
+          
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+              registration.update().catch(() => {});
+            }
+          });
+          
+          registration.addEventListener("updatefound", () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener("statechange", () => {
+                if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                  showUpdateBanner();
+                }
+              });
+            }
+          });
+        }).catch(() => {});
+      });
+      
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }
+
+    function showUpdateBanner() {
+      const existingBanner = document.getElementById("updateBanner");
+      if (existingBanner) existingBanner.remove();
+      
+      const updateBanner = document.createElement("div");
+      updateBanner.id = "updateBanner";
+      updateBanner.style.cssText = `
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: "Cairo", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        width: min(calc(100% - 32px), 400px);
+      `;
+      
+      updateBanner.innerHTML = `
+        <span style="flex:1;">نسخة جديدة متاحة 🔄</span>
+        <button id="updateNowBtn" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;">تحديث الآن</button>
+      `;
+      
+      document.body.appendChild(updateBanner);
+      
+      updateBanner.querySelector("#updateNowBtn").addEventListener("click", () => {
+        updateBanner.remove();
+        navigator.serviceWorker.ready.then(registration => {
+          if (registration.waiting) {
+            registration.waiting.postMessage('SKIP_WAITING');
+          }
+        });
+      });
+    }
+
+    // ============ بنر التثبيت ============
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      $("#installBanner").classList.add("show");
+    });
+
+    $("#installAction").addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        showToast("تم تثبيت ناوي 🌱");
+      }
+      deferredInstallPrompt = null;
+      $("#installBanner").classList.remove("show");
+    });
+
+    $("#installDismiss").addEventListener("click", () => {
+      $("#installBanner").classList.remove("show");
+      setTimeout(() => {
+        if (deferredInstallPrompt) {
+          $("#installBanner").classList.add("show");
+        }
+      }, 30000);
+    });
+
+    window.addEventListener("appinstalled", () => {
+      $("#installBanner").classList.remove("show");
+      deferredInstallPrompt = null;
+    });
+
+    function init() {
+      loadData();
+      applySettings();
+      render();
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("action") === "add") {
+        setTimeout(() => openComposer(), 150);
+      }
+
+      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") {
+        scheduleNotification();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
