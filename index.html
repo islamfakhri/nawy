@@ -1,565 +1,794 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark" data-accent="blue" data-font="medium">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
   <meta name="theme-color" content="#3b82f6">
-  <meta name="color-scheme" content="dark light">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="ناوي — مساحتك الخاصة لنواياك وأهدافك.">
+  <meta name="description" content="ناوي - مساحتك الشخصية لنواياك وأهدافك">
   <title>ناوي</title>
-
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="Icon-192.png">
+  
+  <!-- الخط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  
   <!-- SortableJS -->
-  <script src="./Sortable.min.js"></script>
-  <script>
-    if (typeof Sortable === 'undefined') {
-      document.write('<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"><\/script>');
-    }
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <!-- Toastify -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
-
-  <!-- Flatpickr -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
-
-  <!-- Lucide Icons -->
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-
-  <!-- Tone.js -->
-  <script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
-
-  <!-- Fuse.js -->
-  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-
   <style>
+    /* ============ المتغيرات ============ */
     :root {
-      --bg: #fafafa;
-      --surface: #ffffff;
-      --surface-2: #f4f5f5;
-      --surface-3: #eceeef;
-      --text: #1a1c1d;
-      --muted: #6b7377;
-      --border: rgba(17, 20, 21, .06);
-      --border-strong: rgba(17, 20, 21, .10);
-      --accent: #3b82f6;
-      --accent-soft: rgba(59, 130, 246, .08);
-      --danger: #e5484d;
-      --warning: #e8a317;
-      --shadow-soft: 0 1px 3px rgba(0,0,0,.03);
-      --shadow-card: 0 2px 8px rgba(0,0,0,.04);
-      --shadow-sheet: 0 16px 50px rgba(0,0,0,.12);
-      --shadow-drag: 0 8px 24px rgba(0,0,0,.15);
       --radius-sm: 10px;
       --radius-md: 14px;
       --radius-lg: 18px;
       --radius-xl: 24px;
       --radius-full: 9999px;
-      --header-height: 116px;
-      --bottom-space: 80px;
-      --tab-indicator-width: 28px;
-      --tab-indicator-left: 0px;
-      --fw-normal: 400;
-      --fw-medium: 500;
-      --fw-semibold: 600;
-      --fw-bold: 700;
-      --fw-extrabold: 800;
-      --sp-xs: 4px;
-      --sp-sm: 8px;
-      --sp-md: 12px;
-      --sp-lg: 16px;
-      --sp-xl: 24px;
-      --touch-checkbox: 32px;
-      --touch-star: 46px;
       --fab-size: 56px;
-      --transition-theme: .3s cubic-bezier(.4,0,.2,1);
+      --bottom-space: 90px;
+      --header-height: 72px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* ============ الوضع النهاري ============ */
+    html[data-theme="light"] {
+      --bg: #FAF9F7;
+      --surface: #FFFFFF;
+      --surface-2: #F5F5F4;
+      --surface-3: #E7E5E4;
+      --text: #1A1A1A;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --shadow-soft: 0 1px 3px rgba(0,0,0,0.03);
+      --shadow-card: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-sheet: 0 16px 50px rgba(0,0,0,0.12);
+      --shadow-drag: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    /* ============ الوضع الداكن (افتراضي) ============ */
+    html[data-theme="dark"] {
+      --bg: #0F1115;
+      --surface: #181B20;
+      --surface-2: #1F2329;
+      --surface-3: #2A2F36;
+      --text: #E5E7EB;
+      --muted: #9CA3AF;
+      --border: #272A30;
+      --border-strong: #3A3F46;
+      --shadow-soft: 0 1px 4px rgba(0,0,0,0.15);
+      --shadow-card: 0 4px 12px rgba(0,0,0,0.20);
+      --shadow-sheet: 0 20px 60px rgba(0,0,0,0.40);
+      --shadow-drag: 0 12px 32px rgba(0,0,0,0.40);
+    }
+
+    /* ============ السِمات اللونية ============ */
+    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.08); }
+    html[data-accent="green"] { --accent: #10b981; --accent-soft: rgba(16,185,129,0.08); }
+    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,0.08); }
+    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,0.10); }
+    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,0.08); }
+
+    /* ============ أحجام الخطوط ============ */
     html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; --fs-hero: 19px; }
     html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; --fs-hero: 22px; }
     html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; --fs-hero: 25px; }
 
-    html[data-theme="dark"] {
-      --bg: #0e1010; --surface: #1a1d1d; --surface-2: #222626; --surface-3: #2c3131;
-      --text: #eef1f1; --muted: #8b9494; --border: rgba(255,255,255,.05); --border-strong: rgba(255,255,255,.08);
-      --shadow-soft: 0 1px 4px rgba(0,0,0,.15); --shadow-card: 0 4px 12px rgba(0,0,0,.20); --shadow-sheet: 0 20px 60px rgba(0,0,0,.40);
-      --shadow-drag: 0 12px 32px rgba(0,0,0,.40);
-    }
-    html[data-accent="green"] { --accent: #19a974; --accent-soft: rgba(25, 169, 116, .08); }
-    html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59, 130, 246, .08); }
-    html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139, 92, 246, .08); }
-    html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245, 158, 11, .10); }
-    html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236, 72, 153, .08); }
-
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { min-height: 100%; background: var(--bg); scroll-behavior: smooth; }
+    /* ============ أساسيات ============ */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    html { min-height: 100%; background: var(--bg); }
     body {
-      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
-      font-family: "Cairo", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Tahoma, Arial, sans-serif;
-      transition: background var(--transition-theme), color var(--transition-theme);
-      overscroll-behavior-y: none; touch-action: pan-y;
-      font-size: var(--fs-base); line-height: 1.6;
-    }
-    button, textarea, input { font: inherit; }
-    button { border: 0; cursor: pointer; color: inherit; background: none; -webkit-tap-highlight-color: transparent; }
-    textarea, input { outline: none; }
-    ::selection { background: var(--accent); color: #fff; }
-    .lucide { width: 20px; height: 20px; stroke-width: 2; }
-
-    .app {
-      width: min(100%, 760px); min-height: 100vh; margin: 0 auto;
-      padding: env(safe-area-inset-top) var(--sp-lg) calc(var(--bottom-space) + env(safe-area-inset-bottom)) var(--sp-lg);
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Cairo", "Segoe UI", system-ui, sans-serif;
+      font-size: var(--fs-base);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+      overscroll-behavior-y: none;
       touch-action: pan-y;
     }
+    button { border: 0; cursor: pointer; color: inherit; background: none; font: inherit; }
+    input, textarea { outline: none; font: inherit; border: none; background: none; color: inherit; }
+    ::selection { background: var(--accent); color: #fff; }
 
-    .header {
-      min-height: var(--header-height); position: sticky; top: 0; z-index: 20; padding-top: var(--sp-sm);
-      background: linear-gradient(to bottom, var(--bg) 82%, rgba(0,0,0,0));
-      display: flex; flex-direction: column;
-      transition: background var(--transition-theme);
+    /* ============ أيقونات SVG ============ */
+    .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* ============ التطبيق ============ */
+    .app {
+      width: min(100%, 760px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: env(safe-area-inset-top) 16px calc(var(--bottom-space) + env(safe-area-inset-bottom));
     }
-    .header-main { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-md); }
-    .brand { display: flex; align-items: center; gap: var(--sp-sm); min-width: 0; }
-    .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-md); }
-    .brand-mark-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .brand-name { font-size: var(--fs-lg); font-weight: var(--fw-extrabold); letter-spacing: -.3px; }
-    .menu-btn { width: 44px; height: 44px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); box-shadow: var(--shadow-soft); transition: transform .14s ease; }
-    .menu-btn:active { transform: scale(.93); }
 
-    .header-nav { width: 100%; position: relative; margin-top: var(--sp-xs); display: flex; align-items: stretch; }
-    .header-tab { position: relative; z-index: 2; min-height: 52px; flex: 1 1 0; padding: 0 var(--sp-sm) 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); transition: color .18s ease; }
-    .header-tab .lucide { width: 20px; height: 20px; }
-    .header-tab.active { color: var(--accent); }
-    .header-tab-indicator { position: absolute; z-index: 3; left: var(--tab-indicator-left); bottom: 0; width: var(--tab-indicator-width); height: 3px; border-radius: var(--radius-full); background: var(--accent); pointer-events: none; transition: left .28s cubic-bezier(.22,.75,.25,1), width .28s cubic-bezier(.22,.75,.25,1); }
+    /* ============ الهيدر ============ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 12px 0 8px;
+      background: linear-gradient(to bottom, var(--bg) 85%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .brand-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; }
+    .brand-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-icon .fallback { display: none; font-weight: 800; font-size: 18px; color: var(--accent); }
+    .brand-name { font-size: var(--fs-lg); font-weight: 800; letter-spacing: -0.3px; }
+    .menu-btn {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      color: var(--muted);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.14s ease;
+    }
+    .menu-btn:active { transform: scale(0.93); }
 
-    .hero { padding: var(--sp-sm) 2px var(--sp-sm); }
-    .hero-title { margin: 0; font-size: var(--fs-lg); line-height: 1.3; letter-spacing: -.2px; font-weight: var(--fw-semibold); }
-    .hero-date { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-medium); }
+    /* ============ التبويبات ============ */
+    .tabs {
+      position: relative;
+      display: flex;
+      margin-top: 12px;
+      background: var(--surface-2);
+      border-radius: var(--radius-full);
+      padding: 4px;
+      gap: 4px;
+    }
+    .tab {
+      flex: 1;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: var(--muted);
+      transition: all 0.25s ease;
+      position: relative;
+      z-index: 2;
+    }
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-soft);
+    }
+    .tab .count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: var(--fs-xs);
+      font-weight: 800;
+    }
 
-    .content { margin-top: var(--sp-sm); }
+    /* ============ الترحيب ============ */
+    .hero { padding: 20px 4px 12px; }
+    .hero-title {
+      margin: 0;
+      font-size: var(--fs-hero);
+      line-height: 1.3;
+      letter-spacing: -0.2px;
+      font-weight: 700;
+    }
+    .hero-sub { margin-top: 4px; color: var(--muted); font-size: var(--fs-sm); font-weight: 500; }
 
+    /* ============ المحتوى ============ */
+    .content { margin-top: 8px; }
+
+    /* ============ الأقسام ============ */
     .section {
-      margin-top: var(--sp-md);
-      background: color-mix(in srgb, var(--surface) 60%, transparent);
+      margin-top: 12px;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
     .section:first-child { margin-top: 0; }
-    .task-list {
-      padding: 0 var(--sp-md);
-      display: flex; flex-direction: column;
-      position: relative; min-height: 20px;
+    .section-header {
+      min-height: 48px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
     }
+    .section-title { font-size: var(--fs-sm); font-weight: 700; }
+    .section-count {
+      min-width: 22px;
+      height: 22px;
+      padding: 0 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+    }
+    .section-chevron { margin-right: auto; transition: transform 0.25s ease; }
+    .section-chevron .icon { width: 14px; height: 14px; }
+    .section.collapsed .section-chevron { transform: rotate(180deg); }
+    .section-body {
+      max-height: 5000px;
+      opacity: 1;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
+      overflow: hidden;
+    }
+    .section.collapsed .section-body { max-height: 0; opacity: 0; }
 
-    .task { position: relative; display: flex; align-items: center; gap: var(--sp-md); min-height: 52px; padding: var(--sp-xs) 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+    /* ============ قائمة النوايا ============ */
+    .task-list { padding: 0 12px; display: flex; flex-direction: column; min-height: 20px; }
+    .task {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 52px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
     .task:last-child { border-bottom: 0; }
-    .task.completed { opacity: .55; }
-    .task.drag-source { opacity: .35 !important; }
+    .task.completed { opacity: 0.55; }
+    .task.drag-source { opacity: 0.35 !important; }
     .drag-ghost {
-      opacity: .95 !important;
+      opacity: 0.95 !important;
       background: var(--surface) !important;
       border: 1px solid var(--border-strong) !important;
       border-radius: var(--radius-md) !important;
       box-shadow: var(--shadow-drag) !important;
     }
 
-    .task-checkbox { width: var(--touch-checkbox); height: var(--touch-checkbox); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); border: 1.5px solid var(--muted); background: transparent; transition: all .18s ease; }
+    /* دائرة التحقق */
+    .task-checkbox {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--muted);
+      transition: all 0.18s ease;
+    }
+    .task-checkbox .icon { width: 14px; height: 14px; color: #fff; opacity: 0; transform: scale(0.5); transition: all 0.16s ease; }
     .task.completed .task-checkbox { background: var(--accent); border-color: var(--accent); }
-    .task-checkbox .lucide { width: 14px; height: 14px; color: #fff; opacity: 0; transform: scale(.5); transition: all .16s ease; }
-    .task.completed .task-checkbox .lucide { opacity: 1; transform: scale(1); }
+    .task.completed .task-checkbox .icon { opacity: 1; transform: scale(1); }
 
-    .task-main { min-width: 0; flex: 1; padding: var(--sp-xs) 0; cursor: pointer; }
-    .task-text { margin: 0; font-size: var(--fs-base); font-weight: var(--fw-medium); overflow-wrap: anywhere; }
+    .task-main { min-width: 0; flex: 1; }
+    .task-text { margin: 0; font-size: var(--fs-base); font-weight: 500; overflow-wrap: anywhere; }
     .task.completed .task-text { color: var(--muted); text-decoration: line-through; }
 
-    .task-star { width: var(--touch-star); height: var(--touch-star); flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-full); color: #b8bdbd; transition: color .16s ease; }
-    .task-star .lucide { width: 22px; height: 22px; }
-    .task-star.active { color: var(--warning); }
-    .task-star.active .lucide { fill: var(--warning); stroke: var(--warning); }
-
-    .completed-section {
-      margin-top: var(--sp-md);
-      background: color-mix(in srgb, var(--surface) 60%, transparent);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .completed-toggle {
-      width: 100%; min-height: 44px; padding: var(--sp-xs) var(--sp-md);
-      display: flex; align-items: center; gap: var(--sp-sm);
-      border-bottom: 1px solid var(--border);
-    }
-    .completed-toggle-title { display: flex; align-items: center; gap: var(--sp-sm); font-size: var(--fs-sm); font-weight: var(--fw-bold); }
-    .completed-toggle-count {
-      min-width: 22px; height: 22px; padding: 0 5px;
-      display: inline-flex; align-items: center; justify-content: center;
+    /* النجمة */
+    .task-star {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
       border-radius: var(--radius-full);
-      background: var(--surface-3); color: var(--muted);
-      font-size: var(--fs-xs); font-weight: var(--fw-bold);
+      color: var(--surface-3);
+      transition: color 0.16s ease;
     }
-    .completed-toggle-chevron { margin-right: auto; transition: transform .25s ease; }
-    .completed-toggle-chevron .lucide { width: 14px; height: 14px; }
-    .completed-toggle.open .completed-toggle-chevron { transform: rotate(180deg); }
-    .completed-list-wrap { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .30s ease, opacity .20s ease; }
-    .completed-list-wrap.open { max-height: 4000px; opacity: 1; }
+    .task-star .icon { width: 20px; height: 20px; }
+    .task-star.active { color: #f59e0b; }
+    .task-star.active .icon { fill: #f59e0b; stroke: #f59e0b; }
 
-    .task-empty { padding: 36px var(--sp-xl); text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--border); color: var(--muted); }
-    .empty-symbol { width: 44px; height: 44px; margin: 0 auto var(--sp-md); display: grid; place-items: center; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--accent); font-size: 18px; font-weight: var(--fw-extrabold); }
-    .empty-title { color: var(--text); font-size: var(--fs-md); font-weight: var(--fw-bold); }
-    .empty-text { margin-top: var(--sp-xs); color: var(--muted); font-size: var(--fs-sm); }
+    /* ============ الحالة الفارغة ============ */
+    .empty {
+      padding: 36px 24px;
+      text-align: center;
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border-strong);
+      color: var(--muted);
+    }
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-md);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .empty-icon .icon { width: 24px; height: 24px; }
+    .empty-title { color: var(--text); font-size: var(--fs-md); font-weight: 700; }
+    .empty-text { margin-top: 4px; color: var(--muted); font-size: var(--fs-sm); }
 
-    .composer-wrap { position: fixed; z-index: 30; left: 50%; bottom: 0; width: min(760px, 100%); transform: translateX(-50%); padding: 0 var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom)); pointer-events: none; display: flex; justify-content: flex-end; }
-    .composer-fab { pointer-events: auto; width: var(--fab-size); height: var(--fab-size); border-radius: var(--radius-full); background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.18); transition: transform .15s ease; }
-    .composer-fab:active { transform: scale(.93); }
-    .composer-fab.hidden { display: none; }
+    /* ============ زر الإضافة العائم ============ */
+    .fab-wrap {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      bottom: 0;
+      width: min(760px, 100%);
+      transform: translateX(-50%);
+      padding: 0 16px calc(16px + env(safe-area-inset-bottom));
+      pointer-events: none;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .fab {
+      pointer-events: auto;
+      width: var(--fab-size);
+      height: var(--fab-size);
+      border-radius: var(--radius-full);
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease;
+    }
+    .fab:active { transform: scale(0.93); }
+    .fab.hidden { display: none; }
 
-    .composer-panel { pointer-events: auto; position: fixed; z-index: 31; left: 50%; bottom: 0; transform: translateX(-50%) translateY(100%); width: min(100%, 760px); background: var(--surface); border-radius: var(--radius-xl) var(--radius-xl) 0 0; box-shadow: var(--shadow-sheet); border: 1px solid var(--border); transition: transform .28s ease; padding: var(--sp-lg) var(--sp-lg) calc(var(--sp-md) + env(safe-area-inset-bottom)); }
+    /* ============ لوحة الإضافة ============ */
+    .composer-panel {
+      pointer-events: auto;
+      position: fixed;
+      z-index: 31;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%) translateY(100%);
+      width: min(100%, 760px);
+      background: var(--surface);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      box-shadow: var(--shadow-sheet);
+      border: 1px solid var(--border);
+      transition: transform 0.28s ease;
+      padding: 16px 16px calc(12px + env(safe-area-inset-bottom));
+    }
     .composer-panel.open { transform: translateX(-50%) translateY(0); }
-    .composer-input-row { display: flex; align-items: center; gap: var(--sp-sm); }
-    .composer-input-row textarea { flex: 1; min-height: 52px; max-height: 110px; resize: none; padding: var(--sp-md); border: none; background: transparent; color: var(--text); font-size: var(--fs-base); }
-    .composer-input-row textarea::placeholder { color: var(--muted); opacity: .6; }
-    .send-btn { width: 46px; height: 46px; flex: 0 0 auto; border-radius: var(--radius-full); background: var(--accent); color: #fff; display: grid; place-items: center; transition: opacity .18s ease; }
-    .send-btn.disabled { opacity: .4; }
+    .composer-row { display: flex; align-items: center; gap: 8px; }
+    .composer-row textarea {
+      flex: 1;
+      min-height: 52px;
+      max-height: 110px;
+      resize: none;
+      padding: 12px;
+      font-size: var(--fs-base);
+    }
+    .composer-row textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .send-btn {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: var(--radius-full);
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      transition: opacity 0.18s ease;
+    }
+    .send-btn.disabled { opacity: 0.4; }
 
-    .overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: flex-end; justify-content: center; padding: var(--sp-lg); background: rgba(0,0,0,.40); opacity: 0; visibility: hidden; transition: opacity .20s ease, visibility .20s ease; }
+    /* ============ القائمة الجانبية ============ */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0,0,0,0.40);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
     .overlay.show { opacity: 1; visibility: visible; }
-    .sheet { width: min(100%, 520px); max-height: min(82vh, 680px); overflow-y: auto; padding: var(--sp-lg); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sheet); transform: translateY(18px); transition: transform .24s ease; position: relative; }
+    .sheet {
+      width: min(100%, 520px);
+      max-height: min(82vh, 680px);
+      overflow-y: auto;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sheet);
+      transform: translateY(18px);
+      transition: transform 0.24s ease;
+      position: relative;
+    }
     .overlay.show .sheet { transform: translateY(0); }
     .sheet-handle { width: 36px; height: 5px; margin: 2px auto 14px; border-radius: var(--radius-full); background: var(--surface-3); }
-    .sheet-close-btn { position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-radius: var(--radius-full); background: var(--surface-2); display: grid; place-items: center; color: var(--muted); z-index: 2; }
-    .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: var(--fw-bold); }
-
-    .action-task-preview {
-      width: 100%; margin: 4px 4px 8px; padding: var(--sp-md);
-      border-radius: var(--radius-md); background: var(--surface-2);
-      display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm);
-      cursor: pointer;
+    .sheet-close {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      z-index: 2;
     }
-    .action-task-preview-text { flex: 1; font-size: var(--fs-md); font-weight: var(--fw-semibold); }
-    .action-task-edit-input { width: 100%; min-height: 50px; padding: var(--sp-sm); border: 1px solid var(--accent); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); resize: none; font-size: var(--fs-md); }
+    .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: 700; }
 
-    .action-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
-    .action-item:active { background: var(--surface-2); }
-    .action-item.danger { color: var(--danger); }
-    .action-item .lucide { width: 20px; height: 20px; color: var(--muted); }
-    .action-item.danger .lucide { color: var(--danger); }
-    .action-text { flex: 1; font-weight: var(--fw-medium); }
-
-    .menu-item { width: 100%; min-height: 52px; padding: 0 var(--sp-md); display: flex; align-items: center; gap: var(--sp-md); border-radius: var(--radius-md); transition: background .15s ease; }
+    /* عناصر القائمة */
+    .menu-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s ease;
+    }
     .menu-item:active { background: var(--surface-2); }
-    .menu-item .lucide { width: 20px; height: 20px; color: var(--muted); }
-    .menu-text { flex: 1; font-weight: var(--fw-medium); }
+    .menu-item .icon { color: var(--muted); }
+    .menu-item.danger { color: #ef4444; }
+    .menu-item.danger .icon { color: #ef4444; }
+    .menu-text { flex: 1; font-weight: 500; }
 
-    .setting-group { margin-bottom: var(--sp-md); }
-    .setting-label { padding: 0 var(--sp-sm) var(--sp-sm); color: var(--muted); font-size: var(--fs-xs); font-weight: var(--fw-bold); }
+    /* ============ أزرار الأفعال ============ */
+    .action-item {
+      width: 100%;
+      min-height: 52px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: var(--radius-md);
+      transition: background 0.15s ease;
+    }
+    .action-item:active { background: var(--surface-2); }
+    .action-item .icon { color: var(--muted); }
+    .action-item.danger { color: #ef4444; }
+    .action-item.danger .icon { color: #ef4444; }
+    .action-text { flex: 1; font-weight: 500; }
+
+    /* ============ الإعدادات ============ */
+    .setting-group { margin-bottom: 16px; }
+    .setting-label { padding: 0 4px 8px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
     .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
-    .setting-row { min-height: 54px; padding: 0 var(--sp-md); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-sm); border-bottom: 1px solid var(--border); }
+    .setting-row {
+      min-height: 54px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
     .setting-row:last-child { border-bottom: 0; }
-    .setting-name { font-size: var(--fs-base); font-weight: var(--fw-medium); }
+    .setting-name { font-size: var(--fs-base); font-weight: 500; }
     .segmented { display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-sm); background: var(--surface-2); }
-    .segment { min-height: 32px; padding: 0 var(--sp-sm); border-radius: 7px; background: transparent; color: var(--muted); font-size: var(--fs-sm); font-weight: var(--fw-semibold); transition: all .16s ease; }
+    .segment {
+      min-height: 32px;
+      padding: 0 10px;
+      border-radius: 7px;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--muted);
+      transition: all 0.16s ease;
+    }
     .segment.active { background: var(--accent); color: #fff; }
-    .colors { display: flex; align-items: center; gap: var(--sp-sm); }
-    .color-btn { width: 28px; height: 28px; border-radius: var(--radius-full); border: 2px solid var(--surface); outline: 1px solid var(--border); position: relative; }
-    .color-btn.active::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 11px; font-weight: var(--fw-bold); }
-    .green { background: #19a974; } .blue { background: #3b82f6; } .purple { background: #8b5cf6; } .orange { background: #f59e0b; } .pink { background: #ec4899; }
+    .colors { display: flex; align-items: center; gap: 8px; }
+    .color-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--surface);
+      outline: 1px solid var(--border);
+      position: relative;
+    }
+    .color-btn.active::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .color-btn.green { background: #10b981; }
+    .color-btn.blue { background: #3b82f6; }
+    .color-btn.purple { background: #8b5cf6; }
+    .color-btn.orange { background: #f59e0b; }
+    .color-btn.pink { background: #ec4899; }
 
-    .time-input { width: 110px; min-height: 36px; padding: 0 var(--sp-sm); border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-align: center; }
-
-    .flatpickr-calendar { font-family: "Cairo", sans-serif !important; }
-    .flatpickr-day.selected { background: var(--accent) !important; border-color: var(--accent) !important; }
-
-    .search-input { width: 100%; min-height: 50px; padding: 0 var(--sp-md); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: var(--fs-base); }
+    /* ============ بنر التثبيت ============ */
+    .install-banner {
+      position: fixed;
+      z-index: 180;
+      left: 50%;
+      bottom: 12px;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      visibility: hidden;
+      width: min(calc(100% - 28px), 420px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px;
+      box-shadow: var(--shadow-sheet);
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    }
+    .install-banner.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .install-banner-inner { display: flex; align-items: center; gap: 12px; width: 100%; }
+    .install-banner-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 14px;
+      background: var(--accent-soft);
+    }
+    .install-banner-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .install-banner-text { flex: 1; }
+    .install-banner-title { font-size: 16px; font-weight: 800; }
+    .install-banner-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .install-banner-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .install-banner-actions button {
+      flex: 1;
+      min-height: 40px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .install-dismiss { background: var(--surface-2); color: var(--muted); }
+    .install-action { background: var(--accent); color: #fff; }
 
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
-    .streak-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: var(--radius-full);
-      background: var(--accent-soft); color: var(--accent);
-      font-size: var(--fs-xs); font-weight: var(--fw-bold);
-    }
-
-    .install-banner {
-      position: fixed; z-index: 180; left: 50%; bottom: 12px;
-      transform: translate(-50%, 20px); opacity: 0; visibility: hidden;
-      width: min(calc(100% - 28px), 420px);
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: var(--sp-md);
-      box-shadow: var(--shadow-sheet);
-      transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
-    }
-    .install-banner.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-
+    /* ============ استجابة ============ */
     @media (max-width: 480px) {
-      .app { padding-left: var(--sp-md); padding-right: var(--sp-md); }
-      .task { min-height: 48px; gap: var(--sp-sm); }
-      .task-checkbox { width: 28px; height: 28px; }
-      .task-star { width: 40px; height: 40px; }
-      .task-star .lucide { width: 18px; height: 18px; }
-      .task-list { padding: 0 var(--sp-sm); }
-      .segment { padding: 0 var(--sp-xs); font-size: var(--fs-xs); }
-      .header-tab { font-size: 11px; }
-      .header-tab .lucide { width: 18px; height: 18px; }
+      .app { padding-left: 12px; padding-right: 12px; }
+      .task { min-height: 48px; gap: 8px; }
+      .task-checkbox { width: 24px; height: 24px; }
+      .task-star { width: 36px; height: 36px; }
+      .task-star .icon { width: 18px; height: 18px; }
+      .task-list { padding: 0 8px; }
+      .segment { padding: 0 8px; font-size: var(--fs-xs); }
     }
   </style>
 </head>
 <body>
   <div class="app">
+    <!-- الهيدر -->
     <header class="header">
-      <div class="header-main">
-        <div class="brand">
-          <div class="brand-mark" id="brandMark">
-            <img class="brand-mark-img" id="brandMarkImg" src="./icon-512.png" alt="ناوي" width="36" height="36" onerror="this.remove(); document.getElementById('brandMarkFallback').style.display = 'grid';">
-            <span class="brand-mark-fallback" id="brandMarkFallback" style="display:none;">ن</span>
-          </div>
-          <div class="brand-name" id="brandName">ناوي</div>
+      <div class="brand">
+        <div class="brand-icon" id="brandIcon">
+          <img src="Icon-192.png" alt="ناوي" width="36" height="36" onerror="this.remove(); document.getElementById('brandFallback').style.display = 'grid';">
+          <span class="fallback" id="brandFallback" style="display:none;">ن</span>
         </div>
-        <button class="menu-btn" id="menuBtn" type="button"><i data-lucide="more-horizontal"></i></button>
+        <div class="brand-name" id="brandName">ناوي</div>
       </div>
-      <nav class="header-nav" id="headerNav">
-        <button class="header-tab" data-view="all" type="button">
-          <i data-lucide="sprout"></i>
-          <span data-i18n="all">نواياي</span>
-        </button>
-        <button class="header-tab active" data-view="today" type="button">
-          <i data-lucide="sun"></i>
-          <span data-i18n="today">اليوم</span>
-        </button>
-        <button class="header-tab" data-view="favorites" type="button">
-          <i data-lucide="star"></i>
-          <span data-i18n="favorites">مفضلاتي</span>
-        </button>
-        <span class="header-tab-indicator" id="headerTabIndicator"></span>
-      </nav>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
+      </button>
     </header>
 
+    <!-- التبويبات -->
+    <nav class="tabs" id="tabsNav">
+      <button class="tab active" data-view="all" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 8 14 4 20 4C20 10 16 12 12 12Z"/><path d="M12 12C12 8 10 4 4 4C4 10 8 12 12 12Z"/></svg>
+        <span data-i18n="all">نواياي</span>
+        <span class="count" id="allCount">0</span>
+      </button>
+      <button class="tab" data-view="favorites" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        <span data-i18n="favorites">مفضلاتي</span>
+        <span class="count" id="favCount">0</span>
+      </button>
+    </nav>
+
+    <!-- الترحيب -->
     <section class="hero">
-      <h1 class="hero-title" id="heroTitle">ناوي على إيه النهارده؟</h1>
-      <div class="hero-date" id="heroDate"></div>
+      <h1 class="hero-title" id="heroTitle">ناوي على إيه؟</h1>
+      <div class="hero-sub" id="heroSub">مساحتك الشخصية لنواياك</div>
     </section>
 
+    <!-- المحتوى -->
     <main class="content" id="content"></main>
   </div>
 
-  <div class="composer-wrap" id="composerWrap">
-    <button class="composer-fab" id="composerFab" type="button"><i data-lucide="plus"></i></button>
+  <!-- زر الإضافة -->
+  <div class="fab-wrap" id="fabWrap">
+    <button class="fab" id="fabBtn" type="button" aria-label="أضف نية">
+      <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
+    </button>
   </div>
 
+  <!-- لوحة الإضافة -->
   <div class="composer-panel" id="composerPanel">
-    <form id="composer" autocomplete="off">
-      <div class="composer-input-row">
-        <textarea id="taskInput" rows="1" maxlength="500" placeholder="اكتب النية اللي في بالك..."></textarea>
-        <button class="send-btn disabled" id="sendBtn" type="submit"><i data-lucide="arrow-up"></i></button>
+    <form id="composerForm" autocomplete="off">
+      <div class="composer-row">
+        <textarea id="taskInput" rows="1" maxlength="500" placeholder="أنا ناوي..." data-i18n-placeholder="taskPlaceholder"></textarea>
+        <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="إرسال">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path d="M12 19V5M5 12L12 5L19 12"/></svg>
+        </button>
       </div>
     </form>
   </div>
 
-  <div class="install-banner" id="installBanner">
-    <div style="display:flex;align-items:center;gap:12px;width:100%;">
-      <div style="width:48px;height:48px;display:grid;place-items:center;overflow:hidden;border-radius:14px;background:var(--accent-soft);">
-        <img src="./icon-192.png" alt="ناوي" style="width:100%;height:100%;object-fit:contain;">
-      </div>
-      <div style="flex:1;">
-        <div style="font-size:16px;font-weight:800;">نزّل ناوي 🌱</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;">نواياك تستاهل مكان أقرب 📌</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;margin-top:12px;">
-      <button id="installDismiss" style="flex:1;min-height:40px;border-radius:10px;background:var(--surface-2);color:var(--muted);font-size:13px;font-weight:600;">متابعة</button>
-      <button id="installAction" style="flex:1;min-height:40px;border-radius:10px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;">تثبيت ⚡</button>
-    </div>
-  </div>
-
+  <!-- القائمة -->
   <div class="overlay" id="menuOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="menuOverlay"><i data-lucide="x"></i></button>
+      <button class="sheet-close" type="button" data-close="menuOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="appName">ناوي</div>
-      <button class="menu-item" id="searchBtn" type="button">
-        <i data-lucide="search"></i>
-        <span class="menu-text" data-i18n="search">بحث</span>
-      </button>
       <button class="menu-item" id="settingsBtn" type="button">
-        <i data-lucide="settings"></i>
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
         <span class="menu-text" data-i18n="settings">الإعدادات</span>
       </button>
-      <button class="menu-item" id="menuTrashBtn" type="button">
-        <i data-lucide="trash-2"></i>
-        <span class="menu-text" data-i18n="trash">أرشيف النوايا</span>
+      <button class="menu-item" id="archiveBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8V21H20V8"/><path d="M10 12H14"/></svg>
+        <span class="menu-text" data-i18n="archive">أرشيف ناوي</span>
       </button>
       <button class="menu-item" id="exportBtn" type="button">
-        <i data-lucide="download"></i>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M7 10L12 15L17 10"/><path d="M12 15V3"/></svg>
         <span class="menu-text" data-i18n="exportData">تصدير البيانات</span>
       </button>
       <button class="menu-item" id="importBtn" type="button">
-        <i data-lucide="upload"></i>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M17 8L12 3L7 8"/><path d="M12 3V15"/></svg>
         <span class="menu-text" data-i18n="importData">استيراد البيانات</span>
       </button>
     </div>
   </div>
 
-  <div class="overlay" id="searchOverlay">
-    <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="searchOverlay"><i data-lucide="x"></i></button>
-      <div class="sheet-handle"></div>
-      <div class="sheet-title" data-i18n="search">بحث</div>
-      <input type="search" id="searchInput" class="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث في نواياك...">
-      <div id="searchResults"></div>
-    </div>
-  </div>
-
+  <!-- لوحة الأفعال -->
   <div class="overlay" id="actionOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="actionOverlay"><i data-lucide="x"></i></button>
+      <button class="sheet-close" type="button" data-close="actionOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
       <div class="sheet-handle"></div>
-      <div id="actionPreviewContainer"></div>
+      <div id="actionTaskPreview" class="action-task-preview" style="padding:12px;border-radius:12px;background:var(--surface-2);margin-bottom:8px;font-size:var(--fs-md);font-weight:600;"></div>
       <button class="action-item" id="actionComplete" type="button">
-        <i data-lucide="check"></i>
-        <span class="action-text" data-i18n="done">أتمم النية</span>
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5L11 15.5L16 9"/></svg>
+        <span class="action-text" data-i18n="achieved">حققت النية</span>
       </button>
-      <button class="action-item" id="actionRepeat" type="button">
-        <i data-lucide="repeat"></i>
-        <span class="action-text" data-i18n="repeat">تكرار</span>
+      <button class="action-item" id="actionPostpone" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7V12L15 14"/></svg>
+        <span class="action-text" data-i18n="postponed">أجل النية</span>
       </button>
-      <button class="action-item" id="actionDate" type="button">
-        <i data-lucide="calendar"></i>
-        <span class="action-text" data-i18n="setDate">تحديد موعد</span>
+      <button class="action-item" id="actionEdit" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M17 3L21 7L8 20H4V16L17 3Z"/></svg>
+        <span class="action-text" data-i18n="edit">تعديل</span>
       </button>
       <button class="action-item danger" id="actionDelete" type="button">
-        <i data-lucide="trash-2"></i>
-        <span class="action-text" data-i18n="delete">تراجع عن النية</span>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 6H21"/><path d="M19 6V22H5V6"/><path d="M8 6V4H16V6"/></svg>
+        <span class="action-text" data-i18n="retreat">تراجع عن النية</span>
       </button>
     </div>
   </div>
 
-  <div class="overlay" id="repeatOverlay">
-    <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="repeatOverlay"><i data-lucide="x"></i></button>
-      <div class="sheet-handle"></div>
-      <div class="sheet-title" data-i18n="repeat">تكرار</div>
-      <button class="action-item" data-repeat="none" type="button"><span class="action-text" data-i18n="repeatNone">بدون تكرار</span></button>
-      <button class="action-item" data-repeat="daily" type="button"><span class="action-text" data-i18n="repeatDaily">يوميًا</span></button>
-      <button class="action-item" data-repeat="weekly" type="button"><span class="action-text" data-i18n="repeatWeekly">أسبوعيًا</span></button>
-      <button class="action-item" data-repeat="monthly" type="button"><span class="action-text" data-i18n="repeatMonthly">شهريًا</span></button>
-    </div>
-  </div>
-
-  <div class="overlay" id="dateOverlay">
-    <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="dateOverlay"><i data-lucide="x"></i></button>
-      <div class="sheet-handle"></div>
-      <div class="sheet-title" data-i18n="setDate">تحديد موعد</div>
-      <input class="date-input" id="taskDateInput" type="text" placeholder="اختر تاريخ" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;">
-      <div style="margin-top:12px;">
-        <label style="font-size:13px;font-weight:600;color:var(--muted);" data-i18n="optionalTime">الوقت (اختياري)</label>
-        <input type="time" id="taskTimeInput" style="width:100%;min-height:50px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:0 12px;margin-top:6px;">
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button id="dateClear" type="button" style="flex:1;min-height:44px;border-radius:12px;background:rgba(229,72,77,.08);color:var(--danger);font-size:14px;font-weight:700;" data-i18n="removeDate">إزالة</button>
-        <button id="dateSave" type="button" style="flex:1;min-height:44px;border-radius:12px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;" data-i18n="save">حفظ</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- الإعدادات -->
   <div class="overlay" id="settingsOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="settingsOverlay"><i data-lucide="x"></i></button>
+      <button class="sheet-close" type="button" data-close="settingsOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="settings">الإعدادات</div>
+      
       <div class="setting-group">
         <div class="setting-label" data-i18n="language">اللغة</div>
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name" data-i18n="languageName">لغة ناوي</div>
             <div class="segmented">
-              <button class="segment" data-language-choice="ar" type="button">العربية</button>
-              <button class="segment" data-language-choice="en" type="button">English</button>
+              <button class="segment" data-language="ar" type="button">العربية</button>
+              <button class="segment" data-language="en" type="button">English</button>
             </div>
           </div>
         </div>
       </div>
+
       <div class="setting-group">
         <div class="setting-label" data-i18n="appearance">المظهر</div>
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name" data-i18n="mode">الوضع</div>
             <div class="segmented">
-              <button class="segment" data-theme-choice="light" type="button" data-i18n="light">فاتح</button>
-              <button class="segment" data-theme-choice="dark" type="button" data-i18n="dark">داكن</button>
-              <button class="segment" data-theme-choice="system" type="button" data-i18n="system">النظام</button>
+              <button class="segment" data-theme="dark" type="button" data-i18n="dark">داكن</button>
+              <button class="segment" data-theme="light" type="button" data-i18n="light">نهاري</button>
             </div>
           </div>
           <div class="setting-row">
             <div class="setting-name" data-i18n="fontSize">حجم الخط</div>
             <div class="segmented">
-              <button class="segment" data-font-choice="small" type="button" data-i18n="small">صغير</button>
-              <button class="segment" data-font-choice="medium" type="button" data-i18n="medium">متوسط</button>
-              <button class="segment" data-font-choice="large" type="button" data-i18n="large">كبير</button>
+              <button class="segment" data-font="small" type="button" data-i18n="small">صغير</button>
+              <button class="segment" data-font="medium" type="button" data-i18n="medium">متوسط</button>
+              <button class="segment" data-font="large" type="button" data-i18n="large">كبير</button>
             </div>
           </div>
         </div>
       </div>
+
       <div class="setting-group">
-        <div class="setting-label" data-i18n="color">اللون</div>
+        <div class="setting-label" data-i18n="color">لون ناوي</div>
         <div class="setting-box">
           <div class="setting-row">
-            <div class="setting-name" data-i18n="nawyColor">لون ناوي</div>
+            <div class="setting-name" data-i18n="nawyColor">سمة ناوي</div>
             <div class="colors">
-              <button class="color-btn green" data-accent-choice="green" type="button"></button>
-              <button class="color-btn blue active" data-accent-choice="blue" type="button"></button>
-              <button class="color-btn purple" data-accent-choice="purple" type="button"></button>
-              <button class="color-btn orange" data-accent-choice="orange" type="button"></button>
-              <button class="color-btn pink" data-accent-choice="pink" type="button"></button>
+              <button class="color-btn blue active" data-accent="blue" type="button"></button>
+              <button class="color-btn green" data-accent="green" type="button"></button>
+              <button class="color-btn purple" data-accent="purple" type="button"></button>
+              <button class="color-btn orange" data-accent="orange" type="button"></button>
+              <button class="color-btn pink" data-accent="pink" type="button"></button>
             </div>
           </div>
         </div>
       </div>
+
       <div class="setting-group">
-        <div class="setting-label" data-i18n="notification">التذكير اليومي</div>
+        <div class="setting-label" data-i18n="notification">إشعار الصباح</div>
         <div class="setting-box">
           <div class="setting-row">
-            <div class="setting-name" data-i18n="notification">إشعار الصباح</div>
-            <button id="notificationToggleBtn" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);color:var(--text);font-size:13px;font-weight:600;" data-i18n="notificationDisable">تعطيل</button>
+            <div class="setting-name" data-i18n="notification">تذكير يومي</div>
+            <button id="notifToggle" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);font-size:13px;font-weight:600;" data-i18n="notificationEnable">تفعيل</button>
           </div>
-          <div class="setting-row" id="notificationTimeRow">
+          <div class="setting-row" id="notifTimeRow">
             <div class="setting-name" data-i18n="time">الوقت</div>
-            <input type="time" class="time-input" id="notificationTimeInput" value="09:00">
+            <input type="time" id="notifTime" value="09:00" style="width:110px;min-height:36px;padding:0 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);font-size:13px;font-weight:600;text-align:center;">
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="overlay" id="trashOverlay">
+  <!-- الأرشيف -->
+  <div class="overlay" id="archiveOverlay">
     <div class="sheet">
-      <button class="sheet-close-btn" type="button" data-close-overlay="trashOverlay"><i data-lucide="x"></i></button>
+      <button class="sheet-close" type="button" data-close="archiveOverlay" aria-label="إغلاق">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+      </button>
       <div class="sheet-handle"></div>
-      <div class="sheet-title" data-i18n="trash">أرشيف النوايا</div>
-      <div id="trashList"></div>
+      <div class="sheet-title" data-i18n="archive">أرشيف ناوي</div>
+      <div id="archiveList"></div>
+    </div>
+  </div>
+
+  <!-- بنر التثبيت -->
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-inner">
+      <div class="install-banner-icon">
+        <img src="Icon-192.png" alt="ناوي">
+      </div>
+      <div class="install-banner-text">
+        <div class="install-banner-title">نزّل ناوي 🌱</div>
+        <div class="install-banner-sub">نواياك هتكون أسهل معاك 📌</div>
+      </div>
+    </div>
+    <div class="install-banner-actions">
+      <button class="install-dismiss" id="installDismiss" type="button">متابعة للموقع</button>
+      <button class="install-action" id="installAction" type="button">تثبيت ⚡</button>
     </div>
   </div>
 
@@ -568,383 +797,584 @@
   <script>
     "use strict";
 
-    const STORAGE_KEYS = { tasks: "nawy_tasks_v9", trash: "nawy_trash_v2", settings: "nawy_settings_v2" };
-    const DEFAULT_SETTINGS = { theme: "system", accent: "blue", language: "ar", fontSize: "medium", notificationEnabled: true, notificationTime: "09:00" };
+    // ============ الثوابت ============
+    const STORAGE_KEYS = {
+      tasks: "nawy_tasks_v1",
+      archive: "nawy_archive_v1",
+      settings: "nawy_settings_v1"
+    };
+
+    const DEFAULT_SETTINGS = {
+      theme: "dark",
+      accent: "blue",
+      language: "ar",
+      fontSize: "medium",
+      notificationEnabled: false,
+      notificationTime: "09:00"
+    };
 
     const TRANSLATIONS = {
       ar: {
-        appName: "ناوي", all: "نواياي", today: "اليوم", favorites: "مفضلاتي", completed: "المكتملة",
-        heroToday: "ناوي على إيه النهارده؟", settings: "الإعدادات", trash: "أرشيف النوايا", search: "بحث", searchPlaceholder: "ابحث في نواياك...",
-        done: "أتمم النية", cancelDone: "أعد فتح النية", repeat: "تكرار", setDate: "تحديد موعد", delete: "تراجع عن النية",
-        language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع", light: "فاتح", dark: "داكن", system: "النظام",
-        fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير", color: "اللون", nawyColor: "لون ناوي",
-        notification: "التذكير اليومي", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
-        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
+        appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
+        heroTitle: "ناوي على إيه؟", heroSub: "مساحتك الشخصية لنواياك",
+        active: "نشطة", postponed: "مؤجلة", achieved: "تحققت",
+        taskPlaceholder: "أنا ناوي...", addBtn: "أضف",
+        achievedAction: "حققت النية", postponeAction: "أجل النية", reactivateAction: "أعد تفعيل النية",
+        edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
+        settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "تصدير البيانات", importData: "استيراد البيانات",
+        language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع",
+        dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
+        color: "اللون", nawyColor: "سمة ناوي", notification: "إشعار الصباح",
+        notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
+        noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
-        archiveEmpty: "الأرشيف فاضي", restore: "استرجاع", taskPlaceholder: "اكتب النية اللي في بالك...",
-        repeatNone: "بدون تكرار", repeatDaily: "يوميًا", repeatWeekly: "أسبوعيًا", repeatMonthly: "شهريًا",
-        removeDate: "إزالة", save: "حفظ", optionalTime: "الوقت (اختياري)",
-        addedToast: "تمت إضافة النية ✨", completedToast: "تم إتمام النية 🎉", deletedToast: "تم التراجع - اضغط للاسترجاع",
-        restoredToast: "تم الاسترجاع ✅", editedToast: "تم التعديل ✏️",
-        exportData: "تصدير البيانات", importData: "استيراد البيانات", exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅", noResults: "مفيش نتائج"
+        noArchive: "الأرشيف فاضي", noPostponed: "مفيش نوايا مؤجلة",
+        noAchieved: "مفيش نوايا متحققة لسه",
+        addedToast: "تمت إضافة النية ✨", achievedToast: "نية اتحققت 🌱", postponedToast: "تم تأجيل النية ⏳",
+        reactivatedToast: "تم إعادة تفعيل النية 🔄", editedToast: "تم التعديل ✏️",
+        deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
+        exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
+        morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
+        installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡"
       },
       en: {
-        appName: "NAWY", all: "My Intentions", today: "Today", favorites: "Favorites", completed: "Completed",
-        heroToday: "What are you up to today?", settings: "Settings", trash: "Archive", search: "Search", searchPlaceholder: "Search your intentions...",
-        done: "Complete", cancelDone: "Reopen", repeat: "Repeat", setDate: "Set Date", delete: "Delete",
-        language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode", light: "Light", dark: "Dark", system: "System",
-        fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large", color: "Color", nawyColor: "NAWY Color",
-        notification: "Daily Reminder", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
-        noIntentions: "No intentions yet", firstIntent: "Write your first intention for today.",
+        appName: "NAWY", all: "My Intentions", favorites: "Favorites",
+        heroTitle: "What are you up to?", heroSub: "Your personal space for intentions",
+        active: "Active", postponed: "Postponed", achieved: "Achieved",
+        taskPlaceholder: "I intend to...", addBtn: "Add",
+        achievedAction: "Achieved", postponeAction: "Postpone", reactivateAction: "Reactivate",
+        edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
+        settings: "Settings", archive: "NAWY Archive", exportData: "Export Data", importData: "Import Data",
+        language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode",
+        dark: "Dark", light: "Light", fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large",
+        color: "Color", nawyColor: "NAWY Color", notification: "Morning Reminder",
+        notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
+        noIntentions: "No intentions yet", firstIntent: "Write your first intention.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
-        archiveEmpty: "Archive is empty", restore: "Restore", taskPlaceholder: "Write the intention on your mind...",
-        repeatNone: "No Repeat", repeatDaily: "Daily", repeatWeekly: "Weekly", repeatMonthly: "Monthly",
-        removeDate: "Remove", save: "Save", optionalTime: "Time (optional)",
-        addedToast: "Intention added ✨", completedToast: "Intention completed 🎉", deletedToast: "Deleted - tap to undo",
-        restoredToast: "Restored ✅", editedToast: "Edited ✏️",
-        exportData: "Export Data", importData: "Import Data", exported: "Data exported 💾", imported: "Data imported ✅", noResults: "No results"
+        noArchive: "Archive is empty", noPostponed: "No postponed intentions",
+        noAchieved: "No achieved intentions yet",
+        addedToast: "Intention added ✨", achievedToast: "Intention achieved 🌱", postponedToast: "Intention postponed ⏳",
+        reactivatedToast: "Intention reactivated 🔄", editedToast: "Edited ✏️",
+        deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
+        exported: "Data exported 💾", imported: "Data imported ✅",
+        morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
+        installSub: "Your intentions will be easier with you 📌", installDismiss: "Continue to site", installAction: "Install ⚡"
       }
     };
 
-    let tasks = [], trash = [], settings = { ...DEFAULT_SETTINGS };
-    let currentView = "today", selectedTaskId = null, completedExpanded = false;
-    let swipeStartX = 0, swipeStartY = 0, swipeTracking = false;
-    let completeSynth = null;
+    // ============ الحالة ============
+    let tasks = [];
+    let archive = [];
+    let settings = { ...DEFAULT_SETTINGS };
+    let currentView = "all";
+    let selectedTaskId = null;
+    let swipeStartX = 0;
+    let swipeTracking = false;
 
+    // ============ أدوات مساعدة ============
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
-
     function t(key) { return TRANSLATIONS[settings.language]?.[key] || TRANSLATIONS.ar[key] || key; }
-    function pad(n) { return String(n).padStart(2, "0"); }
-    function getDateKey(d = new Date()) { return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join("-"); }
-    function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,9); }
+    function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 9); }
     function safeParse(v, f) { try { return JSON.parse(v) ?? f; } catch { return f; } }
 
+    // ============ التخزين ============
     function loadData() {
       tasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []).filter(x => x && x.text);
-      trash = safeParse(localStorage.getItem(STORAGE_KEYS.trash), []).filter(x => x && x.text);
+      archive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []).filter(x => x && x.text);
       settings = { ...DEFAULT_SETTINGS, ...safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}) };
     }
     function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
-    function saveTrash() { localStorage.setItem(STORAGE_KEYS.trash, JSON.stringify(trash)); }
+    function saveArchive() { localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive)); }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
 
-    function showToast(message, type = 'success', canUndo = false, undoCallback = null) {
-      const colors = { success: '#19a974', error: '#e5484d', warning: '#e8a317', info: '#3b82f6' };
-      const toast = Toastify({
-        text: message, duration: canUndo ? 5000 : 3000, close: true, gravity: 'bottom', position: 'center',
-        style: { background: colors[type] || colors.success, borderRadius: '14px', padding: '12px 20px', fontFamily: '"Cairo", sans-serif', fontWeight: '600', fontSize: '14px', boxShadow: '0 8px 24px rgba(0,0,0,.15)' }
-      });
-      if (canUndo && undoCallback) { toast.options.onClick = function() { undoCallback(); toast.hideToast(); }; }
-      toast.showToast();
+    // ============ Toast ============
+    function showToast(message, canUndo = false, undoCallback = null) {
+      const existing = document.querySelector('.toastify');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'toastify';
+      toast.textContent = message;
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 14px;
+        font-family: "Cairo", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        z-index: 200;
+        cursor: ${canUndo ? 'pointer' : 'default'};
+        animation: toastIn 0.3s ease;
+        max-width: calc(100% - 32px);
+        text-align: center;
+      `;
+      
+      if (canUndo && undoCallback) {
+        toast.addEventListener('click', () => {
+          undoCallback();
+          toast.remove();
+        });
+      }
+      
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, canUndo ? 5000 : 3000);
     }
 
-    function initCompleteSound() {
-      if (completeSynth) return;
-      completeSynth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: "sine" },
-        envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 0.4 }
-      }).toDestination();
-      completeSynth.volume.value = -12;
-    }
-
-    function playCompleteSound() {
+    // ============ الصوت والاحتفال ============
+    let audioContext = null;
+    function playAchievedSound() {
       try {
-        initCompleteSound();
-        const now = Tone.now();
-        completeSynth.triggerAttackRelease("C5", "16n", now);
-        completeSynth.triggerAttackRelease("E5", "16n", now + 0.04);
-        completeSynth.triggerAttackRelease("G5", "8n", now + 0.08);
-        completeSynth.triggerAttackRelease("C6", "4n", now + 0.12);
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = audioContext;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.08 + 0.4);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + i * 0.08 + 0.4);
+        });
       } catch(e) {}
     }
 
+    function celebrate() {
+      playAchievedSound();
+      if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } });
+      }
+    }
+
+    // ============ عمليات النوايا ============
     function addTask(text) {
       const clean = String(text || "").trim();
       if (!clean) return false;
-      tasks.unshift({ id: createId(), text: clean, completed: false, starred: false, createdAt: Date.now(), taskDay: getDateKey(), scheduledDate: null, completedAt: null, repeat: 'none' });
+      tasks.unshift({
+        id: createId(),
+        text: clean,
+        status: 'active',
+        starred: false,
+        createdAt: Date.now(),
+        achievedAt: null,
+        postponedAt: null
+      });
       saveTasks();
       render();
       showToast(t("addedToast"));
       return true;
     }
 
-    function completeTask(id) {
+    function achieveTask(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
-      task.completed = !task.completed;
-      task.completedAt = task.completed ? Date.now() : null;
-      if (task.completed) {
-        playCompleteSound();
-        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
-        if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
-      }
-      saveTasks(); render();
-      if (task.completed) showToast(t("completedToast"));
+      task.status = 'achieved';
+      task.achievedAt = Date.now();
+      saveTasks();
+      render();
+      celebrate();
+      showToast(t("achievedToast"));
+    }
+
+    function postponeTask(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      task.status = 'postponed';
+      task.postponedAt = Date.now();
+      saveTasks();
+      render();
+      showToast(t("postponedToast"));
+    }
+
+    function reactivateTask(id) {
+      const task = tasks.find(x => x.id === id);
+      if (!task) return;
+      task.status = 'active';
+      task.postponedAt = null;
+      task.achievedAt = null;
+      saveTasks();
+      render();
+      showToast(t("reactivatedToast"));
     }
 
     function toggleStar(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
       task.starred = !task.starred;
-      if (task.starred) {
-        const index = tasks.indexOf(task);
-        tasks.splice(index, 1);
-        tasks.unshift(task);
-      }
-      saveTasks(); render();
+      saveTasks();
+      render();
     }
 
     function deleteTask(id) {
       const index = tasks.findIndex(x => x.id === id);
       if (index === -1) return;
       const [deleted] = tasks.splice(index, 1);
-      trash.unshift({ ...deleted, deletedAt: Date.now() });
-      saveTasks(); saveTrash(); render();
-      showToast(t("deletedToast"), 'warning', true, () => {
-        const ti = trash.findIndex(x => x.id === deleted.id);
-        if (ti !== -1) trash.splice(ti, 1);
+      archive.unshift({ ...deleted, archivedAt: Date.now() });
+      saveTasks();
+      saveArchive();
+      render();
+      showToast(t("deletedToast"), true, () => {
+        const ai = archive.findIndex(x => x.id === deleted.id);
+        if (ai !== -1) archive.splice(ai, 1);
         tasks.unshift(deleted);
-        saveTasks(); saveTrash(); render();
+        saveTasks();
+        saveArchive();
+        render();
       });
     }
 
-    function getStreak() {
-      let streak = 0;
-      const today = new Date();
-      for (let i = 0; i < 365; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const key = getDateKey(date);
-        const hasCompleted = tasks.some(x => x.completed && x.completedAt && getDateKey(new Date(x.completedAt)) === key);
-        if (hasCompleted) streak++;
-        else if (i > 0) break;
-      }
-      return streak;
+    function restoreFromArchive(id) {
+      const index = archive.findIndex(x => x.id === id);
+      if (index === -1) return;
+      const [restored] = archive.splice(index, 1);
+      delete restored.archivedAt;
+      restored.status = 'active';
+      restored.postponedAt = null;
+      restored.achievedAt = null;
+      tasks.unshift(restored);
+      saveTasks();
+      saveArchive();
+      render();
+      renderArchive();
+      showToast(t("restoredToast"));
     }
 
+    function deleteForever(id) {
+      const index = archive.findIndex(x => x.id === id);
+      if (index === -1) return;
+      archive.splice(index, 1);
+      saveArchive();
+      renderArchive();
+    }
+
+    // ============ الرسم ============
     function render() {
-      const streak = getStreak();
-      const streakBadge = streak > 0 ? `<span class="streak-badge"><i data-lucide="flame" style="width:14px;height:14px;"></i> ${streak} ${settings.language === 'ar' ? 'يوم' : 'days'}</span>` : '';
+      const content = $("#content");
+      content.innerHTML = "";
       
-      $("#content").innerHTML = "";
+      const activeTasks = tasks.filter(x => x.status === 'active');
+      const postponedTasks = tasks.filter(x => x.status === 'postponed');
+      const achievedTasks = tasks.filter(x => x.status === 'achieved');
       
-      if (currentView === "today") {
+      if (currentView === "all") {
         $("#heroTitle").style.display = "block";
-        $("#heroDate").style.display = "block";
-        $("#heroTitle").innerHTML = `${t("heroToday")} ${streakBadge}`;
-        $("#heroDate").textContent = new Intl.DateTimeFormat(settings.language === "en" ? "en-US" : "ar-EG", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
-        const active = tasks.filter(x => !x.completed && (x.scheduledDate ? x.scheduledDate === getDateKey() : x.taskDay === getDateKey()));
-        const completed = tasks.filter(x => x.completed && x.completedAt && getDateKey(new Date(x.completedAt)) === getDateKey());
-        if (active.length === 0 && completed.length === 0) { $("#content").appendChild(createEmptyState("🌱", t("noIntentions"), t("firstIntent"))); }
-        else { if (active.length > 0) $("#content").appendChild(createSection(active)); if (completed.length > 0) $("#content").appendChild(createCompletedSection(completed)); }
-      } else if (currentView === "all") {
-        $("#heroTitle").style.display = "none";
-        $("#heroDate").style.display = "none";
-        const active = tasks.filter(x => !x.completed);
-        const completed = tasks.filter(x => x.completed);
-        if (active.length > 0) $("#content").appendChild(createSection(active));
-        if (completed.length > 0) $("#content").appendChild(createCompletedSection(completed));
+        $("#heroSub").style.display = "block";
+        $("#allCount").textContent = activeTasks.length;
+        $("#favCount").textContent = tasks.filter(x => x.starred).length;
+        
+        if (activeTasks.length === 0 && postponedTasks.length === 0 && achievedTasks.length === 0) {
+          content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
+        } else {
+          if (activeTasks.length > 0) content.appendChild(createSection('active', t("active"), activeTasks));
+          if (postponedTasks.length > 0) content.appendChild(createSection('postponed', t("postponed"), postponedTasks));
+          if (achievedTasks.length > 0) content.appendChild(createSection('achieved', t("achieved"), achievedTasks));
+        }
       } else if (currentView === "favorites") {
-        $("#heroTitle").style.display = "none";
-        $("#heroDate").style.display = "none";
-        const favActive = tasks.filter(x => x.starred && !x.completed);
-        const favCompleted = tasks.filter(x => x.starred && x.completed);
-        if (favActive.length === 0 && favCompleted.length === 0) { $("#content").appendChild(createEmptyState("⭐", t("noFavorites"), t("favoriteHint"))); }
-        else { if (favActive.length > 0) $("#content").appendChild(createSection(favActive)); if (favCompleted.length > 0) $("#content").appendChild(createCompletedSection(favCompleted)); }
+        $("#heroTitle").style.display = "block";
+        $("#heroSub").style.display = "block";
+        $("#heroTitle").textContent = t("favorites");
+        $("#heroSub").textContent = "⭐";
+        
+        const favTasks = tasks.filter(x => x.starred);
+        if (favTasks.length === 0) {
+          content.appendChild(createEmpty("⭐", t("noFavorites"), t("favoriteHint")));
+        } else {
+          const favActive = favTasks.filter(x => x.status === 'active');
+          const favAchieved = favTasks.filter(x => x.status === 'achieved');
+          const favPostponed = favTasks.filter(x => x.status === 'postponed');
+          if (favActive.length > 0) content.appendChild(createSection('active', t("active"), favActive));
+          if (favPostponed.length > 0) content.appendChild(createSection('postponed', t("postponed"), favPostponed));
+          if (favAchieved.length > 0) content.appendChild(createSection('achieved', t("achieved"), favAchieved));
+        }
       }
-      updateHeaderNav();
-      requestAnimationFrame(updateIndicator);
-      setTimeout(initSortable, 50);
-      lucide.createIcons();
+      
+      updateTabs();
+      initSortable();
     }
 
-    function createSection(taskArray) {
+    function createSection(type, title, taskArray) {
       const section = document.createElement("section");
       section.className = "section";
+      
+      const header = document.createElement("div");
+      header.className = "section-header";
+      header.innerHTML = `
+        <span class="section-title">${title}</span>
+        <span class="section-count">${taskArray.length}</span>
+        <span class="section-chevron"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg></span>
+      `;
+      
+      const body = document.createElement("div");
+      body.className = "section-body";
       const list = document.createElement("div");
       list.className = "task-list";
+      list.dataset.type = type;
       taskArray.forEach(task => list.appendChild(createTaskElement(task)));
-      section.appendChild(list);
-      return section;
-    }
-
-    function createCompletedSection(taskArray) {
-      const section = document.createElement("section");
-      section.className = "completed-section";
-      const toggle = document.createElement("button");
-      toggle.type = "button";
-      toggle.className = "completed-toggle" + (completedExpanded ? " open" : "");
-      const title = document.createElement("span");
-      title.className = "completed-toggle-title";
-      title.textContent = t("completed");
-      const count = document.createElement("span");
-      count.className = "completed-toggle-count";
-      count.textContent = taskArray.length;
-      title.appendChild(count);
-      const chevron = document.createElement("span");
-      chevron.className = "completed-toggle-chevron";
-      chevron.innerHTML = '<i data-lucide="chevron-down"></i>';
-      toggle.append(title, chevron);
-      const listWrap = document.createElement("div");
-      listWrap.className = "completed-list-wrap" + (completedExpanded ? " open" : "");
-      const list = document.createElement("div");
-      list.className = "task-list";
-      taskArray.forEach(task => list.appendChild(createTaskElement(task, true)));
-      listWrap.appendChild(list);
-      toggle.addEventListener("click", () => { completedExpanded = !completedExpanded; render(); });
-      section.append(toggle, listWrap);
+      body.appendChild(list);
+      
+      header.addEventListener("click", () => {
+        section.classList.toggle("collapsed");
+      });
+      
+      section.append(header, body);
       return section;
     }
 
     function createTaskElement(task) {
       const article = document.createElement("article");
-      article.className = "task" + (task.completed ? " completed" : "");
+      article.className = "task" + (task.status === 'achieved' ? " completed" : "");
       article.dataset.taskId = task.id;
-      article.innerHTML = `
-        <button class="task-checkbox" type="button"><i data-lucide="check"></i></button>
-        <div class="task-main"><p class="task-text">${task.text}</p></div>
-        <button class="task-star ${task.starred ? 'active' : ''}" type="button"><i data-lucide="star"></i></button>
-      `;
-      article.querySelector(".task-checkbox").addEventListener("click", e => { e.stopPropagation(); completeTask(task.id); });
-      article.querySelector(".task-star").addEventListener("click", e => { e.stopPropagation(); toggleStar(task.id); });
-      article.querySelector(".task-main").addEventListener("click", () => openAction(task.id));
+      
+      const checkbox = document.createElement("button");
+      checkbox.className = "task-checkbox";
+      checkbox.type = "button";
+      checkbox.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M8 12.5L11 15.5L16 9"/></svg>';
+      checkbox.addEventListener("click", e => {
+        e.stopPropagation();
+        if (task.status === 'achieved') reactivateTask(task.id);
+        else achieveTask(task.id);
+      });
+      
+      const main = document.createElement("div");
+      main.className = "task-main";
+      const p = document.createElement("p");
+      p.className = "task-text";
+      p.textContent = task.text;
+      main.appendChild(p);
+      main.addEventListener("click", () => openAction(task.id));
+      
+      const star = document.createElement("button");
+      star.className = "task-star" + (task.starred ? " active" : "");
+      star.type = "button";
+      star.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
+      star.addEventListener("click", e => {
+        e.stopPropagation();
+        toggleStar(task.id);
+      });
+      
+      article.append(checkbox, main, star);
       return article;
     }
 
-    function createEmptyState(symbol, title, message) {
-      const box = document.createElement("div");
-      box.className = "task-empty";
-      box.innerHTML = `<div class="empty-symbol">${symbol}</div><div class="empty-title">${title}</div><div class="empty-text">${message}</div>`;
-      return box;
+    function createEmpty(icon, title, text) {
+      const div = document.createElement("div");
+      div.className = "empty";
+      div.innerHTML = `
+        <div class="empty-icon">${icon}</div>
+        <div class="empty-title">${title}</div>
+        <div class="empty-text">${text}</div>
+      `;
+      return div;
     }
 
+    function updateTabs() {
+      $$(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab.dataset.view === currentView);
+      });
+    }
+
+    // ============ الترتيب بالسحب ============
     function initSortable() {
-      document.querySelectorAll(".task-list").forEach(list => {
+      $$(".task-list").forEach(list => {
         if (list.sortableInstance) list.sortableInstance.destroy();
         list.sortableInstance = new Sortable(list, {
-          animation: 150, ghostClass: 'drag-ghost', dragClass: 'drag-source', delay: 200, delayOnTouchOnly: true,
+          animation: 150,
+          ghostClass: 'drag-ghost',
+          dragClass: 'drag-source',
+          delay: 200,
+          delayOnTouchOnly: true,
           onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
-            const activeTasks = tasks.filter(x => !x.completed);
-            const completedTasks = tasks.filter(x => x.completed);
-            const taskMap = new Map();
-            activeTasks.forEach(x => taskMap.set(x.id, x));
             const reordered = [];
-            newOrder.forEach(id => { if (taskMap.has(id)) { reordered.push(taskMap.get(id)); taskMap.delete(id); } });
+            const taskMap = new Map();
+            tasks.forEach(x => taskMap.set(x.id, x));
+            newOrder.forEach(id => {
+              if (taskMap.has(id)) {
+                reordered.push(taskMap.get(id));
+                taskMap.delete(id);
+              }
+            });
             taskMap.forEach(x => reordered.push(x));
-            tasks = [...reordered, ...completedTasks];
+            tasks = reordered;
             saveTasks();
           }
         });
       });
     }
 
-    function updateHeaderNav() {
-      $$(".header-tab").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.view === currentView);
-      });
-    }
-
-    function updateIndicator() {
-      const activeTab = document.querySelector(`.header-tab[data-view="${currentView}"]`);
-      if (!activeTab) return;
-      const navRect = $("#headerNav").getBoundingClientRect();
-      const tabRect = activeTab.getBoundingClientRect();
-      const w = Math.max(22, Math.min(36, tabRect.width * .32));
-      const left = (tabRect.left - navRect.left + (tabRect.width - w)/2);
-      $("#headerNav").style.setProperty("--tab-indicator-width", `${w}px`);
-      $("#headerNav").style.setProperty("--tab-indicator-left", `${left}px`);
-    }
-
-    function setView(view) {
-      if (!["all", "today", "favorites"].includes(view)) return;
-      currentView = view;
-      closeAllOverlays();
-      closeComposer();
-      render();
-    }
-
+    // ============ لوحة الأفعال ============
     function openAction(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
       selectedTaskId = id;
-      $("#actionPreviewContainer").innerHTML = `
-        <button class="action-task-preview" id="actionTaskPreview" type="button">
-          <span class="action-task-preview-text">${task.text}</span>
-          <i data-lucide="pencil"></i>
-        </button>
-      `;
-      $("#actionComplete .action-text").textContent = task.completed ? t("cancelDone") : t("done");
-      $("#actionDateText").textContent = task.scheduledDate || t("setDate");
-      $("#actionTaskPreview").addEventListener("click", () => {
-        const preview = $("#actionTaskPreview");
-        const editContainer = document.createElement("div");
-        editContainer.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;";
-        const editArea = document.createElement("textarea");
-        editArea.className = "action-task-edit-input";
-        editArea.value = task.text;
-        const doneBtn = document.createElement("button");
-        doneBtn.type = "button";
-        doneBtn.style.cssText = "width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;";
-        doneBtn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i>';
-        editContainer.append(editArea, doneBtn);
-        preview.replaceWith(editContainer);
-        editArea.focus();
-        lucide.createIcons();
-        function saveEdit() {
-          const newText = editArea.value.trim();
-          if (newText && newText !== task.text) { task.text = newText; saveTasks(); render(); showToast(t("editedToast")); }
-          closeOverlay($("#actionOverlay")); selectedTaskId = null;
-        }
-        doneBtn.addEventListener("click", saveEdit);
-        editArea.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveEdit(); } });
-      });
+      
+      const preview = $("#actionTaskPreview");
+      preview.textContent = task.text;
+      
+      const completeBtn = $("#actionComplete");
+      const completeText = completeBtn.querySelector(".action-text");
+      if (task.status === 'achieved') {
+        completeText.textContent = t("reactivateAction");
+      } else {
+        completeText.textContent = t("achievedAction");
+      }
+      
+      const postponeBtn = $("#actionPostpone");
+      const postponeText = postponeBtn.querySelector(".action-text");
+      if (task.status === 'postponed') {
+        postponeText.textContent = t("reactivateAction");
+      } else if (task.status === 'achieved') {
+        postponeText.textContent = t("reactivateAction");
+      } else {
+        postponeText.textContent = t("postponeAction");
+      }
+      
       openOverlay($("#actionOverlay"));
-      lucide.createIcons();
     }
 
+    // ============ الأرشيف ============
+    function renderArchive() {
+      const container = $("#archiveList");
+      container.innerHTML = "";
+      
+      if (archive.length === 0) {
+        container.innerHTML = `<div class="empty"><div class="empty-title">${t("noArchive")}</div></div>`;
+        return;
+      }
+      
+      archive.forEach(task => {
+        const item = document.createElement("div");
+        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;";
+        
+        const text = document.createElement("div");
+        text.textContent = task.text;
+        text.style.cssText = "flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+        
+        const restoreBtn = document.createElement("button");
+        restoreBtn.textContent = t("restore");
+        restoreBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
+        restoreBtn.addEventListener("click", () => restoreFromArchive(task.id));
+        
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = t("delete");
+        deleteBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:13px;font-weight:600;";
+        deleteBtn.addEventListener("click", () => deleteForever(task.id));
+        
+        item.append(text, restoreBtn, deleteBtn);
+        container.appendChild(item);
+      });
+    }
+
+    // ============ Overlays ============
     function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
     function closeOverlay(overlay) { overlay.classList.remove("show"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
-    function openComposer() { $("#composerFab").classList.add("hidden"); $("#composerPanel").classList.add("open"); $("#taskInput").focus(); }
-    function closeComposer() { $("#composerFab").classList.remove("hidden"); $("#composerPanel").classList.remove("open"); $("#taskInput").value = ""; $("#sendBtn").classList.add("disabled"); }
+    // ============ Composer ============
+    function openComposer() { $("#fabBtn").classList.add("hidden"); $("#composerPanel").classList.add("open"); $("#taskInput").focus(); }
+    function closeComposer() { $("#fabBtn").classList.remove("hidden"); $("#composerPanel").classList.remove("open"); $("#taskInput").value = ""; $("#sendBtn").classList.add("disabled"); }
 
+    // ============ الإعدادات ============
     function applySettings() {
-      let theme = settings.theme;
-      if (theme === "system") theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.setAttribute("data-theme", settings.theme);
       document.documentElement.setAttribute("data-accent", settings.accent);
       document.documentElement.setAttribute("data-font", settings.fontSize);
       document.documentElement.lang = settings.language;
       document.documentElement.dir = settings.language === "ar" ? "rtl" : "ltr";
+      
       $("#brandName").textContent = t("appName");
       $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
       $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
-      $$("[data-theme-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.themeChoice === settings.theme));
-      $$("[data-accent-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.accentChoice === settings.accent));
-      $$("[data-font-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.fontChoice === settings.fontSize));
-      $$("[data-language-choice]").forEach(btn => btn.classList.toggle("active", btn.dataset.languageChoice === settings.language));
-      updateTabLabels();
-    }
-
-    function updateTabLabels() {
-      $$(".header-tab").forEach(tab => {
-        const view = tab.dataset.view;
-        const label = tab.querySelector("span");
-        if (label) label.textContent = view === "all" ? t("all") : view === "today" ? t("today") : t("favorites");
-      });
       $("#taskInput").placeholder = t("taskPlaceholder");
+      
+      $$("[data-theme]").forEach(btn => btn.classList.toggle("active", btn.dataset.theme === settings.theme));
+      $$("[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
+      $$("[data-font]").forEach(btn => btn.classList.toggle("active", btn.dataset.font === settings.fontSize));
+      $$("[data-language]").forEach(btn => btn.classList.toggle("active", btn.dataset.language === settings.language));
+      
+      updateNotifUI();
     }
 
+    function updateNotifUI() {
+      const toggleBtn = $("#notifToggle");
+      toggleBtn.textContent = settings.notificationEnabled ? t("notificationDisable") : t("notificationEnable");
+      $("#notifTimeRow").classList.toggle("hidden", !settings.notificationEnabled);
+      $("#notifTime").value = settings.notificationTime;
+    }
+
+    // ============ الإشعارات ============
+    function requestNotificationPermission() {
+      return new Promise((resolve) => {
+        if (!("Notification" in window)) { resolve(false); return; }
+        Notification.requestPermission().then(permission => resolve(permission === "granted"));
+      });
+    }
+
+    function scheduleNotification() {
+      if (!settings.notificationEnabled) return;
+      if (!("Notification" in window) || Notification.permission !== "granted") return;
+      if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
+      
+      const now = new Date();
+      const [hours, minutes] = (settings.notificationTime || "09:00").split(":").map(Number);
+      let scheduledTime = new Date(now);
+      scheduledTime.setHours(hours, minutes, 0, 0);
+      if (scheduledTime <= now) scheduledTime.setDate(scheduledTime.getDate() + 1);
+      
+      const delay = scheduledTime.getTime() - now.getTime();
+      window.nawyNotifTimeout = setTimeout(() => {
+        showMorningNotification();
+        scheduleNotification();
+      }, delay);
+    }
+
+    function showMorningNotification() {
+      const body = t("morningNotif");
+      const options = {
+        body,
+        icon: "./Icon-512.png",
+        badge: "./Icon-192.png",
+        dir: settings.language === "en" ? "ltr" : "rtl",
+        lang: settings.language,
+        tag: "nawy-morning",
+        requireInteraction: true,
+        vibrate: [100, 50, 100]
+      };
+      
+      if ("Notification" in window) {
+        if (Notification.permission === "granted") {
+          if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+            navigator.serviceWorker.ready.then(reg => {
+              reg.showNotification("ناوي 🌱", options).catch(() => {
+                new Notification("ناوي 🌱", options);
+              });
+            });
+          } else {
+            new Notification("ناوي 🌱", options);
+          }
+        }
+      }
+    }
+
+    // ============ التصدير والاستيراد ============
     function exportData() {
-      const data = JSON.stringify({ tasks, trash, settings }, null, 2);
+      const data = JSON.stringify({ tasks, archive, settings }, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `nawy-backup-${getDateKey()}.json`;
+      a.download = `nawy-backup-${new Date().toISOString().split('T')[0]}.json`;
       a.click();
       URL.revokeObjectURL(url);
       showToast(t("exported"));
@@ -955,112 +1385,198 @@
       reader.onload = (e) => {
         try {
           const data = JSON.parse(e.target.result);
-          if (data.tasks && data.trash && data.settings) {
-            tasks = data.tasks; trash = data.trash; settings = { ...DEFAULT_SETTINGS, ...data.settings };
-            saveTasks(); saveTrash(); saveSettings();
-            applySettings(); render();
+          if (data.tasks && data.archive && data.settings) {
+            tasks = data.tasks;
+            archive = data.archive;
+            settings = { ...DEFAULT_SETTINGS, ...data.settings };
+            saveTasks();
+            saveArchive();
+            saveSettings();
+            applySettings();
+            render();
             showToast(t("imported"));
           }
-        } catch(err) { showToast(t("noResults"), 'error'); }
+        } catch(err) {
+          showToast("Error importing data");
+        }
       };
       reader.readAsText(file);
     }
 
-    function renderTrash() {
-      const container = $("#trashList");
-      container.innerHTML = "";
-      if (trash.length === 0) { container.innerHTML = `<div class="task-empty"><div class="empty-title">${t("archiveEmpty")}</div></div>`; return; }
-      trash.forEach(task => {
-        const item = document.createElement("div");
-        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;";
-        const text = document.createElement("div");
-        text.textContent = task.text;
-        text.style.cssText = "flex:1;min-width:0;font-size:14px;";
-        const restore = document.createElement("button");
-        restore.textContent = t("restore");
-        restore.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
-        restore.addEventListener("click", () => {
-          const index = trash.findIndex(x => x.id === task.id);
-          if (index !== -1) {
-            const [restored] = trash.splice(index, 1);
-            delete restored.deletedAt;
-            tasks.unshift(restored);
-            saveTasks(); saveTrash(); renderTrash();
-            showToast(t("restoredToast"));
-          }
-        });
-        item.append(text, restore);
-        container.appendChild(item);
+    // ============ مستمعي الأحداث ============
+    $("#fabBtn").addEventListener("click", openComposer);
+    $("#composerForm").addEventListener("submit", e => {
+      e.preventDefault();
+      if (addTask($("#taskInput").value)) closeComposer();
+    });
+    $("#taskInput").addEventListener("input", () => {
+      $("#sendBtn").classList.toggle("disabled", !$("#taskInput").value.trim().length);
+    });
+
+    $$(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        currentView = tab.dataset.view;
+        closeAllOverlays();
+        closeComposer();
+        render();
       });
-    }
+    });
 
-    function requestNotificationPermission() {
-      return new Promise((resolve) => {
-        if (!("Notification" in window)) { showToast("المتصفح لا يدعم الإشعارات", 'error'); resolve(false); return; }
-        Notification.requestPermission().then(permission => resolve(permission === "granted"));
-      });
-    }
-
-    function scheduleNotification() {
-      if (!settings.notificationEnabled) return;
-      if (!("Notification" in window) || Notification.permission !== "granted") return;
-      if (window.nawyNotificationTimeout) clearTimeout(window.nawyNotificationTimeout);
-      const now = new Date();
-      const [hours, minutes] = (settings.notificationTime || "09:00").split(":").map(Number);
-      let scheduledTime = new Date(now);
-      scheduledTime.setHours(hours, minutes, 0, 0);
-      if (scheduledTime <= now) scheduledTime.setDate(scheduledTime.getDate() + 1);
-      const delay = scheduledTime.getTime() - now.getTime();
-      window.nawyNotificationTimeout = setTimeout(() => { showMorningNotification(); scheduleNotification(); }, delay);
-    }
-
-    function showMorningNotification() {
-      const body = settings.language === "en" ? "What are you up to today?" : "ناوي على إيه النهارده؟";
-      const options = { body, icon: "./icon-512.png", badge: "./icon-512.png", dir: settings.language === "en" ? "ltr" : "rtl", lang: settings.language, tag: "nawy-morning", requireInteraction: true, vibrate: [100, 50, 100] };
-      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-        navigator.serviceWorker.ready.then(reg => reg.showNotification("ناوي 🌱", options)).catch(() => { if ("Notification" in window) { const n = new Notification("ناوي 🌱", options); n.onclick = () => { window.focus(); n.close(); }; } });
-      } else if ("Notification" in window) {
-        const n = new Notification("ناوي 🌱", options);
-        n.onclick = () => { window.focus(); n.close(); };
-      }
-    }
-
-    function updateNotificationUI() {
-      $("#notificationToggleBtn").textContent = settings.notificationEnabled ? t("notificationDisable") : t("notificationEnable");
-      $("#notificationTimeRow").classList.toggle("hidden", !settings.notificationEnabled);
-      $("#notificationTimeInput").value = settings.notificationTime;
-    }
-
-    // Event Listeners
-    $("#composerFab").addEventListener("click", openComposer);
-    $("#composer").addEventListener("submit", e => { e.preventDefault(); if (addTask($("#taskInput").value)) closeComposer(); });
-    $("#taskInput").addEventListener("input", () => $("#sendBtn").classList.toggle("disabled", !$("#taskInput").value.trim().length));
-    $$(".header-tab").forEach(btn => btn.addEventListener("click", () => setView(btn.dataset.view)));
     $("#menuBtn").addEventListener("click", () => openOverlay($("#menuOverlay")));
     $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#settingsOverlay")); });
-    $("#searchBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#searchOverlay")); setTimeout(() => $("#searchInput").focus(), 100); });
-    $("#menuTrashBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); renderTrash(); openOverlay($("#trashOverlay")); });
+    $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); renderArchive(); openOverlay($("#archiveOverlay")); });
     $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); exportData(); });
     $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#importFileInput").click(); });
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
-    $$("[data-close-overlay]").forEach(btn => btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.closeOverlay))));
-    $$(".overlay").forEach(overlay => overlay.addEventListener("click", e => { if (e.target === overlay) closeOverlay(overlay); }));
-    $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } });
-    $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } });
-    $("#actionRepeat").addEventListener("click", () => { closeOverlay($("#actionOverlay")); openOverlay($("#repeatOverlay")); });
-    $("#actionDate").addEventListener("click", () => { closeOverlay($("#actionOverlay")); openOverlay($("#dateOverlay")); setTimeout(() => { if ($("#taskDateInput")._flatpickr) $("#taskDateInput")._flatpickr.destroy(); flatpickr("#taskDateInput", { dateFormat: "Y-m-d", locale: settings.language === "ar" ? "ar" : "en", clickOpens: true }); $("#taskDateInput")._flatpickr.open(); }, 100); });
-    $$("#repeatOverlay [data-repeat]").forEach(btn => btn.addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.repeat = btn.dataset.repeat; saveTasks(); } } closeOverlay($("#repeatOverlay")); selectedTaskId = null; render(); }));
-    $("#dateSave").addEventListener("click", () => { if (selectedTaskId && $("#taskDateInput").value) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = $("#taskDateInput").value; if ($("#taskTimeInput").value) task.scheduledDate += `T${$("#taskTimeInput").value}`; saveTasks(); showToast("تم تحديد الموعد 📅"); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); });
-    $("#dateClear").addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = null; saveTasks(); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); });
-    $$("[data-theme-choice]").forEach(btn => btn.addEventListener("click", () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); }));
-    $$("[data-accent-choice]").forEach(btn => btn.addEventListener("click", () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); }));
-    $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
-    $$("[data-language-choice]").forEach(btn => btn.addEventListener("click", () => { settings.language = btn.dataset.languageChoice; saveSettings(); applySettings(); render(); }));
 
+    $$("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.close)));
+    });
+
+    $$(".overlay").forEach(overlay => {
+      overlay.addEventListener("click", e => {
+        if (e.target === overlay) closeOverlay(overlay);
+      });
+    });
+
+    $("#actionComplete").addEventListener("click", () => {
+      if (!selectedTaskId) return;
+      const task = tasks.find(x => x.id === selectedTaskId);
+      if (task) {
+        if (task.status === 'achieved') reactivateTask(task.id);
+        else achieveTask(task.id);
+      }
+      closeOverlay($("#actionOverlay"));
+      selectedTaskId = null;
+    });
+
+    $("#actionPostpone").addEventListener("click", () => {
+      if (!selectedTaskId) return;
+      const task = tasks.find(x => x.id === selectedTaskId);
+      if (task) {
+        if (task.status === 'postponed' || task.status === 'achieved') reactivateTask(task.id);
+        else postponeTask(task.id);
+      }
+      closeOverlay($("#actionOverlay"));
+      selectedTaskId = null;
+    });
+
+    $("#actionEdit").addEventListener("click", () => {
+      if (!selectedTaskId) return;
+      const task = tasks.find(x => x.id === selectedTaskId);
+      if (!task) return;
+      
+      const preview = $("#actionTaskPreview");
+      const editContainer = document.createElement("div");
+      editContainer.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;";
+      
+      const editArea = document.createElement("textarea");
+      editArea.value = task.text;
+      editArea.style.cssText = "flex:1;min-height:50px;padding:12px;border:1px solid var(--accent);border-radius:10px;background:var(--surface);color:var(--text);resize:none;font-size:var(--fs-md);";
+      
+      const doneBtn = document.createElement("button");
+      doneBtn.type = "button";
+      doneBtn.style.cssText = "width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;";
+      doneBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M8 12.5L11 15.5L16 9"/></svg>';
+      
+      editContainer.append(editArea, doneBtn);
+      preview.replaceWith(editContainer);
+      editArea.focus();
+      
+      function saveEdit() {
+        const newText = editArea.value.trim();
+        if (newText && newText !== task.text) {
+          task.text = newText;
+          saveTasks();
+          render();
+          showToast(t("editedToast"));
+        }
+        closeOverlay($("#actionOverlay"));
+        selectedTaskId = null;
+      }
+      
+      doneBtn.addEventListener("click", saveEdit);
+      editArea.addEventListener("keydown", e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          saveEdit();
+        }
+      });
+    });
+
+    $("#actionDelete").addEventListener("click", () => {
+      if (selectedTaskId) {
+        deleteTask(selectedTaskId);
+        closeOverlay($("#actionOverlay"));
+        selectedTaskId = null;
+      }
+    });
+
+    $$("[data-theme]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.theme = btn.dataset.theme;
+        saveSettings();
+        applySettings();
+      });
+    });
+
+    $$("[data-accent]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.accent = btn.dataset.accent;
+        saveSettings();
+        applySettings();
+      });
+    });
+
+    $$("[data-font]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.fontSize = btn.dataset.font;
+        saveSettings();
+        applySettings();
+        render();
+      });
+    });
+
+    $$("[data-language]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        settings.language = btn.dataset.language;
+        saveSettings();
+        applySettings();
+        render();
+      });
+    });
+
+    $("#notifToggle").addEventListener("click", async () => {
+      if (settings.notificationEnabled) {
+        settings.notificationEnabled = false;
+        saveSettings();
+        updateNotifUI();
+        if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
+        return;
+      }
+      const granted = await requestNotificationPermission();
+      if (granted) {
+        settings.notificationEnabled = true;
+        saveSettings();
+        updateNotifUI();
+        scheduleNotification();
+      } else {
+        showToast("Permission denied");
+      }
+    });
+
+    $("#notifTime").addEventListener("change", () => {
+      settings.notificationTime = $("#notifTime").value;
+      saveSettings();
+      if (settings.notificationEnabled) scheduleNotification();
+    });
+
+    // السحب الأفقي للتنقل
     document.addEventListener("touchstart", e => {
       if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel")) return;
       const touch = e.touches[0];
-      swipeStartX = touch.clientX; swipeStartY = touch.clientY; swipeTracking = true;
+      swipeStartX = touch.clientX;
+      swipeTracking = true;
     }, { passive: true });
 
     document.addEventListener("touchend", e => {
@@ -1068,77 +1584,55 @@
       swipeTracking = false;
       const touch = e.changedTouches[0];
       const dx = touch.clientX - swipeStartX;
-      const dy = touch.clientY - swipeStartY;
+      const dy = touch.clientY - (swipeStartX || touch.clientY);
+      
       if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        const views = ["all", "today", "favorites"];
-        const idx = views.indexOf(currentView);
         const isRTL = document.documentElement.dir === "rtl";
-        if (isRTL) { if (dx < 0) setView(views[(idx+1)%views.length]); else setView(views[(idx-1+views.length)%views.length]); }
-        else { if (dx > 0) setView(views[(idx+1)%views.length]); else setView(views[(idx-1+views.length)%views.length]); }
+        if (isRTL) {
+          if (dx < 0) currentView = currentView === "all" ? "favorites" : "all";
+          else currentView = currentView === "all" ? "favorites" : "all";
+        } else {
+          if (dx > 0) currentView = currentView === "all" ? "favorites" : "all";
+          else currentView = currentView === "all" ? "favorites" : "all";
+        }
+        closeAllOverlays();
+        closeComposer();
+        render();
       }
     }, { passive: true });
 
-    $("#notificationToggleBtn").addEventListener("click", async () => {
-      if (settings.notificationEnabled) {
-        settings.notificationEnabled = false;
-        saveSettings(); updateNotificationUI();
-        showToast("تم تعطيل الإشعارات", 'info');
-        return;
-      }
-      const granted = await requestNotificationPermission();
-      if (granted) {
-        settings.notificationEnabled = true;
-        saveSettings(); updateNotificationUI(); scheduleNotification();
-        showToast("تم تفعيل الإشعارات 🔔");
-      } else {
-        showToast("تم رفض الإذن", 'error');
-      }
-    });
-
-    $("#notificationTimeInput").addEventListener("change", () => { settings.notificationTime = $("#notificationTimeInput").value; saveSettings(); if (settings.notificationEnabled) scheduleNotification(); });
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (settings.theme === "system") applySettings(); });
-
-    const fuse = new Fuse([], { keys: ['text'], threshold: 0.3 });
-    $("#searchInput").addEventListener("input", () => {
-      const query = $("#searchInput").value.trim();
-      const results = $("#searchResults");
-      results.innerHTML = "";
-      if (!query) return;
-      fuse.setCollection(tasks);
-      const found = fuse.search(query).map(r => r.item);
-      if (found.length === 0) { results.innerHTML = `<div class="task-empty"><div class="empty-title">${t("noResults")}</div></div>`; return; }
-      found.forEach(task => {
-        const item = document.createElement("div");
-        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;";
-        item.textContent = task.text;
-        if (task.completed) item.style.textDecoration = "line-through";
-        item.addEventListener("click", () => { closeOverlay($("#searchOverlay")); openAction(task.id); });
-        results.appendChild(item);
-      });
-    });
-
+    // بنر التثبيت
     let deferredInstallPrompt = null;
-    window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstallPrompt = e; $("#installBanner").classList.add("show"); });
-    $("#installAction").addEventListener("click", async () => { if (!deferredInstallPrompt) return; deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt = null; $("#installBanner").classList.remove("show"); });
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      $("#installBanner").classList.add("show");
+    });
+    $("#installAction").addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      $("#installBanner").classList.remove("show");
+    });
     $("#installDismiss").addEventListener("click", () => $("#installBanner").classList.remove("show"));
     window.addEventListener("appinstalled", () => $("#installBanner").classList.remove("show"));
 
+    // Service Worker
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => { navigator.serviceWorker.register("./sw.js").catch(() => {}); });
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
     }
 
+    // ============ التهيئة ============
     function init() {
       loadData();
       applySettings();
-      updateNotificationUI();
-      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") scheduleNotification();
-      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "default") {
-        Notification.requestPermission().then(p => { if (p !== "granted") { settings.notificationEnabled = false; saveSettings(); updateNotificationUI(); } });
-      }
       render();
-      requestAnimationFrame(updateIndicator);
-      lucide.createIcons();
+      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") {
+        scheduleNotification();
+      }
     }
 
     init();
