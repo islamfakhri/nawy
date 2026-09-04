@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "مساحتك الشخصية لنواياك وأهدافك",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0F1115",
   "theme_color": "#3b82f6",
@@ -12,16 +13,43 @@
   "lang": "ar",
   "icons": [
     {
-      "src": "Icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "Icon-512.png",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "أضف نية",
+      "short_name": "أضف",
+      "description": "أضف نية جديدة",
+      "url": "./?action=add",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "categories": ["productivity", "lifestyle"]
 }
