@@ -1,5 +1,5 @@
-const CACHE_NAME = 'nawy-cache-v3';
-const APP_SHELL = ['./', './index.html', './manifest.json', './icon-512.png'];
+const CACHE_NAME = 'nawy-cache-v4';
+const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './Sortable.min.js'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -44,4 +44,10 @@ self.addEventListener('notificationclick', (event) => {
       if (clients.openWindow) return clients.openWindow('./');
     })
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
