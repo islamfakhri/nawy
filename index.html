@@ -12,8 +12,8 @@
   
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="Icon-192.png">
+  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   
   <!-- الخط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -113,8 +113,8 @@
       gap: 12px;
     }
     .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .brand-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; }
-    .nawy-logo { width: 40px; height: 40px; display: block; }
+    .brand-icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; background: var(--accent-soft); }
+    .brand-icon img { width: 100%; height: 100%; object-fit: cover; }
     .brand-name { font-size: var(--fs-lg); font-weight: 800; letter-spacing: -0.3px; }
     .menu-btn {
       width: 44px; height: 44px;
@@ -128,7 +128,7 @@
     }
     .menu-btn:active { transform: scale(0.93); }
 
-    /* ============ التبويبات ============ */
+    /* التبويبات */
     .tabs {
       display: flex;
       gap: 24px;
@@ -174,7 +174,7 @@
 
     .content { margin-top: 8px; }
 
-    /* ============ الأقسام ============ */
+    /* الأقسام */
     .section { margin-top: 16px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
     .section-header {
@@ -218,7 +218,7 @@
     }
     .section.collapsed .section-body { max-height: 0; opacity: 0; }
 
-    /* ============ قائمة النوايا ============ */
+    /* قائمة النوايا */
     .task-list { padding: 0; display: flex; flex-direction: column; }
     .task {
       display: flex;
@@ -433,8 +433,6 @@
     }
     .menu-item:active { background: var(--surface-2); }
     .menu-item .icon { color: var(--muted); }
-    .menu-item.danger { color: #ef4444; }
-    .menu-item.danger .icon { color: #ef4444; }
     .menu-text { flex: 1; font-weight: 500; }
 
     .action-item {
@@ -592,7 +590,7 @@
       border-radius: 14px;
       background: var(--accent-soft);
     }
-    .install-banner-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .install-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
     .install-banner-text { flex: 1; }
     .install-banner-title { font-size: 16px; font-weight: 800; }
     .install-banner-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -632,18 +630,7 @@
     <header class="header">
       <div class="brand">
         <div class="brand-icon">
-          <svg class="nawy-logo" viewBox="0 0 40 40" width="40" height="40">
-            <defs>
-              <linearGradient id="nawyGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
-              </linearGradient>
-            </defs>
-            <rect width="40" height="40" rx="10" fill="url(#nawyGrad1)" opacity="0.15"/>
-            <path d="M20 30V20" stroke="url(#nawyGrad1)" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M20 20C20 15 23 10 32 10C32 19 26 20 20 20Z" fill="url(#nawyGrad1)"/>
-            <path d="M20 20C20 15 17 10 8 10C8 19 14 20 20 20Z" fill="url(#nawyGrad1)" opacity="0.7"/>
-          </svg>
+          <img src="icon-192.png" alt="ناوي" onerror="this.style.display='none'">
         </div>
         <div class="brand-name" id="brandName">ناوي</div>
       </div>
@@ -815,7 +802,7 @@
   <div class="install-banner" id="installBanner">
     <div class="install-banner-inner">
       <div class="install-banner-icon">
-        <img src="Icon-192.png" alt="ناوي" onerror="this.style.display='none'">
+        <img src="icon-192.png" alt="ناوي">
       </div>
       <div class="install-banner-text">
         <div class="install-banner-title" data-i18n="installTitle">نزّل ناوي 🌱</div>
@@ -833,7 +820,6 @@
   <script>
     "use strict";
 
-    // ============ الثوابت ============
     const APP_VERSION = "1.0.0";
     const STORAGE_KEYS = {
       tasks: "nawy_tasks_v2",
@@ -867,7 +853,7 @@
         language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع",
         dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
         color: "اللون", nawyColor: "سمة ناوي", notification: "إشعار الصباح",
-        notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
+        time: "الوقت",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         noArchive: "الأرشيف فاضي",
@@ -893,7 +879,7 @@
         language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode",
         dark: "Dark", light: "Light", fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large",
         color: "Color", nawyColor: "NAWY Color", notification: "Morning Reminder",
-        notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
+        time: "Time",
         noIntentions: "No intentions yet", firstIntent: "Write your first intention.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         noArchive: "Archive is empty",
@@ -909,7 +895,6 @@
       }
     };
 
-    // ============ الحالة ============
     let tasks = [];
     let archive = [];
     let settings = { ...DEFAULT_SETTINGS };
@@ -921,14 +906,12 @@
     let audioContext = null;
     let deferredInstallPrompt = null;
 
-    // ============ أدوات ============
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
     function t(key) { return TRANSLATIONS[settings.language]?.[key] || TRANSLATIONS.ar[key] || key; }
     function createId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 9); }
     function safeParse(v, f) { try { return JSON.parse(v) ?? f; } catch { return f; } }
 
-    // ============ التخزين ============
     function loadData() {
       tasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []).filter(x => x && x.text);
       archive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []).filter(x => x && x.text);
@@ -946,7 +929,6 @@
     function saveArchive() { localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive)); }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
 
-    // ============ Toast ============
     function showToast(message, canUndo = false, undoCallback = null) {
       const existing = document.querySelector('.toastify');
       if (existing) existing.remove();
@@ -985,7 +967,6 @@
       setTimeout(() => { toast.remove(); }, canUndo ? 5000 : 3000);
     }
 
-    // ============ الصوت والاحتفال ============
     function playAchievedSound() {
       try {
         if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1014,7 +995,6 @@
       }
     }
 
-    // ============ عمليات النوايا ============
     function addTask(text) {
       const clean = String(text || "").trim();
       if (!clean) return false;
@@ -1056,10 +1036,7 @@
     function toggleStar(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
-      
-      // بس نغير حالة النجمة من غير ما نغير الترتيب
       task.starred = !task.starred;
-      
       saveTasks();
       render();
     }
@@ -1105,7 +1082,6 @@
       renderArchive();
     }
 
-    // ============ نسخ ============
     function copyTaskText(text) {
       navigator.clipboard.writeText(text).then(() => {
         showToast(t("copiedToast"));
@@ -1120,14 +1096,13 @@
       });
     }
 
-    // ============ مشاركة كصورة ============
     function shareAsImage(task) {
       const canvas = document.createElement("canvas");
       canvas.width = 1080;
       canvas.height = 1350;
       const ctx = canvas.getContext("2d");
       
-      const isDark = settings.theme === "dark" || (settings.theme === "system" && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      const isDark = settings.theme === "dark";
       const bg = isDark ? "#0F1115" : "#FAF9F7";
       const textColor = isDark ? "#E5E7EB" : "#1A1A1A";
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#3b82f6";
@@ -1135,104 +1110,122 @@
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // رسم لوجو ناوي
-      const logoGrad = ctx.createLinearGradient(120, 120, 160, 160);
-      logoGrad.addColorStop(0, "#3b82f6");
-      logoGrad.addColorStop(1, "#10b981");
-      
-      // خلفية اللوجو
-      ctx.fillStyle = "rgba(59, 130, 246, 0.15)";
-      ctx.beginPath();
-      ctx.roundRect(80, 80, 100, 100, 20);
-      ctx.fill();
-      
-      // شكل ناوي
-      ctx.strokeStyle = logoGrad;
-      ctx.lineWidth = 5;
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(130, 155);
-      ctx.lineTo(130, 120);
-      ctx.stroke();
-      
-      ctx.fillStyle = logoGrad;
-      ctx.beginPath();
-      ctx.moveTo(130, 120);
-      ctx.lineTo(130, 115);
-      ctx.lineTo(155, 95);
-      ctx.lineTo(155, 140);
-      ctx.lineTo(140, 120);
-      ctx.closePath();
-      ctx.fill();
-      
-      ctx.fillStyle = logoGrad;
-      ctx.globalAlpha = 0.7;
-      ctx.beginPath();
-      ctx.moveTo(130, 120);
-      ctx.lineTo(130, 115);
-      ctx.lineTo(105, 95);
-      ctx.lineTo(105, 140);
-      ctx.lineTo(120, 120);
-      ctx.closePath();
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      
-      // اسم التطبيق
-      ctx.fillStyle = textColor;
-      ctx.font = "bold 50px Cairo, sans-serif";
-      ctx.textAlign = "right";
-      ctx.fillText("ناوي", 960, 130);
-      
-      // النية
-      ctx.fillStyle = textColor;
-      ctx.font = "bold 60px Cairo, sans-serif";
-      ctx.textAlign = "center";
-      const words = task.text.split(" ");
-      let lines = [];
-      let line = "";
-      for (const word of words) {
-        if ((line + word).length > 15) {
-          lines.push(line.trim());
-          line = word + " ";
-        } else {
-          line += word + " ";
+      // رسم الأيقونة
+      const iconImg = new Image();
+      iconImg.src = "icon-192.png";
+      iconImg.onload = () => {
+        ctx.drawImage(iconImg, 80, 80, 100, 100);
+        
+        // اسم التطبيق
+        ctx.fillStyle = textColor;
+        ctx.font = "bold 50px Cairo, sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText("ناوي", 960, 130);
+        
+        // النية
+        ctx.fillStyle = textColor;
+        ctx.font = "bold 60px Cairo, sans-serif";
+        ctx.textAlign = "center";
+        const words = task.text.split(" ");
+        let lines = [];
+        let line = "";
+        for (const word of words) {
+          if ((line + word).length > 15) {
+            lines.push(line.trim());
+            line = word + " ";
+          } else {
+            line += word + " ";
+          }
         }
-      }
-      if (line.trim()) lines.push(line.trim());
-      
-      let y = 500;
-      for (const l of lines) {
-        ctx.fillText(l, 540, y);
-        y += 80;
-      }
-      
-      // الدومين
-      ctx.fillStyle = accentColor;
-      ctx.font = "bold 40px Cairo, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("nawy.app", 540, 1250);
-      
-      canvas.toBlob(blob => {
-        if (!blob) return;
-        const file = new File([blob], "nawy.png", { type: "image/png" });
-        if (navigator.share && navigator.canShare({ files: [file] })) {
-          navigator.share({
-            files: [file],
-            title: "ناوي",
-            text: task.text
-          }).catch(() => {});
-        } else {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "nawy.png";
-          a.click();
-          URL.revokeObjectURL(url);
+        if (line.trim()) lines.push(line.trim());
+        
+        let y = 500;
+        for (const l of lines) {
+          ctx.fillText(l, 540, y);
+          y += 80;
         }
-      });
+        
+        // الدومين
+        ctx.fillStyle = accentColor;
+        ctx.font = "bold 40px Cairo, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("nawy.app", 540, 1250);
+        
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const file = new File([blob], "nawy.png", { type: "image/png" });
+          if (navigator.share && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: "ناوي",
+              text: task.text
+            }).catch(() => {});
+          } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "nawy.png";
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        });
+      };
+      
+      iconImg.onerror = () => {
+        // لو الصورة مش موجودة، نكمل من غيرها
+        ctx.fillStyle = textColor;
+        ctx.font = "bold 50px Cairo, sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText("ناوي", 960, 130);
+        
+        ctx.fillStyle = textColor;
+        ctx.font = "bold 60px Cairo, sans-serif";
+        ctx.textAlign = "center";
+        const words = task.text.split(" ");
+        let lines = [];
+        let line = "";
+        for (const word of words) {
+          if ((line + word).length > 15) {
+            lines.push(line.trim());
+            line = word + " ";
+          } else {
+            line += word + " ";
+          }
+        }
+        if (line.trim()) lines.push(line.trim());
+        
+        let y = 500;
+        for (const l of lines) {
+          ctx.fillText(l, 540, y);
+          y += 80;
+        }
+        
+        ctx.fillStyle = accentColor;
+        ctx.font = "bold 40px Cairo, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("nawy.app", 540, 1250);
+        
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const file = new File([blob], "nawy.png", { type: "image/png" });
+          if (navigator.share && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: "ناوي",
+              text: task.text
+            }).catch(() => {});
+          } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "nawy.png";
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        });
+      };
     }
 
-    // ============ الرسم ============
     function render() {
       const content = $("#content");
       content.innerHTML = "";
@@ -1277,7 +1270,6 @@
     }
 
     function createSection(type, title, taskArray, isOpen = true) {
-      // حافظ على الترتيب الأصلي
       const sortedTasks = taskArray;
       
       const section = document.createElement("section");
@@ -1373,7 +1365,6 @@
       render();
     }
 
-    // ============ الترتيب ============
     function initSortable() {
       $$(".task-list").forEach(list => {
         if (list.sortableInstance) list.sortableInstance.destroy();
@@ -1402,7 +1393,6 @@
       });
     }
 
-    // ============ بطاقة النية ============
     function openTaskSheet(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
@@ -1414,7 +1404,6 @@
       const actions = $("#taskActions");
       actions.innerHTML = "";
       
-      // حققت / أعد فتح
       const achieveBtn = document.createElement("button");
       achieveBtn.className = "action-item";
       achieveBtn.type = "button";
@@ -1429,7 +1418,6 @@
       });
       actions.appendChild(achieveBtn);
       
-      // تعديل
       const editBtn = document.createElement("button");
       editBtn.className = "action-item";
       editBtn.type = "button";
@@ -1476,7 +1464,6 @@
       });
       actions.appendChild(editBtn);
       
-      // نسخ
       const copyBtn = document.createElement("button");
       copyBtn.className = "action-item";
       copyBtn.type = "button";
@@ -1487,7 +1474,6 @@
       copyBtn.addEventListener("click", () => copyTaskText(task.text));
       actions.appendChild(copyBtn);
       
-      // مشاركة
       const shareBtn = document.createElement("button");
       shareBtn.className = "action-item";
       shareBtn.type = "button";
@@ -1498,7 +1484,6 @@
       shareBtn.addEventListener("click", () => shareAsImage(task));
       actions.appendChild(shareBtn);
       
-      // تراجع
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "action-item danger";
       deleteBtn.type = "button";
@@ -1516,7 +1501,6 @@
       openOverlay($("#taskOverlay"));
     }
 
-    // ============ الأرشيف ============
     function renderArchive() {
       const container = $("#archiveList");
       container.innerHTML = "";
@@ -1553,16 +1537,13 @@
       });
     }
 
-    // ============ Overlays ============
     function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
     function closeOverlay(overlay) { overlay.classList.remove("show"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
-    // ============ Composer ============
     function openComposer() { $("#fabBtn").classList.add("hidden"); $("#composerPanel").classList.add("open"); $("#taskInput").focus(); }
     function closeComposer() { $("#fabBtn").classList.remove("hidden"); $("#composerPanel").classList.remove("open"); $("#taskInput").value = ""; $("#sendBtn").classList.add("disabled"); }
 
-    // ============ الإعدادات ============
     function applySettings() {
       document.documentElement.setAttribute("data-theme", settings.theme);
       document.documentElement.setAttribute("data-accent", settings.accent);
@@ -1591,7 +1572,6 @@
       $("#notifTime").value = settings.notificationTime;
     }
 
-    // ============ الإشعارات ============
     function requestNotificationPermission() {
       return new Promise((resolve) => {
         if (!("Notification" in window)) {
@@ -1631,8 +1611,8 @@
       const body = t("morningNotif");
       const options = {
         body,
-        icon: "./Icon-512.png",
-        badge: "./Icon-192.png",
+        icon: "./icon-512.png",
+        badge: "./icon-192.png",
         dir: settings.language === "en" ? "ltr" : "rtl",
         lang: settings.language,
         tag: "nawy-morning",
@@ -1644,7 +1624,6 @@
         navigator.serviceWorker.ready.then(reg => {
           reg.showNotification("ناوي 🌱", options);
         }).catch(() => {
-          // لو فشل الـ service worker، نجرب مباشرة
           if ("Notification" in window && Notification.permission === "granted") {
             const notification = new Notification("ناوي 🌱", options);
             notification.onclick = () => {
@@ -1662,7 +1641,6 @@
       }
     }
 
-    // ============ التصدير والاستيراد ============
     function exportData() {
       const data = JSON.stringify({ tasks, archive, settings }, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
@@ -1705,7 +1683,6 @@
       reader.readAsText(file);
     }
 
-    // ============ مستمعي الأحداث ============
     $("#fabBtn").addEventListener("click", openComposer);
     $("#composerForm").addEventListener("submit", e => {
       e.preventDefault();
@@ -1796,7 +1773,6 @@
       if (settings.notificationEnabled) scheduleNotification();
     });
 
-    // ============ السحب الأفقي الدائري ============
     document.addEventListener("touchstart", e => {
       if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel, .fab")) return;
       const touch = e.touches[0];
@@ -1840,16 +1816,13 @@
       }
     }, { passive: true });
 
-    // ============ Service Worker والتحديث التلقائي ============
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js").then(registration => {
-          // فحص التحديث كل 5 دقائق
           setInterval(() => {
             registration.update().catch(() => {});
           }, 5 * 60 * 1000);
           
-          // فحص التحديث عند الرجوع للتطبيق
           document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === "visible") {
               registration.update().catch(() => {});
@@ -1917,7 +1890,6 @@
       });
     }
 
-    // ============ بنر التثبيت ============
     window.addEventListener("beforeinstallprompt", e => {
       e.preventDefault();
       deferredInstallPrompt = e;
@@ -1946,7 +1918,6 @@
       deferredInstallPrompt = null;
     });
 
-    // ============ التهيئة ============
     function init() {
       loadData();
       applySettings();
@@ -1959,4 +1930,4 @@
     init();
   </script>
 </body>
-</html> 
+</html>
