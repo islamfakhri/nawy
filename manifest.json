@@ -1,6 +1,7 @@
 {
   "name": "ناوي",
   "short_name": "ناوي",
+  "version": "1.0.0",
   "description": "مساحتك الشخصية لنواياك وأهدافك",
   "start_url": "./",
   "display": "standalone",
