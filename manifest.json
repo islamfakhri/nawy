@@ -1,22 +1,27 @@
 {
-  "id": "./",
   "name": "ناوي",
   "short_name": "ناوي",
-  "description": "ناوي — مكان بسيط لكل اللي ناوي تعمله.",
+  "version": "1.0.0",
+  "description": "مساحتك الشخصية لنواياك وأهدافك",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
-  "background_color": "#101111",
-  "theme_color": "#19a974",
+  "background_color": "#0F1115",
+  "theme_color": "#3b82f6",
   "orientation": "portrait",
   "dir": "rtl",
   "lang": "ar",
-  "prefer_related_applications": false,
-  "categories": ["productivity", "lifestyle"],
   "icons": [
-    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "Icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
