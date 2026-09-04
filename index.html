@@ -539,7 +539,7 @@
         </div>
       </div>
       <div class="setting-group">
-        <div class="setting-label" data-i18n="notification">إشعار الصباح</div>
+        <div class="setting-label" data-i18n="notification">التذكير اليومي</div>
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name" data-i18n="notification">إشعار الصباح</div>
@@ -578,7 +578,7 @@
         done: "أتمم النية", cancelDone: "أعد فتح النية", repeat: "تكرار", setDate: "تحديد موعد", delete: "تراجع عن النية",
         language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع", light: "فاتح", dark: "داكن", system: "النظام",
         fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير", color: "اللون", nawyColor: "لون ناوي",
-        notification: "إشعار الصباح", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
+        notification: "التذكير اليومي", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         archiveEmpty: "الأرشيف فاضي", restore: "استرجاع", taskPlaceholder: "اكتب النية اللي في بالك...",
@@ -594,7 +594,7 @@
         done: "Complete", cancelDone: "Reopen", repeat: "Repeat", setDate: "Set Date", delete: "Delete",
         language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode", light: "Light", dark: "Dark", system: "System",
         fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large", color: "Color", nawyColor: "NAWY Color",
-        notification: "Morning Notification", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
+        notification: "Daily Reminder", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
         noIntentions: "No intentions yet", firstIntent: "Write your first intention for today.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         archiveEmpty: "Archive is empty", restore: "Restore", taskPlaceholder: "Write the intention on your mind...",
@@ -806,9 +806,9 @@
         <div class="task-main"><p class="task-text">${task.text}</p></div>
         <button class="task-star ${task.starred ? 'active' : ''}" type="button"><i data-lucide="star"></i></button>
       `;
-      article.querySelector(".task-checkbox").onclick = (e) => { e.stopPropagation(); completeTask(task.id); };
-      article.querySelector(".task-star").onclick = (e) => { e.stopPropagation(); toggleStar(task.id); };
-      article.querySelector(".task-main").onclick = (e) => { e.stopPropagation(); openAction(task.id); };
+      article.querySelector(".task-checkbox").addEventListener("click", e => { e.stopPropagation(); completeTask(task.id); });
+      article.querySelector(".task-star").addEventListener("click", e => { e.stopPropagation(); toggleStar(task.id); });
+      article.querySelector(".task-main").addEventListener("click", () => openAction(task.id));
       return article;
     }
 
@@ -823,12 +823,7 @@
       document.querySelectorAll(".task-list").forEach(list => {
         if (list.sortableInstance) list.sortableInstance.destroy();
         list.sortableInstance = new Sortable(list, {
-          animation: 150, 
-          ghostClass: 'drag-ghost', 
-          dragClass: 'drag-source', 
-          delay: 300,
-          delayOnTouchOnly: true,
-          touchStartThreshold: 5,
+          animation: 150, ghostClass: 'drag-ghost', dragClass: 'drag-source', delay: 200, delayOnTouchOnly: true,
           onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
             const activeTasks = tasks.filter(x => !x.completed);
@@ -882,7 +877,7 @@
       `;
       $("#actionComplete .action-text").textContent = task.completed ? t("cancelDone") : t("done");
       $("#actionDateText").textContent = task.scheduledDate || t("setDate");
-      $("#actionTaskPreview").onclick = () => {
+      $("#actionTaskPreview").addEventListener("click", () => {
         const preview = $("#actionTaskPreview");
         const editContainer = document.createElement("div");
         editContainer.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;";
@@ -902,9 +897,9 @@
           if (newText && newText !== task.text) { task.text = newText; saveTasks(); render(); showToast(t("editedToast")); }
           closeOverlay($("#actionOverlay")); selectedTaskId = null;
         }
-        doneBtn.onclick = saveEdit;
+        doneBtn.addEventListener("click", saveEdit);
         editArea.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveEdit(); } });
-      };
+      });
       openOverlay($("#actionOverlay"));
       lucide.createIcons();
     }
@@ -984,7 +979,7 @@
         const restore = document.createElement("button");
         restore.textContent = t("restore");
         restore.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
-        restore.onclick = () => {
+        restore.addEventListener("click", () => {
           const index = trash.findIndex(x => x.id === task.id);
           if (index !== -1) {
             const [restored] = trash.splice(index, 1);
@@ -993,7 +988,7 @@
             saveTasks(); saveTrash(); renderTrash();
             showToast(t("restoredToast"));
           }
-        };
+        });
         item.append(text, restore);
         container.appendChild(item);
       });
@@ -1036,30 +1031,31 @@
       $("#notificationTimeInput").value = settings.notificationTime;
     }
 
-    $("#composerFab").onclick = openComposer;
+    // Event Listeners
+    $("#composerFab").addEventListener("click", openComposer);
     $("#composer").addEventListener("submit", e => { e.preventDefault(); if (addTask($("#taskInput").value)) closeComposer(); });
     $("#taskInput").addEventListener("input", () => $("#sendBtn").classList.toggle("disabled", !$("#taskInput").value.trim().length));
-    $$(".header-tab").forEach(btn => btn.onclick = () => setView(btn.dataset.view));
-    $("#menuBtn").onclick = () => openOverlay($("#menuOverlay"));
-    $("#settingsBtn").onclick = () => { closeOverlay($("#menuOverlay")); openOverlay($("#settingsOverlay")); };
-    $("#searchBtn").onclick = () => { closeOverlay($("#menuOverlay")); openOverlay($("#searchOverlay")); setTimeout(() => $("#searchInput").focus(), 100); };
-    $("#menuTrashBtn").onclick = () => { closeOverlay($("#menuOverlay")); renderTrash(); openOverlay($("#trashOverlay")); };
-    $("#exportBtn").onclick = () => { closeOverlay($("#menuOverlay")); exportData(); };
-    $("#importBtn").onclick = () => { closeOverlay($("#menuOverlay")); $("#importFileInput").click(); };
+    $$(".header-tab").forEach(btn => btn.addEventListener("click", () => setView(btn.dataset.view)));
+    $("#menuBtn").addEventListener("click", () => openOverlay($("#menuOverlay")));
+    $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#settingsOverlay")); });
+    $("#searchBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#searchOverlay")); setTimeout(() => $("#searchInput").focus(), 100); });
+    $("#menuTrashBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); renderTrash(); openOverlay($("#trashOverlay")); });
+    $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); exportData(); });
+    $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#importFileInput").click(); });
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
-    $$("[data-close-overlay]").forEach(btn => btn.onclick = () => closeOverlay(document.getElementById(btn.dataset.closeOverlay)));
+    $$("[data-close-overlay]").forEach(btn => btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.closeOverlay))));
     $$(".overlay").forEach(overlay => overlay.addEventListener("click", e => { if (e.target === overlay) closeOverlay(overlay); }));
-    $("#actionComplete").onclick = () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } };
-    $("#actionDelete").onclick = () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } };
-    $("#actionRepeat").onclick = () => { closeOverlay($("#actionOverlay")); openOverlay($("#repeatOverlay")); };
-    $("#actionDate").onclick = () => { closeOverlay($("#actionOverlay")); openOverlay($("#dateOverlay")); setTimeout(() => { if ($("#taskDateInput")._flatpickr) $("#taskDateInput")._flatpickr.destroy(); flatpickr("#taskDateInput", { dateFormat: "Y-m-d", locale: settings.language === "ar" ? "ar" : "en", clickOpens: true }); $("#taskDateInput")._flatpickr.open(); }, 100); };
-    $$("#repeatOverlay [data-repeat]").forEach(btn => btn.onclick = () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.repeat = btn.dataset.repeat; saveTasks(); } } closeOverlay($("#repeatOverlay")); selectedTaskId = null; render(); });
-    $("#dateSave").onclick = () => { if (selectedTaskId && $("#taskDateInput").value) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = $("#taskDateInput").value; if ($("#taskTimeInput").value) task.scheduledDate += `T${$("#taskTimeInput").value}`; saveTasks(); showToast("تم تحديد الموعد 📅"); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); };
-    $("#dateClear").onclick = () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = null; saveTasks(); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); };
-    $$("[data-theme-choice]").forEach(btn => btn.onclick = () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); });
-    $$("[data-accent-choice]").forEach(btn => btn.onclick = () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); });
-    $$("[data-font-choice]").forEach(btn => btn.onclick = () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); });
-    $$("[data-language-choice]").forEach(btn => btn.onclick = () => { settings.language = btn.dataset.languageChoice; saveSettings(); applySettings(); render(); });
+    $("#actionComplete").addEventListener("click", () => { if (selectedTaskId) { completeTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } });
+    $("#actionDelete").addEventListener("click", () => { if (selectedTaskId) { deleteTask(selectedTaskId); closeOverlay($("#actionOverlay")); selectedTaskId = null; } });
+    $("#actionRepeat").addEventListener("click", () => { closeOverlay($("#actionOverlay")); openOverlay($("#repeatOverlay")); });
+    $("#actionDate").addEventListener("click", () => { closeOverlay($("#actionOverlay")); openOverlay($("#dateOverlay")); setTimeout(() => { if ($("#taskDateInput")._flatpickr) $("#taskDateInput")._flatpickr.destroy(); flatpickr("#taskDateInput", { dateFormat: "Y-m-d", locale: settings.language === "ar" ? "ar" : "en", clickOpens: true }); $("#taskDateInput")._flatpickr.open(); }, 100); });
+    $$("#repeatOverlay [data-repeat]").forEach(btn => btn.addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.repeat = btn.dataset.repeat; saveTasks(); } } closeOverlay($("#repeatOverlay")); selectedTaskId = null; render(); }));
+    $("#dateSave").addEventListener("click", () => { if (selectedTaskId && $("#taskDateInput").value) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = $("#taskDateInput").value; if ($("#taskTimeInput").value) task.scheduledDate += `T${$("#taskTimeInput").value}`; saveTasks(); showToast("تم تحديد الموعد 📅"); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); });
+    $("#dateClear").addEventListener("click", () => { if (selectedTaskId) { const task = tasks.find(x => x.id === selectedTaskId); if (task) { task.scheduledDate = null; saveTasks(); } } closeOverlay($("#dateOverlay")); selectedTaskId = null; render(); });
+    $$("[data-theme-choice]").forEach(btn => btn.addEventListener("click", () => { settings.theme = btn.dataset.themeChoice; saveSettings(); applySettings(); }));
+    $$("[data-accent-choice]").forEach(btn => btn.addEventListener("click", () => { settings.accent = btn.dataset.accentChoice; saveSettings(); applySettings(); }));
+    $$("[data-font-choice]").forEach(btn => btn.addEventListener("click", () => { settings.fontSize = btn.dataset.fontChoice; saveSettings(); applySettings(); render(); }));
+    $$("[data-language-choice]").forEach(btn => btn.addEventListener("click", () => { settings.language = btn.dataset.languageChoice; saveSettings(); applySettings(); render(); }));
 
     document.addEventListener("touchstart", e => {
       if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel")) return;
@@ -1082,7 +1078,7 @@
       }
     }, { passive: true });
 
-    $("#notificationToggleBtn").onclick = async () => {
+    $("#notificationToggleBtn").addEventListener("click", async () => {
       if (settings.notificationEnabled) {
         settings.notificationEnabled = false;
         saveSettings(); updateNotificationUI();
@@ -1097,7 +1093,7 @@
       } else {
         showToast("تم رفض الإذن", 'error');
       }
-    };
+    });
 
     $("#notificationTimeInput").addEventListener("change", () => { settings.notificationTime = $("#notificationTimeInput").value; saveSettings(); if (settings.notificationEnabled) scheduleNotification(); });
 
@@ -1117,15 +1113,15 @@
         item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;";
         item.textContent = task.text;
         if (task.completed) item.style.textDecoration = "line-through";
-        item.onclick = () => { closeOverlay($("#searchOverlay")); openAction(task.id); };
+        item.addEventListener("click", () => { closeOverlay($("#searchOverlay")); openAction(task.id); });
         results.appendChild(item);
       });
     });
 
     let deferredInstallPrompt = null;
     window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstallPrompt = e; $("#installBanner").classList.add("show"); });
-    $("#installAction").onclick = async () => { if (!deferredInstallPrompt) return; deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt = null; $("#installBanner").classList.remove("show"); };
-    $("#installDismiss").onclick = () => $("#installBanner").classList.remove("show");
+    $("#installAction").addEventListener("click", async () => { if (!deferredInstallPrompt) return; deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt = null; $("#installBanner").classList.remove("show"); });
+    $("#installDismiss").addEventListener("click", () => $("#installBanner").classList.remove("show"));
     window.addEventListener("appinstalled", () => $("#installBanner").classList.remove("show"));
 
     if ("serviceWorker" in navigator) {
