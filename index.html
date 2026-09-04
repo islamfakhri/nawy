@@ -539,7 +539,7 @@
         </div>
       </div>
       <div class="setting-group">
-        <div class="setting-label" data-i18n="notification">التذكير اليومي</div>
+        <div class="setting-label" data-i18n="notification">إشعار الصباح</div>
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name" data-i18n="notification">إشعار الصباح</div>
@@ -578,7 +578,7 @@
         done: "أتمم النية", cancelDone: "أعد فتح النية", repeat: "تكرار", setDate: "تحديد موعد", delete: "تراجع عن النية",
         language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع", light: "فاتح", dark: "داكن", system: "النظام",
         fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير", color: "اللون", nawyColor: "لون ناوي",
-        notification: "التذكير اليومي", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
+        notification: "إشعار الصباح", notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها النهارده.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         archiveEmpty: "الأرشيف فاضي", restore: "استرجاع", taskPlaceholder: "اكتب النية اللي في بالك...",
@@ -594,7 +594,7 @@
         done: "Complete", cancelDone: "Reopen", repeat: "Repeat", setDate: "Set Date", delete: "Delete",
         language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode", light: "Light", dark: "Dark", system: "System",
         fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large", color: "Color", nawyColor: "NAWY Color",
-        notification: "Daily Reminder", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
+        notification: "Morning Notification", notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
         noIntentions: "No intentions yet", firstIntent: "Write your first intention for today.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         archiveEmpty: "Archive is empty", restore: "Restore", taskPlaceholder: "Write the intention on your mind...",
@@ -823,7 +823,12 @@
       document.querySelectorAll(".task-list").forEach(list => {
         if (list.sortableInstance) list.sortableInstance.destroy();
         list.sortableInstance = new Sortable(list, {
-          animation: 150, ghostClass: 'drag-ghost', dragClass: 'drag-source', delay: 200, delayOnTouchOnly: true,
+          animation: 150, 
+          ghostClass: 'drag-ghost', 
+          dragClass: 'drag-source', 
+          delay: 300,
+          delayOnTouchOnly: true,
+          touchStartThreshold: 5,
           onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
             const activeTasks = tasks.filter(x => !x.completed);
