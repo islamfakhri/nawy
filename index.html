@@ -22,7 +22,6 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* ============ المتغيرات ============ */
     :root {
       --radius-sm: 10px;
       --radius-md: 14px;
@@ -31,11 +30,9 @@
       --radius-full: 9999px;
       --fab-size: 56px;
       --bottom-space: 90px;
-      --header-height: 72px;
       --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* ============ الوضع النهاري ============ */
     html[data-theme="light"] {
       --bg: #FAF9F7;
       --surface: #FFFFFF;
@@ -51,7 +48,6 @@
       --shadow-drag: 0 8px 24px rgba(0,0,0,0.15);
     }
 
-    /* ============ الوضع الداكن (افتراضي) ============ */
     html[data-theme="dark"] {
       --bg: #0F1115;
       --surface: #181B20;
@@ -67,19 +63,16 @@
       --shadow-drag: 0 12px 32px rgba(0,0,0,0.40);
     }
 
-    /* ============ السِمات اللونية ============ */
     html[data-accent="blue"] { --accent: #3b82f6; --accent-soft: rgba(59,130,246,0.08); }
     html[data-accent="green"] { --accent: #10b981; --accent-soft: rgba(16,185,129,0.08); }
     html[data-accent="purple"] { --accent: #8b5cf6; --accent-soft: rgba(139,92,246,0.08); }
     html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,0.10); }
     html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,0.08); }
 
-    /* ============ أحجام الخطوط ============ */
     html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; --fs-hero: 19px; }
     html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; --fs-hero: 22px; }
     html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; --fs-hero: 25px; }
 
-    /* ============ أساسيات ============ */
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
     html { min-height: 100%; background: var(--bg); }
     body {
@@ -96,11 +89,8 @@
     button { border: 0; cursor: pointer; color: inherit; background: none; font: inherit; }
     input, textarea { outline: none; font: inherit; border: none; background: none; color: inherit; }
     ::selection { background: var(--accent); color: #fff; }
-
-    /* ============ أيقونات SVG ============ */
     .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    /* ============ التطبيق ============ */
     .app {
       width: min(100%, 760px);
       min-height: 100vh;
@@ -108,7 +98,6 @@
       padding: env(safe-area-inset-top) 16px calc(var(--bottom-space) + env(safe-area-inset-bottom));
     }
 
-    /* ============ الهيدر ============ */
     .header {
       position: sticky;
       top: 0;
@@ -122,8 +111,7 @@
     }
     .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
     .brand-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: var(--radius-md); overflow: hidden; }
-    .brand-icon img { width: 100%; height: 100%; object-fit: contain; }
-    .brand-icon .fallback { display: none; font-weight: 800; font-size: 18px; color: var(--accent); }
+    .nawy-logo { width: 36px; height: 36px; display: block; }
     .brand-name { font-size: var(--fs-lg); font-weight: 800; letter-spacing: -0.3px; }
     .menu-btn {
       width: 44px; height: 44px;
@@ -137,7 +125,6 @@
     }
     .menu-btn:active { transform: scale(0.93); }
 
-    /* ============ التبويبات ============ */
     .tabs {
       position: relative;
       display: flex;
@@ -167,21 +154,8 @@
       color: var(--text);
       box-shadow: var(--shadow-soft);
     }
-    .tab .count {
-      min-width: 20px;
-      height: 20px;
-      padding: 0 6px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius-full);
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: var(--fs-xs);
-      font-weight: 800;
-    }
+    .tab .icon { width: 18px; height: 18px; }
 
-    /* ============ الترحيب ============ */
     .hero { padding: 20px 4px 12px; }
     .hero-title {
       margin: 0;
@@ -192,10 +166,8 @@
     }
     .hero-sub { margin-top: 4px; color: var(--muted); font-size: var(--fs-sm); font-weight: 500; }
 
-    /* ============ المحتوى ============ */
     .content { margin-top: 8px; }
 
-    /* ============ الأقسام ============ */
     .section {
       margin-top: 12px;
       background: var(--surface);
@@ -213,7 +185,9 @@
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       user-select: none;
+      transition: background 0.15s ease;
     }
+    .section-header:active { background: var(--surface-2); }
     .section-title { font-size: var(--fs-sm); font-weight: 700; }
     .section-count {
       min-width: 22px;
@@ -238,8 +212,8 @@
       overflow: hidden;
     }
     .section.collapsed .section-body { max-height: 0; opacity: 0; }
+    .section.collapsed .section-header { border-bottom: 0; }
 
-    /* ============ قائمة النوايا ============ */
     .task-list { padding: 0 12px; display: flex; flex-direction: column; min-height: 20px; }
     .task {
       position: relative;
@@ -262,7 +236,6 @@
       box-shadow: var(--shadow-drag) !important;
     }
 
-    /* دائرة التحقق */
     .task-checkbox {
       width: 28px;
       height: 28px;
@@ -281,7 +254,6 @@
     .task-text { margin: 0; font-size: var(--fs-base); font-weight: 500; overflow-wrap: anywhere; }
     .task.completed .task-text { color: var(--muted); text-decoration: line-through; }
 
-    /* النجمة */
     .task-star {
       width: 40px;
       height: 40px;
@@ -290,13 +262,13 @@
       place-items: center;
       border-radius: var(--radius-full);
       color: var(--surface-3);
-      transition: color 0.16s ease;
+      transition: color 0.16s ease, transform 0.16s ease;
     }
+    .task-star:active { transform: scale(0.85); }
     .task-star .icon { width: 20px; height: 20px; }
     .task-star.active { color: #f59e0b; }
     .task-star.active .icon { fill: #f59e0b; stroke: #f59e0b; }
 
-    /* ============ الحالة الفارغة ============ */
     .empty {
       padding: 36px 24px;
       text-align: center;
@@ -313,12 +285,11 @@
       border-radius: var(--radius-md);
       background: var(--accent-soft);
       color: var(--accent);
+      font-size: 24px;
     }
-    .empty-icon .icon { width: 24px; height: 24px; }
     .empty-title { color: var(--text); font-size: var(--fs-md); font-weight: 700; }
     .empty-text { margin-top: 4px; color: var(--muted); font-size: var(--fs-sm); }
 
-    /* ============ زر الإضافة العائم ============ */
     .fab-wrap {
       position: fixed;
       z-index: 30;
@@ -346,8 +317,8 @@
     }
     .fab:active { transform: scale(0.93); }
     .fab.hidden { display: none; }
+    .fab .icon { width: 24px; height: 24px; }
 
-    /* ============ لوحة الإضافة ============ */
     .composer-panel {
       pointer-events: auto;
       position: fixed;
@@ -383,11 +354,12 @@
       color: #fff;
       display: grid;
       place-items: center;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.18s ease, transform 0.15s ease;
     }
+    .send-btn:active { transform: scale(0.9); }
     .send-btn.disabled { opacity: 0.4; }
+    .send-btn .icon { width: 18px; height: 18px; }
 
-    /* ============ القائمة الجانبية ============ */
     .overlay {
       position: fixed;
       inset: 0;
@@ -430,9 +402,9 @@
       color: var(--muted);
       z-index: 2;
     }
+    .sheet-close .icon { width: 16px; height: 16px; }
     .sheet-title { padding: 4px 4px 12px; font-size: var(--fs-lg); font-weight: 700; }
 
-    /* عناصر القائمة */
     .menu-item {
       width: 100%;
       min-height: 52px;
@@ -449,7 +421,6 @@
     .menu-item.danger .icon { color: #ef4444; }
     .menu-text { flex: 1; font-weight: 500; }
 
-    /* ============ أزرار الأفعال ============ */
     .action-item {
       width: 100%;
       min-height: 52px;
@@ -466,7 +437,15 @@
     .action-item.danger .icon { color: #ef4444; }
     .action-text { flex: 1; font-weight: 500; }
 
-    /* ============ الإعدادات ============ */
+    .action-task-preview {
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      margin-bottom: 8px;
+      font-size: var(--fs-md);
+      font-weight: 600;
+    }
+
     .setting-group { margin-bottom: 16px; }
     .setting-label { padding: 0 4px 8px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
     .setting-box { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
@@ -500,6 +479,7 @@
       border: 2px solid var(--surface);
       outline: 1px solid var(--border);
       position: relative;
+      cursor: pointer;
     }
     .color-btn.active::after {
       content: "✓";
@@ -511,13 +491,71 @@
       font-size: 11px;
       font-weight: 800;
     }
-    .color-btn.green { background: #10b981; }
     .color-btn.blue { background: #3b82f6; }
+    .color-btn.green { background: #10b981; }
     .color-btn.purple { background: #8b5cf6; }
     .color-btn.orange { background: #f59e0b; }
     .color-btn.pink { background: #ec4899; }
 
-    /* ============ بنر التثبيت ============ */
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 28px;
+      display: inline-block;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--surface-3);
+      border-radius: var(--radius-full);
+      transition: background 0.3s ease;
+    }
+    .toggle-slider::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--accent);
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(-22px);
+    }
+    html[dir="rtl"] .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(22px);
+    }
+    html[dir="ltr"] .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(-22px);
+    }
+
+    .time-input {
+      width: 110px;
+      min-height: 36px;
+      padding: 0 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+
     .install-banner {
       position: fixed;
       z-index: 180;
@@ -563,7 +601,11 @@
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
 
-    /* ============ استجابة ============ */
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
     @media (max-width: 480px) {
       .app { padding-left: 12px; padding-right: 12px; }
       .task { min-height: 48px; gap: 8px; }
@@ -572,6 +614,8 @@
       .task-star .icon { width: 18px; height: 18px; }
       .task-list { padding: 0 8px; }
       .segment { padding: 0 8px; font-size: var(--fs-xs); }
+      .tab { font-size: 11px; }
+      .tab .icon { width: 16px; height: 16px; }
     }
   </style>
 </head>
@@ -581,8 +625,18 @@
     <header class="header">
       <div class="brand">
         <div class="brand-icon" id="brandIcon">
-          <img src="Icon-192.png" alt="ناوي" width="36" height="36" onerror="this.remove(); document.getElementById('brandFallback').style.display = 'grid';">
-          <span class="fallback" id="brandFallback" style="display:none;">ن</span>
+          <svg class="nawy-logo" viewBox="0 0 36 36" width="36" height="36">
+            <defs>
+              <linearGradient id="nawyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle cx="18" cy="18" r="16" fill="url(#nawyGrad)" opacity="0.15"/>
+            <path d="M18 28V18" stroke="url(#nawyGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 18C18 13 21 8 30 8C30 17 24 18 18 18Z" fill="url(#nawyGrad)"/>
+            <path d="M18 18C18 13 15 8 6 8C6 17 12 18 18 18Z" fill="url(#nawyGrad)" opacity="0.7"/>
+          </svg>
         </div>
         <div class="brand-name" id="brandName">ناوي</div>
       </div>
@@ -596,12 +650,10 @@
       <button class="tab active" data-view="all" type="button">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 8 14 4 20 4C20 10 16 12 12 12Z"/><path d="M12 12C12 8 10 4 4 4C4 10 8 12 12 12Z"/></svg>
         <span data-i18n="all">نواياي</span>
-        <span class="count" id="allCount">0</span>
       </button>
       <button class="tab" data-view="favorites" type="button">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
         <span data-i18n="favorites">مفضلاتي</span>
-        <span class="count" id="favCount">0</span>
       </button>
     </nav>
 
@@ -618,7 +670,7 @@
   <!-- زر الإضافة -->
   <div class="fab-wrap" id="fabWrap">
     <button class="fab" id="fabBtn" type="button" aria-label="أضف نية">
-      <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
     </button>
   </div>
 
@@ -628,7 +680,7 @@
       <div class="composer-row">
         <textarea id="taskInput" rows="1" maxlength="500" placeholder="أنا ناوي..." data-i18n-placeholder="taskPlaceholder"></textarea>
         <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="إرسال">
-          <svg class="icon" viewBox="0 0 24 24" width="18" height="18"><path d="M12 19V5M5 12L12 5L19 12"/></svg>
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12L12 5L19 12"/></svg>
         </button>
       </div>
     </form>
@@ -638,7 +690,7 @@
   <div class="overlay" id="menuOverlay">
     <div class="sheet">
       <button class="sheet-close" type="button" data-close="menuOverlay" aria-label="إغلاق">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
       </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="appName">ناوي</div>
@@ -665,17 +717,17 @@
   <div class="overlay" id="actionOverlay">
     <div class="sheet">
       <button class="sheet-close" type="button" data-close="actionOverlay" aria-label="إغلاق">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
       </button>
       <div class="sheet-handle"></div>
-      <div id="actionTaskPreview" class="action-task-preview" style="padding:12px;border-radius:12px;background:var(--surface-2);margin-bottom:8px;font-size:var(--fs-md);font-weight:600;"></div>
+      <div id="actionTaskPreview" class="action-task-preview"></div>
       <button class="action-item" id="actionComplete" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12.5L11 15.5L16 9"/></svg>
-        <span class="action-text" data-i18n="achieved">حققت النية</span>
+        <span class="action-text"></span>
       </button>
       <button class="action-item" id="actionPostpone" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 7V12L15 14"/></svg>
-        <span class="action-text" data-i18n="postponed">أجل النية</span>
+        <span class="action-text"></span>
       </button>
       <button class="action-item" id="actionEdit" type="button">
         <svg class="icon" viewBox="0 0 24 24"><path d="M17 3L21 7L8 20H4V16L17 3Z"/></svg>
@@ -692,7 +744,7 @@
   <div class="overlay" id="settingsOverlay">
     <div class="sheet">
       <button class="sheet-close" type="button" data-close="settingsOverlay" aria-label="إغلاق">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
       </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="settings">الإعدادات</div>
@@ -737,11 +789,11 @@
           <div class="setting-row">
             <div class="setting-name" data-i18n="nawyColor">سمة ناوي</div>
             <div class="colors">
-              <button class="color-btn blue active" data-accent="blue" type="button"></button>
-              <button class="color-btn green" data-accent="green" type="button"></button>
-              <button class="color-btn purple" data-accent="purple" type="button"></button>
-              <button class="color-btn orange" data-accent="orange" type="button"></button>
-              <button class="color-btn pink" data-accent="pink" type="button"></button>
+              <button class="color-btn blue active" data-accent="blue" type="button" aria-label="أزرق"></button>
+              <button class="color-btn green" data-accent="green" type="button" aria-label="أخضر"></button>
+              <button class="color-btn purple" data-accent="purple" type="button" aria-label="بنفسجي"></button>
+              <button class="color-btn orange" data-accent="orange" type="button" aria-label="برتقالي"></button>
+              <button class="color-btn pink" data-accent="pink" type="button" aria-label="وردي"></button>
             </div>
           </div>
         </div>
@@ -752,11 +804,14 @@
         <div class="setting-box">
           <div class="setting-row">
             <div class="setting-name" data-i18n="notification">تذكير يومي</div>
-            <button id="notifToggle" type="button" style="min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface-2);font-size:13px;font-weight:600;" data-i18n="notificationEnable">تفعيل</button>
+            <label class="toggle-switch">
+              <input type="checkbox" id="notifToggleCheckbox">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <div class="setting-row" id="notifTimeRow">
+          <div class="setting-row hidden" id="notifTimeRow">
             <div class="setting-name" data-i18n="time">الوقت</div>
-            <input type="time" id="notifTime" value="09:00" style="width:110px;min-height:36px;padding:0 8px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);font-size:13px;font-weight:600;text-align:center;">
+            <input type="time" class="time-input" id="notifTime" value="09:00">
           </div>
         </div>
       </div>
@@ -767,7 +822,7 @@
   <div class="overlay" id="archiveOverlay">
     <div class="sheet">
       <button class="sheet-close" type="button" data-close="archiveOverlay" aria-label="إغلاق">
-        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M18 6L6 18M6 6L18 18"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6L18 18"/></svg>
       </button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="archive">أرشيف ناوي</div>
@@ -779,16 +834,16 @@
   <div class="install-banner" id="installBanner">
     <div class="install-banner-inner">
       <div class="install-banner-icon">
-        <img src="Icon-192.png" alt="ناوي">
+        <img src="Icon-192.png" alt="ناوي" onerror="this.style.display='none'">
       </div>
       <div class="install-banner-text">
-        <div class="install-banner-title">نزّل ناوي 🌱</div>
-        <div class="install-banner-sub">نواياك هتكون أسهل معاك 📌</div>
+        <div class="install-banner-title" data-i18n="installTitle">نزّل ناوي 🌱</div>
+        <div class="install-banner-sub" data-i18n="installSub">نواياك هتكون أسهل معاك 📌</div>
       </div>
     </div>
     <div class="install-banner-actions">
-      <button class="install-dismiss" id="installDismiss" type="button">متابعة للموقع</button>
-      <button class="install-action" id="installAction" type="button">تثبيت ⚡</button>
+      <button class="install-dismiss" id="installDismiss" type="button" data-i18n="installDismiss">متابعة للموقع</button>
+      <button class="install-action" id="installAction" type="button" data-i18n="installAction">تثبيت ⚡</button>
     </div>
   </div>
 
@@ -810,7 +865,12 @@
       language: "ar",
       fontSize: "medium",
       notificationEnabled: false,
-      notificationTime: "09:00"
+      notificationTime: "09:00",
+      sectionsCollapsed: {
+        active: false,
+        postponed: true,
+        achieved: true
+      }
     };
 
     const TRANSLATIONS = {
@@ -818,7 +878,7 @@
         appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
         heroTitle: "ناوي على إيه؟", heroSub: "مساحتك الشخصية لنواياك",
         active: "نشطة", postponed: "مؤجلة", achieved: "تحققت",
-        taskPlaceholder: "أنا ناوي...", addBtn: "أضف",
+        taskPlaceholder: "أنا ناوي...",
         achievedAction: "حققت النية", postponeAction: "أجل النية", reactivateAction: "أعد تفعيل النية",
         edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
         settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "تصدير البيانات", importData: "استيراد البيانات",
@@ -828,20 +888,21 @@
         notificationEnable: "تفعيل", notificationDisable: "تعطيل", time: "الوقت",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها.",
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
-        noArchive: "الأرشيف فاضي", noPostponed: "مفيش نوايا مؤجلة",
-        noAchieved: "مفيش نوايا متحققة لسه",
+        noArchive: "الأرشيف فاضي",
         addedToast: "تمت إضافة النية ✨", achievedToast: "نية اتحققت 🌱", postponedToast: "تم تأجيل النية ⏳",
         reactivatedToast: "تم إعادة تفعيل النية 🔄", editedToast: "تم التعديل ✏️",
         deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
         exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
         morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
-        installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡"
+        installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡",
+        notifEnabledToast: "تم تفعيل الإشعارات 🔔", notifDisabledToast: "تم تعطيل الإشعارات",
+        notifDeniedToast: "تم رفض إذن الإشعارات"
       },
       en: {
         appName: "NAWY", all: "My Intentions", favorites: "Favorites",
         heroTitle: "What are you up to?", heroSub: "Your personal space for intentions",
         active: "Active", postponed: "Postponed", achieved: "Achieved",
-        taskPlaceholder: "I intend to...", addBtn: "Add",
+        taskPlaceholder: "I intend to...",
         achievedAction: "Achieved", postponeAction: "Postpone", reactivateAction: "Reactivate",
         edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
         settings: "Settings", archive: "NAWY Archive", exportData: "Export Data", importData: "Import Data",
@@ -851,14 +912,15 @@
         notificationEnable: "Enable", notificationDisable: "Disable", time: "Time",
         noIntentions: "No intentions yet", firstIntent: "Write your first intention.",
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
-        noArchive: "Archive is empty", noPostponed: "No postponed intentions",
-        noAchieved: "No achieved intentions yet",
+        noArchive: "Archive is empty",
         addedToast: "Intention added ✨", achievedToast: "Intention achieved 🌱", postponedToast: "Intention postponed ⏳",
         reactivatedToast: "Intention reactivated 🔄", editedToast: "Edited ✏️",
         deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
         exported: "Data exported 💾", imported: "Data imported ✅",
         morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
-        installSub: "Your intentions will be easier with you 📌", installDismiss: "Continue to site", installAction: "Install ⚡"
+        installSub: "Your intentions will be easier with you 📌", installDismiss: "Continue to site", installAction: "Install ⚡",
+        notifEnabledToast: "Notifications enabled 🔔", notifDisabledToast: "Notifications disabled",
+        notifDeniedToast: "Notification permission denied"
       }
     };
 
@@ -869,7 +931,10 @@
     let currentView = "all";
     let selectedTaskId = null;
     let swipeStartX = 0;
+    let swipeStartY = 0;
     let swipeTracking = false;
+    let audioContext = null;
+    let deferredInstallPrompt = null;
 
     // ============ أدوات مساعدة ============
     const $ = s => document.querySelector(s);
@@ -882,7 +947,15 @@
     function loadData() {
       tasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []).filter(x => x && x.text);
       archive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []).filter(x => x && x.text);
-      settings = { ...DEFAULT_SETTINGS, ...safeParse(localStorage.getItem(STORAGE_KEYS.settings), {}) };
+      const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
+      settings = {
+        ...DEFAULT_SETTINGS,
+        ...savedSettings,
+        sectionsCollapsed: {
+          ...DEFAULT_SETTINGS.sectionsCollapsed,
+          ...(savedSettings.sectionsCollapsed || {})
+        }
+      };
     }
     function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
     function saveArchive() { localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive)); }
@@ -928,7 +1001,6 @@
     }
 
     // ============ الصوت والاحتفال ============
-    let audioContext = null;
     function playAchievedSound() {
       try {
         if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1011,7 +1083,31 @@
     function toggleStar(id) {
       const task = tasks.find(x => x.id === id);
       if (!task) return;
+      
       task.starred = !task.starred;
+      
+      if (task.starred) {
+        // نرفع النية المفضلة لأعلى القائمة
+        const index = tasks.indexOf(task);
+        tasks.splice(index, 1);
+        const firstNonStarred = tasks.findIndex(x => x.status === task.status && !x.starred);
+        if (firstNonStarred === -1) {
+          tasks.unshift(task);
+        } else {
+          tasks.splice(firstNonStarred, 0, task);
+        }
+      } else {
+        // نرتبها حسب وقت الإنشاء
+        const index = tasks.indexOf(task);
+        tasks.splice(index, 1);
+        const insertIndex = tasks.findIndex(x => x.createdAt < task.createdAt);
+        if (insertIndex === -1) {
+          tasks.push(task);
+        } else {
+          tasks.splice(insertIndex, 0, task);
+        }
+      }
+      
       saveTasks();
       render();
     }
@@ -1070,15 +1166,21 @@
       if (currentView === "all") {
         $("#heroTitle").style.display = "block";
         $("#heroSub").style.display = "block";
-        $("#allCount").textContent = activeTasks.length;
-        $("#favCount").textContent = tasks.filter(x => x.starred).length;
+        $("#heroTitle").textContent = t("heroTitle");
+        $("#heroSub").textContent = t("heroSub");
         
         if (activeTasks.length === 0 && postponedTasks.length === 0 && achievedTasks.length === 0) {
           content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
         } else {
-          if (activeTasks.length > 0) content.appendChild(createSection('active', t("active"), activeTasks));
-          if (postponedTasks.length > 0) content.appendChild(createSection('postponed', t("postponed"), postponedTasks));
-          if (achievedTasks.length > 0) content.appendChild(createSection('achieved', t("achieved"), achievedTasks));
+          if (activeTasks.length > 0) {
+            content.appendChild(createSection('active', t("active"), activeTasks, !settings.sectionsCollapsed.active));
+          }
+          if (postponedTasks.length > 0) {
+            content.appendChild(createSection('postponed', t("postponed"), postponedTasks, !settings.sectionsCollapsed.postponed));
+          }
+          if (achievedTasks.length > 0) {
+            content.appendChild(createSection('achieved', t("achieved"), achievedTasks, !settings.sectionsCollapsed.achieved));
+          }
         }
       } else if (currentView === "favorites") {
         $("#heroTitle").style.display = "block";
@@ -1091,11 +1193,18 @@
           content.appendChild(createEmpty("⭐", t("noFavorites"), t("favoriteHint")));
         } else {
           const favActive = favTasks.filter(x => x.status === 'active');
-          const favAchieved = favTasks.filter(x => x.status === 'achieved');
           const favPostponed = favTasks.filter(x => x.status === 'postponed');
-          if (favActive.length > 0) content.appendChild(createSection('active', t("active"), favActive));
-          if (favPostponed.length > 0) content.appendChild(createSection('postponed', t("postponed"), favPostponed));
-          if (favAchieved.length > 0) content.appendChild(createSection('achieved', t("achieved"), favAchieved));
+          const favAchieved = favTasks.filter(x => x.status === 'achieved');
+          
+          if (favActive.length > 0) {
+            content.appendChild(createSection('active', t("active"), favActive, true));
+          }
+          if (favPostponed.length > 0) {
+            content.appendChild(createSection('postponed', t("postponed"), favPostponed, true));
+          }
+          if (favAchieved.length > 0) {
+            content.appendChild(createSection('achieved', t("achieved"), favAchieved, true));
+          }
         }
       }
       
@@ -1103,16 +1212,25 @@
       initSortable();
     }
 
-    function createSection(type, title, taskArray) {
+    function createSection(type, title, taskArray, isOpen = true) {
+      const sortedTasks = [...taskArray].sort((a, b) => {
+        if (a.starred && !b.starred) return -1;
+        if (!a.starred && b.starred) return 1;
+        return b.createdAt - a.createdAt;
+      });
+      
       const section = document.createElement("section");
       section.className = "section";
+      if (!isOpen) section.classList.add("collapsed");
       
       const header = document.createElement("div");
       header.className = "section-header";
       header.innerHTML = `
         <span class="section-title">${title}</span>
-        <span class="section-count">${taskArray.length}</span>
-        <span class="section-chevron"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg></span>
+        <span class="section-count">${sortedTasks.length}</span>
+        <span class="section-chevron">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg>
+        </span>
       `;
       
       const body = document.createElement("div");
@@ -1120,11 +1238,15 @@
       const list = document.createElement("div");
       list.className = "task-list";
       list.dataset.type = type;
-      taskArray.forEach(task => list.appendChild(createTaskElement(task)));
+      sortedTasks.forEach(task => list.appendChild(createTaskElement(task)));
       body.appendChild(list);
       
       header.addEventListener("click", () => {
         section.classList.toggle("collapsed");
+        if (settings.sectionsCollapsed) {
+          settings.sectionsCollapsed[type] = section.classList.contains("collapsed");
+          saveSettings();
+        }
       });
       
       section.append(header, body);
@@ -1184,6 +1306,14 @@
       });
     }
 
+    function setView(view) {
+      if (currentView === view) return;
+      currentView = view;
+      closeAllOverlays();
+      closeComposer();
+      render();
+    }
+
     // ============ الترتيب بالسحب ============
     function initSortable() {
       $$(".task-list").forEach(list => {
@@ -1222,22 +1352,18 @@
       const preview = $("#actionTaskPreview");
       preview.textContent = task.text;
       
-      const completeBtn = $("#actionComplete");
-      const completeText = completeBtn.querySelector(".action-text");
-      if (task.status === 'achieved') {
-        completeText.textContent = t("reactivateAction");
-      } else {
-        completeText.textContent = t("achievedAction");
-      }
+      const completeBtn = $("#actionComplete .action-text");
+      const postponeBtn = $("#actionPostpone .action-text");
       
-      const postponeBtn = $("#actionPostpone");
-      const postponeText = postponeBtn.querySelector(".action-text");
-      if (task.status === 'postponed') {
-        postponeText.textContent = t("reactivateAction");
-      } else if (task.status === 'achieved') {
-        postponeText.textContent = t("reactivateAction");
+      if (task.status === 'achieved') {
+        completeBtn.textContent = t("reactivateAction");
+        postponeBtn.textContent = t("reactivateAction");
+      } else if (task.status === 'postponed') {
+        completeBtn.textContent = t("achievedAction");
+        postponeBtn.textContent = t("reactivateAction");
       } else {
-        postponeText.textContent = t("postponeAction");
+        completeBtn.textContent = t("achievedAction");
+        postponeBtn.textContent = t("postponeAction");
       }
       
       openOverlay($("#actionOverlay"));
@@ -1255,11 +1381,14 @@
       
       archive.forEach(task => {
         const item = document.createElement("div");
-        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;";
+        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;";
         
         const text = document.createElement("div");
         text.textContent = task.text;
         text.style.cssText = "flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+        
+        const btnGroup = document.createElement("div");
+        btnGroup.style.cssText = "display:flex;gap:4px;flex-shrink:0;";
         
         const restoreBtn = document.createElement("button");
         restoreBtn.textContent = t("restore");
@@ -1271,7 +1400,8 @@
         deleteBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:13px;font-weight:600;";
         deleteBtn.addEventListener("click", () => deleteForever(task.id));
         
-        item.append(text, restoreBtn, deleteBtn);
+        btnGroup.append(restoreBtn, deleteBtn);
+        item.append(text, btnGroup);
         container.appendChild(item);
       });
     }
@@ -1307,8 +1437,8 @@
     }
 
     function updateNotifUI() {
-      const toggleBtn = $("#notifToggle");
-      toggleBtn.textContent = settings.notificationEnabled ? t("notificationDisable") : t("notificationEnable");
+      const checkbox = $("#notifToggleCheckbox");
+      checkbox.checked = settings.notificationEnabled;
       $("#notifTimeRow").classList.toggle("hidden", !settings.notificationEnabled);
       $("#notifTime").value = settings.notificationTime;
     }
@@ -1316,8 +1446,19 @@
     // ============ الإشعارات ============
     function requestNotificationPermission() {
       return new Promise((resolve) => {
-        if (!("Notification" in window)) { resolve(false); return; }
-        Notification.requestPermission().then(permission => resolve(permission === "granted"));
+        if (!("Notification" in window)) {
+          showToast(t("notifDeniedToast"));
+          resolve(false);
+          return;
+        }
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            resolve(true);
+          } else {
+            showToast(t("notifDeniedToast"));
+            resolve(false);
+          }
+        });
       });
     }
 
@@ -1352,18 +1493,16 @@
         vibrate: [100, 50, 100]
       };
       
-      if ("Notification" in window) {
-        if (Notification.permission === "granted") {
-          if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-            navigator.serviceWorker.ready.then(reg => {
-              reg.showNotification("ناوي 🌱", options).catch(() => {
-                new Notification("ناوي 🌱", options);
-              });
-            });
-          } else {
-            new Notification("ناوي 🌱", options);
-          }
-        }
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => {
+          reg.showNotification("ناوي 🌱", options);
+        });
+      } else if ("Notification" in window && Notification.permission === "granted") {
+        const notification = new Notification("ناوي 🌱", options);
+        notification.onclick = () => {
+          window.focus();
+          notification.close();
+        };
       }
     }
 
@@ -1388,7 +1527,14 @@
           if (data.tasks && data.archive && data.settings) {
             tasks = data.tasks;
             archive = data.archive;
-            settings = { ...DEFAULT_SETTINGS, ...data.settings };
+            settings = {
+              ...DEFAULT_SETTINGS,
+              ...data.settings,
+              sectionsCollapsed: {
+                ...DEFAULT_SETTINGS.sectionsCollapsed,
+                ...(data.settings.sectionsCollapsed || {})
+              }
+            };
             saveTasks();
             saveArchive();
             saveSettings();
@@ -1414,12 +1560,7 @@
     });
 
     $$(".tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        currentView = tab.dataset.view;
-        closeAllOverlays();
-        closeComposer();
-        render();
-      });
+      tab.addEventListener("click", () => setView(tab.dataset.view));
     });
 
     $("#menuBtn").addEventListener("click", () => openOverlay($("#menuOverlay")));
@@ -1477,7 +1618,7 @@
       const doneBtn = document.createElement("button");
       doneBtn.type = "button";
       doneBtn.style.cssText = "width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;";
-      doneBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path d="M8 12.5L11 15.5L16 9"/></svg>';
+      doneBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M8 12.5L11 15.5L16 9"/></svg>';
       
       editContainer.append(editArea, doneBtn);
       preview.replaceWith(editContainer);
@@ -1546,23 +1687,24 @@
       });
     });
 
-    $("#notifToggle").addEventListener("click", async () => {
-      if (settings.notificationEnabled) {
+    $("#notifToggleCheckbox").addEventListener("change", async function() {
+      if (this.checked) {
+        const granted = await requestNotificationPermission();
+        if (granted) {
+          settings.notificationEnabled = true;
+          saveSettings();
+          scheduleNotification();
+          showToast(t("notifEnabledToast"));
+        } else {
+          this.checked = false;
+        }
+      } else {
         settings.notificationEnabled = false;
         saveSettings();
-        updateNotifUI();
         if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
-        return;
+        showToast(t("notifDisabledToast"));
       }
-      const granted = await requestNotificationPermission();
-      if (granted) {
-        settings.notificationEnabled = true;
-        saveSettings();
-        updateNotifUI();
-        scheduleNotification();
-      } else {
-        showToast("Permission denied");
-      }
+      updateNotifUI();
     });
 
     $("#notifTime").addEventListener("change", () => {
@@ -1573,50 +1715,73 @@
 
     // السحب الأفقي للتنقل
     document.addEventListener("touchstart", e => {
-      if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel")) return;
+      if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel, .fab")) return;
       const touch = e.touches[0];
       swipeStartX = touch.clientX;
+      swipeStartY = touch.clientY;
       swipeTracking = true;
     }, { passive: true });
+
+    document.addEventListener("touchmove", e => {
+      if (!swipeTracking) return;
+      const touch = e.touches[0];
+      const dx = touch.clientX - swipeStartX;
+      const dy = touch.clientY - swipeStartY;
+      if (Math.abs(dy) > Math.abs(dx) * 1.2) {
+        swipeTracking = false;
+        return;
+      }
+      if (Math.abs(dx) > 10) {
+        e.preventDefault();
+      }
+    }, { passive: false });
 
     document.addEventListener("touchend", e => {
       if (!swipeTracking) return;
       swipeTracking = false;
       const touch = e.changedTouches[0];
       const dx = touch.clientX - swipeStartX;
-      const dy = touch.clientY - (swipeStartX || touch.clientY);
       
-      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (Math.abs(dx) > 60) {
         const isRTL = document.documentElement.dir === "rtl";
         if (isRTL) {
-          if (dx < 0) currentView = currentView === "all" ? "favorites" : "all";
-          else currentView = currentView === "all" ? "favorites" : "all";
+          if (dx > 0 && currentView === "favorites") setView("all");
+          else if (dx < 0 && currentView === "all") setView("favorites");
         } else {
-          if (dx > 0) currentView = currentView === "all" ? "favorites" : "all";
-          else currentView = currentView === "all" ? "favorites" : "all";
+          if (dx > 0 && currentView === "favorites") setView("all");
+          else if (dx < 0 && currentView === "all") setView("favorites");
         }
-        closeAllOverlays();
-        closeComposer();
-        render();
       }
     }, { passive: true });
 
     // بنر التثبيت
-    let deferredInstallPrompt = null;
     window.addEventListener("beforeinstallprompt", e => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      $("#installBanner").classList.add("show");
+      setTimeout(() => {
+        $("#installBanner").classList.add("show");
+      }, 3000);
     });
+
     $("#installAction").addEventListener("click", async () => {
       if (!deferredInstallPrompt) return;
       deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
+      const choice = await deferredInstallPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        showToast("تم تثبيت ناوي 🌱");
+      }
       deferredInstallPrompt = null;
       $("#installBanner").classList.remove("show");
     });
-    $("#installDismiss").addEventListener("click", () => $("#installBanner").classList.remove("show"));
-    window.addEventListener("appinstalled", () => $("#installBanner").classList.remove("show"));
+
+    $("#installDismiss").addEventListener("click", () => {
+      $("#installBanner").classList.remove("show");
+    });
+
+    window.addEventListener("appinstalled", () => {
+      $("#installBanner").classList.remove("show");
+      deferredInstallPrompt = null;
+    });
 
     // Service Worker
     if ("serviceWorker" in navigator) {
