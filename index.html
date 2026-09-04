@@ -860,7 +860,7 @@
       ar: {
         appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
         heroTitle: "ناوي على إيه؟", heroSub: "مساحتك الشخصية لنواياك",
-        active: "نشطة", achieved: "محققة",
+        active: "حالية", achieved: "محققة",
         taskPlaceholder: "أنا ناوي...",
         achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
         edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
@@ -886,7 +886,7 @@
       en: {
         appName: "NAWY", all: "Intentions", favorites: "Favorites",
         heroTitle: "What are you up to?", heroSub: "Your personal space for intentions",
-        active: "Active", achieved: "Achieved",
+        active: "Current", achieved: "Achieved",
         taskPlaceholder: "I intend to...",
         achievedAction: "Achieved", reactivateAction: "Reopen",
         edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
@@ -1059,21 +1059,8 @@
       const task = tasks.find(x => x.id === id);
       if (!task) return;
       
+      // بس نغير حالة النجمة من غير ما نغير الترتيب
       task.starred = !task.starred;
-      
-      if (task.starred) {
-        const index = tasks.indexOf(task);
-        tasks.splice(index, 1);
-        const firstNonStarred = tasks.findIndex(x => x.status === task.status && !x.starred);
-        if (firstNonStarred === -1) tasks.unshift(task);
-        else tasks.splice(firstNonStarred, 0, task);
-      } else {
-        const index = tasks.indexOf(task);
-        tasks.splice(index, 1);
-        const insertIndex = tasks.findIndex(x => x.createdAt < task.createdAt);
-        if (insertIndex === -1) tasks.push(task);
-        else tasks.splice(insertIndex, 0, task);
-      }
       
       saveTasks();
       render();
@@ -1262,11 +1249,8 @@
     }
 
     function createSection(type, title, taskArray, isOpen = true) {
-      const sortedTasks = [...taskArray].sort((a, b) => {
-        if (a.starred && !b.starred) return -1;
-        if (!a.starred && b.starred) return 1;
-        return b.createdAt - a.createdAt;
-      });
+      // حافظ على الترتيب الأصلي من غير ما نرتب حسب النجمة
+      const sortedTasks = taskArray;
       
       const section = document.createElement("section");
       section.className = "section";
