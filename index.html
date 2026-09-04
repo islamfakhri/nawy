@@ -128,7 +128,6 @@
     }
     .menu-btn:active { transform: scale(0.93); }
 
-    /* التبويبات */
     .tabs {
       display: flex;
       gap: 24px;
@@ -174,7 +173,6 @@
 
     .content { margin-top: 8px; }
 
-    /* الأقسام */
     .section { margin-top: 16px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
     .section-header {
@@ -218,7 +216,6 @@
     }
     .section.collapsed .section-body { max-height: 0; opacity: 0; }
 
-    /* قائمة النوايا */
     .task-list { padding: 0; display: flex; flex-direction: column; }
     .task {
       display: flex;
@@ -474,7 +471,9 @@
       border-bottom: 1px solid var(--border);
     }
     .setting-row:last-child { border-bottom: 0; }
+    .setting-info { flex: 1; min-width: 0; }
     .setting-name { font-size: var(--fs-base); font-weight: 500; }
+    .setting-desc { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; opacity: 0.7; }
     .segmented { display: flex; gap: 2px; padding: 3px; border-radius: var(--radius-sm); background: var(--surface-2); }
     .segment {
       min-height: 32px;
@@ -551,16 +550,25 @@
     html[dir="ltr"] .toggle-switch input:checked + .toggle-slider::before { transform: translateX(-22px); }
 
     .time-input {
-      width: 110px;
-      min-height: 36px;
-      padding: 0 8px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 600;
+      width: 120px;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
       text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .time-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .time-input:hover {
+      border-color: var(--accent);
     }
 
     .install-banner {
@@ -573,37 +581,42 @@
       visibility: hidden;
       width: min(calc(100% - 28px), 420px);
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       border-radius: var(--radius-lg);
-      padding: 12px;
-      box-shadow: var(--shadow-sheet);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
     }
     .install-banner.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
     .install-banner-inner { display: flex; align-items: center; gap: 12px; width: 100%; }
     .install-banner-icon {
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       display: grid;
       place-items: center;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 12px;
       background: var(--accent-soft);
+      flex-shrink: 0;
     }
     .install-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .install-banner-text { flex: 1; }
-    .install-banner-title { font-size: 16px; font-weight: 800; }
+    .install-banner-text { flex: 1; min-width: 0; }
+    .install-banner-title { font-size: 16px; font-weight: 800; color: var(--text); }
     .install-banner-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
     .install-banner-actions { display: flex; gap: 8px; margin-top: 12px; }
     .install-banner-actions button {
       flex: 1;
-      min-height: 40px;
+      min-height: 42px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 700;
+      transition: all 0.2s ease;
+      cursor: pointer;
     }
     .install-dismiss { background: var(--surface-2); color: var(--muted); }
+    .install-dismiss:hover { background: var(--surface-3); }
     .install-action { background: var(--accent); color: #fff; }
+    .install-action:hover { opacity: 0.9; }
 
     .hidden { display: none !important; }
     .no-scroll { overflow: hidden; }
@@ -626,6 +639,7 @@
   </style>
 </head>
 <body>
+  <!-- نفس body زي ما هو بالظبط -->
   <div class="app">
     <header class="header">
       <div class="brand">
@@ -657,6 +671,7 @@
     <main class="content" id="content"></main>
   </div>
 
+  <!-- باقي الـ HTML زي ما هو -->
   <div class="fab-wrap" id="fabWrap">
     <button class="fab" id="fabBtn" type="button" aria-label="أضف نية">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
@@ -770,18 +785,24 @@
       </div>
 
       <div class="setting-group">
-        <div class="setting-label" data-i18n="notification">إشعار الصباح</div>
+        <div class="setting-label">⏰ إشعار الصباح</div>
         <div class="setting-box">
           <div class="setting-row">
-            <div class="setting-name" data-i18n="notification">تذكير يومي</div>
+            <div class="setting-info">
+              <div class="setting-name" data-i18n="notification">تذكير يومي</div>
+              <div class="setting-desc" id="notifDesc">فعّل عشان يجيلك تذكير يومي</div>
+            </div>
             <label class="toggle-switch">
               <input type="checkbox" id="notifToggleCheckbox">
               <span class="toggle-slider"></span>
             </label>
           </div>
           <div class="setting-row hidden" id="notifTimeRow">
-            <div class="setting-name" data-i18n="time">الوقت</div>
-            <input type="time" class="time-input" id="notifTime" value="09:00">
+            <div class="setting-info">
+              <div class="setting-name">⏰ معاد الإشعار</div>
+              <div class="setting-desc">اختار الوقت اللي يناسبك</div>
+            </div>
+            <input type="time" class="time-input" id="notifTime" value="08:00">
           </div>
         </div>
       </div>
@@ -833,7 +854,7 @@
       language: "ar",
       fontSize: "medium",
       notificationEnabled: false,
-      notificationTime: "09:00",
+      notificationTime: "08:00",
       sectionsCollapsed: {
         active: false,
         achieved: true
@@ -1110,120 +1131,70 @@
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // رسم الأيقونة
       const iconImg = new Image();
       iconImg.src = "icon-192.png";
       iconImg.onload = () => {
         ctx.drawImage(iconImg, 80, 80, 100, 100);
-        
-        // اسم التطبيق
-        ctx.fillStyle = textColor;
-        ctx.font = "bold 50px Cairo, sans-serif";
-        ctx.textAlign = "right";
-        ctx.fillText("ناوي", 960, 130);
-        
-        // النية
-        ctx.fillStyle = textColor;
-        ctx.font = "bold 60px Cairo, sans-serif";
-        ctx.textAlign = "center";
-        const words = task.text.split(" ");
-        let lines = [];
-        let line = "";
-        for (const word of words) {
-          if ((line + word).length > 15) {
-            lines.push(line.trim());
-            line = word + " ";
-          } else {
-            line += word + " ";
-          }
-        }
-        if (line.trim()) lines.push(line.trim());
-        
-        let y = 500;
-        for (const l of lines) {
-          ctx.fillText(l, 540, y);
-          y += 80;
-        }
-        
-        // الدومين
-        ctx.fillStyle = accentColor;
-        ctx.font = "bold 40px Cairo, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("nawy.app", 540, 1250);
-        
-        canvas.toBlob(blob => {
-          if (!blob) return;
-          const file = new File([blob], "nawy.png", { type: "image/png" });
-          if (navigator.share && navigator.canShare({ files: [file] })) {
-            navigator.share({
-              files: [file],
-              title: "ناوي",
-              text: task.text
-            }).catch(() => {});
-          } else {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "nawy.png";
-            a.click();
-            URL.revokeObjectURL(url);
-          }
-        });
+        drawShareContent(ctx, task, textColor, accentColor);
       };
       
       iconImg.onerror = () => {
-        // لو الصورة مش موجودة، نكمل من غيرها
-        ctx.fillStyle = textColor;
-        ctx.font = "bold 50px Cairo, sans-serif";
-        ctx.textAlign = "right";
-        ctx.fillText("ناوي", 960, 130);
-        
-        ctx.fillStyle = textColor;
-        ctx.font = "bold 60px Cairo, sans-serif";
-        ctx.textAlign = "center";
-        const words = task.text.split(" ");
-        let lines = [];
-        let line = "";
-        for (const word of words) {
-          if ((line + word).length > 15) {
-            lines.push(line.trim());
-            line = word + " ";
-          } else {
-            line += word + " ";
-          }
-        }
-        if (line.trim()) lines.push(line.trim());
-        
-        let y = 500;
-        for (const l of lines) {
-          ctx.fillText(l, 540, y);
-          y += 80;
-        }
-        
-        ctx.fillStyle = accentColor;
-        ctx.font = "bold 40px Cairo, sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("nawy.app", 540, 1250);
-        
-        canvas.toBlob(blob => {
-          if (!blob) return;
-          const file = new File([blob], "nawy.png", { type: "image/png" });
-          if (navigator.share && navigator.canShare({ files: [file] })) {
-            navigator.share({
-              files: [file],
-              title: "ناوي",
-              text: task.text
-            }).catch(() => {});
-          } else {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "nawy.png";
-            a.click();
-            URL.revokeObjectURL(url);
-          }
-        });
+        drawShareContent(ctx, task, textColor, accentColor);
       };
+    }
+
+    function drawShareContent(ctx, task, textColor, accentColor) {
+      ctx.fillStyle = textColor;
+      ctx.font = "bold 50px Cairo, sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText("ناوي", 960, 130);
+      
+      ctx.fillStyle = textColor;
+      ctx.font = "bold 60px Cairo, sans-serif";
+      ctx.textAlign = "center";
+      const words = task.text.split(" ");
+      let lines = [];
+      let line = "";
+      for (const word of words) {
+        if ((line + word).length > 15) {
+          lines.push(line.trim());
+          line = word + " ";
+        } else {
+          line += word + " ";
+        }
+      }
+      if (line.trim()) lines.push(line.trim());
+      
+      let y = 500;
+      for (const l of lines) {
+        ctx.fillText(l, 540, y);
+        y += 80;
+      }
+      
+      ctx.fillStyle = accentColor;
+      ctx.font = "bold 40px Cairo, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("nawy.app", 540, 1250);
+      
+      const canvas = ctx.canvas;
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const file = new File([blob], "nawy.png", { type: "image/png" });
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+          navigator.share({
+            files: [file],
+            title: "ناوي",
+            text: task.text
+          }).catch(() => {});
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "nawy.png";
+          a.click();
+          URL.revokeObjectURL(url);
+        }
+      });
     }
 
     function render() {
@@ -1568,7 +1539,22 @@
     function updateNotifUI() {
       const checkbox = $("#notifToggleCheckbox");
       checkbox.checked = settings.notificationEnabled;
-      $("#notifTimeRow").classList.toggle("hidden", !settings.notificationEnabled);
+      
+      const timeRow = $("#notifTimeRow");
+      const notifDesc = $("#notifDesc");
+      
+      if (settings.notificationEnabled) {
+        timeRow.classList.remove("hidden");
+        notifDesc.textContent = settings.language === "ar" ? 
+          `هيجيلك إشعار كل يوم الساعة ${settings.notificationTime}` : 
+          `You'll get a notification daily at ${settings.notificationTime}`;
+      } else {
+        timeRow.classList.add("hidden");
+        notifDesc.textContent = settings.language === "ar" ? 
+          "فعّل عشان يجيلك تذكير يومي" : 
+          "Enable to get daily reminders";
+      }
+      
       $("#notifTime").value = settings.notificationTime;
     }
 
@@ -1579,9 +1565,22 @@
           resolve(false);
           return;
         }
+        
+        if (Notification.permission === "granted") {
+          resolve(true);
+          return;
+        }
+        
+        if (Notification.permission === "denied") {
+          showToast("⚠️ الإشعارات مقفولة. افتح إعدادات المتصفح وفعّلها");
+          resolve(false);
+          return;
+        }
+        
         Notification.requestPermission().then(permission => {
-          if (permission === "granted") resolve(true);
-          else {
+          if (permission === "granted") {
+            resolve(true);
+          } else {
             showToast(t("notifDeniedToast"));
             resolve(false);
           }
@@ -1595,7 +1594,7 @@
       if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
       
       const now = new Date();
-      const [hours, minutes] = (settings.notificationTime || "09:00").split(":").map(Number);
+      const [hours, minutes] = (settings.notificationTime || "08:00").split(":").map(Number);
       let scheduledTime = new Date(now);
       scheduledTime.setHours(hours, minutes, 0, 0);
       if (scheduledTime <= now) scheduledTime.setDate(scheduledTime.getDate() + 1);
@@ -1753,24 +1752,32 @@
         if (granted) {
           settings.notificationEnabled = true;
           saveSettings();
+          $("#notifTimeRow").classList.remove("hidden");
           scheduleNotification();
-          showToast(t("notifEnabledToast"));
+          showToast(`✅ ${t("notifEnabledToast")} - ${settings.notificationTime}`);
+          updateNotifUI();
         } else {
           this.checked = false;
+          updateNotifUI();
         }
       } else {
         settings.notificationEnabled = false;
         saveSettings();
         if (window.nawyNotifTimeout) clearTimeout(window.nawyNotifTimeout);
+        $("#notifTimeRow").classList.add("hidden");
         showToast(t("notifDisabledToast"));
+        updateNotifUI();
       }
-      updateNotifUI();
     });
 
     $("#notifTime").addEventListener("change", () => {
       settings.notificationTime = $("#notifTime").value;
       saveSettings();
-      if (settings.notificationEnabled) scheduleNotification();
+      updateNotifUI();
+      if (settings.notificationEnabled) {
+        scheduleNotification();
+        showToast(`⏰ تم ضبط الإشعار على ${settings.notificationTime}`);
+      }
     });
 
     document.addEventListener("touchstart", e => {
@@ -1890,12 +1897,11 @@
       });
     }
 
+    // ============ بنر التثبيت ============
     window.addEventListener("beforeinstallprompt", e => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      setTimeout(() => {
-        $("#installBanner").classList.add("show");
-      }, 3000);
+      $("#installBanner").classList.add("show");
     });
 
     $("#installAction").addEventListener("click", async () => {
@@ -1911,6 +1917,11 @@
 
     $("#installDismiss").addEventListener("click", () => {
       $("#installBanner").classList.remove("show");
+      setTimeout(() => {
+        if (deferredInstallPrompt) {
+          $("#installBanner").classList.add("show");
+        }
+      }, 30000);
     });
 
     window.addEventListener("appinstalled", () => {
