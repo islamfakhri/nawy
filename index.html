@@ -101,12 +101,14 @@
       padding: env(safe-area-inset-top) 16px calc(var(--bottom-space) + env(safe-area-inset-bottom));
     }
 
-    .header {
+    .topbar {
       position: sticky;
-      top: 0;
+      top: env(safe-area-inset-top);
       z-index: 20;
+      background: var(--bg);
+    }
+    .header {
       padding: 12px 0 8px;
-      background: linear-gradient(to bottom, var(--bg) 85%, transparent);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -132,7 +134,7 @@
       display: flex;
       gap: 24px;
       padding: 8px 0 7px;
-      margin-top: 8px;
+      margin-top: 0;
     }
     .tab {
       display: flex;
@@ -890,7 +892,8 @@
 <body>
   <!-- نفس body زي ما هو بالظبط -->
   <div class="app">
-    <header class="header">
+    <div class="topbar">
+      <header class="header">
       <div class="brand">
         <div class="brand-icon">
           <img src="icon-192.png" alt="ناوي" onerror="this.style.display='none'">
@@ -900,9 +903,9 @@
       <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
       </button>
-    </header>
+      </header>
 
-    <nav class="tabs" id="tabsNav">
+      <nav class="tabs" id="tabsNav">
       <button class="tab active" data-view="all" type="button">
         <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 8 14 4 20 4C20 10 16 12 12 12Z"/><path d="M12 12C12 8 10 4 4 4C4 10 8 12 12 12Z"/></svg>
         <span data-i18n="all">نواياي</span>
@@ -911,7 +914,8 @@
         <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
         <span data-i18n="favorites">مفضلاتي</span>
       </button>
-    </nav>
+      </nav>
+    </div>
 
     <main class="content" id="content"></main>
   </div>
