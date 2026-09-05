@@ -181,6 +181,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      direction: ltr;
       border-bottom: none;
       cursor: pointer;
       user-select: none;
@@ -193,21 +194,14 @@
       letter-spacing: 0.5px;
     }
     .section-count {
-      min-width: 20px;
-      height: 20px;
-      padding: 0 6px;
       display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      background: var(--surface-2);
       color: var(--muted);
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
     }
-    .section-chevron { margin-right: auto; transition: transform 0.25s ease; }
+    .section-chevron { transition: transform 0.25s ease; }
     .section-chevron .icon { width: 14px; height: 14px; }
-    .section.collapsed .section-chevron { transform: rotate(180deg); }
+    .section:not(.collapsed) .section-chevron { transform: rotate(90deg); }
     .section-body {
       max-height: 5000px;
       opacity: 1;
@@ -1711,7 +1705,7 @@
           content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
         } else {
           if (activeTasks.length > 0) {
-            content.appendChild(createSection('active', t("active"), activeTasks, !settings.sectionsCollapsed.active));
+            content.appendChild(createSection('active', t("active"), activeTasks, true, false));
           }
           if (achievedTasks.length > 0) {
             content.appendChild(createSection('achieved', t("achieved"), achievedTasks, !settings.sectionsCollapsed.achieved));
@@ -1724,7 +1718,7 @@
         if (favTasks.length === 0) {
           content.appendChild(createEmpty("⭐", t("noFavorites"), t("favoriteHint")));
         } else {
-          content.appendChild(createSection('active', t("active"), favTasks, true));
+          content.appendChild(createSection('active', t("active"), favTasks, true, false));
         }
       }
       
@@ -1732,7 +1726,7 @@
       initSortable();
     }
 
-    function createSection(type, title, taskArray, isOpen = true) {
+    function createSection(type, title, taskArray, isOpen = true, showHeader = true) {
       const sortedTasks = taskArray;
       
       const section = document.createElement("section");
@@ -1742,11 +1736,11 @@
       const header = document.createElement("div");
       header.className = "section-header";
       header.innerHTML = `
+        <span class="section-chevron">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 6L15 12L9 18"/></svg>
+        </span>
         <span class="section-title">${title}</span>
         <span class="section-count">${sortedTasks.length}</span>
-        <span class="section-chevron">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M6 9L12 15L18 9"/></svg>
-        </span>
       `;
       
       const body = document.createElement("div");
@@ -1757,13 +1751,16 @@
       sortedTasks.forEach(task => list.appendChild(createTaskElement(task)));
       body.appendChild(list);
       
-      header.addEventListener("click", () => {
-        section.classList.toggle("collapsed");
-        settings.sectionsCollapsed[type] = section.classList.contains("collapsed");
-        saveSettings();
-      });
+      if (showHeader) {
+        header.addEventListener("click", () => {
+          section.classList.toggle("collapsed");
+          settings.sectionsCollapsed[type] = section.classList.contains("collapsed");
+          saveSettings();
+        });
+      }
       
-      section.append(header, body);
+      if (showHeader) section.append(header);
+      section.append(body);
       return section;
     }
 
