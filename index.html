@@ -141,8 +141,8 @@
 
     .tabs {
       display: flex;
-      gap: 24px;
-      padding: 8px 0 7px;
+      gap: 20px;
+      padding: 6px 0 8px;
       margin-top: 0;
     }
     .tab {
@@ -186,9 +186,9 @@
     .tab.active .tab-icon { fill: var(--accent-soft); stroke: var(--accent); }
     .tab:not(.active) .tab-icon { fill: none; stroke: var(--muted); }
 
-    .content { margin-top: 4px; }
+    .content { margin-top: 8px; }
 
-    .section { margin-top: 16px; background: transparent; border: none; border-radius: 0; }
+    .section { margin-top: 12px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
     .section-header {
       min-height: 40px;
@@ -205,7 +205,7 @@
       font-size: var(--completed-size);
       font-weight: 600;
       color: var(--muted);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.2px;
     }
     .section-count {
       display: inline-flex;
@@ -228,9 +228,9 @@
     .task {
       display: flex;
       align-items: center;
-      gap: 16px;
-      min-height: 48px;
-      padding: 8px 16px;
+      gap: 14px;
+      min-height: 52px;
+      padding: 9px 16px;
       border-bottom: 1px solid var(--border);
       cursor: pointer;
       transition: background 0.15s ease;
@@ -268,6 +268,7 @@
     .task-main {
       flex: 1;
       min-width: 0;
+      padding: 1px 0;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -277,7 +278,7 @@
       font-weight: 400;
       color: var(--text);
       overflow-wrap: anywhere;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .task-achieved-date {
       margin-top: 2px;
@@ -888,7 +889,7 @@
       #taskOverlay .sheet { max-height: 78dvh; }
       #settingsOverlay .sheet, #archiveOverlay .sheet { max-height: 86dvh; }
       .app { padding-left: 12px; padding-right: 12px; }
-      .task { min-height: 44px; gap: 12px; padding: 6px 12px; }
+      .task { min-height: 48px; gap: 10px; padding: 8px 12px; }
       .task-checkbox { width: 20px; height: 20px; }
       .task-star { width: 32px; height: 32px; }
       .task-star .icon { width: 18px; height: 18px; }
