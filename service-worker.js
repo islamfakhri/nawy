@@ -1,4 +1,19 @@
-const CACHE_NAME = "nawy-runtime-v1.0.3";
+const CACHE_NAME = "nawy-runtime-v1.0.4";
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./service-worker.js",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./favicon.ico",
+  "./sounds/ding.mp3"
+];
+const EXTERNAL_ASSETS = [
+  "https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js",
+  "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js",
+  "https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+];
 const APP_SCOPE = self.registration.scope;
 const APP_INDEX = new URL("./index.html", APP_SCOPE);
 const APP_MANIFEST = new URL("./manifest.json", APP_SCOPE);
@@ -8,19 +23,28 @@ function isSameOrigin(url) {
   return url.origin === self.location.origin;
 }
 
-function shouldNeverCache(request) {
+function isExternalAsset(url) {
+  return EXTERNAL_ASSETS.includes(url.href) ||
+    url.hostname === "fonts.gstatic.com";
+}
+
+function isAppShellRequest(request) {
   const url = new URL(request.url);
   return url.pathname === APP_INDEX.pathname ||
-    url.pathname === APP_MANIFEST.pathname ||
-    url.pathname === APP_WORKER.pathname ||
-    url.pathname.endsWith("/index.html") ||
-    url.pathname.endsWith("/manifest.json") ||
-    url.pathname.endsWith("/service-worker.js") ||
-    url.pathname.endsWith("/sw.js");
+    url.pathname.endsWith("/");
 }
 
 self.addEventListener("install", event => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(APP_SHELL))
+      .then(() => Promise.all(EXTERNAL_ASSETS.map(asset => (
+        fetch(asset, { mode: "no-cors", cache: "no-store" })
+          .then(response => caches.open(CACHE_NAME).then(cache => cache.put(asset, response)))
+          .catch(() => undefined)
+      )))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", event => {
@@ -28,7 +52,7 @@ self.addEventListener("activate", event => {
     caches.keys()
       .then(names => Promise.all(
         names
-          .filter(name => name !== CACHE_NAME)
+          .filter(name => name.startsWith("nawy-") && name !== CACHE_NAME)
           .map(name => caches.delete(name))
       ))
       .then(() => self.clients.claim())
@@ -40,18 +64,25 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-  if (!isSameOrigin(url)) return;
+  if (!isSameOrigin(url) && !isExternalAsset(url)) return;
 
-  if (shouldNeverCache(request)) {
+  if (isExternalAsset(url)) {
     event.respondWith(
-      fetch(new Request(request, { cache: "no-store" }))
-        .catch(() => caches.match(request))
+      caches.match(request).then(cached => cached || fetch(request)
+        .then(response => {
+          if (response.ok || response.type === "opaque") {
+            caches.open(CACHE_NAME)
+              .then(cache => cache.put(request, response.clone()))
+              .catch(() => {});
+          }
+          return response;
+        }))
     );
     return;
   }
 
   event.respondWith(
-    fetch(request)
+    fetch(request, { cache: isAppShellRequest(request) ? "no-store" : "default" })
       .then(response => {
         if (response.ok) {
           const copy = response.clone();
