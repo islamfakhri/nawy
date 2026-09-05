@@ -72,9 +72,18 @@
     html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,0.12); }
     html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,0.10); }
 
-    html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; }
-    html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; }
-    html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; }
+    html[data-font="small"] {
+      --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px;
+      --task-size: 14px; --tabs-size: 13px; --completed-size: 12px; --achieved-date-size: 10px;
+    }
+    html[data-font="medium"], html:not([data-font]) {
+      --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px;
+      --task-size: 15px; --tabs-size: 14px; --completed-size: 13px; --achieved-date-size: 11px;
+    }
+    html[data-font="large"] {
+      --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px;
+      --task-size: 17px; --tabs-size: 16px; --completed-size: 15px; --achieved-date-size: 12px;
+    }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
     html { min-height: 100%; background: var(--bg); }
@@ -140,7 +149,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 14px;
+      font-size: var(--tabs-size);
       font-weight: 500;
       color: var(--muted);
       min-height: 36px;
@@ -193,7 +202,7 @@
       user-select: none;
     }
     .section-title {
-      font-size: 13px;
+      font-size: var(--completed-size);
       font-weight: 600;
       color: var(--muted);
       letter-spacing: 0.5px;
@@ -201,7 +210,7 @@
     .section-count {
       display: inline-flex;
       color: var(--muted);
-      font-size: 11px;
+      font-size: var(--completed-size);
       font-weight: 500;
     }
     .section-chevron { transition: transform 0.25s ease; }
@@ -264,7 +273,7 @@
     }
     .task-text {
       margin: 0;
-      font-size: 15px;
+      font-size: var(--task-size);
       font-weight: 400;
       color: var(--text);
       overflow-wrap: anywhere;
@@ -274,7 +283,7 @@
       margin-top: 2px;
       color: var(--muted);
       font-family: inherit;
-      font-size: 11px;
+      font-size: var(--achieved-date-size);
       font-weight: 400;
       line-height: 1.3;
     }
@@ -884,7 +893,6 @@
       .task-star { width: 32px; height: 32px; }
       .task-star .icon { width: 18px; height: 18px; }
       .segment { padding: 0 8px; font-size: var(--fs-xs); }
-      .tab { font-size: 13px; }
       .tab-icon { width: 16px; height: 16px; }
     }
   </style>
