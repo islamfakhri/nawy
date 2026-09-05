@@ -4,15 +4,12 @@ const APP_SHELL = [
   "./index.html",
   "./manifest.json",
   "./service-worker.js",
+  "./Sortable.min.js",
+  "./confetti.browser.min.js",
   "./icon-192.png",
   "./icon-512.png",
   "./favicon.ico",
   "./sounds/ding.mp3"
-];
-const EXTERNAL_ASSETS = [
-  "https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js",
-  "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js",
-  "https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
 ];
 const APP_SCOPE = self.registration.scope;
 const APP_INDEX = new URL("./index.html", APP_SCOPE);
@@ -21,11 +18,6 @@ const APP_WORKER = new URL("./service-worker.js", APP_SCOPE);
 
 function isSameOrigin(url) {
   return url.origin === self.location.origin;
-}
-
-function isExternalAsset(url) {
-  return EXTERNAL_ASSETS.includes(url.href) ||
-    url.hostname === "fonts.gstatic.com";
 }
 
 function isAppShellRequest(request) {
@@ -38,11 +30,6 @@ self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(APP_SHELL))
-      .then(() => Promise.all(EXTERNAL_ASSETS.map(asset => (
-        fetch(asset, { mode: "no-cors", cache: "no-store" })
-          .then(response => caches.open(CACHE_NAME).then(cache => cache.put(asset, response)))
-          .catch(() => undefined)
-      )))
       .then(() => self.skipWaiting())
   );
 });
@@ -64,22 +51,7 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-  if (!isSameOrigin(url) && !isExternalAsset(url)) return;
-
-  if (isExternalAsset(url)) {
-    event.respondWith(
-      caches.match(request).then(cached => cached || fetch(request)
-        .then(response => {
-          if (response.ok || response.type === "opaque") {
-            caches.open(CACHE_NAME)
-              .then(cache => cache.put(request, response.clone()))
-              .catch(() => {});
-          }
-          return response;
-        }))
-    );
-    return;
-  }
+  if (!isSameOrigin(url)) return;
 
   event.respondWith(
     fetch(request, { cache: isAppShellRequest(request) ? "no-store" : "default" })
