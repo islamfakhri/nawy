@@ -1,26 +1,36 @@
-const CACHE_NAME = "nawy-runtime-v1.0.3";
+const CACHE_NAME = "nawy-app-v1.0.4";
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./service-worker.js",
+  "./Sortable.min.js",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./favicon.ico",
+  "./sounds/ding.mp3"
+];
 const APP_SCOPE = self.registration.scope;
 const APP_INDEX = new URL("./index.html", APP_SCOPE);
-const APP_MANIFEST = new URL("./manifest.json", APP_SCOPE);
-const APP_WORKER = new URL("./service-worker.js", APP_SCOPE);
 
 function isSameOrigin(url) {
   return url.origin === self.location.origin;
 }
 
-function shouldNeverCache(request) {
+function isAppShellRequest(request) {
   const url = new URL(request.url);
   return url.pathname === APP_INDEX.pathname ||
-    url.pathname === APP_MANIFEST.pathname ||
-    url.pathname === APP_WORKER.pathname ||
-    url.pathname.endsWith("/index.html") ||
+    url.pathname.endsWith("/") ||
     url.pathname.endsWith("/manifest.json") ||
-    url.pathname.endsWith("/service-worker.js") ||
-    url.pathname.endsWith("/sw.js");
+    url.pathname.endsWith("/service-worker.js");
 }
 
 self.addEventListener("install", event => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", event => {
@@ -28,7 +38,7 @@ self.addEventListener("activate", event => {
     caches.keys()
       .then(names => Promise.all(
         names
-          .filter(name => name !== CACHE_NAME)
+          .filter(name => name.startsWith("nawy-") && name !== CACHE_NAME)
           .map(name => caches.delete(name))
       ))
       .then(() => self.clients.claim())
@@ -42,16 +52,8 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   if (!isSameOrigin(url)) return;
 
-  if (shouldNeverCache(request)) {
-    event.respondWith(
-      fetch(new Request(request, { cache: "no-store" }))
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
   event.respondWith(
-    fetch(request)
+    fetch(request, { cache: isAppShellRequest(request) ? "no-store" : "default" })
       .then(response => {
         if (response.ok) {
           const copy = response.clone();
@@ -63,7 +65,9 @@ self.addEventListener("fetch", event => {
       })
       .catch(() => caches.match(request).then(cached => {
         if (cached) return cached;
-        if (request.mode === "navigate") return caches.match(APP_INDEX.pathname);
+        if (request.mode === "navigate") {
+          return caches.match(APP_INDEX.pathname);
+        }
         return new Response("Offline", { status: 503 });
       }))
   );

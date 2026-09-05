@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- SortableJS -->
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script src="./Sortable.min.js"></script>
   
   <!-- Canvas Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
@@ -1100,7 +1100,8 @@
     const STORAGE_KEYS = {
       tasks: "nawy_tasks_v2",
       archive: "nawy_archive_v2",
-      settings: "nawy_settings_v2"
+      settings: "nawy_settings_v2",
+      sync: "nawy_sync_v1"
     };
 
     const DEFAULT_SETTINGS = {
@@ -1235,8 +1236,14 @@
     function loadData() {
       const storedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
       const storedArchive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []);
-      tasks = Array.isArray(storedTasks) ? storedTasks.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
-      archive = Array.isArray(storedArchive) ? storedArchive.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
+      tasks = normalizeStoredItems(storedTasks);
+      archive = normalizeStoredItems(storedArchive);
+      if (JSON.stringify(storedTasks) !== JSON.stringify(tasks)) {
+        localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+      }
+      if (JSON.stringify(storedArchive) !== JSON.stringify(archive)) {
+        localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
+      }
       const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
       settings = {
         ...DEFAULT_SETTINGS,
@@ -1247,8 +1254,39 @@
         }
       };
     }
-    function saveTasks() { localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
-    function saveArchive() { localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive)); }
+    function normalizeStoredItems(items) {
+      if (!Array.isArray(items)) return [];
+      return items
+        .filter(x => x && typeof x.text === "string" && x.text.trim())
+        .map(x => ({
+          ...x,
+          id: x.id || createId(),
+          updatedAt: Number(x.updatedAt) || Date.now(),
+          syncState: x.syncState || "local"
+        }));
+    }
+    function recordLocalChange(entity, id, operation = "upsert") {
+      const current = safeParse(localStorage.getItem(STORAGE_KEYS.sync), {
+        version: 1,
+        pendingChanges: []
+      });
+      const pendingChanges = Array.isArray(current.pendingChanges) ? current.pendingChanges : [];
+      const change = { entity, id, operation, updatedAt: Date.now() };
+      const existingIndex = pendingChanges.findIndex(item => item.entity === entity && item.id === id);
+      if (existingIndex === -1) pendingChanges.push(change);
+      else pendingChanges[existingIndex] = change;
+      localStorage.setItem(STORAGE_KEYS.sync, JSON.stringify({
+        version: 1,
+        pendingChanges,
+        lastLocalWriteAt: change.updatedAt
+      }));
+    }
+    function saveTasks() {
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+    }
+    function saveArchive() {
+      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
+    }
     function saveSettings() { localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings)); }
 
     function showToast(message, canUndo = false, undoCallback = null) {
@@ -1380,8 +1418,11 @@
         status: 'active',
         starred: false,
         createdAt: Date.now(),
-        achievedAt: null
+        achievedAt: null,
+        updatedAt: Date.now(),
+        syncState: "local"
       });
+      recordLocalChange("task", tasks[0].id);
       saveTasks();
       render();
       playAddedSound();
@@ -1394,6 +1435,9 @@
       if (!task) return;
       task.status = 'achieved';
       task.achievedAt = Date.now();
+      task.updatedAt = Date.now();
+      task.syncState = "local";
+      recordLocalChange("task", task.id);
       saveTasks();
       render();
       celebrate();
@@ -1405,6 +1449,9 @@
       if (!task) return;
       task.status = 'active';
       task.achievedAt = null;
+      task.updatedAt = Date.now();
+      task.syncState = "local";
+      recordLocalChange("task", task.id);
       saveTasks();
       render();
       showToast(t("reactivatedToast"));
@@ -1414,6 +1461,9 @@
       const task = tasks.find(x => x.id === id);
       if (!task) return;
       task.starred = !task.starred;
+      task.updatedAt = Date.now();
+      task.syncState = "local";
+      recordLocalChange("task", task.id);
       saveTasks();
       render();
     }
@@ -1422,7 +1472,11 @@
       const index = tasks.findIndex(x => x.id === id);
       if (index === -1) return;
       const [deleted] = tasks.splice(index, 1);
-      archive.unshift({ ...deleted, archivedAt: Date.now() });
+      const changedAt = Date.now();
+      deleted.updatedAt = changedAt;
+      deleted.syncState = "local";
+      archive.unshift({ ...deleted, archivedAt: changedAt });
+      recordLocalChange("task", deleted.id, "archive");
       saveTasks();
       saveArchive();
       render();
@@ -1430,6 +1484,9 @@
         const ai = archive.findIndex(x => x.id === deleted.id);
         if (ai !== -1) archive.splice(ai, 1);
         tasks.unshift(deleted);
+        deleted.updatedAt = Date.now();
+        deleted.syncState = "local";
+        recordLocalChange("task", deleted.id);
         saveTasks();
         saveArchive();
         render();
@@ -1445,6 +1502,9 @@
       delete restored.archivedAt;
       restored.status = 'active';
       restored.achievedAt = null;
+      restored.updatedAt = Date.now();
+      restored.syncState = "local";
+      recordLocalChange("task", restored.id);
       tasks.unshift(restored);
       saveTasks();
       saveArchive();
@@ -1457,6 +1517,7 @@
       const index = archive.findIndex(x => x.id === id);
       if (index === -1) return;
       archive.splice(index, 1);
+      recordLocalChange("task", id, "delete");
       saveArchive();
       renderArchive();
     }
@@ -1801,17 +1862,21 @@
           delayOnTouchOnly: true,
           onEnd: function() {
             const newOrder = [...list.querySelectorAll(".task")].map(el => el.dataset.taskId);
-            const reordered = [];
             const taskMap = new Map();
             tasks.forEach(x => taskMap.set(x.id, x));
-            newOrder.forEach(id => {
-              if (taskMap.has(id)) {
-                reordered.push(taskMap.get(id));
-                taskMap.delete(id);
-              }
+            const reorderedActive = newOrder
+              .map(id => taskMap.get(id))
+              .filter(task => task && task.status === "active");
+            let activeIndex = 0;
+            tasks = tasks.map(task => task.status === "active"
+              ? reorderedActive[activeIndex++]
+              : task);
+            const changedAt = Date.now();
+            reorderedActive.forEach(task => {
+              task.updatedAt = changedAt;
+              task.syncState = "local";
+              recordLocalChange("task", task.id);
             });
-            taskMap.forEach(x => reordered.push(x));
-            tasks = reordered;
             saveTasks();
           }
         });
@@ -1866,6 +1931,9 @@
           const newText = editArea.value.trim();
           if (newText && newText !== task.text) {
             task.text = newText;
+            task.updatedAt = Date.now();
+            task.syncState = "local";
+            recordLocalChange("task", task.id);
             saveTasks();
             render();
             showToast(t("editedToast"));
@@ -2132,6 +2200,11 @@
                 ...(data.settings.sectionsCollapsed || {})
               }
             };
+            tasks.forEach(task => {
+              task.updatedAt = Date.now();
+              task.syncState = "local";
+              recordLocalChange("task", task.id);
+            });
             saveTasks();
             saveArchive();
             saveSettings();
