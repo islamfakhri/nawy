@@ -72,9 +72,9 @@
     html[data-accent="orange"] { --accent: #f59e0b; --accent-soft: rgba(245,158,11,0.12); }
     html[data-accent="pink"] { --accent: #ec4899; --accent-soft: rgba(236,72,153,0.10); }
 
-    html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; --fs-hero: 19px; }
-    html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; --fs-hero: 22px; }
-    html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; --fs-hero: 25px; }
+    html[data-font="small"] { --fs-xs: 10px; --fs-sm: 12px; --fs-md: 13px; --fs-base: 14px; --fs-lg: 15px; }
+    html[data-font="medium"], html:not([data-font]) { --fs-xs: 11px; --fs-sm: 13px; --fs-md: 14px; --fs-base: 16px; --fs-lg: 18px; }
+    html[data-font="large"] { --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-base: 18px; --fs-lg: 20px; }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
     html { min-height: 100%; background: var(--bg); }
@@ -131,7 +131,7 @@
     .tabs {
       display: flex;
       gap: 24px;
-      padding: 8px 0;
+      padding: 8px 0 7px;
       margin-top: 8px;
     }
     .tab {
@@ -141,12 +141,24 @@
       font-size: 14px;
       font-weight: 500;
       color: var(--muted);
-      padding: 8px 0;
+      min-height: 36px;
+      padding: 8px 0 7px;
       position: relative;
       transition: color 0.2s ease;
       background: none;
       border: none;
       cursor: pointer;
+    }
+    .tab::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      border-radius: 2px;
+      background: transparent;
+      transition: background 0.2s ease;
     }
     .tab-icon {
       width: 18px;
@@ -159,19 +171,11 @@
       transition: fill 0.2s ease, stroke 0.2s ease;
     }
     .tab.active { color: var(--accent); }
+    .tab.active::after { background: var(--accent); }
     .tab.active .tab-icon { fill: var(--accent-soft); stroke: var(--accent); }
     .tab:not(.active) .tab-icon { fill: none; stroke: var(--muted); }
 
-    .hero { padding: 20px 4px 12px; }
-    .hero-title {
-      margin: 0;
-      font-size: var(--fs-hero);
-      line-height: 1.3;
-      letter-spacing: -0.2px;
-      font-weight: 700;
-    }
-
-    .content { margin-top: 8px; }
+    .content { margin-top: 4px; }
 
     .section { margin-top: 16px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
@@ -190,7 +194,6 @@
       font-size: 13px;
       font-weight: 600;
       color: var(--muted);
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .section-count {
@@ -910,10 +913,6 @@
       </button>
     </nav>
 
-    <section class="hero">
-      <h1 class="hero-title" id="heroTitle">ناوي على إيه النهارده؟</h1>
-    </section>
-
     <main class="content" id="content"></main>
   </div>
 
@@ -927,7 +926,7 @@
   <div class="composer-panel" id="composerPanel">
     <form id="composerForm" autocomplete="off">
       <div class="composer-row">
-        <textarea id="taskInput" rows="1" maxlength="500" placeholder="أنا ناوي..." data-i18n-placeholder="taskPlaceholder"></textarea>
+        <textarea id="taskInput" rows="1" maxlength="500" placeholder="ناوي على إيه النهارده؟"></textarea>
         <button class="send-btn disabled" id="sendBtn" type="submit" aria-label="إرسال">
           <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5 12L12 5L19 12"/></svg>
         </button>
@@ -1130,8 +1129,8 @@
     const TRANSLATIONS = {
       ar: {
         appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
-        heroTitle: "ناوي على إيه النهارده؟",
-        active: "حالية", achieved: "محققة",
+        composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
+        active: "حالية", achieved: "المكتملة",
         taskPlaceholder: "أنا ناوي...",
         achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
         edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
@@ -1177,8 +1176,8 @@
       },
       en: {
         appName: "NAWY", all: "Intentions", favorites: "Favorites",
-        heroTitle: "What are you up to today?",
-        active: "Current", achieved: "Achieved",
+        composerEmptyPlaceholder: "What are you up to today?",
+        active: "Current", achieved: "Completed",
         taskPlaceholder: "I intend to...",
         achievedAction: "Achieved", reactivateAction: "Reopen",
         edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
@@ -1700,8 +1699,6 @@
         .sort((a, b) => (Number(b.achievedAt) || 0) - (Number(a.achievedAt) || 0));
       
       if (currentView === "all") {
-        $("#heroTitle").textContent = t("heroTitle");
-        
         if (activeTasks.length === 0 && achievedTasks.length === 0) {
           content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
         } else {
@@ -1713,8 +1710,6 @@
           }
         }
       } else if (currentView === "favorites") {
-        $("#heroTitle").textContent = t("favorites");
-        
         const favTasks = tasks.filter(x => x.starred && x.status === 'active');
         if (favTasks.length === 0) {
           content.appendChild(createEmpty("⭐", t("noFavorites"), t("favoriteHint")));
@@ -2031,8 +2026,19 @@
     function closeOverlay(overlay) { overlay.classList.remove("show"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
-    function openComposer() { $("#fabBtn").classList.add("hidden"); $("#composerPanel").classList.add("open"); $("#taskInput").focus(); }
-    function closeComposer() { $("#fabBtn").classList.remove("hidden"); $("#composerPanel").classList.remove("open"); $("#taskInput").value = ""; $("#sendBtn").classList.add("disabled"); }
+    function openComposer() {
+      $("#fabBtn").classList.add("hidden");
+      $("#composerPanel").classList.add("open");
+      $("#taskInput").placeholder = t("composerEmptyPlaceholder");
+      $("#taskInput").focus();
+    }
+    function closeComposer() {
+      $("#fabBtn").classList.remove("hidden");
+      $("#composerPanel").classList.remove("open");
+      $("#taskInput").value = "";
+      $("#taskInput").placeholder = t("composerEmptyPlaceholder");
+      $("#sendBtn").classList.add("disabled");
+    }
 
     function applySettings() {
       document.documentElement.setAttribute("data-theme", settings.theme);
@@ -2044,8 +2050,9 @@
       $("#brandName").textContent = t("appName");
       $$("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
       $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
-      $("#taskInput").placeholder = t("taskPlaceholder");
-      $("#heroTitle").textContent = t("heroTitle");
+      $("#taskInput").placeholder = $("#taskInput").value
+        ? t("taskPlaceholder")
+        : t("composerEmptyPlaceholder");
       
       $$(".segment[data-theme]").forEach(btn => btn.classList.toggle("active", btn.dataset.theme === settings.theme));
       $$(".color-btn[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
@@ -2201,6 +2208,9 @@
     });
     $("#taskInput").addEventListener("input", () => {
       const hasText = $("#taskInput").value.trim().length > 0;
+      $("#taskInput").placeholder = hasText
+        ? t("taskPlaceholder")
+        : t("composerEmptyPlaceholder");
       $("#sendBtn").classList.toggle("disabled", !hasText);
       $("#sendBtn").disabled = !hasText;
     });
