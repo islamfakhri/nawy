@@ -1231,6 +1231,7 @@
     let selectedTaskId = null;
     let swipeStartX = 0;
     let swipeStartY = 0;
+    let swipeStartTime = 0;
     let swipeTracking = false;
     let audioContext = null;
     let deferredInstallPrompt = null;
@@ -2362,10 +2363,11 @@
     });
 
     document.addEventListener("touchstart", e => {
-      if (e.target.closest(".task-list, button, input, textarea, .overlay, .sheet, .composer-panel, .fab")) return;
+      if (e.target.closest("button, input, textarea, select, option, .overlay, .sheet, .composer-panel, .fab")) return;
       const touch = e.touches[0];
       swipeStartX = touch.clientX;
       swipeStartY = touch.clientY;
+      swipeStartTime = Date.now();
       swipeTracking = true;
     }, { passive: true });
 
@@ -2375,6 +2377,12 @@
       const dx = touch.clientX - swipeStartX;
       const dy = touch.clientY - swipeStartY;
       if (Math.abs(dy) > Math.abs(dx) * 1.2) {
+        swipeTracking = false;
+        return;
+      }
+      if (e.target.closest(".task:not(.completed)") &&
+          currentView === "all" &&
+          Date.now() - swipeStartTime >= 200) {
         swipeTracking = false;
         return;
       }
@@ -2388,8 +2396,9 @@
       swipeTracking = false;
       const touch = e.changedTouches[0];
       const dx = touch.clientX - swipeStartX;
+      const gestureDuration = Date.now() - swipeStartTime;
       
-      if (Math.abs(dx) > 60) {
+      if (Math.abs(dx) > 60 && gestureDuration < 450) {
         const views = ["all", "favorites"];
         const idx = views.indexOf(currentView);
         const isRTL = document.documentElement.dir === "rtl";
