@@ -1791,6 +1791,7 @@
 
     function initSortable() {
       $$(".task-list").forEach(list => {
+        if (currentView !== "all" || list.dataset.type !== "active") return;
         if (list.sortableInstance) list.sortableInstance.destroy();
         list.sortableInstance = new Sortable(list, {
           animation: 150,
