@@ -2355,8 +2355,77 @@
 
         const searchResult = await searchResponse.json();
         const existingFile = searchResult.files?.[0];
+        let driveData = null;
+        if (existingFile?.id) {
+          const downloadResponse = await fetch(
+            `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(existingFile.id)}?alt=media`,
+            { headers }
+          );
+          if (!downloadResponse.ok) {
+            const body = await downloadResponse.text();
+            throw new Error(`Drive sync download failed: HTTP ${downloadResponse.status} ${downloadResponse.statusText}: ${body || "(empty response body)"}`);
+          }
+          driveData = await downloadResponse.json();
+          if (!driveData ||
+            !Array.isArray(driveData.tasks) ||
+            !Array.isArray(driveData.archive) ||
+            !driveData.settings ||
+            typeof driveData.settings !== "object" ||
+            Array.isArray(driveData.settings)) {
+            throw new Error("Drive sync file has an invalid NAWY data structure");
+          }
+        }
+
+        const getTimestamp = item => {
+          const values = ["updatedAt", "modifiedAt", "achievedAt", "archivedAt", "createdAt"]
+            .map(key => Number(item?.[key]))
+            .filter(value => Number.isFinite(value) && value > 0);
+          return values.length ? Math.max(...values) : 0;
+        };
+        const mergeCollection = (localItems, driveItems) => {
+          const merged = [];
+          const positions = new Map();
+          const addItem = (item, source) => {
+            if (!item || typeof item !== "object") return;
+            const key = typeof item.id === "string" && item.id ? `id:${item.id}` : null;
+            if (!key || !positions.has(key)) {
+              if (key) positions.set(key, merged.length);
+              merged.push({ ...item });
+              return;
+            }
+            const index = positions.get(key);
+            const current = merged[index];
+            if (source === "drive" &&
+                getTimestamp(item) > getTimestamp(current)) {
+              merged[index] = { ...item };
+            }
+          };
+          localItems.forEach(item => addItem(item, "local"));
+          driveItems.forEach(item => addItem(item, "drive"));
+          return merged;
+        };
+        const mergeSettings = (localSettings, driveSettings) => {
+          const merged = { ...driveSettings };
+          Object.entries(localSettings).forEach(([key, value]) => {
+            if (value && typeof value === "object" && !Array.isArray(value) &&
+                driveSettings[key] && typeof driveSettings[key] === "object" &&
+                !Array.isArray(driveSettings[key])) {
+              merged[key] = mergeSettings(value, driveSettings[key]);
+            } else {
+              merged[key] = value;
+            }
+          });
+          return merged;
+        };
+        const mergedData = driveData
+          ? {
+              tasks: mergeCollection(tasks, driveData.tasks),
+              archive: mergeCollection(archive, driveData.archive),
+              settings: mergeSettings(settings, driveData.settings)
+            }
+          : { tasks: [...tasks], archive: [...archive], settings: { ...settings } };
         const metadata = { name: "nawy-data.json", mimeType: "application/json" };
-        const payload = JSON.stringify({ tasks, archive, settings }, null, 2);
+        const payload = JSON.stringify(mergedData, null, 2);
         const boundary = `nawy-sync-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         const multipartBody = new Blob([
           `--${boundary}\r\n`,
@@ -2382,6 +2451,21 @@
           const body = await uploadResponse.text();
           throw new Error(`Drive upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`);
         }
+        tasks = mergedData.tasks;
+        archive = mergedData.archive;
+        settings = {
+          ...DEFAULT_SETTINGS,
+          ...mergedData.settings,
+          sectionsCollapsed: {
+            ...DEFAULT_SETTINGS.sectionsCollapsed,
+            ...(mergedData.settings.sectionsCollapsed || {})
+          }
+        };
+        saveTasks();
+        saveArchive();
+        saveSettings();
+        applySettings();
+        render();
         showToast(t("syncSuccess"));
       } catch (error) {
         console.error("Google Drive sync failed", error);
