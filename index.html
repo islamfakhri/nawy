@@ -1030,7 +1030,11 @@
       </div>
       <button class="menu-item account-menu-sync" id="syncBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
-        <span class="menu-text" data-i18n="sync">مزامنة البيانات</span>
+        <span class="menu-text" data-i18n="backupToDrive">احفظ نواياك في جوجل درايف</span>
+      </button>
+      <button class="menu-item" id="restoreBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>
+        <span class="menu-text" data-i18n="restoreFromDrive">هات نواياك من جوجل درايف</span>
       </button>
       <div class="account-menu-divider"></div>
       <button class="menu-item" id="settingsBtn" type="button">
@@ -1222,7 +1226,8 @@
 
     const TRANSLATIONS = {
       ar: {
-        appName: "ناوي", accountSubtitle: "مساحتك الشخصية", sync: "مزامنة البيانات",
+        appName: "ناوي", accountSubtitle: "مساحتك الشخصية",
+        backupToDrive: "احفظ نواياك في جوجل درايف", restoreFromDrive: "هات نواياك من جوجل درايف",
         all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
         active: "حالية", achieved: "المُحَقَّقة",
@@ -1242,9 +1247,13 @@
         reactivatedToast: "تم إعادة فتح النية 🔄", editedToast: "تم التعديل ✏️",
         deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
         exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
-        syncSuccess: "تمت مزامنة بيانات ناوي مع Google Drive ✅",
-        syncConfig: "أضف Google Client ID لإعداد مزامنة Drive أولًا",
-        syncError: "تعذر مزامنة بيانات ناوي مع Google Drive",
+        backupSuccess: "✓ نواياك محفوظة", backupProgress: "☁️ جاري حفظ نواياك...",
+        backupConfig: "فعّل الحفظ الاحتياطي أولًا", backupError: "⚠️ تعذر حفظ نواياك الآن، سنحاول مرة أخرى",
+        restoreFound: "☁️ لقينا نواياك محفوظة", restoreConfirm: "هنضيف آخر نسخة لنواياك الموجودة على الجهاز. هل تريد المتابعة؟",
+        restoreNotFound: "☁️ لسه مفيش نسخة محفوظة\nفعّل الحفظ الاحتياطي علشان نخلي نواياك محفوظة ليك بعد كده.",
+        enableBackupConfirm: "هل تريد تفعيل الحفظ الاحتياطي وإنشاء أول نسخة الآن؟",
+        restoreInvalid: "نسخة Google Drive غير صالحة", restoreSuccess: "تم دمج نواياك من Google Drive ✅",
+        restoreError: "تعذر استرجاع نواياك من Google Drive",
         copiedToast: "تم نسخ النص 📋",
         morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
         installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡",
@@ -1273,7 +1282,8 @@
         previewTone: "تجربة النغمة"
       },
       en: {
-        appName: "NAWY", accountSubtitle: "Your personal space", sync: "Sync data",
+        appName: "NAWY", accountSubtitle: "Your personal space",
+        backupToDrive: "Save your intentions to Google Drive", restoreFromDrive: "Get your intentions from Google Drive",
         all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
         active: "Current", achieved: "Achieved",
@@ -1293,9 +1303,13 @@
         reactivatedToast: "Intention reopened 🔄", editedToast: "Edited ✏️",
         deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
         exported: "Data exported 💾", imported: "Data imported ✅",
-        syncSuccess: "NAWY data was synced with Google Drive ✅",
-        syncConfig: "Add a Google Client ID to enable Drive sync",
-        syncError: "NAWY data could not be synced with Google Drive",
+        backupSuccess: "✓ Intentions saved", backupProgress: "☁️ Saving your intentions...",
+        backupConfig: "Enable backup first", backupError: "⚠️ Could not save your intentions; we will try again",
+        restoreFound: "☁️ We found your saved intentions", restoreConfirm: "We will add the latest backup to your device data. Continue?",
+        restoreNotFound: "☁️ No saved backup yet\nEnable backup to keep your intentions safe.",
+        enableBackupConfirm: "Enable backup and create the first backup now?",
+        restoreInvalid: "The Google Drive backup is invalid", restoreSuccess: "Intentions merged from Google Drive ✅",
+        restoreError: "Could not restore intentions from Google Drive",
         copiedToast: "Text copied 📋",
         morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
         installSub: "Your intentions will be easier 📌", installDismiss: "Continue", installAction: "Install ⚡",
@@ -1394,15 +1408,15 @@
     }
     function saveTasks() {
       localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
-      requestAutoSync();
+      queueGoogleBackup();
     }
     function saveArchive() {
       localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
-      requestAutoSync();
+      queueGoogleBackup();
     }
     function saveSettings() {
       localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
-      requestAutoSync();
+      queueGoogleBackup();
     }
 
     function showToast(message, canUndo = false, undoCallback = null) {
@@ -2285,25 +2299,11 @@
 
     let googleAccessToken = null;
     let googleTokenClient = null;
-    let googleSyncInProgress = false;
-    let googleSyncScheduled = false;
-    let googleSyncRequested = false;
-    let suppressAutoSync = false;
-    const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
-
-    function requestAutoSync() {
-      if (suppressAutoSync || !googleAccessToken) return;
-      if (googleSyncInProgress) {
-        googleSyncRequested = true;
-        return;
-      }
-      if (googleSyncScheduled) return;
-      googleSyncScheduled = true;
-      Promise.resolve().then(() => {
-        googleSyncScheduled = false;
-        if (!suppressAutoSync) syncDataToGoogleDrive({ automatic: true });
-      });
-    }
+    let googleBackupInProgress = false;
+    let googleBackupTimer = null;
+    let googleBackupQueued = false;
+    let googleDriveBackupEnabled = localStorage.getItem("nawy_google_drive_backup_enabled") === "1";
+    const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 
     function getGoogleClientId() {
       return typeof window.NAWY_GOOGLE_CLIENT_ID === "string"
@@ -2334,26 +2334,93 @@
       });
     }
 
-    async function syncDataToGoogleDrive({ automatic = false } = {}) {
-      if (googleSyncInProgress) {
-        if (!automatic) {
-          showToast(settings.language === "ar" ? "جاري المزامنة…" : "Sync in progress…");
+    function getTimestamp(item) {
+      const values = ["updatedAt", "modifiedAt", "achievedAt", "archivedAt", "createdAt"]
+        .map(key => Number(item?.[key]))
+        .filter(value => Number.isFinite(value) && value > 0);
+      return values.length ? Math.max(...values) : 0;
+    }
+
+    function mergeCollections(localItems, remoteItems) {
+      const merged = [];
+      const positions = new Map();
+      const addItem = item => {
+        if (!item || typeof item !== "object") return;
+        const key = typeof item.id === "string" && item.id ? item.id : createId();
+        if (!positions.has(key)) {
+          positions.set(key, merged.length);
+          merged.push({ ...item, id: key });
+          return;
         }
+        const index = positions.get(key);
+        if (getTimestamp(item) > getTimestamp(merged[index])) merged[index] = { ...item, id: key };
+      };
+      localItems.forEach(addItem);
+      remoteItems.forEach(addItem);
+      return merged;
+    }
+
+    function mergeNawyData(localData, remoteData) {
+      const archive = mergeCollections(localData.archive, remoteData.archive);
+      const archivedIds = new Set(archive.map(item => item.id));
+      const tasks = mergeCollections(localData.tasks, remoteData.tasks)
+        .filter(item => !archivedIds.has(item.id));
+      const mergeSettings = (localSettings, remoteSettings) => {
+        const merged = { ...remoteSettings };
+        Object.entries(localSettings).forEach(([key, value]) => {
+          if (value && typeof value === "object" && !Array.isArray(value) &&
+              remoteSettings[key] && typeof remoteSettings[key] === "object" &&
+              !Array.isArray(remoteSettings[key])) {
+            merged[key] = mergeSettings(value, remoteSettings[key]);
+          } else {
+            merged[key] = value;
+          }
+        });
+        return merged;
+      };
+      return {
+        version: 1,
+        updatedAt: new Date().toISOString(),
+        tasks,
+        archive,
+        settings: mergeSettings(localData.settings, remoteData.settings)
+      };
+    }
+
+    function setGoogleBackupEnabled(enabled) {
+      googleDriveBackupEnabled = enabled;
+      localStorage.setItem("nawy_google_drive_backup_enabled", enabled ? "1" : "0");
+    }
+
+    function queueGoogleBackup() {
+      if (!googleDriveBackupEnabled || !googleAccessToken) return;
+      if (googleBackupTimer) clearTimeout(googleBackupTimer);
+      googleBackupTimer = setTimeout(() => {
+        googleBackupTimer = null;
+        backupDataToGoogleDrive({ automatic: true });
+      }, 3000);
+    }
+
+    async function backupDataToGoogleDrive({ automatic = false } = {}) {
+      if (googleBackupInProgress) {
+        googleBackupQueued = true;
+        if (!automatic) showToast(t("backupProgress"));
         return;
       }
       const clientId = getGoogleClientId();
       if (!clientId) {
-        if (!automatic) showToast(t("syncConfig"));
+        if (!automatic) showToast(t("backupConfig"));
         return;
       }
 
-      googleSyncInProgress = true;
+      googleBackupInProgress = true;
+      if (!automatic) showToast(t("backupProgress"));
       try {
         const accessToken = await requestGoogleAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
         const searchParams = new URLSearchParams({
-          q: "name = 'nawy-data.json' and trashed = false",
-          spaces: "drive",
+          q: "'appDataFolder' in parents and name = 'nawy-data.json' and trashed = false",
+          spaces: "appDataFolder",
           fields: "files(id,name)",
           pageSize: "1"
         });
@@ -2363,82 +2430,19 @@
         );
         if (!searchResponse.ok) {
           const body = await searchResponse.text();
-          throw new Error(`Drive search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`);
+          throw new Error(`Drive backup search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`);
         }
 
         const searchResult = await searchResponse.json();
         const existingFile = searchResult.files?.[0];
-        let driveData = null;
-        if (existingFile?.id) {
-          const downloadResponse = await fetch(
-            `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(existingFile.id)}?alt=media`,
-            { headers }
-          );
-          if (!downloadResponse.ok) {
-            const body = await downloadResponse.text();
-            throw new Error(`Drive sync download failed: HTTP ${downloadResponse.status} ${downloadResponse.statusText}: ${body || "(empty response body)"}`);
-          }
-          driveData = await downloadResponse.json();
-          if (!driveData ||
-            !Array.isArray(driveData.tasks) ||
-            !Array.isArray(driveData.archive) ||
-            !driveData.settings ||
-            typeof driveData.settings !== "object" ||
-            Array.isArray(driveData.settings)) {
-            throw new Error("Drive sync file has an invalid NAWY data structure");
-          }
-        }
-
-        const getTimestamp = item => {
-          const values = ["updatedAt", "modifiedAt", "achievedAt", "archivedAt", "createdAt"]
-            .map(key => Number(item?.[key]))
-            .filter(value => Number.isFinite(value) && value > 0);
-          return values.length ? Math.max(...values) : 0;
-        };
-        const mergeCollection = (localItems, driveItems) => {
-          const merged = [];
-          const positions = new Map();
-          const addItem = (item, source) => {
-            if (!item || typeof item !== "object") return;
-            const key = typeof item.id === "string" && item.id ? `id:${item.id}` : null;
-            if (!key || !positions.has(key)) {
-              if (key) positions.set(key, merged.length);
-              merged.push({ ...item });
-              return;
-            }
-            const index = positions.get(key);
-            const current = merged[index];
-            if (source === "drive" &&
-                getTimestamp(item) > getTimestamp(current)) {
-              merged[index] = { ...item };
-            }
-          };
-          localItems.forEach(item => addItem(item, "local"));
-          driveItems.forEach(item => addItem(item, "drive"));
-          return merged;
-        };
-        const mergeSettings = (localSettings, driveSettings) => {
-          const merged = { ...driveSettings };
-          Object.entries(localSettings).forEach(([key, value]) => {
-            if (value && typeof value === "object" && !Array.isArray(value) &&
-                driveSettings[key] && typeof driveSettings[key] === "object" &&
-                !Array.isArray(driveSettings[key])) {
-              merged[key] = mergeSettings(value, driveSettings[key]);
-            } else {
-              merged[key] = value;
-            }
-          });
-          return merged;
-        };
-        const mergedData = driveData
-          ? {
-              tasks: mergeCollection(tasks, driveData.tasks),
-              archive: mergeCollection(archive, driveData.archive),
-              settings: mergeSettings(settings, driveData.settings)
-            }
-          : { tasks: [...tasks], archive: [...archive], settings: { ...settings } };
-        const metadata = { name: "nawy-data.json", mimeType: "application/json" };
-        const payload = JSON.stringify(mergedData, null, 2);
+        const metadata = { name: "nawy-data.json", mimeType: "application/json", parents: ["appDataFolder"] };
+        const payload = JSON.stringify({
+          version: 1,
+          updatedAt: new Date().toISOString(),
+          tasks,
+          archive,
+          settings
+        }, null, 2);
         const boundary = `nawy-sync-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         const multipartBody = new Blob([
           `--${boundary}\r\n`,
@@ -2462,58 +2466,39 @@
         });
         if (!uploadResponse.ok) {
           const body = await uploadResponse.text();
-          throw new Error(`Drive upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`);
+          throw new Error(`Drive backup upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`);
         }
-        suppressAutoSync = true;
-        try {
-          tasks = mergedData.tasks;
-          archive = mergedData.archive;
-          settings = {
-            ...DEFAULT_SETTINGS,
-            ...mergedData.settings,
-            sectionsCollapsed: {
-              ...DEFAULT_SETTINGS.sectionsCollapsed,
-              ...(mergedData.settings.sectionsCollapsed || {})
-            }
-          };
-          saveTasks();
-          saveArchive();
-          saveSettings();
-          applySettings();
-          render();
-        } finally {
-          suppressAutoSync = false;
-        }
-        if (!automatic) showToast(t("syncSuccess"));
+        setGoogleBackupEnabled(true);
+        if (!automatic) showToast(t("backupSuccess"));
       } catch (error) {
-        console.error("Google Drive sync failed", error);
-        if (!automatic) showToast(t("syncError"));
+        console.error("Google Drive backup failed", error);
+        if (!automatic) showToast(t("backupError"));
       } finally {
-        googleSyncInProgress = false;
-        if (googleSyncRequested) {
-          googleSyncRequested = false;
-          requestAutoSync();
+        googleBackupInProgress = false;
+        if (googleBackupQueued) {
+          googleBackupQueued = false;
+          queueGoogleBackup();
         }
       }
     }
 
     async function restoreDataFromGoogleDrive() {
-      if (googleSyncInProgress) return;
+      if (googleBackupInProgress) return;
       const clientId = getGoogleClientId();
       if (!clientId) {
-        showToast(t("syncConfig"));
+        showToast(t("backupConfig"));
         return;
       }
 
-      googleSyncInProgress = true;
+      googleBackupInProgress = true;
       const restoreButton = $("#restoreBtn");
       restoreButton.disabled = true;
       try {
         const accessToken = await requestGoogleAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
         const searchParams = new URLSearchParams({
-          q: "name = 'nawy-data.json' and trashed = false",
-          spaces: "drive",
+          q: "'appDataFolder' in parents and name = 'nawy-data.json' and trashed = false",
+          spaces: "appDataFolder",
           fields: "files(id,name)",
           pageSize: "1"
         });
@@ -2530,6 +2515,10 @@
         const file = searchResult.files?.[0];
         if (!file?.id) {
           showToast(t("restoreNotFound"));
+          if (window.confirm(t("enableBackupConfirm"))) {
+            googleBackupInProgress = false;
+            await backupDataToGoogleDrive();
+          }
           return;
         }
 
@@ -2553,18 +2542,24 @@
           showToast(t("restoreInvalid"));
           return;
         }
+        showToast(t("restoreFound"));
         if (!window.confirm(t("restoreConfirm"))) return;
 
-        tasks = data.tasks;
-        archive = data.archive;
+        const mergedData = mergeNawyData(
+          { tasks, archive, settings },
+          data
+        );
+        tasks = mergedData.tasks;
+        archive = mergedData.archive;
         settings = {
           ...DEFAULT_SETTINGS,
-          ...data.settings,
+          ...mergedData.settings,
           sectionsCollapsed: {
             ...DEFAULT_SETTINGS.sectionsCollapsed,
-            ...(data.settings.sectionsCollapsed || {})
+            ...(mergedData.settings.sectionsCollapsed || {})
           }
         };
+        setGoogleBackupEnabled(true);
         saveTasks();
         saveArchive();
         saveSettings();
@@ -2575,7 +2570,7 @@
         console.error("Google Drive restore failed", error);
         showToast(t("restoreError"));
       } finally {
-        googleSyncInProgress = false;
+        googleBackupInProgress = false;
         restoreButton.disabled = false;
       }
     }
@@ -2586,14 +2581,18 @@
         try {
           const data = JSON.parse(e.target.result);
           if (data.tasks && data.archive && data.settings) {
-            tasks = data.tasks;
-            archive = data.archive;
+            const mergedData = mergeNawyData(
+              { tasks, archive, settings },
+              data
+            );
+            tasks = mergedData.tasks;
+            archive = mergedData.archive;
             settings = {
               ...DEFAULT_SETTINGS,
-              ...data.settings,
+              ...mergedData.settings,
               sectionsCollapsed: {
                 ...DEFAULT_SETTINGS.sectionsCollapsed,
-                ...(data.settings.sectionsCollapsed || {})
+                ...(mergedData.settings.sectionsCollapsed || {})
               }
             };
             saveTasks();
@@ -2640,7 +2639,12 @@
     $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); renderArchive(); openOverlay($("#archiveOverlay")); });
     $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
     $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
-    $("#syncBtn").addEventListener("click", () => syncDataToGoogleDrive());
+    $("#syncBtn").addEventListener("click", () => backupDataToGoogleDrive());
+    $("#restoreBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      restoreDataFromGoogleDrive();
+    });
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
 
     $$("[data-close]").forEach(btn => {
