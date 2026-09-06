@@ -1951,13 +1951,13 @@
           }
         });
       }
-      preview.addEventListener("click", beginTaskEdit);
-      preview.addEventListener("keydown", e => {
+      preview.onclick = beginTaskEdit;
+      preview.onkeydown = e => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           beginTaskEdit();
         }
-      });
+      };
       const copyBtn = document.createElement("button");
       copyBtn.className = "action-item action-copy";
       copyBtn.type = "button";
