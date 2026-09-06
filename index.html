@@ -23,6 +23,9 @@
   
   <!-- Canvas Confetti -->
   <script src="./confetti.browser.min.js"></script>
+  <!-- Google Drive OAuth configuration and Identity Services -->
+  <script src="./google-drive-config.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
     :root {
@@ -645,8 +648,7 @@
     .account-menu-sync {
       margin: 4px 0;
       color: var(--muted);
-      opacity: .62;
-      cursor: default;
+      cursor: pointer;
     }
     .account-menu-sync .icon { color: var(--accent); }
     .account-menu-divider { height: 1px; margin: 4px 8px; background: var(--border); }
@@ -1026,7 +1028,7 @@
           <div class="account-menu-subtitle" data-i18n="accountSubtitle">مساحتك الشخصية</div>
         </div>
       </div>
-      <button class="menu-item account-menu-sync" id="syncBtn" type="button" aria-disabled="true">
+      <button class="menu-item account-menu-sync" id="syncBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
         <span class="menu-text" data-i18n="sync">مزامنة البيانات</span>
       </button>
@@ -1240,6 +1242,9 @@
         reactivatedToast: "تم إعادة فتح النية 🔄", editedToast: "تم التعديل ✏️",
         deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
         exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
+        syncSuccess: "تمت مزامنة بيانات ناوي مع Google Drive ✅",
+        syncConfig: "أضف Google Client ID لإعداد مزامنة Drive أولًا",
+        syncError: "تعذر مزامنة بيانات ناوي مع Google Drive",
         copiedToast: "تم نسخ النص 📋",
         morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
         installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡",
@@ -1288,6 +1293,9 @@
         reactivatedToast: "Intention reopened 🔄", editedToast: "Edited ✏️",
         deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
         exported: "Data exported 💾", imported: "Data imported ✅",
+        syncSuccess: "NAWY data was synced with Google Drive ✅",
+        syncConfig: "Add a Google Client ID to enable Drive sync",
+        syncError: "NAWY data could not be synced with Google Drive",
         copiedToast: "Text copied 📋",
         morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
         installSub: "Your intentions will be easier 📌", installDismiss: "Continue", installAction: "Install ⚡",
@@ -2266,6 +2274,96 @@
       showToast(t("exported"));
     }
 
+    let googleAccessToken = null;
+    let googleTokenClient = null;
+    let googleSyncInProgress = false;
+    const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+
+    function getGoogleClientId() {
+      return typeof window.NAWY_GOOGLE_CLIENT_ID === "string"
+        ? window.NAWY_GOOGLE_CLIENT_ID.trim()
+        : "";
+    }
+
+    function requestGoogleAccessToken() {
+      return new Promise((resolve, reject) => {
+        if (!window.google?.accounts?.oauth2) {
+          reject(new Error("Google Identity Services is unavailable"));
+          return;
+        }
+
+        googleTokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: getGoogleClientId(),
+          scope: GOOGLE_DRIVE_SCOPE,
+          callback: response => {
+            if (response.error) {
+              reject(new Error(response.error));
+              return;
+            }
+            googleAccessToken = response.access_token;
+            resolve(response.access_token);
+          }
+        });
+        googleTokenClient.requestAccessToken({ prompt: googleAccessToken ? "" : "consent" });
+      });
+    }
+
+    async function syncDataToGoogleDrive() {
+      if (googleSyncInProgress) return;
+      const clientId = getGoogleClientId();
+      if (!clientId) {
+        showToast(t("syncConfig"));
+        return;
+      }
+
+      googleSyncInProgress = true;
+      const syncButton = $("#syncBtn");
+      syncButton.disabled = true;
+      try {
+        const accessToken = await requestGoogleAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const searchResponse = await fetch(
+          "https://www.googleapis.com/drive/v3/files" +
+          "?q=name%3D%27nawy-data.json%27%20and%20trashed%3Dfalse" +
+          "&spaces=drive&fields=files(id,name)&pageSize=1",
+          { headers }
+        );
+        if (!searchResponse.ok) throw new Error(`Drive search failed: ${searchResponse.status}`);
+
+        const searchResult = await searchResponse.json();
+        const existingFile = searchResult.files?.[0];
+        const metadata = { name: "nawy-data.json", mimeType: "application/json" };
+        const payload = JSON.stringify({ tasks, archive, settings }, null, 2);
+        const boundary = `nawy_sync_${Date.now()}`;
+        const multipartBody = [
+          `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`,
+          JSON.stringify(metadata),
+          `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n`,
+          payload,
+          `\r\n--${boundary}--`
+        ].join("");
+        const uploadUrl = existingFile
+          ? `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(existingFile.id)}?uploadType=multipart`
+          : "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+        const uploadResponse = await fetch(uploadUrl, {
+          method: existingFile ? "PATCH" : "POST",
+          headers: {
+            ...headers,
+            "Content-Type": `multipart/related; boundary=${boundary}`
+          },
+          body: multipartBody
+        });
+        if (!uploadResponse.ok) throw new Error(`Drive upload failed: ${uploadResponse.status}`);
+        showToast(t("syncSuccess"));
+      } catch (error) {
+        console.error("Google Drive sync failed", error);
+        showToast(t("syncError"));
+      } finally {
+        googleSyncInProgress = false;
+        syncButton.disabled = false;
+      }
+    }
+
     function importData(file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -2326,6 +2424,7 @@
     $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); renderArchive(); openOverlay($("#archiveOverlay")); });
     $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
     $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
+    $("#syncBtn").addEventListener("click", syncDataToGoogleDrive);
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
 
     $$("[data-close]").forEach(btn => {
