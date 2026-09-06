@@ -1146,7 +1146,7 @@
       ar: {
         appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
-        active: "حالية", achieved: "المكتملة",
+        active: "حالية", achieved: "المُحَقَّقة",
         taskPlaceholder: "أنا ناوي...",
         achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
         edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
@@ -1193,7 +1193,7 @@
       en: {
         appName: "NAWY", all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
-        active: "Current", achieved: "Completed",
+        active: "Current", achieved: "Achieved",
         taskPlaceholder: "I intend to...",
         achievedAction: "Achieved", reactivateAction: "Reopen",
         edit: "Edit", retreat: "Retreat", delete: "Delete Forever", restore: "Restore",
@@ -1443,6 +1443,7 @@
       });
       saveTasks();
       render();
+      window.scrollTo(0, 0);
       playAddedSound();
       showToast(t("addedToast"));
       return true;
