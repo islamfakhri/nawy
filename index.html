@@ -599,6 +599,65 @@
     .menu-item:active { background: var(--surface-2); }
     .menu-item .icon { color: var(--muted); }
     .menu-text { flex: 1; font-weight: 500; }
+    #menuOverlay {
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: calc(env(safe-area-inset-top) + 68px) 16px 16px;
+      background: transparent;
+      pointer-events: none;
+    }
+    #menuOverlay::before { display: none; }
+    #menuOverlay.show { pointer-events: auto; }
+    #menuOverlay .sheet {
+      align-self: flex-start;
+      width: min(320px, calc(100vw - 32px));
+      max-height: min(72dvh, 560px);
+      padding: 10px;
+      border-radius: 20px;
+      transform: translateY(-8px) scale(.98);
+      transform-origin: top right;
+    }
+    #menuOverlay.show .sheet { transform: translateY(0) scale(1); }
+    html[dir="ltr"] #menuOverlay .sheet { transform-origin: top right; }
+    html[dir="rtl"] #menuOverlay .sheet { transform-origin: top left; }
+    .account-menu-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 10px 14px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .account-menu-avatar {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .account-menu-avatar .icon { width: 22px; height: 22px; }
+    .account-menu-copy { min-width: 0; }
+    .account-menu-name { color: var(--text); font-weight: 700; }
+    .account-menu-subtitle { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
+    .account-menu-sync {
+      margin: 4px 0;
+      color: var(--muted);
+      opacity: .62;
+      cursor: default;
+    }
+    .account-menu-sync .icon { color: var(--accent); }
+    .account-menu-divider { height: 1px; margin: 4px 8px; background: var(--border); }
+    #menuOverlay .menu-item { min-height: 48px; padding: 0 10px; }
+    #menuOverlay .menu-item .icon { width: 19px; height: 19px; }
+    #menuBtn > svg:first-child { display: none; }
+    #menuBtn > .menu-account-icon { width: 20px; height: 20px; }
+    @media (max-width: 480px) {
+      #menuOverlay { padding-top: calc(env(safe-area-inset-top) + 64px); }
+      #menuOverlay .sheet { width: min(300px, calc(100vw - 24px)); }
+    }
 
     .action-item {
       width: 100%;
@@ -917,8 +976,9 @@
         </div>
         <div class="brand-name" id="brandName">ناوي</div>
       </div>
-      <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="الحساب" aria-controls="menuOverlay" aria-expanded="false">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
+        <svg class="icon menu-account-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20C5.3 16.5 8.1 14.5 12 14.5S18.7 16.5 19.5 20"/><circle cx="12" cy="12" r="9.5"/></svg>
       </button>
       </header>
 
@@ -957,9 +1017,20 @@
 
   <div class="overlay" id="menuOverlay">
     <div class="sheet">
-      <button class="sheet-close-small" type="button" data-close="menuOverlay" aria-label="إغلاق">×</button>
-      <div class="sheet-handle"></div>
-      <div class="sheet-title" data-i18n="appName">ناوي</div>
+      <div class="account-menu-head">
+        <div class="account-menu-avatar">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20C5.3 16.5 8.1 14.5 12 14.5S18.7 16.5 19.5 20"/><circle cx="12" cy="12" r="9.5"/></svg>
+        </div>
+        <div class="account-menu-copy">
+          <div class="account-menu-name" data-i18n="appName">ناوي</div>
+          <div class="account-menu-subtitle" data-i18n="accountSubtitle">مساحتك الشخصية</div>
+        </div>
+      </div>
+      <button class="menu-item account-menu-sync" id="syncBtn" type="button" aria-disabled="true">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
+        <span class="menu-text" data-i18n="sync">مزامنة البيانات</span>
+      </button>
+      <div class="account-menu-divider"></div>
       <button class="menu-item" id="settingsBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
         <span class="menu-text" data-i18n="settings">الإعدادات</span>
@@ -1149,7 +1220,8 @@
 
     const TRANSLATIONS = {
       ar: {
-        appName: "ناوي", all: "نواياي", favorites: "مفضلاتي",
+        appName: "ناوي", accountSubtitle: "مساحتك الشخصية", sync: "مزامنة البيانات",
+        all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
         active: "حالية", achieved: "المُحَقَّقة",
         taskPlaceholder: "أنا ناوي...",
@@ -1196,7 +1268,8 @@
         previewTone: "تجربة النغمة"
       },
       en: {
-        appName: "NAWY", all: "Intentions", favorites: "Favorites",
+        appName: "NAWY", accountSubtitle: "Your personal space", sync: "Sync data",
+        all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
         active: "Current", achieved: "Achieved",
         taskPlaceholder: "I intend to...",
@@ -2241,20 +2314,34 @@
       tab.addEventListener("click", () => setView(tab.dataset.view));
     });
 
-    $("#menuBtn").addEventListener("click", () => openOverlay($("#menuOverlay")));
-    $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); openOverlay($("#settingsOverlay")); });
-    $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); renderArchive(); openOverlay($("#archiveOverlay")); });
-    $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); exportData(); });
-    $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#importFileInput").click(); });
+    $("#menuBtn").setAttribute("aria-expanded", "false");
+    $("#menuBtn").addEventListener("click", () => {
+      const menu = $("#menuOverlay");
+      const isOpen = menu.classList.contains("show");
+      if (isOpen) closeOverlay(menu);
+      else openOverlay(menu);
+      $("#menuBtn").setAttribute("aria-expanded", String(!isOpen));
+    });
+    $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); openOverlay($("#settingsOverlay")); });
+    $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); renderArchive(); openOverlay($("#archiveOverlay")); });
+    $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
+    $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
 
     $$("[data-close]").forEach(btn => {
-      btn.addEventListener("click", () => closeOverlay(document.getElementById(btn.dataset.close)));
+      btn.addEventListener("click", () => {
+        const overlay = document.getElementById(btn.dataset.close);
+        closeOverlay(overlay);
+        if (overlay.id === "menuOverlay") $("#menuBtn").setAttribute("aria-expanded", "false");
+      });
     });
 
     $$(".overlay").forEach(overlay => {
       overlay.addEventListener("click", e => {
-        if (e.target === overlay) closeOverlay(overlay);
+        if (e.target === overlay) {
+          closeOverlay(overlay);
+          if (overlay.id === "menuOverlay") $("#menuBtn").setAttribute("aria-expanded", "false");
+        }
       });
     });
 
