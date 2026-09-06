@@ -206,7 +206,10 @@
       font-weight: 600;
       color: var(--muted);
       letter-spacing: 0.2px;
+      text-align: start;
     }
+    html[dir="rtl"] .section-title { direction: rtl; }
+    html[dir="ltr"] .section-title { direction: ltr; }
     .section-count {
       display: inline-flex;
       color: var(--muted);
