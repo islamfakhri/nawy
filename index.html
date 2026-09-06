@@ -1206,7 +1206,8 @@
     const STORAGE_KEYS = {
       tasks: "nawy_tasks_v2",
       archive: "nawy_archive_v2",
-      settings: "nawy_settings_v2"
+      settings: "nawy_settings_v2",
+      deletedIds: "nawy_deleted_ids_v1"
     };
 
     const DEFAULT_SETTINGS = {
@@ -1341,6 +1342,7 @@
 
     let tasks = [];
     let archive = [];
+    let deletedIds = [];
     let settings = { ...DEFAULT_SETTINGS };
     let currentView = "all";
     let selectedTaskId = null;
@@ -1394,8 +1396,23 @@
     function loadData() {
       const storedTasks = safeParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
       const storedArchive = safeParse(localStorage.getItem(STORAGE_KEYS.archive), []);
+      const storedDeletedIds = safeParse(localStorage.getItem(STORAGE_KEYS.deletedIds), []);
       tasks = Array.isArray(storedTasks) ? storedTasks.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
       archive = Array.isArray(storedArchive) ? storedArchive.filter(x => x && typeof x.text === "string" && x.text.trim()) : [];
+      deletedIds = Array.isArray(storedDeletedIds)
+        ? storedDeletedIds.filter(x => x && typeof x.id === "string" && Number.isFinite(Number(x.deletedAt)))
+        : [];
+      let idsChanged = false;
+      [...tasks, ...archive].forEach(item => {
+        if (!item.id) {
+          item.id = createId();
+          idsChanged = true;
+        }
+      });
+      if (idsChanged) {
+        localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+        localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
+      }
       const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
       settings = {
         ...DEFAULT_SETTINGS,
@@ -1412,6 +1429,10 @@
     }
     function saveArchive() {
       localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
+      queueGoogleBackup();
+    }
+    function saveDeletedIds() {
+      localStorage.setItem(STORAGE_KEYS.deletedIds, JSON.stringify(deletedIds));
       queueGoogleBackup();
     }
     function saveSettings() {
@@ -1548,6 +1569,7 @@
         status: 'active',
         starred: false,
         createdAt: Date.now(),
+        updatedAt: Date.now(),
         achievedAt: null
       });
       saveTasks();
@@ -1563,6 +1585,7 @@
       if (!task) return;
       task.status = 'achieved';
       task.achievedAt = Date.now();
+      task.updatedAt = task.achievedAt;
       saveTasks();
       render();
       celebrate();
@@ -1574,6 +1597,7 @@
       if (!task) return;
       task.status = 'active';
       task.achievedAt = null;
+      task.updatedAt = Date.now();
       saveTasks();
       render();
       showToast(t("reactivatedToast"));
@@ -1583,6 +1607,7 @@
       const task = tasks.find(x => x.id === id);
       if (!task) return;
       task.starred = !task.starred;
+      task.updatedAt = Date.now();
       saveTasks();
       render();
     }
@@ -1591,7 +1616,8 @@
       const index = tasks.findIndex(x => x.id === id);
       if (index === -1) return;
       const [deleted] = tasks.splice(index, 1);
-      archive.unshift({ ...deleted, archivedAt: Date.now() });
+      const archivedAt = Date.now();
+      archive.unshift({ ...deleted, archivedAt, updatedAt: archivedAt });
       saveTasks();
       saveArchive();
       render();
@@ -1611,6 +1637,7 @@
       const index = archive.findIndex(x => x.id === id);
       if (index === -1) return;
       const [restored] = archive.splice(index, 1);
+      restored.updatedAt = Date.now();
       delete restored.archivedAt;
       restored.status = 'active';
       restored.achievedAt = null;
@@ -1625,8 +1652,15 @@
     function deleteForever(id) {
       const index = archive.findIndex(x => x.id === id);
       if (index === -1) return;
+      const deleted = archive[index];
+      const deletedAt = Date.now();
+      deletedIds = [
+        ...deletedIds.filter(item => item.id !== deleted.id),
+        { id: deleted.id, deletedAt }
+      ];
       archive.splice(index, 1);
       saveArchive();
+      saveDeletedIds();
       renderArchive();
     }
 
@@ -2035,6 +2069,7 @@
           const newText = editArea.value.trim();
           if (newText && newText !== task.text) {
             task.text = newText;
+            task.updatedAt = Date.now();
             saveTasks();
             render();
             showToast(t("editedToast"));
@@ -2286,7 +2321,7 @@
     }
 
     function exportData() {
-      const data = JSON.stringify({ tasks, archive, settings }, null, 2);
+      const data = JSON.stringify({ tasks, archive, settings, deletedIds }, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -2302,6 +2337,7 @@
     let googleBackupInProgress = false;
     let googleBackupTimer = null;
     let googleBackupQueued = false;
+    let googleAutoAuthAttempted = false;
     let googleDriveBackupEnabled = localStorage.getItem("nawy_google_drive_backup_enabled") === "1";
     const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
 
@@ -2311,7 +2347,7 @@
         : "";
     }
 
-    function requestGoogleAccessToken() {
+    function requestGoogleAccessToken({ interactive = true } = {}) {
       return new Promise((resolve, reject) => {
         if (!window.google?.accounts?.oauth2) {
           reject(new Error("Google Identity Services is unavailable"));
@@ -2330,7 +2366,9 @@
             resolve(response.access_token);
           }
         });
-        googleTokenClient.requestAccessToken({ prompt: googleAccessToken ? "" : "consent" });
+        googleTokenClient.requestAccessToken({
+          prompt: googleAccessToken || !interactive ? "" : "consent"
+        });
       });
     }
 
@@ -2341,30 +2379,38 @@
       return values.length ? Math.max(...values) : 0;
     }
 
-    function mergeCollections(localItems, remoteItems) {
-      const merged = [];
-      const positions = new Map();
-      const addItem = item => {
-        if (!item || typeof item !== "object") return;
-        const key = typeof item.id === "string" && item.id ? item.id : createId();
-        if (!positions.has(key)) {
-          positions.set(key, merged.length);
-          merged.push({ ...item, id: key });
-          return;
-        }
-        const index = positions.get(key);
-        if (getTimestamp(item) > getTimestamp(merged[index])) merged[index] = { ...item, id: key };
-      };
-      localItems.forEach(addItem);
-      remoteItems.forEach(addItem);
-      return merged;
-    }
-
     function mergeNawyData(localData, remoteData) {
-      const archive = mergeCollections(localData.archive, remoteData.archive);
-      const archivedIds = new Set(archive.map(item => item.id));
-      const tasks = mergeCollections(localData.tasks, remoteData.tasks)
-        .filter(item => !archivedIds.has(item.id));
+      const tombstones = new Map();
+      [...(localData.deletedIds || []), ...(remoteData.deletedIds || [])].forEach(item => {
+        if (!item?.id) return;
+        const deletedAt = Number(item.deletedAt);
+        if (Number.isFinite(deletedAt) &&
+            (!tombstones.has(item.id) || deletedAt > tombstones.get(item.id))) {
+          tombstones.set(item.id, deletedAt);
+        }
+      });
+      const records = new Map();
+      const addRecord = (item, archived) => {
+        if (!item || typeof item !== "object") return;
+        const id = typeof item.id === "string" && item.id ? item.id : createId();
+        const candidate = { item: { ...item, id }, archived };
+        const current = records.get(id);
+        if (!current || getTimestamp(candidate.item) > getTimestamp(current.item)) {
+          records.set(id, candidate);
+        }
+      };
+      localData.tasks.forEach(item => addRecord(item, false));
+      localData.archive.forEach(item => addRecord(item, true));
+      remoteData.tasks.forEach(item => addRecord(item, false));
+      remoteData.archive.forEach(item => addRecord(item, true));
+      const tasks = [];
+      const archive = [];
+      records.forEach((record, id) => {
+        const deletedAt = tombstones.get(id) || 0;
+        if (deletedAt >= getTimestamp(record.item)) return;
+        if (record.archived) archive.push(record.item);
+        else tasks.push(record.item);
+      });
       const mergeSettings = (localSettings, remoteSettings) => {
         const merged = { ...remoteSettings };
         Object.entries(localSettings).forEach(([key, value]) => {
@@ -2379,11 +2425,12 @@
         return merged;
       };
       return {
-        version: 1,
+        version: 2,
         updatedAt: new Date().toISOString(),
         tasks,
         archive,
-        settings: mergeSettings(localData.settings, remoteData.settings)
+        settings: mergeSettings(localData.settings, remoteData.settings),
+        deletedIds: [...tombstones].map(([id, deletedAt]) => ({ id, deletedAt }))
       };
     }
 
@@ -2393,7 +2440,7 @@
     }
 
     function queueGoogleBackup() {
-      if (!googleDriveBackupEnabled || !googleAccessToken) return;
+      if (!googleDriveBackupEnabled) return;
       if (googleBackupTimer) clearTimeout(googleBackupTimer);
       googleBackupTimer = setTimeout(() => {
         googleBackupTimer = null;
@@ -2413,10 +2460,16 @@
         return;
       }
 
+      setGoogleBackupEnabled(true);
       googleBackupInProgress = true;
       if (!automatic) showToast(t("backupProgress"));
       try {
-        const accessToken = await requestGoogleAccessToken();
+        if (automatic && !googleAccessToken) {
+          if (googleAutoAuthAttempted) return;
+          googleAutoAuthAttempted = true;
+        }
+        const accessToken = await requestGoogleAccessToken({ interactive: !automatic });
+        googleAutoAuthAttempted = false;
         const headers = { Authorization: `Bearer ${accessToken}` };
         const searchParams = new URLSearchParams({
           q: "'appDataFolder' in parents and name = 'nawy-data.json' and trashed = false",
@@ -2437,11 +2490,12 @@
         const existingFile = searchResult.files?.[0];
         const metadata = { name: "nawy-data.json", mimeType: "application/json", parents: ["appDataFolder"] };
         const payload = JSON.stringify({
-          version: 1,
+          version: 2,
           updatedAt: new Date().toISOString(),
           tasks,
           archive,
-          settings
+          settings,
+          deletedIds
         }, null, 2);
         const boundary = `nawy-sync-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         const multipartBody = new Blob([
@@ -2468,7 +2522,6 @@
           const body = await uploadResponse.text();
           throw new Error(`Drive backup upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`);
         }
-        setGoogleBackupEnabled(true);
         if (!automatic) showToast(t("backupSuccess"));
       } catch (error) {
         console.error("Google Drive backup failed", error);
@@ -2546,11 +2599,12 @@
         if (!window.confirm(t("restoreConfirm"))) return;
 
         const mergedData = mergeNawyData(
-          { tasks, archive, settings },
-          data
+          { tasks, archive, settings, deletedIds },
+          { ...data, deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [] }
         );
         tasks = mergedData.tasks;
         archive = mergedData.archive;
+        deletedIds = mergedData.deletedIds;
         settings = {
           ...DEFAULT_SETTINGS,
           ...mergedData.settings,
@@ -2562,6 +2616,7 @@
         setGoogleBackupEnabled(true);
         saveTasks();
         saveArchive();
+        saveDeletedIds();
         saveSettings();
         applySettings();
         render();
@@ -2582,11 +2637,12 @@
           const data = JSON.parse(e.target.result);
           if (data.tasks && data.archive && data.settings) {
             const mergedData = mergeNawyData(
-              { tasks, archive, settings },
-              data
+              { tasks, archive, settings, deletedIds },
+              { ...data, deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [] }
             );
             tasks = mergedData.tasks;
             archive = mergedData.archive;
+            deletedIds = mergedData.deletedIds;
             settings = {
               ...DEFAULT_SETTINGS,
               ...mergedData.settings,
@@ -2597,6 +2653,7 @@
             };
             saveTasks();
             saveArchive();
+            saveDeletedIds();
             saveSettings();
             applySettings();
             render();
