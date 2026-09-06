@@ -460,7 +460,6 @@
       touch-action: pan-y;
     }
     .overlay.show .sheet { transform: translateY(0) scale(1); opacity: 1; }
-    /* Each sheet grows only to its content, then becomes internally scrollable. */
     #menuOverlay .sheet { max-height: min(58dvh, 520px); }
     #taskOverlay .sheet { max-height: min(76dvh, 620px); }
     #settingsOverlay .sheet { max-height: min(84dvh, 720px); }
@@ -968,7 +967,6 @@
   </style>
 </head>
 <body>
-  <!-- نفس body زي ما هو بالظبط -->
   <div class="app">
     <div class="topbar">
       <header class="header">
@@ -979,7 +977,7 @@
         <div class="brand-name" id="brandName">ناوي</div>
       </div>
       <button class="menu-btn" id="menuBtn" type="button" aria-label="الحساب" aria-controls="menuOverlay" aria-expanded="false">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="currentColor" stroke="none"/><path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18 13 19 13Z" fill="currentColor" stroke="none"/><path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" fill="currentColor" stroke="none"/></svg>
         <svg class="icon menu-account-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M7.5 18c.9-2.3 2.5-3.5 4.5-3.5s3.6 1.2 4.5 3.5"/></svg>
       </button>
       </header>
@@ -999,7 +997,6 @@
     <main class="content" id="content"></main>
   </div>
 
-  <!-- باقي الـ HTML زي ما هو -->
   <div class="fab-wrap" id="fabWrap">
     <button class="fab" id="fabBtn" type="button" aria-label="أضف نية">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
@@ -1207,6 +1204,7 @@
       tasks: "nawy_tasks_v2",
       archive: "nawy_archive_v2",
       settings: "nawy_settings_v2",
+      settingsUpdatedAt: "nawy_settings_updated_at_v1",
       deletedIds: "nawy_deleted_ids_v1"
     };
 
@@ -1344,6 +1342,7 @@
     let archive = [];
     let deletedIds = [];
     let settings = { ...DEFAULT_SETTINGS };
+    let settingsUpdatedAt = 0;
     let currentView = "all";
     let selectedTaskId = null;
     let swipeStartX = 0;
@@ -1402,6 +1401,7 @@
       deletedIds = Array.isArray(storedDeletedIds)
         ? storedDeletedIds.filter(x => x && typeof x.id === "string" && Number.isFinite(Number(x.deletedAt)))
         : [];
+
       let idsChanged = false;
       [...tasks, ...archive].forEach(item => {
         if (!item.id) {
@@ -1409,10 +1409,12 @@
           idsChanged = true;
         }
       });
+
       if (idsChanged) {
         localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
         localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
       }
+
       const savedSettings = safeParse(localStorage.getItem(STORAGE_KEYS.settings), {});
       settings = {
         ...DEFAULT_SETTINGS,
@@ -1422,21 +1424,32 @@
           ...(savedSettings.sectionsCollapsed || {})
         }
       };
+
+      const savedSettingsUpdatedAt = Number(localStorage.getItem(STORAGE_KEYS.settingsUpdatedAt));
+      settingsUpdatedAt = Number.isFinite(savedSettingsUpdatedAt) && savedSettingsUpdatedAt > 0
+        ? savedSettingsUpdatedAt
+        : 0;
     }
+
     function saveTasks() {
       localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
       queueGoogleBackup();
     }
+
     function saveArchive() {
       localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
       queueGoogleBackup();
     }
+
     function saveDeletedIds() {
       localStorage.setItem(STORAGE_KEYS.deletedIds, JSON.stringify(deletedIds));
       queueGoogleBackup();
     }
+
     function saveSettings() {
+      settingsUpdatedAt = Date.now();
       localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+      localStorage.setItem(STORAGE_KEYS.settingsUpdatedAt, String(settingsUpdatedAt));
       queueGoogleBackup();
     }
 
@@ -1721,7 +1734,6 @@
         ctx.roundRect(x, y, width, height, radius);
       };
 
-      // Soft background glow and a clean elevated card.
       const gradient = ctx.createLinearGradient(0, 0, w, h);
       gradient.addColorStop(0, isDark ? "#0F1115" : "#FAF9F7");
       gradient.addColorStop(1, isDark ? "#202630" : "#EEF5FF");
@@ -1742,7 +1754,6 @@
       ctx.fill();
       ctx.shadowColor = "transparent";
 
-      // Brand row: use the actual application icon, not a text substitute.
       ctx.save();
       ctx.beginPath();
       ctx.roundRect(84, 103, 84, 84, 22);
@@ -1767,7 +1778,6 @@
       ctx.font = "28px Cairo, sans-serif";
       ctx.fillText(settings.language === "ar" ? "نية اليوم" : "TODAY'S INTENTION", 954, 204);
 
-      // Intention panel.
       roundRect(108, 330, w - 216, 630, 30);
       ctx.fillStyle = soft;
       ctx.fill();
@@ -1817,7 +1827,6 @@
       ctx.textAlign = "right";
       ctx.fillText("”", 930, 900);
 
-      // Footer.
       ctx.fillStyle = accentColor;
       ctx.font = "bold 34px Cairo, sans-serif";
       ctx.textAlign = "center";
@@ -2097,6 +2106,7 @@
           beginTaskEdit();
         }
       };
+
       const copyBtn = document.createElement("button");
       copyBtn.className = "action-item action-copy";
       copyBtn.type = "button";
@@ -2183,9 +2193,20 @@
       });
     }
 
-    function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
-    function closeOverlay(overlay) { overlay.classList.remove("show"); if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll"); }
-    function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
+    function openOverlay(overlay) {
+      overlay.classList.add("show");
+      document.body.classList.add("no-scroll");
+    }
+
+    function closeOverlay(overlay) {
+      overlay.classList.remove("show");
+      if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll");
+    }
+
+    function closeAllOverlays() {
+      $$(".overlay.show").forEach(closeOverlay);
+      selectedTaskId = null;
+    }
 
     function openComposer() {
       $("#fabBtn").classList.add("hidden");
@@ -2193,6 +2214,7 @@
       $("#taskInput").placeholder = t("composerEmptyPlaceholder");
       $("#taskInput").focus();
     }
+
     function closeComposer() {
       $("#fabBtn").classList.remove("hidden");
       $("#composerPanel").classList.remove("open");
@@ -2219,10 +2241,13 @@
       $$(".color-btn[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
       $$(".segment[data-font]").forEach(btn => btn.classList.toggle("active", btn.dataset.font === settings.fontSize));
       $$('[data-language]').forEach(btn => btn.classList.toggle("active", btn.dataset.language === settings.language));
+
       const feedbackCheckbox = $("#feedbackToggleCheckbox");
       if (feedbackCheckbox) feedbackCheckbox.checked = settings.feedbackEnabled !== false;
+
       const toneSelect = $("#achievementToneSelect");
       if (toneSelect) toneSelect.value = settings.achievementTone || "soft";
+
       const tonePreview = $("#tonePreviewBtn");
       if (tonePreview) tonePreview.setAttribute("aria-label", t("previewTone"));
       
@@ -2321,7 +2346,16 @@
     }
 
     function exportData() {
-      const data = JSON.stringify({ tasks, archive, settings, deletedIds }, null, 2);
+      const data = JSON.stringify({
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        tasks,
+        archive,
+        settings,
+        settingsUpdatedAt,
+        deletedIds
+      }, null, 2);
+
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -2332,6 +2366,10 @@
       showToast(t("exported"));
     }
 
+    // =========================================================
+    // GOOGLE DRIVE SYNC
+    // =========================================================
+
     let googleAccessToken = null;
     let googleTokenClient = null;
     let googleBackupInProgress = false;
@@ -2339,7 +2377,9 @@
     let googleBackupQueued = false;
     let googleBackupPending = false;
     let googleDriveBackupEnabled = localStorage.getItem("nawy_google_drive_backup_enabled") === "1";
+
     const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
+    const GOOGLE_BACKUP_FILE_NAME = "nawy-data.json";
 
     function getGoogleClientId() {
       return typeof window.NAWY_GOOGLE_CLIENT_ID === "string"
@@ -2362,10 +2402,17 @@
               reject(new Error(response.error));
               return;
             }
+
+            if (!response.access_token) {
+              reject(new Error("Google did not return an access token"));
+              return;
+            }
+
             googleAccessToken = response.access_token;
             resolve(response.access_token);
           }
         });
+
         googleTokenClient.requestAccessToken({
           prompt: googleAccessToken || !interactive ? "" : "consent"
         });
@@ -2376,62 +2423,222 @@
       const values = ["updatedAt", "modifiedAt", "achievedAt", "archivedAt", "createdAt"]
         .map(key => Number(item?.[key]))
         .filter(value => Number.isFinite(value) && value > 0);
+
       return values.length ? Math.max(...values) : 0;
     }
 
-    function mergeNawyData(localData, remoteData) {
-      const tombstones = new Map();
-      [...(localData.deletedIds || []), ...(remoteData.deletedIds || [])].forEach(item => {
-        if (!item?.id) return;
-        const deletedAt = Number(item.deletedAt);
-        if (Number.isFinite(deletedAt) &&
-            (!tombstones.has(item.id) || deletedAt > tombstones.get(item.id))) {
-          tombstones.set(item.id, deletedAt);
-        }
-      });
-      const records = new Map();
-      const addRecord = (item, archived) => {
-        if (!item || typeof item !== "object") return;
-        const id = typeof item.id === "string" && item.id ? item.id : createId();
-        const candidate = { item: { ...item, id }, archived };
-        const current = records.get(id);
-        if (!current || getTimestamp(candidate.item) > getTimestamp(current.item)) {
-          records.set(id, candidate);
+    function normalizeSettings(rawSettings) {
+      const source = rawSettings && typeof rawSettings === "object" && !Array.isArray(rawSettings)
+        ? rawSettings
+        : {};
+
+      return {
+        ...DEFAULT_SETTINGS,
+        ...source,
+        sectionsCollapsed: {
+          ...DEFAULT_SETTINGS.sectionsCollapsed,
+          ...(source.sectionsCollapsed || {})
         }
       };
-      localData.tasks.forEach(item => addRecord(item, false));
-      localData.archive.forEach(item => addRecord(item, true));
-      remoteData.tasks.forEach(item => addRecord(item, false));
-      remoteData.archive.forEach(item => addRecord(item, true));
-      const tasks = [];
-      const archive = [];
-      records.forEach((record, id) => {
-        const deletedAt = tombstones.get(id) || 0;
-        if (deletedAt >= getTimestamp(record.item)) return;
-        if (record.archived) archive.push(record.item);
-        else tasks.push(record.item);
-      });
-      const mergeSettings = (localSettings, remoteSettings) => {
-        const merged = { ...remoteSettings };
-        Object.entries(localSettings).forEach(([key, value]) => {
-          if (value && typeof value === "object" && !Array.isArray(value) &&
-              remoteSettings[key] && typeof remoteSettings[key] === "object" &&
-              !Array.isArray(remoteSettings[key])) {
-            merged[key] = mergeSettings(value, remoteSettings[key]);
-          } else {
-            merged[key] = value;
-          }
-        });
-        return merged;
-      };
+    }
+
+    function getLocalNawyData() {
       return {
         version: 2,
         updatedAt: new Date().toISOString(),
-        tasks,
-        archive,
-        settings: mergeSettings(localData.settings, remoteData.settings),
-        deletedIds: [...tombstones].map(([id, deletedAt]) => ({ id, deletedAt }))
+        tasks: Array.isArray(tasks) ? tasks : [],
+        archive: Array.isArray(archive) ? archive : [],
+        settings: normalizeSettings(settings),
+        settingsUpdatedAt: Number(settingsUpdatedAt) || 0,
+        deletedIds: Array.isArray(deletedIds) ? deletedIds : []
       };
+    }
+
+    function isValidNawyData(data) {
+      return !!(
+        data &&
+        Array.isArray(data.tasks) &&
+        Array.isArray(data.archive) &&
+        data.settings &&
+        typeof data.settings === "object" &&
+        !Array.isArray(data.settings)
+      );
+    }
+
+    function sanitizeNawyData(data) {
+      return {
+        version: 2,
+        updatedAt: typeof data.updatedAt === "string"
+          ? data.updatedAt
+          : new Date().toISOString(),
+        tasks: Array.isArray(data.tasks)
+          ? data.tasks.filter(item => item && typeof item === "object")
+          : [],
+        archive: Array.isArray(data.archive)
+          ? data.archive.filter(item => item && typeof item === "object")
+          : [],
+        settings: normalizeSettings(data.settings),
+        settingsUpdatedAt: Number(data.settingsUpdatedAt) > 0
+          ? Number(data.settingsUpdatedAt)
+          : 0,
+        deletedIds: Array.isArray(data.deletedIds)
+          ? data.deletedIds.filter(item =>
+              item &&
+              typeof item.id === "string" &&
+              item.id &&
+              Number.isFinite(Number(item.deletedAt))
+            )
+          : []
+      };
+    }
+
+    function mergeNawyData(localData, remoteData) {
+      const local = sanitizeNawyData(localData);
+      const remote = sanitizeNawyData(remoteData);
+
+      const tombstones = new Map();
+
+      [...local.deletedIds, ...remote.deletedIds].forEach(item => {
+        if (!item?.id) return;
+
+        const deletedAt = Number(item.deletedAt);
+        if (!Number.isFinite(deletedAt) || deletedAt <= 0) return;
+
+        const current = tombstones.get(item.id) || 0;
+        if (deletedAt > current) {
+          tombstones.set(item.id, deletedAt);
+        }
+      });
+
+      const records = new Map();
+
+      const addRecord = (item, archived) => {
+        if (!item || typeof item !== "object") return;
+
+        const rawId = typeof item.id === "string" ? item.id.trim() : "";
+        const id = rawId || createId();
+
+        const candidate = {
+          item: {
+            ...item,
+            id
+          },
+          archived
+        };
+
+        const current = records.get(id);
+
+        if (!current) {
+          records.set(id, candidate);
+          return;
+        }
+
+        const candidateTimestamp = getTimestamp(candidate.item);
+        const currentTimestamp = getTimestamp(current.item);
+
+        if (candidateTimestamp > currentTimestamp) {
+          records.set(id, candidate);
+          return;
+        }
+
+        if (candidateTimestamp === currentTimestamp) {
+          /*
+           * عند التعادل نُبقي النسخة الموجودة أولًا.
+           * ده يحافظ على ثبات البيانات القديمة بدل تبديلها عشوائيًا.
+           */
+        }
+      };
+
+      local.tasks.forEach(item => addRecord(item, false));
+      local.archive.forEach(item => addRecord(item, true));
+      remote.tasks.forEach(item => addRecord(item, false));
+      remote.archive.forEach(item => addRecord(item, true));
+
+      const mergedTasks = [];
+      const mergedArchive = [];
+
+      records.forEach((record, id) => {
+        const deletedAt = tombstones.get(id) || 0;
+        const recordTimestamp = getTimestamp(record.item);
+
+        if (deletedAt >= recordTimestamp) {
+          return;
+        }
+
+        if (record.archived) {
+          mergedArchive.push(record.item);
+        } else {
+          mergedTasks.push(record.item);
+        }
+      });
+
+      /*
+       * Settings ليست merge على مستوى كل مفتاح anymore.
+       * لأن بعض الإعدادات قد تكون اتغيرت مع بعض، نحتاج version/timestamp
+       * واضح حتى لا يفوز جهاز قديم لمجرد أنه تم تحميل مفاتيحه محليًا.
+       */
+      const localSettingsTimestamp = Number(local.settingsUpdatedAt) || 0;
+      const remoteSettingsTimestamp = Number(remote.settingsUpdatedAt) || 0;
+
+      let mergedSettings;
+      let mergedSettingsUpdatedAt;
+
+      if (remoteSettingsTimestamp > localSettingsTimestamp) {
+        mergedSettings = normalizeSettings(remote.settings);
+        mergedSettingsUpdatedAt = remoteSettingsTimestamp;
+      } else if (localSettingsTimestamp > remoteSettingsTimestamp) {
+        mergedSettings = normalizeSettings(local.settings);
+        mergedSettingsUpdatedAt = localSettingsTimestamp;
+      } else {
+        /*
+         * Legacy backups قديمة قبل إضافة settingsUpdatedAt.
+         * في حالة عدم وجود timestamp واضح، نُبقي المحلي أولًا
+         * لتجنب أن Backup قديم يمسح إعدادات الجهاز الحالية.
+         */
+        mergedSettings = normalizeSettings({
+          ...remote.settings,
+          ...local.settings,
+          sectionsCollapsed: {
+            ...remote.settings.sectionsCollapsed,
+            ...local.settings.sectionsCollapsed
+          }
+        });
+        mergedSettingsUpdatedAt = localSettingsTimestamp || remoteSettingsTimestamp || 0;
+      }
+
+      return {
+        version: 2,
+        updatedAt: new Date().toISOString(),
+        tasks: mergedTasks,
+        archive: mergedArchive,
+        settings: mergedSettings,
+        settingsUpdatedAt: mergedSettingsUpdatedAt,
+        deletedIds: [...tombstones.entries()].map(([id, deletedAt]) => ({
+          id,
+          deletedAt
+        }))
+      };
+    }
+
+    function persistMergedDataLocally(data) {
+      const normalized = sanitizeNawyData(data);
+
+      tasks = normalized.tasks;
+      archive = normalized.archive;
+      deletedIds = normalized.deletedIds;
+      settings = normalizeSettings(normalized.settings);
+      settingsUpdatedAt = normalized.settingsUpdatedAt;
+
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+      localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
+      localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+      localStorage.setItem(STORAGE_KEYS.deletedIds, JSON.stringify(deletedIds));
+
+      if (settingsUpdatedAt > 0) {
+        localStorage.setItem(STORAGE_KEYS.settingsUpdatedAt, String(settingsUpdatedAt));
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.settingsUpdatedAt);
+      }
     }
 
     function setGoogleBackupEnabled(enabled) {
@@ -2441,11 +2648,129 @@
 
     function queueGoogleBackup() {
       if (!googleDriveBackupEnabled) return;
-      if (googleBackupTimer) clearTimeout(googleBackupTimer);
+
+      if (googleBackupTimer) {
+        clearTimeout(googleBackupTimer);
+      }
+
       googleBackupTimer = setTimeout(() => {
         googleBackupTimer = null;
         backupDataToGoogleDrive({ automatic: true });
       }, 3000);
+    }
+
+    async function findGoogleDriveBackup(accessToken) {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
+      };
+
+      const searchParams = new URLSearchParams({
+        q: `'appDataFolder' in parents and name = '${GOOGLE_BACKUP_FILE_NAME}' and trashed = false`,
+        spaces: "appDataFolder",
+        fields: "files(id,name,modifiedTime)",
+        orderBy: "modifiedTime desc",
+        pageSize: "10"
+      });
+
+      const searchResponse = await fetch(
+        `https://www.googleapis.com/drive/v3/files?${searchParams.toString()}`,
+        { headers }
+      );
+
+      if (!searchResponse.ok) {
+        const body = await searchResponse.text();
+        throw new Error(
+          `Drive backup search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`
+        );
+      }
+
+      const searchResult = await searchResponse.json();
+      return searchResult.files?.[0] || null;
+    }
+
+    async function downloadGoogleDriveBackup(accessToken, fileId) {
+      if (!fileId) return null;
+
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
+      };
+
+      const downloadResponse = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?alt=media`,
+        { headers }
+      );
+
+      if (!downloadResponse.ok) {
+        const body = await downloadResponse.text();
+        throw new Error(
+          `Drive backup download failed: HTTP ${downloadResponse.status} ${downloadResponse.statusText}: ${body || "(empty response body)"}`
+        );
+      }
+
+      const data = await downloadResponse.json();
+
+      if (!isValidNawyData(data)) {
+        throw new Error("Google Drive backup payload is invalid");
+      }
+
+      return sanitizeNawyData(data);
+    }
+
+    async function uploadGoogleDriveBackup(accessToken, data, existingFileId = null) {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`
+      };
+
+      const metadata = {
+        name: GOOGLE_BACKUP_FILE_NAME,
+        mimeType: "application/json"
+      };
+
+      if (!existingFileId) {
+        metadata.parents = ["appDataFolder"];
+      }
+
+      const payload = JSON.stringify({
+        ...sanitizeNawyData(data),
+        version: 2,
+        updatedAt: new Date().toISOString()
+      }, null, 2);
+
+      const boundary = `nawy-sync-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+      const multipartBody = new Blob([
+        `--${boundary}\r\n`,
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n",
+        JSON.stringify(metadata),
+        `\r\n--${boundary}\r\n`,
+        "Content-Type: application/json\r\n\r\n",
+        payload,
+        `\r\n--${boundary}--\r\n`
+      ], {
+        type: `multipart/related; boundary=${boundary}`
+      });
+
+      const uploadUrl = existingFileId
+        ? `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(existingFileId)}?uploadType=multipart`
+        : "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
+
+      const uploadResponse = await fetch(uploadUrl, {
+        method: existingFileId ? "PATCH" : "POST",
+        headers: {
+          ...headers,
+          "Content-Type": `multipart/related; boundary=${boundary}`
+        },
+        body: multipartBody
+      });
+
+      if (!uploadResponse.ok) {
+        const body = await uploadResponse.text();
+        throw new Error(
+          `Drive backup upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`
+        );
+      }
+
+      return await uploadResponse.json().catch(() => ({}));
     }
 
     async function backupDataToGoogleDrive({ automatic = false } = {}) {
@@ -2454,84 +2779,105 @@
         if (!automatic) showToast(t("backupProgress"));
         return;
       }
+
       const clientId = getGoogleClientId();
+
       if (!clientId) {
         if (!automatic) showToast(t("backupConfig"));
         return;
       }
 
-      // Auto Backup لا يجب أن يطلب OAuth بدون ضغطة مستخدم مباشرة.
-      // إذا لم يوجد توكن صالح في الذاكرة، نُبقي التغيير معلّقًا وننتظر Sync يدوي
-      // أو نجاح مصادقة لاحقة، بدل محاولة فتح Google Sign-In تلقائيًا.
+      /*
+       * Auto Backup لا يبدأ OAuth تفاعلي من نفسه.
+       * ينتظر Sync يدوي ناجح أو وجود token صالح بالفعل.
+       */
       if (automatic && !googleAccessToken) {
         googleBackupPending = true;
         return;
       }
 
-      setGoogleBackupEnabled(true);
       googleBackupInProgress = true;
-      if (!automatic) showToast(t("backupProgress"));
+
+      if (!automatic) {
+        showToast(t("backupProgress"));
+      }
+
       try {
-        const accessToken = await requestGoogleAccessToken({ interactive: !automatic });
-        const headers = { Authorization: `Bearer ${accessToken}` };
-        const searchParams = new URLSearchParams({
-          q: "'appDataFolder' in parents and name = 'nawy-data.json' and trashed = false",
-          spaces: "appDataFolder",
-          fields: "files(id,name)",
-          pageSize: "1"
+        const accessToken = await requestGoogleAccessToken({
+          interactive: !automatic
         });
-        const searchResponse = await fetch(
-          `https://www.googleapis.com/drive/v3/files?${searchParams.toString()}`,
-          { headers }
-        );
-        if (!searchResponse.ok) {
-          const body = await searchResponse.text();
-          throw new Error(`Drive backup search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`);
+
+        /*
+         * =====================================================
+         * أهم إصلاح:
+         * 1) نقرأ أحدث نسخة من Google Drive أولًا.
+         * 2) نعمل merge مع النسخة المحلية.
+         * 3) نحفظ الـ merged state محليًا.
+         * 4) بعدها فقط نرفع النسخة الموحدة للسحابة.
+         *
+         * كده جهاز قديم لا يستطيع overwrite لنسخة أحدث.
+         * =====================================================
+         */
+        const existingFile = await findGoogleDriveBackup(accessToken);
+
+        let remoteData = null;
+
+        if (existingFile?.id) {
+          remoteData = await downloadGoogleDriveBackup(
+            accessToken,
+            existingFile.id
+          );
         }
 
-        const searchResult = await searchResponse.json();
-        const existingFile = searchResult.files?.[0];
-        const metadata = { name: "nawy-data.json", mimeType: "application/json", parents: ["appDataFolder"] };
-        const payload = JSON.stringify({
-          version: 2,
-          updatedAt: new Date().toISOString(),
-          tasks,
-          archive,
-          settings,
-          deletedIds
-        }, null, 2);
-        const boundary = `nawy-sync-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-        const multipartBody = new Blob([
-          `--${boundary}\r\n`,
-          "Content-Type: application/json; charset=UTF-8\r\n\r\n",
-          JSON.stringify(metadata),
-          `\r\n--${boundary}\r\n`,
-          "Content-Type: application/json\r\n\r\n",
-          payload,
-          `\r\n--${boundary}--\r\n`
-        ], { type: `multipart/related; boundary=${boundary}` });
-        const uploadUrl = existingFile
-          ? `https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(existingFile.id)}?uploadType=multipart`
-          : "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";
-        const uploadResponse = await fetch(uploadUrl, {
-          method: existingFile ? "PATCH" : "POST",
-          headers: {
-            ...headers,
-            "Content-Type": `multipart/related; boundary=${boundary}`
-          },
-          body: multipartBody
-        });
-        if (!uploadResponse.ok) {
-          const body = await uploadResponse.text();
-          throw new Error(`Drive backup upload failed: HTTP ${uploadResponse.status} ${uploadResponse.statusText}: ${body || "(empty response body)"}`);
-        }
+        const localData = getLocalNawyData();
+
+        const mergedData = remoteData
+          ? mergeNawyData(localData, remoteData)
+          : sanitizeNawyData(localData);
+
+        /*
+         * لو الجهاز المحلي كان أقدم، هنا هنستقبل تعديل Google Drive
+         * وننزله Local قبل الرفع.
+         */
+        persistMergedDataLocally(mergedData);
+        applySettings();
+        render();
+
+        /*
+         * نرفع الـ merged snapshot وليس snapshot الجهاز القديم.
+         */
+        await uploadGoogleDriveBackup(
+          accessToken,
+          mergedData,
+          existingFile?.id || null
+        );
+
         googleBackupPending = false;
-        if (!automatic) showToast(t("backupSuccess"));
+        setGoogleBackupEnabled(true);
+
+        if (!automatic) {
+          showToast(t("backupSuccess"));
+        }
+
       } catch (error) {
         console.error("Google Drive backup failed", error);
-        if (!automatic) showToast(t("backupError"));
+
+        /*
+         * لو حصلت مشكلة، لا نمسح local data ولا نعتبر النسخة المحلية ضاعت.
+         */
+        googleBackupPending = true;
+
+        if (!automatic) {
+          showToast(t("backupError"));
+        }
+
       } finally {
         googleBackupInProgress = false;
+
+        /*
+         * لو تعديل جديد حصل أثناء العملية، نعمل Backup جديد
+         * للنسخة الحالية بعد انتهاء العملية الأولى.
+         */
         if (googleBackupQueued) {
           googleBackupQueued = false;
           queueGoogleBackup();
@@ -2541,93 +2887,85 @@
 
     async function restoreDataFromGoogleDrive() {
       if (googleBackupInProgress) return;
+
       const clientId = getGoogleClientId();
+
       if (!clientId) {
         showToast(t("backupConfig"));
         return;
       }
 
       googleBackupInProgress = true;
+
       const restoreButton = $("#restoreBtn");
       restoreButton.disabled = true;
-      try {
-        const accessToken = await requestGoogleAccessToken();
-        const headers = { Authorization: `Bearer ${accessToken}` };
-        const searchParams = new URLSearchParams({
-          q: "'appDataFolder' in parents and name = 'nawy-data.json' and trashed = false",
-          spaces: "appDataFolder",
-          fields: "files(id,name)",
-          pageSize: "1"
-        });
-        const searchResponse = await fetch(
-          `https://www.googleapis.com/drive/v3/files?${searchParams.toString()}`,
-          { headers }
-        );
-        if (!searchResponse.ok) {
-          const body = await searchResponse.text();
-          throw new Error(`Drive restore search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`);
-        }
 
-        const searchResult = await searchResponse.json();
-        const file = searchResult.files?.[0];
+      try {
+        const accessToken = await requestGoogleAccessToken({
+          interactive: true
+        });
+
+        const file = await findGoogleDriveBackup(accessToken);
+
         if (!file?.id) {
           showToast(t("restoreNotFound"));
+
           if (window.confirm(t("enableBackupConfirm"))) {
             googleBackupInProgress = false;
-            await backupDataToGoogleDrive();
+            await backupDataToGoogleDrive({ automatic: false });
           }
+
           return;
         }
 
-        const downloadResponse = await fetch(
-          `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.id)}?alt=media`,
-          { headers }
+        const data = await downloadGoogleDriveBackup(
+          accessToken,
+          file.id
         );
-        if (!downloadResponse.ok) {
-          const body = await downloadResponse.text();
-          throw new Error(`Drive restore download failed: HTTP ${downloadResponse.status} ${downloadResponse.statusText}: ${body || "(empty response body)"}`);
-        }
 
-        const data = await downloadResponse.json();
-        const validData = data &&
-          Array.isArray(data.tasks) &&
-          Array.isArray(data.archive) &&
-          data.settings &&
-          typeof data.settings === "object" &&
-          !Array.isArray(data.settings);
-        if (!validData) {
+        if (!isValidNawyData(data)) {
           showToast(t("restoreInvalid"));
           return;
         }
+
         showToast(t("restoreFound"));
-        if (!window.confirm(t("restoreConfirm"))) return;
+
+        if (!window.confirm(t("restoreConfirm"))) {
+          return;
+        }
 
         const mergedData = mergeNawyData(
-          { tasks, archive, settings, deletedIds },
-          { ...data, deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [] }
+          getLocalNawyData(),
+          data
         );
-        tasks = mergedData.tasks;
-        archive = mergedData.archive;
-        deletedIds = mergedData.deletedIds;
-        settings = {
-          ...DEFAULT_SETTINGS,
-          ...mergedData.settings,
-          sectionsCollapsed: {
-            ...DEFAULT_SETTINGS.sectionsCollapsed,
-            ...(mergedData.settings.sectionsCollapsed || {})
-          }
-        };
+
+        /*
+         * نستعمل persist مباشر حتى لا نولد 4 Backups متتالية.
+         */
+        persistMergedDataLocally(mergedData);
         setGoogleBackupEnabled(true);
-        saveTasks();
-        saveArchive();
-        saveDeletedIds();
-        saveSettings();
+
         applySettings();
         render();
+
+        /*
+         * نضمن أن السحابة تحتوي أيضًا على النسخة الموحدة.
+         * لكن بدون استدعاء backup من داخل backup الجاري.
+         */
+        googleBackupInProgress = false;
+
+        await backupDataToGoogleDrive({
+          automatic: false
+        });
+
         showToast(t("restoreSuccess"));
+
+        return;
+
       } catch (error) {
         console.error("Google Drive restore failed", error);
         showToast(t("restoreError"));
+
       } finally {
         googleBackupInProgress = false;
         restoreButton.disabled = false;
@@ -2636,45 +2974,43 @@
 
     function importData(file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+
+      reader.onload = e => {
         try {
           const data = JSON.parse(e.target.result);
-          if (data.tasks && data.archive && data.settings) {
-            const mergedData = mergeNawyData(
-              { tasks, archive, settings, deletedIds },
-              { ...data, deletedIds: Array.isArray(data.deletedIds) ? data.deletedIds : [] }
-            );
-            tasks = mergedData.tasks;
-            archive = mergedData.archive;
-            deletedIds = mergedData.deletedIds;
-            settings = {
-              ...DEFAULT_SETTINGS,
-              ...mergedData.settings,
-              sectionsCollapsed: {
-                ...DEFAULT_SETTINGS.sectionsCollapsed,
-                ...(mergedData.settings.sectionsCollapsed || {})
-              }
-            };
-            saveTasks();
-            saveArchive();
-            saveDeletedIds();
-            saveSettings();
-            applySettings();
-            render();
-            showToast(t("imported"));
+
+          if (!isValidNawyData(data)) {
+            throw new Error("Invalid import payload");
           }
-        } catch(err) {
+
+          const mergedData = mergeNawyData(
+            getLocalNawyData(),
+            sanitizeNawyData(data)
+          );
+
+          persistMergedDataLocally(mergedData);
+
+          applySettings();
+          render();
+
+          showToast(t("imported"));
+
+        } catch (error) {
+          console.error("Data import failed", error);
           showToast("Error importing data");
         }
       };
+
       reader.readAsText(file);
     }
 
     $("#fabBtn").addEventListener("click", openComposer);
+
     $("#composerForm").addEventListener("submit", e => {
       e.preventDefault();
       if (addTask($("#taskInput").value)) closeComposer();
     });
+
     $("#taskInput").addEventListener("input", () => {
       const hasText = $("#taskInput").value.trim().length > 0;
       $("#taskInput").placeholder = hasText
@@ -2689,30 +3025,67 @@
     });
 
     $("#menuBtn").setAttribute("aria-expanded", "false");
+
     $("#menuBtn").addEventListener("click", () => {
       const menu = $("#menuOverlay");
       const isOpen = menu.classList.contains("show");
+
       if (isOpen) closeOverlay(menu);
       else openOverlay(menu);
+
       $("#menuBtn").setAttribute("aria-expanded", String(!isOpen));
     });
-    $("#settingsBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); openOverlay($("#settingsOverlay")); });
-    $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); renderArchive(); openOverlay($("#archiveOverlay")); });
-    $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
-    $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
-    $("#syncBtn").addEventListener("click", () => backupDataToGoogleDrive());
+
+    $("#settingsBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      openOverlay($("#settingsOverlay"));
+    });
+
+    $("#archiveBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      renderArchive();
+      openOverlay($("#archiveOverlay"));
+    });
+
+    $("#exportBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      exportData();
+    });
+
+    $("#importBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      $("#importFileInput").click();
+    });
+
+    $("#syncBtn").addEventListener("click", () => {
+      backupDataToGoogleDrive({ automatic: false });
+    });
+
     $("#restoreBtn").addEventListener("click", () => {
       closeOverlay($("#menuOverlay"));
       $("#menuBtn").setAttribute("aria-expanded", "false");
       restoreDataFromGoogleDrive();
     });
-    $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
+
+    $("#importFileInput").addEventListener("change", e => {
+      if (e.target.files[0]) {
+        importData(e.target.files[0]);
+      }
+      e.target.value = "";
+    });
 
     $$("[data-close]").forEach(btn => {
       btn.addEventListener("click", () => {
         const overlay = document.getElementById(btn.dataset.close);
         closeOverlay(overlay);
-        if (overlay.id === "menuOverlay") $("#menuBtn").setAttribute("aria-expanded", "false");
+
+        if (overlay.id === "menuOverlay") {
+          $("#menuBtn").setAttribute("aria-expanded", "false");
+        }
       });
     });
 
@@ -2720,12 +3093,14 @@
       overlay.addEventListener("click", e => {
         if (e.target === overlay) {
           closeOverlay(overlay);
-          if (overlay.id === "menuOverlay") $("#menuBtn").setAttribute("aria-expanded", "false");
+
+          if (overlay.id === "menuOverlay") {
+            $("#menuBtn").setAttribute("aria-expanded", "false");
+          }
         }
       });
     });
 
-    // اسحب الشيت لأسفل لإغلاقه، مع السماح بالتمرير الطبيعي داخله.
     document.addEventListener("keydown", e => {
       if (e.key === "Escape") closeAllOverlays();
     });
@@ -2733,27 +3108,42 @@
     $$(".overlay .sheet").forEach(sheet => {
       let startY = 0;
       let dragging = false;
+
       sheet.addEventListener("touchstart", e => {
         if (sheet.scrollTop > 0) return;
+
         startY = e.touches[0].clientY;
         dragging = true;
       }, { passive: true });
+
       sheet.addEventListener("touchmove", e => {
         if (!dragging) return;
+
         const dy = e.touches[0].clientY - startY;
+
         if (dy <= 0) return;
+
         e.preventDefault();
+
         sheet.style.transition = "none";
         sheet.style.transform = `translateY(${Math.min(dy, 180)}px)`;
       }, { passive: false });
+
       sheet.addEventListener("touchend", e => {
         if (!dragging) return;
+
         dragging = false;
+
         const dy = e.changedTouches[0].clientY - startY;
+
         sheet.style.transition = "transform 0.24s ease";
         sheet.style.transform = "";
-        if (dy > 90) closeOverlay(sheet.closest(".overlay"));
+
+        if (dy > 90) {
+          closeOverlay(sheet.closest(".overlay"));
+        }
       }, { passive: true });
+
       sheet.addEventListener("touchcancel", () => {
         dragging = false;
         sheet.style.transition = "transform 0.24s ease";
@@ -2813,35 +3203,44 @@
 
     $("#notifToggleCheckbox").addEventListener("change", async function () {
       if (notificationChanging) return;
+
       const checkbox = this;
       const requestedState = checkbox.checked;
+
       notificationChanging = true;
       checkbox.disabled = true;
 
       try {
         if (requestedState) {
           const granted = await requestNotificationPermission();
+
           if (!granted) {
             settings.notificationEnabled = false;
             checkbox.checked = false;
             updateNotifUI();
             return;
           }
+
           settings.notificationEnabled = true;
           saveSettings();
           scheduleNotification();
+
           showToast(`✅ ${t("notifEnabledToast")} - ${settings.notificationTime}`);
           updateNotifUI();
+
         } else {
           settings.notificationEnabled = false;
           saveSettings();
+
           if (window.nawyNotifTimeout) {
             clearTimeout(window.nawyNotifTimeout);
             window.nawyNotifTimeout = null;
           }
+
           showToast(t("notifDisabledToast"));
           updateNotifUI();
         }
+
       } finally {
         checkbox.disabled = false;
         notificationChanging = false;
@@ -2852,17 +3251,21 @@
       settings.notificationTime = $("#notifTime").value;
       saveSettings();
       updateNotifUI();
+
       if (settings.notificationEnabled) {
         scheduleNotification();
+
         const timeMessage = settings.language === "ar"
           ? `⏰ تم ضبط الإشعار على ${settings.notificationTime}`
           : `⏰ Reminder set for ${settings.notificationTime}`;
+
         showToast(timeMessage);
       }
     });
 
     document.addEventListener("touchstart", e => {
       if (e.target.closest("button, input, textarea, select, option, .overlay, .sheet, .composer-panel, .fab")) return;
+
       const touch = e.touches[0];
       swipeStartX = touch.clientX;
       swipeStartY = touch.clientY;
@@ -2872,19 +3275,23 @@
 
     document.addEventListener("touchmove", e => {
       if (!swipeTracking) return;
+
       const touch = e.touches[0];
       const dx = touch.clientX - swipeStartX;
       const dy = touch.clientY - swipeStartY;
+
       if (Math.abs(dy) > Math.abs(dx) * 1.2) {
         swipeTracking = false;
         return;
       }
+
       if (e.target.closest(".task:not(.completed)") &&
           currentView === "all" &&
           Date.now() - swipeStartTime >= 200) {
         swipeTracking = false;
         return;
       }
+
       if (Math.abs(dx) > 10) {
         e.preventDefault();
       }
@@ -2892,7 +3299,9 @@
 
     document.addEventListener("touchend", e => {
       if (!swipeTracking) return;
+
       swipeTracking = false;
+
       const touch = e.changedTouches[0];
       const dx = touch.clientX - swipeStartX;
       const gestureDuration = Date.now() - swipeStartTime;
@@ -2916,7 +3325,9 @@
       $$(".sheet").forEach(sheet => {
         const overlay = sheet.closest(".overlay");
         if (!overlay || sheet.dataset.gestureReady) return;
+
         sheet.dataset.gestureReady = "1";
+
         let startX = 0;
         let startY = 0;
         let dragging = false;
@@ -2932,14 +3343,20 @@
 
         sheet.addEventListener("pointerdown", event => {
           if (event.pointerType === "mouse" && event.button !== 0) return;
-          // Keep controls, links, editable text and the handle on their native behavior.
+
           if (event.target.closest("button, input, textarea, select, option, a, .action-task-preview")) return;
+
           startX = event.clientX;
           startY = event.clientY;
           dragging = true;
+
           sheet.classList.add("handle-active");
+
           clearTimeout(sheet._handleTimer);
-          sheet._handleTimer = setTimeout(() => sheet.classList.remove("handle-active"), 1600);
+          sheet._handleTimer = setTimeout(() => {
+            sheet.classList.remove("handle-active");
+          }, 1600);
+
           mode = "none";
           sheet.style.transition = "none";
           sheet.setPointerCapture?.(event.pointerId);
@@ -2947,41 +3364,55 @@
 
         sheet.addEventListener("pointermove", event => {
           if (!dragging) return;
+
           const dx = event.clientX - startX;
           const dy = event.clientY - startY;
+
           if (mode === "none" && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
             mode = Math.abs(dy) >= Math.abs(dx) ? "vertical" : "horizontal";
           }
+
           if (mode === "vertical") {
             const distance = Math.max(0, dy);
             const progress = Math.min(distance / 180, 1);
+
             overlay.style.setProperty("--sheet-drag-progress", progress.toFixed(3));
             sheet.style.transform = `translateY(${distance}px) scale(${Math.max(.98, 1 - progress * .02)})`;
+
             if (event.cancelable) event.preventDefault();
+
           } else if (mode === "horizontal") {
             const direction = document.documentElement.dir === "rtl" ? 1 : -1;
             const distance = Math.max(0, dx * direction);
+
             sheet.style.transform = `translateX(${distance}px) scale(${Math.max(.985, 1 - distance / 5000)})`;
+
             if (event.cancelable) event.preventDefault();
           }
         });
 
         const finish = event => {
           if (!dragging) return;
+
           dragging = false;
+
           const dx = event.clientX - startX;
           const dy = event.clientY - startY;
           const direction = document.documentElement.dir === "rtl" ? 1 : -1;
+
           const horizontalDismiss = mode === "horizontal" && dx * direction > 90;
           const verticalDismiss = mode === "vertical" && dy > 105;
+
           sheet.style.transition = "transform .34s cubic-bezier(.34, 1.56, .64, 1), opacity .22s ease";
 
           if (horizontalDismiss) {
             sheet.style.transform = `translateX(${direction * 105}%) scale(.98)`;
             sheet.style.opacity = "0";
+
           } else if (verticalDismiss) {
             sheet.style.transform = "translateY(105%) scale(.98)";
             sheet.style.opacity = "0";
+
           } else {
             resetSheet();
             return;
@@ -2997,29 +3428,36 @@
         sheet.addEventListener("pointercancel", finish);
       });
     }
+
     initSheetGestures();
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", async () => {
-        // Remove the previous sw.js registration so GitHub Pages cannot keep serving its cache.
         const oldRegistrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(oldRegistrations
-          .filter(reg => (reg.active?.scriptURL || reg.installing?.scriptURL || "").endsWith("/sw.js"))
-          .map(reg => reg.unregister()));
 
-        navigator.serviceWorker.register("./service-worker.js", { updateViaCache: "none" }).then(registration => {
+        await Promise.all(
+          oldRegistrations
+            .filter(reg => (reg.active?.scriptURL || reg.installing?.scriptURL || "").endsWith("/sw.js"))
+            .map(reg => reg.unregister())
+        );
+
+        navigator.serviceWorker.register("./service-worker.js", {
+          updateViaCache: "none"
+        }).then(registration => {
+
           setInterval(() => {
             registration.update().catch(() => {});
           }, 5 * 60 * 1000);
-          
+
           document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === "visible") {
               registration.update().catch(() => {});
             }
           });
-          
+
           registration.addEventListener("updatefound", () => {
             const newWorker = registration.installing;
+
             if (newWorker) {
               newWorker.addEventListener("statechange", () => {
                 if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
@@ -3028,10 +3466,12 @@
               });
             }
           });
+
         }).catch(() => {});
       });
-      
+
       let refreshing = false;
+
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (refreshing) return;
         refreshing = true;
@@ -3074,6 +3514,7 @@
       
       updateBanner.querySelector("#updateNowBtn").addEventListener("click", () => {
         updateBanner.remove();
+
         navigator.serviceWorker.ready.then(registration => {
           if (registration.waiting) {
             registration.waiting.postMessage('SKIP_WAITING');
@@ -3082,14 +3523,15 @@
       });
     }
 
-    // ============ بنر التثبيت ============
     function isAppInstalled() {
       return window.matchMedia("(display-mode: standalone)").matches ||
         window.navigator.standalone === true;
     }
 
     function showInstallBanner() {
-      if (!isAppInstalled()) $("#installBanner").classList.add("show");
+      if (!isAppInstalled()) {
+        $("#installBanner").classList.add("show");
+      }
     }
 
     function hideInstallBanner() {
@@ -3105,24 +3547,34 @@
     $("#installAction").addEventListener("click", async () => {
       if (deferredInstallPrompt) {
         deferredInstallPrompt.prompt();
+
         const choice = await deferredInstallPrompt.userChoice;
-        if (choice.outcome === "accepted") showToast("تم تثبيت ناوي 🌱");
+
+        if (choice.outcome === "accepted") {
+          showToast("تم تثبيت ناوي 🌱");
+        }
+
         deferredInstallPrompt = null;
         hideInstallBanner();
         return;
       }
 
-      // Safari/iOS and browsers that do not expose beforeinstallprompt.
       const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      const message = isIOS ? t("installHelpIOS") : t("installHelpBrowser");
+      const message = isIOS
+        ? t("installHelpIOS")
+        : t("installHelpBrowser");
+
       showToast(message, false);
     });
 
     $("#installDismiss").addEventListener("click", () => {
       hideInstallBanner();
       sessionStorage.setItem("nawyInstallDismissed", "1");
+
       setTimeout(() => {
-        if (!isAppInstalled()) showInstallBanner();
+        if (!isAppInstalled()) {
+          showInstallBanner();
+        }
       }, 30000);
     });
 
@@ -3132,8 +3584,6 @@
     });
 
     window.addEventListener("load", () => {
-      // Show a useful manual-install banner even when the browser does not
-      // expose beforeinstallprompt. The button then explains the browser steps.
       if (!isAppInstalled() && !sessionStorage.getItem("nawyInstallDismissed")) {
         setTimeout(showInstallBanner, 700);
       }
@@ -3150,11 +3600,16 @@
       render();
 
       const params = new URLSearchParams(window.location.search);
+
       if (params.get("action") === "add") {
         setTimeout(() => openComposer(), 150);
       }
 
-      if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") {
+      if (
+        settings.notificationEnabled &&
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
         scheduleNotification();
       }
     }
