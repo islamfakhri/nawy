@@ -1032,6 +1032,10 @@
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
         <span class="menu-text" data-i18n="sync">مزامنة البيانات</span>
       </button>
+      <button class="menu-item" id="restoreBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>
+        <span class="menu-text" data-i18n="restoreFromDrive">استرجاع من Google Drive</span>
+      </button>
       <div class="account-menu-divider"></div>
       <button class="menu-item" id="settingsBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
@@ -1245,6 +1249,12 @@
         syncSuccess: "تمت مزامنة بيانات ناوي مع Google Drive ✅",
         syncConfig: "أضف Google Client ID لإعداد مزامنة Drive أولًا",
         syncError: "تعذر مزامنة بيانات ناوي مع Google Drive",
+        restoreFromDrive: "استرجاع من Google Drive",
+        restoreConfirm: "سيتم استبدال بيانات ناوي المحلية ببيانات Google Drive. هل تريد المتابعة؟",
+        restoreNotFound: "لم يتم العثور على ملف بيانات ناوي في Google Drive",
+        restoreInvalid: "ملف بيانات ناوي في Google Drive غير صالح",
+        restoreSuccess: "تم استرجاع بيانات ناوي من Google Drive ✅",
+        restoreError: "تعذر استرجاع بيانات ناوي من Google Drive",
         copiedToast: "تم نسخ النص 📋",
         morningNotif: "ناوي على إيه النهارده؟", installTitle: "نزّل ناوي 🌱",
         installSub: "نواياك هتكون أسهل معاك 📌", installDismiss: "متابعة للموقع", installAction: "تثبيت ⚡",
@@ -1296,6 +1306,12 @@
         syncSuccess: "NAWY data was synced with Google Drive ✅",
         syncConfig: "Add a Google Client ID to enable Drive sync",
         syncError: "NAWY data could not be synced with Google Drive",
+        restoreFromDrive: "Restore from Google Drive",
+        restoreConfirm: "Your local NAWY data will be replaced with the Google Drive data. Continue?",
+        restoreNotFound: "No NAWY data file was found in Google Drive",
+        restoreInvalid: "The NAWY data file in Google Drive is invalid",
+        restoreSuccess: "NAWY data was restored from Google Drive ✅",
+        restoreError: "NAWY data could not be restored from Google Drive",
         copiedToast: "Text copied 📋",
         morningNotif: "What are you up to today?", installTitle: "Install NAWY 🌱",
         installSub: "Your intentions will be easier 📌", installDismiss: "Continue", installAction: "Install ⚡",
@@ -2376,6 +2392,89 @@
       }
     }
 
+    async function restoreDataFromGoogleDrive() {
+      if (googleSyncInProgress) return;
+      const clientId = getGoogleClientId();
+      if (!clientId) {
+        showToast(t("syncConfig"));
+        return;
+      }
+
+      googleSyncInProgress = true;
+      const restoreButton = $("#restoreBtn");
+      restoreButton.disabled = true;
+      try {
+        const accessToken = await requestGoogleAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const searchParams = new URLSearchParams({
+          q: "name = 'nawy-data.json' and trashed = false",
+          spaces: "drive",
+          fields: "files(id,name)",
+          pageSize: "1"
+        });
+        const searchResponse = await fetch(
+          `https://www.googleapis.com/drive/v3/files?${searchParams.toString()}`,
+          { headers }
+        );
+        if (!searchResponse.ok) {
+          const body = await searchResponse.text();
+          throw new Error(`Drive restore search failed: HTTP ${searchResponse.status} ${searchResponse.statusText}: ${body || "(empty response body)"}`);
+        }
+
+        const searchResult = await searchResponse.json();
+        const file = searchResult.files?.[0];
+        if (!file?.id) {
+          showToast(t("restoreNotFound"));
+          return;
+        }
+
+        const downloadResponse = await fetch(
+          `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.id)}?alt=media`,
+          { headers }
+        );
+        if (!downloadResponse.ok) {
+          const body = await downloadResponse.text();
+          throw new Error(`Drive restore download failed: HTTP ${downloadResponse.status} ${downloadResponse.statusText}: ${body || "(empty response body)"}`);
+        }
+
+        const data = await downloadResponse.json();
+        const validData = data &&
+          Array.isArray(data.tasks) &&
+          Array.isArray(data.archive) &&
+          data.settings &&
+          typeof data.settings === "object" &&
+          !Array.isArray(data.settings);
+        if (!validData) {
+          showToast(t("restoreInvalid"));
+          return;
+        }
+        if (!window.confirm(t("restoreConfirm"))) return;
+
+        tasks = data.tasks;
+        archive = data.archive;
+        settings = {
+          ...DEFAULT_SETTINGS,
+          ...data.settings,
+          sectionsCollapsed: {
+            ...DEFAULT_SETTINGS.sectionsCollapsed,
+            ...(data.settings.sectionsCollapsed || {})
+          }
+        };
+        saveTasks();
+        saveArchive();
+        saveSettings();
+        applySettings();
+        render();
+        showToast(t("restoreSuccess"));
+      } catch (error) {
+        console.error("Google Drive restore failed", error);
+        showToast(t("restoreError"));
+      } finally {
+        googleSyncInProgress = false;
+        restoreButton.disabled = false;
+      }
+    }
+
     function importData(file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -2437,6 +2536,11 @@
     $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
     $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
     $("#syncBtn").addEventListener("click", syncDataToGoogleDrive);
+    $("#restoreBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      restoreDataFromGoogleDrive();
+    });
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
 
     $$("[data-close]").forEach(btn => {
