@@ -223,6 +223,7 @@
     .section-chevron { transition: transform 0.25s ease; }
     .section-chevron .icon { width: 14px; height: 14px; }
     .section:not(.collapsed) .section-chevron { transform: rotate(90deg); }
+    html[dir="rtl"] .section.collapsed .section-chevron { transform: rotate(180deg); }
     .section-body {
       max-height: 5000px;
       opacity: 1;
