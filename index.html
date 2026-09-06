@@ -2292,7 +2292,7 @@
     const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
 
     function requestAutoSync() {
-      if (suppressAutoSync) return;
+      if (suppressAutoSync || !googleAccessToken) return;
       if (googleSyncInProgress) {
         googleSyncRequested = true;
         return;
@@ -2335,7 +2335,12 @@
     }
 
     async function syncDataToGoogleDrive({ automatic = false } = {}) {
-      if (googleSyncInProgress) return;
+      if (googleSyncInProgress) {
+        if (!automatic) {
+          showToast(settings.language === "ar" ? "جاري المزامنة…" : "Sync in progress…");
+        }
+        return;
+      }
       const clientId = getGoogleClientId();
       if (!clientId) {
         if (!automatic) showToast(t("syncConfig"));
@@ -2343,8 +2348,6 @@
       }
 
       googleSyncInProgress = true;
-      const syncButton = $("#syncBtn");
-      syncButton.disabled = true;
       try {
         const accessToken = await requestGoogleAccessToken();
         const headers = { Authorization: `Bearer ${accessToken}` };
@@ -2487,7 +2490,6 @@
         if (!automatic) showToast(t("syncError"));
       } finally {
         googleSyncInProgress = false;
-        syncButton.disabled = false;
         if (googleSyncRequested) {
           googleSyncRequested = false;
           requestAutoSync();
@@ -2638,7 +2640,7 @@
     $("#archiveBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); renderArchive(); openOverlay($("#archiveOverlay")); });
     $("#exportBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); exportData(); });
     $("#importBtn").addEventListener("click", () => { closeOverlay($("#menuOverlay")); $("#menuBtn").setAttribute("aria-expanded", "false"); $("#importFileInput").click(); });
-    $("#syncBtn").addEventListener("click", syncDataToGoogleDrive);
+    $("#syncBtn").addEventListener("click", () => syncDataToGoogleDrive());
     $("#importFileInput").addEventListener("change", e => { if (e.target.files[0]) importData(e.target.files[0]); });
 
     $$("[data-close]").forEach(btn => {
@@ -3077,8 +3079,6 @@
       deferredInstallPrompt = null;
     });
 
-    window.addEventListener("load", () => requestAutoSync());
-
     function init() {
       loadData();
       applySettings();
@@ -3092,7 +3092,6 @@
       if (settings.notificationEnabled && "Notification" in window && Notification.permission === "granted") {
         scheduleNotification();
       }
-      requestAutoSync();
     }
 
     init();
