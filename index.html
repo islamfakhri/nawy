@@ -651,6 +651,17 @@
     }
     .account-menu-sync .icon { color: var(--accent); }
     .account-menu-divider { height: 1px; margin: 4px 8px; background: var(--border); }
+    .account-menu-panel[hidden] { display: none; }
+    .account-menu-subhead { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px 8px; margin-bottom: 4px; border-bottom: 1px solid var(--border); }
+    .account-menu-subhead .menu-text { font-weight: 700; }
+    .account-menu-back { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); }
+    .account-menu-back:active { background: var(--surface-2); }
+    .account-menu-back .icon { width: 19px; height: 19px; }
+    .backup-group { padding: 8px 8px 4px; }
+    .backup-group-head { display: flex; align-items: center; gap: 10px; min-height: 38px; color: var(--text); font-weight: 700; }
+    .backup-group-head .icon { color: var(--accent); }
+    .backup-group-subtitle { margin: -2px 0 4px 29px; color: var(--muted); font-size: var(--fs-xs); }
+    html[dir="rtl"] .backup-group-subtitle { margin-left: 0; margin-right: 29px; }
     #menuOverlay .menu-item { min-height: 48px; padding: 0 10px; }
     #menuOverlay .menu-item .icon { width: 19px; height: 19px; }
     #menuBtn > svg:first-child { display: none; }
@@ -1016,6 +1027,7 @@
 
   <div class="overlay" id="menuOverlay">
     <div class="sheet">
+      <div class="account-menu-panel" id="mainMenuPanel">
       <div class="account-menu-head">
         <div class="account-menu-avatar">
           <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M7.5 18c.9-2.3 2.5-3.5 4.5-3.5s3.6 1.2 4.5 3.5"/></svg>
@@ -1026,25 +1038,22 @@
         </div>
       </div>
       <button class="menu-item account-menu-sync" id="syncBtn" type="button">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M16 16l-4-4-4 4"/>
-          <path d="M12 12v9"/>
-          <path d="M20 16.5A5.5 5.5 0 0 0 15.2 11 7 7 0 0 0 2 13.5"/>
-        </svg>
-        <span class="menu-text" data-i18n="backupToDrive">احفظ نواياك في جوجل درايف</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
+        <span class="menu-text" data-i18n="backupToDrive">احفظ نواياك في Google Drive</span>
       </button>
       <button class="menu-item" id="restoreBtn" type="button">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 16l4 4 4-4"/>
-          <path d="M12 20V11"/>
-          <path d="M20 16.5A5.5 5.5 0 0 0 15.2 11 7 7 0 0 0 2 13.5"/>
-        </svg>
-        <span class="menu-text" data-i18n="restoreFromDrive">هات نواياك من جوجل درايف</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>
+        <span class="menu-text" data-i18n="restoreFromDrive">استعد نواياك من Google Drive</span>
       </button>
       <div class="account-menu-divider"></div>
       <button class="menu-item" id="settingsBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
         <span class="menu-text" data-i18n="settings">الإعدادات</span>
+      </button>
+      <button class="menu-item" id="backupMenuBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <span class="menu-text" data-i18n="backupTitle">النسخ الاحتياطي</span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
       </button>
       <button class="menu-item" id="archiveBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8V21H20V8"/><path d="M10 12H14"/></svg>
@@ -1052,12 +1061,36 @@
       </button>
       <button class="menu-item" id="exportBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M7 10L12 15L17 10"/><path d="M12 15V3"/></svg>
-        <span class="menu-text" data-i18n="exportData">تصدير البيانات</span>
+        <span class="menu-text" data-i18n="exportData">صدّر نواياك كملف على جهازك</span>
       </button>
       <button class="menu-item" id="importBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/><path d="M17 8L12 3L7 8"/><path d="M12 3V15"/></svg>
-        <span class="menu-text" data-i18n="importData">استيراد البيانات</span>
+        <span class="menu-text" data-i18n="importData">استورد نواياك من ملف على جهازك</span>
       </button>
+      </div>
+      <div class="account-menu-panel" id="backupMenuPanel" hidden>
+        <div class="account-menu-subhead">
+          <button class="account-menu-back" id="backupMenuBackBtn" type="button" aria-label="رجوع">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+          </button>
+          <span class="menu-text" data-i18n="backupTitle">النسخ الاحتياطي</span>
+        </div>
+        <div class="backup-group" id="cloudBackupGroup">
+          <div class="backup-group-head">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M6.5 18h11a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.5 8a5 5 0 0 0 0 10Z"/></svg>
+            <span data-i18n="cloudBackup">نسخة سحابية</span>
+          </div>
+          <div class="backup-group-subtitle" data-i18n="googleDrive">Google Drive</div>
+        </div>
+        <div class="account-menu-divider"></div>
+        <div class="backup-group" id="localBackupGroup">
+          <div class="backup-group-head">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h2M15 8h2M7 12h2M15 12h2M7 16h10"/></svg>
+            <span data-i18n="localBackup">نسخة محلية</span>
+          </div>
+          <div class="backup-group-subtitle" data-i18n="onDevice">على جهازك</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1234,7 +1267,9 @@
     const TRANSLATIONS = {
       ar: {
         appName: "ناوي", accountSubtitle: "مساحتك الشخصية",
-        backupToDrive: "احفظ نواياك في جوجل درايف", restoreFromDrive: "هات نواياك من جوجل درايف",
+        backupTitle: "النسخ الاحتياطي", cloudBackup: "نسخة سحابية", googleDrive: "Google Drive",
+        localBackup: "نسخة محلية", onDevice: "على جهازك",
+        backupToDrive: "احفظ نواياك في Google Drive", restoreFromDrive: "استعد نواياك من Google Drive",
         all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
         active: "حالية", achieved: "المُحَقَّقة",
@@ -1242,7 +1277,7 @@
         achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
         edit: "تعديل", retreat: "تراجع عن النية", delete: "حذف نهائي", restore: "استرجاع",
         copy: "نسخ النص", share: "مشاركة كصورة",
-        settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "تصدير البيانات", importData: "استيراد البيانات",
+        settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "صدّر نواياك كملف على جهازك", importData: "استورد نواياك من ملف على جهازك",
         language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع",
         dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
         color: "اللون", nawyColor: "سمة ناوي", notification: "إشعار الصباح",
@@ -1290,7 +1325,9 @@
       },
       en: {
         appName: "NAWY", accountSubtitle: "Your personal space",
-        backupToDrive: "Save your intentions to Google Drive", restoreFromDrive: "Get your intentions from Google Drive",
+        backupTitle: "Backup", cloudBackup: "Cloud Backup", googleDrive: "Google Drive",
+        localBackup: "Local Backup", onDevice: "On your device",
+        backupToDrive: "Save your intentions to Google Drive", restoreFromDrive: "Restore your intentions from Google Drive",
         all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
         active: "Current", achieved: "Achieved",
@@ -2201,20 +2238,16 @@
       });
     }
 
-    function openOverlay(overlay) {
-      overlay.classList.add("show");
-      document.body.classList.add("no-scroll");
-    }
-
+    function openOverlay(overlay) { overlay.classList.add("show"); document.body.classList.add("no-scroll"); }
     function closeOverlay(overlay) {
       overlay.classList.remove("show");
+      if (overlay.id === "menuOverlay") {
+        $("#backupMenuPanel").hidden = true;
+        $("#mainMenuPanel").hidden = false;
+      }
       if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll");
     }
-
-    function closeAllOverlays() {
-      $$(".overlay.show").forEach(closeOverlay);
-      selectedTaskId = null;
-    }
+    function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
     function openComposer() {
       $("#fabBtn").classList.add("hidden");
@@ -3033,14 +3066,27 @@
     });
 
     $("#menuBtn").setAttribute("aria-expanded", "false");
-
+    $("#archiveBtn").hidden = true;
+    $("#cloudBackupGroup").append($("#syncBtn"), $("#restoreBtn"));
+    $("#localBackupGroup").append($("#exportBtn"), $("#importBtn"));
+    $("#backupMenuBtn").addEventListener("click", () => {
+      $("#mainMenuPanel").hidden = true;
+      $("#backupMenuPanel").hidden = false;
+    });
+    $("#backupMenuBackBtn").addEventListener("click", () => {
+      $("#backupMenuPanel").hidden = true;
+      $("#mainMenuPanel").hidden = false;
+    });
     $("#menuBtn").addEventListener("click", () => {
       const menu = $("#menuOverlay");
       const isOpen = menu.classList.contains("show");
-
-      if (isOpen) closeOverlay(menu);
-      else openOverlay(menu);
-
+      if (isOpen) {
+        closeOverlay(menu);
+        $("#backupMenuPanel").hidden = true;
+        $("#mainMenuPanel").hidden = false;
+      } else {
+        openOverlay(menu);
+      }
       $("#menuBtn").setAttribute("aria-expanded", String(!isOpen));
     });
 
