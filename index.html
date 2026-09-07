@@ -657,6 +657,8 @@
     .account-menu-back { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); }
     .account-menu-back:active { background: var(--surface-2); }
     .account-menu-back .icon { width: 19px; height: 19px; }
+    html[dir="rtl"] #backupMenuBtn > .icon:last-child,
+    html[dir="rtl"] .account-menu-back .icon { transform: scaleX(-1); }
     .backup-group { padding: 8px 8px 4px; }
     .backup-group-head { display: flex; align-items: center; gap: 10px; min-height: 38px; color: var(--text); font-weight: 700; }
     .backup-group-head .icon { color: var(--accent); }
@@ -1038,11 +1040,11 @@
         </div>
       </div>
       <button class="menu-item account-menu-sync" id="syncBtn" type="button">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.2 6.2L4 8.5M4 5V8.5H7.5"/><path d="M4 13A8 8 0 0 0 17.8 17.8L20 15.5M20 19V15.5H16.5"/></svg>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v12H4z"/><path d="M7 8V5h10v3M8 12h8"/></svg>
         <span class="menu-text" data-i18n="backupToDrive">احفظ نواياك في Google Drive</span>
       </button>
       <button class="menu-item" id="restoreBtn" type="button">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>
         <span class="menu-text" data-i18n="restoreFromDrive">استعد نواياك من Google Drive</span>
       </button>
       <div class="account-menu-divider"></div>
@@ -1051,7 +1053,7 @@
         <span class="menu-text" data-i18n="settings">الإعدادات</span>
       </button>
       <button class="menu-item" id="backupMenuBtn" type="button">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16v14H4z"/><path d="M7 7V4h10v3M8 12h8"/></svg>
         <span class="menu-text" data-i18n="backupTitle">النسخ الاحتياطي</span>
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
       </button>
