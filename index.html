@@ -666,6 +666,19 @@
     .backup-group-subtitle { margin: -2px 0 4px 29px; color: var(--muted); font-size: var(--fs-xs); }
     html[dir="rtl"] .backup-group-subtitle { margin-left: 0; margin-right: 29px; }
     #settingsMenuContent { max-height: min(76dvh, 620px); overflow-y: auto; padding: 4px 0; }
+    .backup-status { margin: 8px 0 2px 29px; color: var(--muted); font-size: var(--fs-xs); }
+    html[dir="rtl"] .backup-status { margin-left: 0; margin-right: 29px; }
+    .archive-delete-all { width: 100%; min-height: 38px; margin: 0 0 12px; border: 1px solid rgba(239,68,68,.3); border-radius: 10px; background: rgba(239,68,68,.08); color: #ef4444; font-size: var(--fs-sm); }
+    .archive-toolbar { display: flex; align-items: center; gap: 8px; min-height: 40px; margin-bottom: 12px; padding: 0 10px; border: 1px solid var(--border); border-radius: 10px; }
+    .archive-toolbar .icon { width: 17px; color: var(--muted); }
+    .archive-toolbar input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: var(--fs-sm); }
+    .archive-count { color: var(--muted); font-size: var(--fs-xs); white-space: nowrap; }
+    .archive-item { padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .archive-item-text { flex: 1; min-width: 0; font-size: var(--fs-sm); overflow: hidden; text-overflow: ellipsis; }
+    .archive-item-time { margin-top: 2px; color: var(--muted); font-size: var(--fs-xs); }
+    .archive-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .archive-item-actions button { min-width: 34px; min-height: 34px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); }
+    .archive-item-actions .archive-delete { color: #ef4444; }
     #menuOverlay .menu-item { min-height: 48px; padding: 0 10px; }
     #menuOverlay .menu-item .icon { width: 19px; height: 19px; }
     #menuBtn > svg:first-child { display: none; }
@@ -1085,6 +1098,7 @@
             <span data-i18n="cloudBackup">نسخة سحابية</span>
           </div>
           <div class="backup-group-subtitle" data-i18n="googleDrive">Google Drive</div>
+          <div class="backup-status" id="backupStatus" data-i18n="backupStatus">الحالة المحلية جاهزة</div>
         </div>
         <div class="account-menu-divider"></div>
         <div class="backup-group" id="localBackupGroup">
@@ -1093,6 +1107,7 @@
             <span data-i18n="localBackup">نسخة محلية</span>
           </div>
           <div class="backup-group-subtitle" data-i18n="onDevice">على جهازك</div>
+          <div class="backup-group-subtitle" data-i18n="localBackupHint">ملف JSON على جهازك</div>
         </div>
       </div>
       <div class="account-menu-panel" id="settingsMenuPanel" hidden>
@@ -1228,6 +1243,12 @@
       <button class="sheet-close-small" type="button" data-close="archiveOverlay" aria-label="إغلاق">×</button>
       <div class="sheet-handle"></div>
       <div class="sheet-title" data-i18n="archive">أرشيف ناوي</div>
+      <button class="archive-delete-all" id="deleteAllBtn" type="button" data-i18n="deleteAllArchive">حذف كل الأرشيف</button>
+      <div class="archive-toolbar">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 5 5"/></svg>
+        <input id="archiveSearch" type="search" data-i18n-placeholder="archiveSearchPlaceholder" placeholder="ابحث في الأرشيف">
+        <span id="archiveCount" class="archive-count"></span>
+      </div>
       <div id="archiveList"></div>
     </div>
   </div>
@@ -1281,7 +1302,9 @@
       ar: {
         appName: "ناوي", accountSubtitle: "مساحتك الشخصية",
         backupTitle: "النسخ الاحتياطي", cloudBackup: "نسخة سحابية", googleDrive: "Google Drive",
-        localBackup: "نسخة محلية", onDevice: "على جهازك",
+        localBackup: "نسخة محلية", onDevice: "على جهازك", localBackupHint: "ملف JSON على جهازك",
+        backupStatus: "الحالة المحلية جاهزة", deleteAllArchive: "حذف كل الأرشيف",
+        archiveSearchPlaceholder: "ابحث في الأرشيف",
         backupToDrive: "احفظ نواياك في Google Drive", restoreFromDrive: "استعد نواياك من Google Drive",
         all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
@@ -1322,6 +1345,8 @@
         installHelpBrowser: "من قائمة المتصفح اختر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية",
         deleteConfirmTitle: "هل تريد حذف هذه النية؟",
         deleteConfirmText: "يمكنك استرجاعها من الأرشيف أو الضغط على التراجع بعد الحذف.",
+        deleteAllArchiveConfirm: "سيتم حذف {count} نوايا نهائيًا ولن يمكن استرجاعها. هل تريد المتابعة؟",
+        archiveDeletedToast: "تم حذف الأرشيف",
         cancel: "إلغاء",
         confirmDelete: "حذف",
         undo: "تراجع",
@@ -1339,7 +1364,9 @@
       en: {
         appName: "NAWY", accountSubtitle: "Your personal space",
         backupTitle: "Backup", cloudBackup: "Cloud Backup", googleDrive: "Google Drive",
-        localBackup: "Local Backup", onDevice: "On your device",
+        localBackup: "Local Backup", onDevice: "On your device", localBackupHint: "JSON file on your device",
+        backupStatus: "Local data is ready", deleteAllArchive: "Delete entire archive",
+        archiveSearchPlaceholder: "Search archive",
         backupToDrive: "Save your intentions to Google Drive", restoreFromDrive: "Restore your intentions from Google Drive",
         all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
@@ -1380,6 +1407,8 @@
         installHelpBrowser: "From the browser menu choose Install app or Add to Home screen",
         deleteConfirmTitle: "Delete this intention?",
         deleteConfirmText: "You can restore it from the archive or tap undo after deletion.",
+        deleteAllArchiveConfirm: "{count} archived intentions will be permanently deleted. Continue?",
+        archiveDeletedToast: "Archive deleted",
         cancel: "Cancel",
         confirmDelete: "Delete",
         undo: "Undo",
@@ -2215,38 +2244,67 @@
       openOverlay($("#taskOverlay"));
     }
 
+    function deleteAllArchive() {
+      if (!archive.length) return;
+      const message = t("deleteAllArchiveConfirm").replace("{count}", String(archive.length));
+      if (!window.confirm(message)) return;
+      const deletedAt = Date.now();
+      const archiveTombstones = archive.map(item => ({ id: item.id, deletedAt }));
+      deletedIds = [
+        ...deletedIds.filter(item => !archiveTombstones.some(deleted => deleted.id === item.id)),
+        ...archiveTombstones
+      ];
+      archive = [];
+      saveArchive();
+      saveDeletedIds();
+      render();
+      renderArchive();
+      showToast(t("archiveDeletedToast"));
+    }
+
     function renderArchive() {
       const container = $("#archiveList");
       container.innerHTML = "";
+      const query = ($("#archiveSearch")?.value || "").trim().toLocaleLowerCase();
+      const filteredArchive = archive.filter(task => !query || task.text.toLocaleLowerCase().includes(query));
+      $("#archiveCount").textContent = `${filteredArchive.length}/${archive.length}`;
       
-      if (archive.length === 0) {
+      if (filteredArchive.length === 0) {
         container.innerHTML = `<div class="empty"><div class="empty-title">${t("noArchive")}</div></div>`;
         return;
       }
       
-      archive.forEach(task => {
+      filteredArchive.forEach(task => {
         const item = document.createElement("div");
-        item.style.cssText = "padding:12px;border-radius:12px;background:var(--surface-2);display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;";
+        item.className = "archive-item";
         
+        const copy = document.createElement("div");
+        copy.style.cssText = "flex:1;min-width:0;";
         const text = document.createElement("div");
+        text.className = "archive-item-text";
         text.textContent = task.text;
-        text.style.cssText = "flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;";
+        const time = document.createElement("div");
+        time.className = "archive-item-time";
+        time.textContent = task.archivedAt ? new Date(task.archivedAt).toLocaleString(settings.language === "ar" ? "ar-EG" : "en-US") : "";
+        copy.append(text, time);
         
         const btnGroup = document.createElement("div");
-        btnGroup.style.cssText = "display:flex;gap:4px;flex-shrink:0;";
+        btnGroup.className = "archive-item-actions";
         
         const restoreBtn = document.createElement("button");
-        restoreBtn.textContent = t("restore");
-        restoreBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:var(--surface);font-size:13px;font-weight:600;";
+        restoreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M9 7H5v4"/><path d="M5 11a7 7 0 1 0 2-5"/></svg>';
+        restoreBtn.setAttribute("aria-label", t("restore"));
+        restoreBtn.className = "archive-restore";
         restoreBtn.addEventListener("click", () => restoreFromArchive(task.id));
         
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = t("delete");
-        deleteBtn.style.cssText = "min-height:36px;padding:0 12px;border-radius:8px;background:rgba(239,68,68,0.1);color:#ef4444;font-size:13px;font-weight:600;";
+        deleteBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7v13h10V7"/></svg>';
+        deleteBtn.setAttribute("aria-label", t("delete"));
+        deleteBtn.className = "archive-delete";
         deleteBtn.addEventListener("click", () => deleteForever(task.id));
         
         btnGroup.append(restoreBtn, deleteBtn);
-        item.append(text, btnGroup);
+        item.append(copy, btnGroup);
         container.appendChild(item);
       });
     }
@@ -2291,6 +2349,12 @@
       $("#taskInput").placeholder = $("#taskInput").value
         ? t("taskPlaceholder")
         : t("composerEmptyPlaceholder");
+      const backupStatus = $("#backupStatus");
+      if (backupStatus) {
+        backupStatus.textContent = googleDriveBackupEnabled
+          ? (settings.language === "ar" ? "الحفظ الاحتياطي مفعّل" : "Backup is enabled")
+          : t("backupStatus");
+      }
       
       $$(".segment[data-theme]").forEach(btn => btn.classList.toggle("active", btn.dataset.theme === settings.theme));
       $$(".color-btn[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
@@ -3142,6 +3206,8 @@
       $("#menuBtn").setAttribute("aria-expanded", "false");
       restoreDataFromGoogleDrive();
     });
+    $("#deleteAllBtn").addEventListener("click", deleteAllArchive);
+    $("#archiveSearch").addEventListener("input", renderArchive);
 
     $("#importFileInput").addEventListener("change", e => {
       if (e.target.files[0]) {
