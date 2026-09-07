@@ -665,6 +665,7 @@
     .backup-group-head .icon { color: var(--accent); }
     .backup-group-subtitle { margin: -2px 0 4px 29px; color: var(--muted); font-size: var(--fs-xs); }
     html[dir="rtl"] .backup-group-subtitle { margin-left: 0; margin-right: 29px; }
+    #settingsMenuContent { max-height: min(76dvh, 620px); overflow-y: auto; padding: 4px 0; }
     #menuOverlay .menu-item { min-height: 48px; padding: 0 10px; }
     #menuOverlay .menu-item .icon { width: 19px; height: 19px; }
     #menuBtn > svg:first-child { display: none; }
@@ -1093,6 +1094,15 @@
           </div>
           <div class="backup-group-subtitle" data-i18n="onDevice">على جهازك</div>
         </div>
+      </div>
+      <div class="account-menu-panel" id="settingsMenuPanel" hidden>
+        <div class="account-menu-subhead">
+          <button class="account-menu-back" id="settingsMenuBackBtn" type="button" aria-label="رجوع">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+          </button>
+          <span class="menu-text" data-i18n="settings">الإعدادات</span>
+        </div>
+        <div id="settingsMenuContent"></div>
       </div>
     </div>
   </div>
@@ -2246,6 +2256,7 @@
       overlay.classList.remove("show");
       if (overlay.id === "menuOverlay") {
         $("#backupMenuPanel").hidden = true;
+        $("#settingsMenuPanel").hidden = true;
         $("#mainMenuPanel").hidden = false;
       }
       if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll");
@@ -3072,6 +3083,7 @@
     $("#archiveBtn").hidden = true;
     $("#cloudBackupGroup").append($("#syncBtn"), $("#restoreBtn"));
     $("#localBackupGroup").append($("#exportBtn"), $("#importBtn"));
+    $("#settingsMenuContent").append(...$$("#settingsOverlay .setting-group"));
     $("#backupMenuBtn").addEventListener("click", () => {
       $("#mainMenuPanel").hidden = true;
       $("#backupMenuPanel").hidden = false;
@@ -3080,23 +3092,26 @@
       $("#backupMenuPanel").hidden = true;
       $("#mainMenuPanel").hidden = false;
     });
+    $("#settingsBtn").addEventListener("click", () => {
+      $("#mainMenuPanel").hidden = true;
+      $("#settingsMenuPanel").hidden = false;
+    });
+    $("#settingsMenuBackBtn").addEventListener("click", () => {
+      $("#settingsMenuPanel").hidden = true;
+      $("#mainMenuPanel").hidden = false;
+    });
     $("#menuBtn").addEventListener("click", () => {
       const menu = $("#menuOverlay");
       const isOpen = menu.classList.contains("show");
       if (isOpen) {
         closeOverlay(menu);
         $("#backupMenuPanel").hidden = true;
+        $("#settingsMenuPanel").hidden = true;
         $("#mainMenuPanel").hidden = false;
       } else {
         openOverlay(menu);
       }
       $("#menuBtn").setAttribute("aria-expanded", String(!isOpen));
-    });
-
-    $("#settingsBtn").addEventListener("click", () => {
-      closeOverlay($("#menuOverlay"));
-      $("#menuBtn").setAttribute("aria-expanded", "false");
-      openOverlay($("#settingsOverlay"));
     });
 
     $("#archiveBtn").addEventListener("click", () => {
