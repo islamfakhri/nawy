@@ -1842,6 +1842,7 @@
     let settingsUpdatedAt = 0;
     let currentView = "all";
     let selectedTaskId = null;
+    let activeTaskEditRestore = null;
     let swipeStartX = 0;
     let swipeStartY = 0;
     let swipeStartTime = 0;
@@ -2655,6 +2656,17 @@
         editContainer.append(editArea, doneBtn);
         preview.replaceWith(editContainer);
         editArea.focus();
+
+        // If the sheet gets closed mid-edit (X button, tap outside, swipe-down,
+        // Escape) without pressing "done", restore the original preview node so
+        // #taskPreviewText still exists in the DOM next time the sheet opens.
+        activeTaskEditRestore = () => {
+          if (editContainer.isConnected) {
+            originalPreview.textContent = task.text;
+            editContainer.replaceWith(originalPreview);
+          }
+          activeTaskEditRestore = null;
+        };
         
         function saveEdit() {
           const newText = editArea.value.trim();
@@ -2669,6 +2681,7 @@
             originalPreview.textContent = task.text;
             editContainer.replaceWith(originalPreview);
           }
+          activeTaskEditRestore = null;
           closeOverlay($("#taskOverlay"));
           selectedTaskId = null;
         }
@@ -3077,6 +3090,9 @@
         $("#backupMenuPanel").hidden = true;
         $("#settingsMenuPanel").hidden = true;
         $("#mainMenuPanel").hidden = false;
+      }
+      if (overlay.id === "taskOverlay" && activeTaskEditRestore) {
+        activeTaskEditRestore();
       }
       if (!document.querySelector(".overlay.show")) document.body.classList.remove("no-scroll");
     }
