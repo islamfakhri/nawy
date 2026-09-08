@@ -204,7 +204,18 @@
 
     .content { margin-top: 8px; }
     .content, .topbar { transition: opacity 0.28s ease, filter 0.28s ease; }
-    .content.dimmed, .topbar.dimmed { opacity: 0.45; filter: blur(1px) saturate(85%); pointer-events: none; }
+    .content.dimmed, .topbar.dimmed { opacity: 0.45; filter: blur(1px) saturate(85%); }
+    .composer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 29;
+      background: transparent;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+    .composer-backdrop.show { opacity: 1; visibility: visible; pointer-events: auto; }
 
     .section { margin-top: 12px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
@@ -1204,6 +1215,8 @@
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg>
     </button>
   </div>
+
+  <div class="composer-backdrop" id="composerBackdrop"></div>
 
   <div class="composer-panel" id="composerPanel">
     <form id="composerForm" autocomplete="off">
@@ -3081,6 +3094,7 @@
     function openComposer() {
       $("#fabBtn").classList.add("hidden");
       $("#composerPanel").classList.add("open");
+      $("#composerBackdrop").classList.add("show");
       $("#content").classList.add("dimmed");
       $(".topbar").classList.add("dimmed");
       $("#taskInput").placeholder = getComposerPlaceholder();
@@ -3090,6 +3104,7 @@
     function closeComposer() {
       $("#fabBtn").classList.remove("hidden");
       $("#composerPanel").classList.remove("open");
+      $("#composerBackdrop").classList.remove("show");
       $("#content").classList.remove("dimmed");
       $(".topbar").classList.remove("dimmed");
       $("#taskInput").value = "";
@@ -3901,6 +3916,7 @@
     }
 
     $("#fabBtn").addEventListener("click", openComposer);
+    $("#composerBackdrop").addEventListener("click", closeComposer);
 
     $("#composerForm").addEventListener("submit", e => {
       e.preventDefault();
@@ -4050,7 +4066,10 @@
     });
 
     document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closeAllOverlays();
+      if (e.key === "Escape") {
+        closeAllOverlays();
+        if ($("#composerPanel").classList.contains("open")) closeComposer();
+      }
     });
 
     $$(".overlay .sheet").forEach(sheet => {
