@@ -203,6 +203,8 @@
     .tab:not(.active) .tab-icon { fill: none; stroke: var(--muted); }
 
     .content { margin-top: 8px; }
+    .content, .topbar { transition: opacity 0.28s ease, filter 0.28s ease; }
+    .content.dimmed, .topbar.dimmed { opacity: 0.45; filter: blur(1px) saturate(85%); pointer-events: none; }
 
     .section { margin-top: 12px; background: transparent; border: none; border-radius: 0; }
     .section:first-child { margin-top: 0; }
@@ -1648,6 +1650,9 @@
         deleteAllDoneToast: "تم حذف كل الأرشيف",
         all: "نواياي", favorites: "مفضلاتي",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
+        composerPlaceholderMorning: "ناوي تعمل إيه الصبح ده؟",
+        composerPlaceholderEvening: "قبل ما الليل يخلص، أنت ناوي على إيه؟",
+        composerPlaceholderLate: "آخر حاجة النهارده... أنت ناوي على إيه؟",
         active: "حالية", achieved: "المُحَقَّقة",
         taskPlaceholder: "أنا ناوي...",
         achievedAction: "حققت النية", reactivateAction: "أعد فتح النية",
@@ -1754,6 +1759,9 @@
         deleteAllDoneToast: "Archive cleared",
         all: "Intentions", favorites: "Favorites",
         composerEmptyPlaceholder: "What are you up to today?",
+        composerPlaceholderMorning: "What are you up to this morning?",
+        composerPlaceholderEvening: "Before the day ends, what do you intend?",
+        composerPlaceholderLate: "One last thing today... what do you intend?",
         active: "Current", achieved: "Achieved",
         taskPlaceholder: "I intend to...",
         achievedAction: "Achieved", reactivateAction: "Reopen",
@@ -3061,18 +3069,31 @@
     }
     function closeAllOverlays() { $$(".overlay.show").forEach(closeOverlay); selectedTaskId = null; }
 
+    function getComposerPlaceholder() {
+      const hour = new Date().getHours();
+      const key = hour >= 5 && hour < 12 ? "composerPlaceholderMorning"
+        : hour >= 12 && hour < 17 ? "composerEmptyPlaceholder"
+        : hour >= 17 && hour < 23 ? "composerPlaceholderEvening"
+        : "composerPlaceholderLate";
+      return t(key);
+    }
+
     function openComposer() {
       $("#fabBtn").classList.add("hidden");
       $("#composerPanel").classList.add("open");
-      $("#taskInput").placeholder = t("composerEmptyPlaceholder");
+      $("#content").classList.add("dimmed");
+      $(".topbar").classList.add("dimmed");
+      $("#taskInput").placeholder = getComposerPlaceholder();
       $("#taskInput").focus();
     }
 
     function closeComposer() {
       $("#fabBtn").classList.remove("hidden");
       $("#composerPanel").classList.remove("open");
+      $("#content").classList.remove("dimmed");
+      $(".topbar").classList.remove("dimmed");
       $("#taskInput").value = "";
-      $("#taskInput").placeholder = t("composerEmptyPlaceholder");
+      $("#taskInput").placeholder = getComposerPlaceholder();
       $("#sendBtn").classList.add("disabled");
     }
 
@@ -3088,7 +3109,7 @@
       $$("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
       $("#taskInput").placeholder = $("#taskInput").value
         ? t("taskPlaceholder")
-        : t("composerEmptyPlaceholder");
+        : getComposerPlaceholder();
       
       $$(".segment[data-theme]").forEach(btn => btn.classList.toggle("active", btn.dataset.theme === settings.theme));
       $$(".color-btn[data-accent]").forEach(btn => btn.classList.toggle("active", btn.dataset.accent === settings.accent));
@@ -3890,7 +3911,7 @@
       const hasText = $("#taskInput").value.trim().length > 0;
       $("#taskInput").placeholder = hasText
         ? t("taskPlaceholder")
-        : t("composerEmptyPlaceholder");
+        : getComposerPlaceholder();
       $("#sendBtn").classList.toggle("disabled", !hasText);
       $("#sendBtn").disabled = !hasText;
     });
