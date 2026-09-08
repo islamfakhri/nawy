@@ -1081,6 +1081,37 @@
     .archive-icon-btn:active { background: var(--surface-2); }
     .archive-icon-btn .icon { width: 16px; height: 16px; }
 
+    .stat-hero {
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, var(--accent-soft), var(--surface-2));
+      border: 1px solid var(--border);
+    }
+    .stat-hero-main { display: flex; align-items: baseline; gap: 6px; }
+    .stat-hero-number { font-size: 32px; font-weight: 800; color: var(--accent); }
+    .stat-hero-label { font-size: var(--fs-sm); color: var(--text); }
+    .stat-hero-delta { display: flex; align-items: center; gap: 5px; margin-top: 6px; font-size: var(--fs-xs); color: #10b981; }
+    .stat-hero-delta.flat { color: var(--muted); }
+    .stat-hero-delta .icon { width: 14px; height: 14px; }
+    .stat-grid { display: flex; gap: 10px; margin-bottom: 16px; }
+    .stat-box { flex: 1; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 8px; text-align: center; }
+    .stat-box-value { font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 3px; }
+    .stat-box-label { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; }
+    .stat-section-label { padding: 4px 4px 8px; color: var(--muted); font-size: var(--fs-xs); font-weight: 700; }
+    .stat-week-box { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 10px 10px; margin-bottom: 16px; }
+    .stat-week-bars { display: flex; align-items: flex-end; justify-content: space-between; height: 72px; gap: 6px; }
+    .stat-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; }
+    .stat-bar { width: 100%; max-width: 20px; border-radius: 5px 5px 2px 2px; background: var(--surface-3); min-height: 3px; transition: height 0.3s ease; }
+    .stat-bar.active { background: var(--accent); }
+    .stat-bar-col span { font-size: 10px; color: var(--muted); }
+    .stat-top-task { display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; }
+    .stat-top-task-icon { width: 34px; height: 34px; border-radius: var(--radius-sm); background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; flex-shrink: 0; }
+    .stat-top-task-icon .icon { width: 17px; height: 17px; }
+    .stat-top-task-copy { flex: 1; min-width: 0; }
+    .stat-top-task-text { font-size: var(--fs-sm); }
+    .stat-top-task-count { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; }
+
     .confirm-overlay {
       position: fixed;
       inset: 0;
@@ -1195,6 +1226,14 @@
           <div class="account-menu-subtitle" id="menuStatusLine" data-i18n="accountSubtitle">مساحتك الشخصية</div>
         </div>
       </div>
+      <button class="menu-item" id="statsBtn" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15v3M12 11v7M17 7v11"/></svg>
+        <span class="menu-item-copy">
+          <span class="menu-item-title" data-i18n="stats">إحصائياتي</span>
+          <span class="menu-item-sub" id="statsMenuSub"></span>
+        </span>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+      </button>
       <button class="menu-item" id="settingsBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
         <span class="menu-item-copy">
@@ -1424,6 +1463,56 @@
     </div>
   </div>
 
+  <div class="overlay" id="statsOverlay">
+    <div class="sheet">
+      <button class="sheet-close-small" type="button" data-close="statsOverlay" aria-label="إغلاق">×</button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" data-i18n="stats">إحصائياتي</div>
+
+      <div class="stat-hero">
+        <div class="stat-hero-main">
+          <span class="stat-hero-number" id="statAchievedThisMonth">0</span>
+          <span class="stat-hero-label" id="statAchievedThisMonthLabel"></span>
+        </div>
+        <div class="stat-hero-delta" id="statMonthDelta"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-box-value" id="statActiveCount">0</div>
+          <div class="stat-box-label" data-i18n="statActiveLabel">نشطة الآن</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value" id="statCompletionRate">0%</div>
+          <div class="stat-box-label" data-i18n="statRateLabel">معدل الإنجاز</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-value">
+            <svg class="icon" viewBox="0 0 24 24" style="width:17px;height:17px;color:#f97316;"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c1.5 1.5 2 3.5 2 5a6 6 0 0 1-12 0c0-4 2-6 4-12Z"/></svg>
+            <span id="statStreak">0</span>
+          </div>
+          <div class="stat-box-label" data-i18n="statStreakLabel">أيام متتالية</div>
+        </div>
+      </div>
+
+      <div class="stat-section-label" data-i18n="statWeeklyLabel">النشاط الأسبوعي</div>
+      <div class="stat-week-box">
+        <div class="stat-week-bars" id="statWeekBars"></div>
+      </div>
+
+      <div class="stat-section-label" id="statTopTaskLabel" style="display:none;" data-i18n="statTopTaskLabel">أكتر نية اتكررت تحقيقها</div>
+      <div class="stat-top-task" id="statTopTaskCard" style="display:none;">
+        <div class="stat-top-task-icon">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M17 4H7v4a5 5 0 0 0 10 0V4Z"/><path d="M17 5h3a2 2 0 0 1-2 4M7 5H4a2 2 0 0 0 2 4"/></svg>
+        </div>
+        <div class="stat-top-task-copy">
+          <div class="stat-top-task-text" id="statTopTaskText"></div>
+          <div class="stat-top-task-count" id="statTopTaskCount"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="archiveOverlay">
     <div class="sheet">
       <button class="sheet-close-small" type="button" data-close="archiveOverlay" aria-label="إغلاق">×</button>
@@ -1527,6 +1616,22 @@
         lastSyncAt: "آخر مزامنة: {time}",
         soundAndNotifications: "الصوت والتنبيهات",
         languageAndAccount: "اللغة والحساب",
+        stats: "إحصائياتي",
+        statsMenuSubEmpty: "شوف تقدّمك",
+        statAchievedThisMonthLabel: "نية محققة الشهر ده",
+        statDeltaUp: "أكتر من الشهر اللي فات بـ {count} {noun}",
+        statDeltaDown: "أقل من الشهر اللي فات بـ {count} {noun}",
+        statDeltaFlat: "زي الشهر اللي فات بالظبط",
+        statNounSingle: "نية",
+        statNounPlural: "نوايا",
+        statActiveLabel: "نشطة الآن",
+        statRateLabel: "معدل الإنجاز",
+        statStreakLabel: "أيام متتالية",
+        statWeeklyLabel: "النشاط الأسبوعي",
+        statTopTaskLabel: "أكتر نية اتكررت تحقيقها",
+        statTopTaskCount: "اتحققت {count} مرات",
+        statEmptyHero: "لسه مفيش نوايا اتحققت",
+        weekDayShort: ["ح", "ن", "ث", "ر", "خ", "ج", "س"],
         archiveSearchPlaceholder: "ابحث في الأرشيف",
         archiveCountLabel: "{count} نية",
         archiveGroupToday: "اليوم",
@@ -1610,6 +1715,22 @@
         lastSyncAt: "Last synced: {time}",
         soundAndNotifications: "Sound & notifications",
         languageAndAccount: "Language & account",
+        stats: "My Stats",
+        statsMenuSubEmpty: "See your progress",
+        statAchievedThisMonthLabel: "achieved this month",
+        statDeltaUp: "Up {count} {noun} from last month",
+        statDeltaDown: "Down {count} {noun} from last month",
+        statDeltaFlat: "Same as last month",
+        statNounSingle: "intention",
+        statNounPlural: "intentions",
+        statActiveLabel: "Active now",
+        statRateLabel: "Completion rate",
+        statStreakLabel: "Day streak",
+        statWeeklyLabel: "Weekly activity",
+        statTopTaskLabel: "Most repeated achievement",
+        statTopTaskCount: "Achieved {count} times",
+        statEmptyHero: "No intentions achieved yet",
+        weekDayShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
         archiveSearchPlaceholder: "Search the archive",
         archiveCountLabel: "{count} intentions",
         archiveGroupToday: "Today",
@@ -2648,6 +2769,155 @@
       });
     }
 
+    function normalizeTaskText(text) {
+      return String(text || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+    }
+
+    function getAllAchievedRecords() {
+      const fromTasks = tasks.filter(x => x.status === "achieved" && Number(x.achievedAt) > 0);
+      const fromArchive = archive.filter(x => Number(x.achievedAt) > 0);
+      return [...fromTasks, ...fromArchive];
+    }
+
+    function computeStats() {
+      const now = new Date();
+      const achieved = getAllAchievedRecords();
+
+      const isSameMonth = (ts, ref) => {
+        const d = new Date(ts);
+        return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth();
+      };
+
+      const lastMonthRef = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+      const thisMonthCount = achieved.filter(x => isSameMonth(x.achievedAt, now)).length;
+      const lastMonthCount = achieved.filter(x => isSameMonth(x.achievedAt, lastMonthRef)).length;
+
+      const activeCount = tasks.filter(x => x.status === "active").length;
+      const achievedTotal = achieved.length;
+      const completionRate = (activeCount + achievedTotal) > 0
+        ? Math.round((achievedTotal / (activeCount + achievedTotal)) * 100)
+        : 0;
+
+      // Streak: consecutive days counting back from today with at least one achievement.
+      const achievedDayKeys = new Set(
+        achieved.map(x => {
+          const d = new Date(x.achievedAt);
+          return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+        })
+      );
+      let streak = 0;
+      const cursor = new Date(now);
+      // If nothing achieved today yet, streak can still count backwards from yesterday.
+      const todayKey = `${cursor.getFullYear()}-${cursor.getMonth()}-${cursor.getDate()}`;
+      if (!achievedDayKeys.has(todayKey)) cursor.setDate(cursor.getDate() - 1);
+      while (true) {
+        const key = `${cursor.getFullYear()}-${cursor.getMonth()}-${cursor.getDate()}`;
+        if (achievedDayKeys.has(key)) {
+          streak += 1;
+          cursor.setDate(cursor.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+
+      // Weekly activity: count of achievements per weekday over the last 7 days.
+      const weekCounts = [0, 0, 0, 0, 0, 0, 0]; // index 0 = Sunday
+      const sevenDaysAgo = new Date(now);
+      sevenDaysAgo.setDate(now.getDate() - 6);
+      sevenDaysAgo.setHours(0, 0, 0, 0);
+      achieved.forEach(x => {
+        const d = new Date(x.achievedAt);
+        if (d >= sevenDaysAgo && d <= now) {
+          weekCounts[d.getDay()] += 1;
+        }
+      });
+
+      // Most repeated achieved task text (normalized match).
+      const textCounts = new Map();
+      achieved.forEach(x => {
+        const key = normalizeTaskText(x.text);
+        if (!key) return;
+        const current = textCounts.get(key) || { count: 0, sample: x.text };
+        current.count += 1;
+        textCounts.set(key, current);
+      });
+      let topTask = null;
+      textCounts.forEach(value => {
+        if (value.count > 1 && (!topTask || value.count > topTask.count)) {
+          topTask = value;
+        }
+      });
+
+      return {
+        thisMonthCount,
+        lastMonthCount,
+        activeCount,
+        completionRate,
+        streak,
+        weekCounts,
+        topTask
+      };
+    }
+
+    function renderStats() {
+      const stats = computeStats();
+
+      $("#statAchievedThisMonth").textContent = stats.thisMonthCount;
+      $("#statAchievedThisMonthLabel").textContent = t("statAchievedThisMonthLabel");
+      $("#statActiveCount").textContent = stats.activeCount;
+      $("#statCompletionRate").textContent = `${stats.completionRate}%`;
+      $("#statStreak").textContent = stats.streak;
+
+      const deltaEl = $("#statMonthDelta");
+      const diff = stats.thisMonthCount - stats.lastMonthCount;
+      const noun = Math.abs(diff) === 1 ? t("statNounSingle") : t("statNounPlural");
+      if (diff > 0) {
+        deltaEl.classList.remove("flat");
+        deltaEl.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>${tf("statDeltaUp", { count: diff, noun })}`;
+      } else if (diff < 0) {
+        deltaEl.classList.remove("flat");
+        deltaEl.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg>${tf("statDeltaDown", { count: Math.abs(diff), noun })}`;
+      } else {
+        deltaEl.classList.add("flat");
+        deltaEl.textContent = t("statDeltaFlat");
+      }
+
+      const dayLabels = t("weekDayShort");
+      const barsWrap = $("#statWeekBars");
+      barsWrap.innerHTML = "";
+      const maxCount = Math.max(1, ...stats.weekCounts);
+      const todayIndex = new Date().getDay();
+      for (let i = 0; i < 7; i++) {
+        const col = document.createElement("div");
+        col.className = "stat-bar-col";
+        const bar = document.createElement("div");
+        bar.className = "stat-bar" + (i === todayIndex ? " active" : "");
+        const pct = Math.max(6, Math.round((stats.weekCounts[i] / maxCount) * 100));
+        bar.style.height = `${pct}%`;
+        const label = document.createElement("span");
+        label.textContent = dayLabels[i];
+        col.append(bar, label);
+        barsWrap.appendChild(col);
+      }
+
+      const topCard = $("#statTopTaskCard");
+      const topLabel = $("#statTopTaskLabel");
+      if (stats.topTask) {
+        topCard.style.display = "flex";
+        topLabel.style.display = "block";
+        $("#statTopTaskText").textContent = stats.topTask.sample;
+        $("#statTopTaskCount").textContent = tf("statTopTaskCount", { count: stats.topTask.count });
+      } else {
+        topCard.style.display = "none";
+        topLabel.style.display = "none";
+      }
+      updateMenuStatusLine();
+    }
+
     function openDeleteAllConfirm() {
       const count = archive.length;
       if (count === 0) return;
@@ -2670,6 +2940,14 @@
         archiveSub.textContent = archive.length > 0
           ? tf("archiveCountLabel", { count: archive.length })
           : t("noArchive");
+      }
+
+      const statsSub = $("#statsMenuSub");
+      if (statsSub) {
+        const monthCount = computeStats().thisMonthCount;
+        statsSub.textContent = monthCount > 0
+          ? `${monthCount} ${t("statAchievedThisMonthLabel")}`
+          : t("statsMenuSubEmpty");
       }
 
       if (lastBackupTimestamp > 0) {
@@ -3572,6 +3850,12 @@
 
     $("#menuBtn").setAttribute("aria-expanded", "false");
     $("#settingsMenuContent").append(...$$("#settingsOverlay .setting-group"));
+    $("#statsBtn").addEventListener("click", () => {
+      closeOverlay($("#menuOverlay"));
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      renderStats();
+      openOverlay($("#statsOverlay"));
+    });
     $("#backupMenuBtn").addEventListener("click", () => {
       $("#mainMenuPanel").hidden = true;
       $("#backupMenuPanel").hidden = false;
