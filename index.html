@@ -1006,7 +1006,9 @@
       animation: toastIn .34s cubic-bezier(.34, 1.56, .64, 1);
     }
     html[data-theme="light"] .toastify { background: rgba(255,255,255,.78); border-color: rgba(17,24,39,.10); box-shadow: 0 18px 48px rgba(31,41,55,.18), inset 0 1px 0 rgba(255,255,255,.9); }
-    .toast-message { min-width: 0; line-height: 1.45; text-align: center; }
+    .toast-message { min-width: 0; line-height: 1.45; text-align: center; display: flex; flex-direction: column; gap: 1px; }
+    .toast-message-main { font-weight: 700; }
+    .toast-message-sub { font-size: 11px; font-weight: 500; color: var(--muted); opacity: .85; }
     .toastify.toast-exit { animation: toastOut .24s cubic-bezier(.4, 0, 1, 1) forwards; }
     @keyframes toastOut {
       from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
@@ -1660,6 +1662,13 @@
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         noArchive: "الأرشيف فاضي", noArchiveResults: "مفيش نتائج مطابقة للبحث",
         addedToast: "تمت إضافة النية ✨", achievedToast: "نية اتحققت 🌱",
+        achievementPhrases: [
+          "وفّيت بنيتك 🌱",
+          "خطوة اتخطيتها",
+          "كملتها زي ما قلت",
+          "دي كانت نيتك، وحققتها",
+          "نية تحققت، خطوة اتمشيت"
+        ],
         reactivatedToast: "تم إعادة فتح النية 🔄", editedToast: "تم التعديل ✏️",
         deletedToast: "تم التراجع - اضغط للاسترجاع", restoredToast: "تم الاسترجاع ✅",
         exported: "تم تصدير البيانات 💾", imported: "تم استيراد البيانات ✅",
@@ -1759,6 +1768,13 @@
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         noArchive: "Archive is empty", noArchiveResults: "No results match your search",
         addedToast: "Intention added ✨", achievedToast: "Intention achieved 🌱",
+        achievementPhrases: [
+          "You honored your intention 🌱",
+          "A step taken",
+          "You did what you said",
+          "That was your intention, and you fulfilled it",
+          "One intention kept, one step forward"
+        ],
         reactivatedToast: "Intention reopened 🔄", editedToast: "Edited ✏️",
         deletedToast: "Deleted - tap to undo", restoredToast: "Restored ✅",
         exported: "Data exported 💾", imported: "Data imported ✅",
@@ -1949,7 +1965,7 @@
       queueGoogleBackup();
     }
 
-    function showToast(message, canUndo = false, undoCallback = null) {
+    function showToast(message, canUndo = false, undoCallback = null, subtitle = "") {
       const existing = document.querySelector(".toastify");
       if (existing) existing.remove();
 
@@ -1958,10 +1974,22 @@
       toast.setAttribute("role", "status");
       toast.setAttribute("aria-live", "polite");
 
+      const textWrap = document.createElement("span");
+      textWrap.className = "toast-message";
+
       const messageNode = document.createElement("span");
-      messageNode.className = "toast-message";
+      messageNode.className = "toast-message-main";
       messageNode.textContent = message;
-      toast.appendChild(messageNode);
+      textWrap.appendChild(messageNode);
+
+      if (subtitle) {
+        const subNode = document.createElement("span");
+        subNode.className = "toast-message-sub";
+        subNode.textContent = subtitle;
+        textWrap.appendChild(subNode);
+      }
+
+      toast.appendChild(textWrap);
 
       if (canUndo && undoCallback) {
         const undoButton = document.createElement("button");
@@ -2061,11 +2089,33 @@
       } catch (error) {}
     }
 
+    let lastAchievementPhraseIndex = -1;
+    function buildAchievementMessage(taskText) {
+      const phrases = t("achievementPhrases");
+      let index = Math.floor(Math.random() * phrases.length);
+      if (phrases.length > 1 && index === lastAchievementPhraseIndex) {
+        index = (index + 1) % phrases.length;
+      }
+      lastAchievementPhraseIndex = index;
+      const phrase = phrases[index];
+      const clean = String(taskText || "").trim();
+      const truncated = clean.length > 42 ? `${clean.slice(0, 42)}…` : clean;
+      return { main: phrase, sub: truncated };
+    }
+
     function celebrate() {
       playAchievedSound();
-      if (settings.feedbackEnabled !== false && navigator.vibrate) navigator.vibrate([50, 30, 50]);
+      if (settings.feedbackEnabled !== false && navigator.vibrate) navigator.vibrate(30);
       if (typeof confetti === 'function') {
-        confetti({ particleCount: 60, spread: 50, origin: { y: 0.7 } });
+        confetti({
+          particleCount: 16,
+          spread: 38,
+          startVelocity: 18,
+          gravity: 0.9,
+          scalar: 0.8,
+          ticks: 130,
+          origin: { y: 0.72 }
+        });
       }
     }
 
@@ -2098,7 +2148,8 @@
       saveTasks();
       render();
       celebrate();
-      showToast(t("achievedToast"));
+      const msg = buildAchievementMessage(task.text);
+      showToast(msg.main, false, null, msg.sub);
     }
 
     function reactivateTask(id) {
