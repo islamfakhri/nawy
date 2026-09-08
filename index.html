@@ -1680,6 +1680,7 @@
         noFavorites: "مفيش مفضلات لسه", favoriteHint: "علّم أي نية بنجمة وهتظهر هنا.",
         noArchive: "الأرشيف فاضي", noArchiveResults: "مفيش نتائج مطابقة للبحث",
         addedToast: "تمت إضافة النية ✨", achievedToast: "نية اتحققت 🌱",
+        draftSavedToast: "هتلاقيها تاني لما ترجع 🌱",
         achievementPhrases: [
           "وفّيت بنيتك 🌱",
           "خطوة اتخطيتها",
@@ -1789,6 +1790,7 @@
         noFavorites: "No favorites yet", favoriteHint: "Star an intention and it will appear here.",
         noArchive: "Archive is empty", noArchiveResults: "No results match your search",
         addedToast: "Intention added ✨", achievedToast: "Intention achieved 🌱",
+        draftSavedToast: "You'll find it again when you're back 🌱",
         achievementPhrases: [
           "You honored your intention 🌱",
           "A step taken",
@@ -3153,6 +3155,10 @@
     }
 
     function closeComposer() {
+      const input = $("#taskInput");
+      const hadDraft = input.value.trim().length > 0;
+      const wasOpen = $("#composerPanel").classList.contains("open");
+
       $("#fabBtn").classList.remove("hidden");
       $("#composerPanel").classList.remove("open");
       $("#composerPanel").style.bottom = "";
@@ -3164,7 +3170,13 @@
       // composer (tap outside, Escape, switching tabs) keeps the draft so
       // nothing typed is silently lost. It's only cleared after a successful
       // send (see the composerForm submit handler).
-      $("#taskInput").placeholder = getComposerPlaceholder();
+      input.placeholder = getComposerPlaceholder();
+
+      // Gentle, non-blocking confirmation — only when actually stepping away
+      // from unsent text (not on a normal close after sending).
+      if (wasOpen && hadDraft) {
+        showToast(t("draftSavedToast"));
+      }
     }
 
     function applySettings() {
