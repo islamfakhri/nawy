@@ -518,6 +518,8 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       transition: background 0.18s ease, border-color 0.18s ease;
+      user-select: text;
+      -webkit-user-select: text;
     }
     .action-task-preview::after {
       content: "✎";
@@ -4795,8 +4797,9 @@
 
         sheet.addEventListener("pointerdown", event => {
           if (event.pointerType === "mouse" && event.button !== 0) return;
+          if (event.pointerType === "mouse") return;
 
-          if (event.target.closest("button, input, textarea, select, option, a, .action-task-preview")) return;
+          if (event.target.closest("button, input, textarea, select, option, a")) return;
 
           startX = event.clientX;
           startY = event.clientY;
