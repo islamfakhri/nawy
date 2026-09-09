@@ -1166,6 +1166,72 @@
     .confirm-approve { background: #e11d48; color: #fff; }
     .confirm-approve:disabled { opacity: .45; }
 
+    /* ===================== نية اليوم ===================== */
+    .today-empty { padding: 40px 20px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+    .today-empty-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; margin-top: 4px; }
+    .today-btn-primary, .today-btn-secondary {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 46px; border-radius: var(--radius-full); font-size: var(--fs-base); font-weight: 500;
+    }
+    .today-btn-primary { background: var(--accent); color: #fff; }
+    .today-btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
+    .today-btn-primary .icon, .today-btn-secondary .icon { width: 17px; height: 17px; }
+
+    .today-viewport { position: relative; overflow: hidden; touch-action: pan-y; min-height: 280px; }
+    .today-track { display: flex; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
+    .today-track.dragging { transition: none; }
+
+    .today-card {
+      flex-shrink: 0; padding: 30px 18px 22px; min-height: 280px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      position: relative; user-select: none; -webkit-user-select: none;
+    }
+    .today-more { position: absolute; top: 4px; left: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .today-more:active { background: var(--surface-2); }
+    .today-more .icon { width: 19px; height: 19px; }
+
+    .today-quote { font-size: 42px; line-height: .3; color: var(--accent); opacity: .5; font-family: Georgia, serif; }
+
+    .today-text-wrap { display: flex; align-items: baseline; gap: 6px; justify-content: center; padding: 0 4px; }
+    .today-text { font-weight: 300; font-size: var(--fs-lg); line-height: 1.85; text-align: center; color: var(--text); cursor: pointer; }
+    .today-text.completed { text-decoration: line-through; color: var(--muted); }
+    .today-edit-icon { flex-shrink: 0; color: var(--muted); opacity: .8; width: 13px; height: 13px; }
+
+    .today-tagline { font-size: var(--fs-xs); color: var(--muted); letter-spacing: .3px; }
+    .today-change-btn { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--muted); margin-top: -2px; }
+    .today-change-btn .icon { width: 14px; height: 14px; }
+
+    .today-actions { display: flex; align-items: center; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 16px; width: 100%; justify-content: center; }
+    .today-action { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--muted); padding: 0 22px; position: relative; background: none; border: 0; }
+    .today-action:not(:first-child)::before { content: ""; position: absolute; right: 100%; top: 2px; bottom: 2px; width: 1px; background: var(--border); }
+    .today-action .icon { width: 19px; height: 19px; }
+    .today-action span { font-size: var(--fs-xs); }
+    .today-action.check.active { color: var(--accent); }
+    .today-action.star.active { color: #f59e0b; }
+
+    .today-dots { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 10px; }
+    .today-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-strong); transition: all .2s ease; }
+    .today-dot.active { width: 16px; border-radius: 3px; background: var(--accent); }
+    .today-counter { font-size: var(--fs-xs); color: var(--muted); margin-top: 10px; text-align: center; }
+
+    .today-search {
+      display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 12px; margin-bottom: 14px;
+      border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--surface-2);
+    }
+    .today-search .icon { width: 17px; height: 17px; color: var(--muted); flex-shrink: 0; }
+    .today-search input { flex: 1; min-width: 0; font-size: var(--fs-sm); }
+    .today-search input::placeholder { color: var(--muted); }
+    .today-pick-box { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+    .today-pick-row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .today-pick-row:last-child { border-bottom: 0; }
+    .today-pick-row.selected { background: var(--accent-soft); }
+    .today-pick-radio { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .today-pick-row.selected .today-pick-radio { background: var(--accent); border-color: var(--accent); }
+    .today-pick-row.selected .today-pick-radio .icon { width: 12px; height: 12px; color: #fff; }
+    .today-pick-text { font-size: var(--fs-sm); overflow-wrap: anywhere; }
+    .today-pick-hint { display: flex; align-items: center; gap: 6px; justify-content: center; margin-top: 14px; color: var(--muted); font-size: var(--fs-xs); }
+    .today-pick-hint .icon { width: 13px; height: 13px; }
+
     @media (max-width: 480px) {
       #taskOverlay .sheet { max-height: 78dvh; }
       #settingsOverlay .sheet, #archiveOverlay .sheet { max-height: 86dvh; }
@@ -1196,7 +1262,11 @@
       </header>
 
       <nav class="tabs" id="tabsNav">
-      <button class="tab active" data-view="all" type="button">
+      <button class="tab active" data-view="today" type="button">
+        <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 3c1 3-2 4-2 7a4 4 0 0 0 8 0c1.5 1.5 2 3.5 2 5a6 6 0 0 1-12 0c0-4 2-6 4-12Z"/></svg>
+        <span data-i18n="today">نية اليوم</span>
+      </button>
+      <button class="tab" data-view="all" type="button">
         <svg class="icon tab-icon" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 8 14 4 20 4C20 10 16 12 12 12Z"/><path d="M12 12C12 8 10 4 4 4C4 10 8 12 12 12Z"/></svg>
         <span data-i18n="all">نواياي</span>
       </button>
@@ -1568,6 +1638,23 @@
     </div>
   </div>
 
+  <div class="overlay" id="todayPickOverlay">
+    <div class="sheet">
+      <button class="sheet-close-small" type="button" data-close="todayPickOverlay" aria-label="إغلاق">×</button>
+      <div class="sheet-handle"></div>
+      <div class="sheet-title" data-i18n="pickTodayTitle">اختار نية اليوم</div>
+      <div class="today-search">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="todayPickSearchInput" data-i18n-placeholder="pickTodaySearchPlaceholder" placeholder="ابحث في نواياك">
+      </div>
+      <div id="todayPickList"></div>
+      <div class="today-pick-hint">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v5h1"/></svg>
+        <span data-i18n="pickTodayHint">الضغط على أي نية يختارها على طول</span>
+      </div>
+    </div>
+  </div>
+
   <div class="install-banner" id="installBanner">
     <div class="install-banner-inner">
       <div class="install-banner-icon">
@@ -1608,6 +1695,7 @@
       feedbackEnabled: true,
       achievementTone: "soft",
       autoBackupEnabled: true,
+      todayIntentionId: null,
       sectionsCollapsed: {
         active: false,
         achieved: true
@@ -1661,7 +1749,18 @@
         deleteAllConfirmCheckboxLabel: "متأكد إني عايز أحذف كل النوايا دي",
         deleteAllApprove: "حذف نهائي",
         deleteAllDoneToast: "تم حذف كل الأرشيف",
-        all: "نواياي", favorites: "مفضلاتي",
+        all: "نواياي", favorites: "مفضلاتي", today: "نية اليوم",
+        todayEmptyTitle: "مفيش نوايا نشطة لسه",
+        todayEmptyText: "اكتب أول نية عشان تقدر تختارها كنية اليوم.",
+        todayNoneTitle: "مفيش نية اليوم لسه",
+        todayNoneText: "اختار نية تركز عليها النهارده، أو اكتب واحدة جديدة",
+        todayNewIntention: "نية جديدة",
+        todayPickFromMine: "اختار من نواياي",
+        todayChangeIntention: "تغيير نية اليوم",
+        todayTagline: "خطوة بخطوة",
+        pickTodayTitle: "اختار نية اليوم",
+        pickTodaySearchPlaceholder: "ابحث في نواياك",
+        pickTodayHint: "الضغط على أي نية يختارها على طول",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
         composerPlaceholderMorning: "ناوي تعمل إيه الصبح ده؟",
         composerPlaceholderEvening: "قبل ما الليل يخلص، أنت ناوي على إيه؟",
@@ -1771,7 +1870,18 @@
         deleteAllConfirmCheckboxLabel: "I'm sure I want to delete all these intentions",
         deleteAllApprove: "Delete forever",
         deleteAllDoneToast: "Archive cleared",
-        all: "Intentions", favorites: "Favorites",
+        all: "Intentions", favorites: "Favorites", today: "Today",
+        todayEmptyTitle: "No active intentions yet",
+        todayEmptyText: "Write your first intention so you can set it as today's.",
+        todayNoneTitle: "No intention set for today",
+        todayNoneText: "Pick an intention to focus on, or write a new one",
+        todayNewIntention: "New intention",
+        todayPickFromMine: "Pick from mine",
+        todayChangeIntention: "Change today's intention",
+        todayTagline: "One step at a time",
+        pickTodayTitle: "Pick today's intention",
+        pickTodaySearchPlaceholder: "Search your intentions",
+        pickTodayHint: "Tap any intention to select it right away",
         composerEmptyPlaceholder: "What are you up to today?",
         composerPlaceholderMorning: "What are you up to this morning?",
         composerPlaceholderEvening: "Before the day ends, what do you intend?",
@@ -1842,7 +1952,8 @@
     let deletedIds = [];
     let settings = { ...DEFAULT_SETTINGS };
     let settingsUpdatedAt = 0;
-    let currentView = "all";
+    let currentView = "today";
+    let todayIndex = 0;
     let selectedTaskId = null;
     let activeTaskEditRestore = null;
     let swipeStartX = 0;
@@ -2146,7 +2257,7 @@
     function addTask(text) {
       const clean = String(text || "").trim();
       if (!clean) return false;
-      tasks.unshift({
+      const newTask = {
         id: createId(),
         text: clean,
         status: 'active',
@@ -2154,7 +2265,12 @@
         createdAt: Date.now(),
         updatedAt: Date.now(),
         achievedAt: null
-      });
+      };
+      tasks.unshift(newTask);
+      if (currentView === "today" && !settings.todayIntentionId) {
+        settings.todayIntentionId = newTask.id;
+        saveSettings();
+      }
       saveTasks();
       render();
       window.scrollTo(0, 0);
@@ -2452,7 +2568,9 @@
         .filter(x => x.status === 'achieved')
         .sort((a, b) => (Number(b.achievedAt) || 0) - (Number(a.achievedAt) || 0));
       
-      if (currentView === "all") {
+      if (currentView === "today") {
+        content.appendChild(buildTodayView());
+      } else if (currentView === "all") {
         if (activeTasks.length === 0 && achievedTasks.length === 0) {
           content.appendChild(createEmpty("🌱", t("noIntentions"), t("firstIntent")));
         } else {
@@ -2569,6 +2687,297 @@
         <div class="empty-text">${text}</div>
       `;
       return div;
+    }
+
+    // ===================== نية اليوم =====================
+
+    function getTodayOrderedTasks() {
+      const eligible = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
+      const pinnedId = settings.todayIntentionId;
+      const pinned = eligible.find(x => x.id === pinnedId);
+      if (!pinned) return { ordered: eligible, pinned: null };
+      const rest = eligible.filter(x => x.id !== pinnedId);
+      return { ordered: [pinned, ...rest], pinned };
+    }
+
+    function buildTodayView() {
+      const wrap = document.createElement("div");
+      wrap.className = "today-view";
+
+      const activeTasks = tasks.filter(x => x.status === 'active');
+      const { ordered, pinned } = getTodayOrderedTasks();
+
+      if (activeTasks.length === 0 && !pinned) {
+        wrap.appendChild(buildTodayEmpty(t("todayEmptyTitle"), t("todayEmptyText"), false));
+        return wrap;
+      }
+
+      if (!pinned) {
+        wrap.appendChild(buildTodayEmpty(t("todayNoneTitle"), t("todayNoneText"), true));
+        return wrap;
+      }
+
+      todayIndex = Math.min(todayIndex, ordered.length - 1);
+
+      const viewport = document.createElement("div");
+      viewport.className = "today-viewport";
+      viewport.id = "todayViewport";
+
+      const track = document.createElement("div");
+      track.className = "today-track";
+      track.id = "todayTrack";
+
+      ordered.forEach(task => track.appendChild(buildTodayCard(task)));
+      viewport.appendChild(track);
+      wrap.appendChild(viewport);
+
+      if (ordered.length <= 7) {
+        const dots = document.createElement("div");
+        dots.className = "today-dots";
+        dots.id = "todayDots";
+        ordered.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "today-dot" + (i === todayIndex ? " active" : "");
+          dots.appendChild(dot);
+        });
+        wrap.appendChild(dots);
+      } else {
+        const counter = document.createElement("div");
+        counter.className = "today-counter";
+        counter.id = "todayCounter";
+        counter.textContent = `${todayIndex + 1} / ${ordered.length}`;
+        wrap.appendChild(counter);
+      }
+
+      requestAnimationFrame(() => layoutTodayTrack(ordered.length));
+      bindTodayCarouselDrag(ordered.length);
+      return wrap;
+    }
+
+    function buildTodayEmpty(title, text, showPickOption) {
+      const container = document.createElement("div");
+      container.className = "today-empty";
+      container.innerHTML = `
+        <div class="empty-icon">🌱</div>
+        <div>
+          <div class="empty-title">${title}</div>
+          <div class="empty-text">${text}</div>
+        </div>
+      `;
+
+      const actions = document.createElement("div");
+      actions.className = "today-empty-actions";
+
+      const newBtn = document.createElement("button");
+      newBtn.className = "today-btn-primary";
+      newBtn.type = "button";
+      newBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8V16M8 12H16"/></svg><span>${t("todayNewIntention")}</span>`;
+      newBtn.addEventListener("click", openComposer);
+      actions.appendChild(newBtn);
+
+      if (showPickOption) {
+        const pickBtn = document.createElement("button");
+        pickBtn.className = "today-btn-secondary";
+        pickBtn.type = "button";
+        pickBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>${t("todayPickFromMine")}</span>`;
+        pickBtn.addEventListener("click", openTodayPickSheet);
+        actions.appendChild(pickBtn);
+      }
+
+      container.appendChild(actions);
+      return container;
+    }
+
+    function buildTodayCard(task) {
+      const card = document.createElement("div");
+      card.className = "today-card";
+      card.dataset.taskId = task.id;
+
+      const moreBtn = document.createElement("button");
+      moreBtn.className = "today-more";
+      moreBtn.type = "button";
+      moreBtn.setAttribute("aria-label", "خيارات إضافية");
+      moreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
+      moreBtn.addEventListener("click", () => openTaskSheet(task.id));
+      card.appendChild(moreBtn);
+
+      const quote = document.createElement("div");
+      quote.className = "today-quote";
+      quote.textContent = "”";
+      card.appendChild(quote);
+
+      const textWrap = document.createElement("div");
+      textWrap.className = "today-text-wrap";
+      const textEl = document.createElement("div");
+      textEl.className = "today-text" + (task.status === "achieved" ? " completed" : "");
+      textEl.textContent = task.text;
+      textEl.addEventListener("click", () => openTaskSheet(task.id));
+      textWrap.appendChild(textEl);
+      textWrap.appendChild(Object.assign(document.createElementNS("http://www.w3.org/2000/svg", "svg"), {}));
+      textWrap.lastChild.setAttribute("class", "icon today-edit-icon");
+      textWrap.lastChild.setAttribute("viewBox", "0 0 24 24");
+      textWrap.lastChild.innerHTML = '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>';
+      card.appendChild(textWrap);
+
+      const tagline = document.createElement("div");
+      tagline.className = "today-tagline";
+      tagline.textContent = t("todayTagline");
+      card.appendChild(tagline);
+
+      if (task.id === settings.todayIntentionId) {
+        const changeBtn = document.createElement("button");
+        changeBtn.className = "today-change-btn";
+        changeBtn.type = "button";
+        changeBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg><span>${t("todayChangeIntention")}</span>`;
+        changeBtn.addEventListener("click", openTodayPickSheet);
+        card.appendChild(changeBtn);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "today-actions";
+
+      const achieveBtn = document.createElement("button");
+      achieveBtn.className = "today-action check" + (task.status === "achieved" ? " active" : "");
+      achieveBtn.type = "button";
+      achieveBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6"/></svg><span>${t("achievedAction")}</span>`;
+      achieveBtn.addEventListener("click", () => {
+        if (task.status === 'achieved') reactivateTask(task.id);
+        else achieveTask(task.id);
+      });
+      actions.appendChild(achieveBtn);
+
+      const starBtn = document.createElement("button");
+      starBtn.className = "today-action star" + (task.starred ? " active" : "");
+      starBtn.type = "button";
+      starBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>${settings.language === "en" ? "Favorite" : "مفضلة"}</span>`;
+      starBtn.addEventListener("click", () => toggleStar(task.id));
+      actions.appendChild(starBtn);
+
+      const shareBtn = document.createElement("button");
+      shareBtn.className = "today-action";
+      shareBtn.type = "button";
+      shareBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 12V20H20V12"/><path d="M12 16V4M8 8L12 4L16 8"/></svg><span>${t("share").split(" ")[0]}</span>`;
+      shareBtn.addEventListener("click", () => shareAsImage(task));
+      actions.appendChild(shareBtn);
+
+      card.appendChild(actions);
+      return card;
+    }
+
+    function layoutTodayTrack(count) {
+      const viewport = $("#todayViewport");
+      const track = $("#todayTrack");
+      if (!viewport || !track) return;
+      const cardWidth = viewport.offsetWidth;
+      track.style.width = `${cardWidth * count}px`;
+      track.querySelectorAll(".today-card").forEach(card => { card.style.width = `${cardWidth}px`; });
+      track.style.transition = "none";
+      track.style.transform = `translateX(${todayIndex * cardWidth}px)`;
+      requestAnimationFrame(() => { track.style.transition = ""; });
+    }
+
+    function goToTodayIndex(index, count) {
+      const track = $("#todayTrack");
+      const viewport = $("#todayViewport");
+      if (!track || !viewport) return;
+      const cardWidth = viewport.offsetWidth;
+      track.classList.remove("dragging");
+      track.style.transition = "transform .32s cubic-bezier(.22,.61,.36,1)";
+      track.style.transform = `translateX(${index * cardWidth}px)`;
+      todayIndex = index;
+      $$(".today-dot").forEach((dot, i) => dot.classList.toggle("active", i === index));
+      const counter = $("#todayCounter");
+      if (counter) counter.textContent = `${index + 1} / ${count}`;
+    }
+
+    // سحب الكاروسيل مربوط بمنطقة #todayViewport فقط — منفصل تمامًا عن
+    // سحب التابات الذي يعمل على مستوى document (انظر معالج touchstart بالأسفل
+    // المستثني لعنصر .today-viewport).
+    function bindTodayCarouselDrag(count) {
+      const viewport = $("#todayViewport");
+      if (!viewport) return;
+      let startX = 0;
+      let currentDx = 0;
+      let dragging = false;
+
+      viewport.addEventListener("pointerdown", e => {
+        if (e.target.closest("button, .today-text")) return;
+        dragging = true;
+        startX = e.clientX;
+        currentDx = 0;
+        const track = $("#todayTrack");
+        track.classList.add("dragging");
+        track.style.transition = "none";
+        viewport.setPointerCapture?.(e.pointerId);
+      });
+
+      viewport.addEventListener("pointermove", e => {
+        if (!dragging) return;
+        currentDx = e.clientX - startX;
+        const track = $("#todayTrack");
+        const cardWidth = viewport.offsetWidth;
+        track.style.transform = `translateX(${(todayIndex * cardWidth) + currentDx}px)`;
+      });
+
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        const threshold = viewport.offsetWidth * 0.18;
+        const isRTL = document.documentElement.dir === "rtl";
+        let next = todayIndex;
+        const forward = isRTL ? currentDx > threshold : currentDx < -threshold;
+        const backward = isRTL ? currentDx < -threshold : currentDx > threshold;
+        if (forward && todayIndex < count - 1) next = todayIndex + 1;
+        else if (backward && todayIndex > 0) next = todayIndex - 1;
+        goToTodayIndex(next, count);
+      };
+
+      viewport.addEventListener("pointerup", endDrag);
+      viewport.addEventListener("pointercancel", endDrag);
+    }
+
+    function openTodayPickSheet() {
+      const activeTasks = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
+      renderTodayPickList(activeTasks, "");
+      $("#todayPickSearchInput").value = "";
+      openOverlay($("#todayPickOverlay"));
+    }
+
+    function renderTodayPickList(taskList, query) {
+      const list = $("#todayPickList");
+      const q = query.trim().toLowerCase();
+      const filtered = q ? taskList.filter(x => x.text.toLowerCase().includes(q)) : taskList;
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="empty"><div class="empty-title">${t("noArchiveResults")}</div></div>`;
+        return;
+      }
+
+      const box = document.createElement("div");
+      box.className = "today-pick-box";
+      filtered.forEach(task => {
+        const row = document.createElement("div");
+        row.className = "today-pick-row" + (task.id === settings.todayIntentionId ? " selected" : "");
+        const radio = document.createElement("div");
+        radio.className = "today-pick-radio";
+        if (task.id === settings.todayIntentionId) {
+          radio.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6"/></svg>';
+        }
+        const textEl = document.createElement("span");
+        textEl.className = "today-pick-text";
+        textEl.textContent = task.text;
+        row.append(radio, textEl);
+        row.addEventListener("click", () => {
+          settings.todayIntentionId = task.id;
+          saveSettings();
+          todayIndex = 0;
+          closeOverlay($("#todayPickOverlay"));
+          render();
+        });
+        box.appendChild(row);
+      });
+      list.innerHTML = "";
+      list.appendChild(box);
     }
 
     function updateTabs() {
@@ -4063,6 +4472,11 @@
       renderArchive();
     });
 
+    $("#todayPickSearchInput").addEventListener("input", e => {
+      const activeTasks = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
+      renderTodayPickList(activeTasks, e.target.value);
+    });
+
     $("#archiveDeleteAllBtn").addEventListener("click", openDeleteAllConfirm);
     $("#deleteAllCancelBtn").addEventListener("click", closeDeleteAllConfirm);
     $("#deleteAllConfirmCheckbox").addEventListener("change", e => {
@@ -4302,7 +4716,7 @@
     });
 
     document.addEventListener("touchstart", e => {
-      if (e.target.closest("button, input, textarea, select, option, .overlay, .sheet, .composer-panel, .fab")) return;
+      if (e.target.closest("button, input, textarea, select, option, .overlay, .sheet, .composer-panel, .fab, .today-viewport")) return;
 
       const touch = e.touches[0];
       swipeStartX = touch.clientX;
@@ -4345,7 +4759,7 @@
       const gestureDuration = Date.now() - swipeStartTime;
       
       if (Math.abs(dx) > 60 && gestureDuration < 450) {
-        const views = ["all", "favorites"];
+        const views = ["today", "all", "favorites"];
         const idx = views.indexOf(currentView);
         const isRTL = document.documentElement.dir === "rtl";
         
