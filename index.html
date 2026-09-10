@@ -518,8 +518,6 @@
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
       transition: background 0.18s ease, border-color 0.18s ease;
-      user-select: text;
-      -webkit-user-select: text;
     }
     .action-task-preview::after {
       content: "✎";
@@ -1224,8 +1222,13 @@
     .today-search input { flex: 1; min-width: 0; font-size: var(--fs-sm); }
     .today-search input::placeholder { color: var(--muted); }
     .today-pick-box { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
-    .today-pick-row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .today-pick-row {
+      width: 100%; text-align: start; display: flex; align-items: center; gap: 12px;
+      padding: 13px 14px; border-bottom: 1px solid var(--border); cursor: pointer;
+      background: none; border-left: 0; border-right: 0; border-top: 0; font: inherit; color: inherit;
+    }
     .today-pick-row:last-child { border-bottom: 0; }
+    .today-pick-row:active { background: var(--surface-2); }
     .today-pick-row.selected { background: var(--accent-soft); }
     .today-pick-radio { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
     .today-pick-row.selected .today-pick-radio { background: var(--accent); border-color: var(--accent); }
@@ -2721,6 +2724,14 @@
 
       todayIndex = Math.min(todayIndex, ordered.length - 1);
 
+      if (ordered.length === 1) {
+        // نية واحدة بس: مفيش حاجة نسحب لها داخليًا، فمنسيبها كارت عادي
+        // من غير .today-viewport عشان سحب التابات (على مستوى document)
+        // يفضل شغال طبيعي فوقها.
+        wrap.appendChild(buildTodayCard(ordered[0]));
+        return wrap;
+      }
+
       const viewport = document.createElement("div");
       viewport.className = "today-viewport";
       viewport.id = "todayViewport";
@@ -2894,18 +2905,23 @@
 
     // سحب الكاروسيل مربوط بمنطقة #todayViewport فقط — منفصل تمامًا عن
     // سحب التابات الذي يعمل على مستوى document (انظر معالج touchstart بالأسفل
-    // المستثني لعنصر .today-viewport).
+    // المستثني لعنصر .today-viewport، ولا يُستثنى إلا لما يكون فيه أكتر من
+    // نية واحدة — نية واحدة بترجع كارت عادي من غير .today-viewport أصلاً).
     function bindTodayCarouselDrag(count) {
       const viewport = $("#todayViewport");
       if (!viewport) return;
       let startX = 0;
+      let startY = 0;
       let currentDx = 0;
       let dragging = false;
+      let mode = "none"; // "horizontal" | "vertical" | "none"
 
       viewport.addEventListener("pointerdown", e => {
         if (e.target.closest("button, .today-text")) return;
         dragging = true;
+        mode = "none";
         startX = e.clientX;
+        startY = e.clientY;
         currentDx = 0;
         const track = $("#todayTrack");
         track.classList.add("dragging");
@@ -2915,15 +2931,40 @@
 
       viewport.addEventListener("pointermove", e => {
         if (!dragging) return;
-        currentDx = e.clientX - startX;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (mode === "none" && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+          mode = Math.abs(dx) >= Math.abs(dy) ? "horizontal" : "vertical";
+        }
+
+        if (mode !== "horizontal") return; // سيب السحب العمودي يعدي عادي كسكرول
+
+        currentDx = dx;
         const track = $("#todayTrack");
         const cardWidth = viewport.offsetWidth;
         track.style.transform = `translateX(${(todayIndex * cardWidth) + currentDx}px)`;
+
+        // لازم نمنع السلوك الافتراضي عشان المتصفح ميلغيش السحب معتبره
+        // محاولة سكرول عمودي غامضة (بنفس الأسلوب المستخدم في سحب الشيتات).
+        if (e.cancelable) e.preventDefault();
       });
 
       const endDrag = () => {
         if (!dragging) return;
         dragging = false;
+
+        if (mode !== "horizontal") {
+          mode = "none";
+          const track = $("#todayTrack");
+          track.classList.remove("dragging");
+          track.style.transition = "";
+          const cardWidth = viewport.offsetWidth;
+          track.style.transform = `translateX(${todayIndex * cardWidth}px)`;
+          return;
+        }
+
+        mode = "none";
         const threshold = viewport.offsetWidth * 0.18;
         const isRTL = document.documentElement.dir === "rtl";
         let next = todayIndex;
@@ -2958,7 +2999,8 @@
       const box = document.createElement("div");
       box.className = "today-pick-box";
       filtered.forEach(task => {
-        const row = document.createElement("div");
+        const row = document.createElement("button");
+        row.type = "button";
         row.className = "today-pick-row" + (task.id === settings.todayIntentionId ? " selected" : "");
         const radio = document.createElement("div");
         radio.className = "today-pick-radio";
@@ -4797,9 +4839,8 @@
 
         sheet.addEventListener("pointerdown", event => {
           if (event.pointerType === "mouse" && event.button !== 0) return;
-          if (event.pointerType === "mouse") return;
 
-          if (event.target.closest("button, input, textarea, select, option, a")) return;
+          if (event.target.closest("button, input, textarea, select, option, a, .action-task-preview")) return;
 
           startX = event.clientX;
           startY = event.clientY;
