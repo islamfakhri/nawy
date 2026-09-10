@@ -2746,8 +2746,10 @@
     }
 
     function getTodayOrderedTasks() {
-      const eligible = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
       const pinnedId = settings.todayIntentionId;
+      // النشطة + المثبتة حتى لو اتحققت النهارده — مفيش نوايا محققة قديمة
+      // تانية بتدخل هنا، الشاشة دي مرشحين للتركيز عليهم مش أرشيف.
+      const eligible = tasks.filter(x => x.status === 'active' || x.id === pinnedId);
       const pinned = eligible.find(x => x.id === pinnedId);
       if (!pinned) return { ordered: eligible, pinned: null };
       const rest = eligible.filter(x => x.id !== pinnedId);
@@ -3047,7 +3049,7 @@
     }
 
     function openTodayPickSheet() {
-      const activeTasks = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
+      const activeTasks = tasks.filter(x => x.status === 'active');
       renderTodayPickList(activeTasks, "");
       $("#todayPickSearchInput").value = "";
       openOverlay($("#todayPickOverlay"));
@@ -4585,7 +4587,7 @@
     });
 
     $("#todayPickSearchInput").addEventListener("input", e => {
-      const activeTasks = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
+      const activeTasks = tasks.filter(x => x.status === 'active');
       renderTodayPickList(activeTasks, e.target.value);
     });
 
