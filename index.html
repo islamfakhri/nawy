@@ -1177,37 +1177,62 @@
     .today-btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
     .today-btn-primary .icon, .today-btn-secondary .icon { width: 17px; height: 17px; }
 
-    .today-viewport { position: relative; overflow: hidden; touch-action: pan-y; min-height: 280px; }
+    .today-viewport { position: relative; overflow: hidden; touch-action: pan-y; min-height: 300px; }
     .today-track { display: flex; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
     .today-track.dragging { transition: none; }
 
     .today-card {
-      flex-shrink: 0; padding: 30px 18px 22px; min-height: 280px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-      position: relative; user-select: none; -webkit-user-select: none;
+      flex-shrink: 0; padding: 6px 4px 14px; min-height: 300px;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none; -webkit-user-select: none;
     }
-    .today-more { position: absolute; top: 4px; left: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .today-card-frame {
+      position: relative; width: 100%; max-width: 420px; overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 28px 20px 20px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+    }
+    .today-blob-1, .today-blob-2 {
+      position: absolute; border-radius: 50%; background: var(--accent-soft); pointer-events: none;
+    }
+    .today-blob-1 { width: 120px; height: 120px; top: -40px; right: -40px; }
+    .today-blob-2 { width: 150px; height: 150px; bottom: -50px; left: -40px; }
+
+    .today-more {
+      position: absolute; top: 8px; left: 8px; z-index: 1;
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; color: var(--muted);
+    }
     .today-more:active { background: var(--surface-2); }
-    .today-more .icon { width: 19px; height: 19px; }
+    .today-more .icon { width: 18px; height: 18px; }
 
-    .today-quote { font-size: 42px; line-height: .3; color: var(--accent); opacity: .5; font-family: Georgia, serif; }
+    .today-brand { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: 700; color: var(--muted); }
+    .today-brand span.emoji { font-size: var(--fs-sm); }
 
-    .today-text-wrap { display: flex; align-items: baseline; gap: 6px; justify-content: center; padding: 0 4px; }
+    .today-quote { position: relative; z-index: 1; font-size: 42px; line-height: .3; color: var(--accent); opacity: .5; font-family: Georgia, serif; }
+
+    .today-text-wrap { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 6px; justify-content: center; padding: 0 4px; }
     .today-text { font-weight: 300; font-size: var(--fs-lg); line-height: 1.85; text-align: center; color: var(--text); cursor: pointer; }
     .today-text.completed { text-decoration: line-through; color: var(--muted); }
     .today-edit-icon { flex-shrink: 0; color: var(--muted); opacity: .8; width: 13px; height: 13px; }
 
-    .today-tagline { font-size: var(--fs-xs); color: var(--muted); letter-spacing: .3px; }
-    .today-change-btn { display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--muted); margin-top: -2px; }
+    .today-tagline { position: relative; z-index: 1; font-size: var(--fs-xs); font-weight: 700; color: var(--accent); letter-spacing: .4px; }
+    .today-change-btn { position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--muted); margin-top: -2px; }
     .today-change-btn .icon { width: 14px; height: 14px; }
 
-    .today-actions { display: flex; align-items: center; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 16px; width: 100%; justify-content: center; }
-    .today-action { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--muted); padding: 0 22px; position: relative; background: none; border: 0; }
-    .today-action:not(:first-child)::before { content: ""; position: absolute; right: 100%; top: 2px; bottom: 2px; width: 1px; background: var(--border); }
+    .today-actions {
+      position: relative; z-index: 1; display: flex; align-items: center;
+      margin-top: 4px; background: var(--surface-2); border-radius: var(--radius-full); padding: 6px;
+    }
+    .today-action {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 38px; border-radius: var(--radius-full);
+      color: var(--muted); background: none; border: 0;
+    }
     .today-action .icon { width: 19px; height: 19px; }
-    .today-action span { font-size: var(--fs-xs); }
     .today-action.check.active { color: var(--accent); }
     .today-action.star.active { color: #f59e0b; }
+    .today-action.share { background: var(--accent); color: #fff; }
 
     .today-dots { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 10px; }
     .today-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-strong); transition: all .2s ease; }
@@ -1701,6 +1726,7 @@
       achievementTone: "soft",
       autoBackupEnabled: true,
       todayIntentionId: null,
+      todayIntentionDate: null,
       sectionsCollapsed: {
         active: false,
         achieved: true
@@ -2274,6 +2300,7 @@
       tasks.unshift(newTask);
       if (currentView === "today" && !settings.todayIntentionId) {
         settings.todayIntentionId = newTask.id;
+        settings.todayIntentionDate = getDateKey();
         saveSettings();
       }
       saveTasks();
@@ -2696,6 +2723,28 @@
 
     // ===================== نية اليوم =====================
 
+    function getDateKey(date = new Date()) {
+      return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    }
+
+    // بيتنادى مرة واحدة عند فتح التطبيق. لو يوم جديد ولسه فيه نية مثبتة:
+    // - لو النية اتحققت خلاص، نرجع الشاشة فاضية عشان يختار نية جديدة للنهارده.
+    // - لو لسه نشطة، تفضل هي نفسها (نية مش مكتملة ملهاش تُلغى بس لأن يوم عدى).
+    function checkTodayIntentionRollover() {
+      if (!settings.todayIntentionId) return;
+      const todayKey = getDateKey();
+      if (settings.todayIntentionDate === todayKey) return;
+
+      const pinnedTask = tasks.find(x => x.id === settings.todayIntentionId);
+      if (!pinnedTask || pinnedTask.status === 'achieved') {
+        settings.todayIntentionId = null;
+        settings.todayIntentionDate = null;
+      } else {
+        settings.todayIntentionDate = todayKey;
+      }
+      saveSettings();
+    }
+
     function getTodayOrderedTasks() {
       const eligible = tasks.filter(x => x.status === 'active' || x.status === 'achieved');
       const pinnedId = settings.todayIntentionId;
@@ -2763,7 +2812,7 @@
       }
 
       requestAnimationFrame(() => layoutTodayTrack(ordered.length));
-      bindTodayCarouselDrag(ordered.length);
+      bindTodayCarouselDrag(viewport, ordered.length);
       return wrap;
     }
 
@@ -2806,18 +2855,32 @@
       card.className = "today-card";
       card.dataset.taskId = task.id;
 
+      const frame = document.createElement("div");
+      frame.className = "today-card-frame";
+
+      const blob1 = document.createElement("div");
+      blob1.className = "today-blob-1";
+      const blob2 = document.createElement("div");
+      blob2.className = "today-blob-2";
+      frame.append(blob1, blob2);
+
       const moreBtn = document.createElement("button");
       moreBtn.className = "today-more";
       moreBtn.type = "button";
       moreBtn.setAttribute("aria-label", "خيارات إضافية");
       moreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>';
       moreBtn.addEventListener("click", () => openTaskSheet(task.id));
-      card.appendChild(moreBtn);
+      frame.appendChild(moreBtn);
+
+      const brand = document.createElement("div");
+      brand.className = "today-brand";
+      brand.innerHTML = `<span class="emoji">🌱</span><span>${t("appName")}</span>`;
+      frame.appendChild(brand);
 
       const quote = document.createElement("div");
       quote.className = "today-quote";
       quote.textContent = "”";
-      card.appendChild(quote);
+      frame.appendChild(quote);
 
       const textWrap = document.createElement("div");
       textWrap.className = "today-text-wrap";
@@ -2826,16 +2889,17 @@
       textEl.textContent = task.text;
       textEl.addEventListener("click", () => openTaskSheet(task.id));
       textWrap.appendChild(textEl);
-      textWrap.appendChild(Object.assign(document.createElementNS("http://www.w3.org/2000/svg", "svg"), {}));
-      textWrap.lastChild.setAttribute("class", "icon today-edit-icon");
-      textWrap.lastChild.setAttribute("viewBox", "0 0 24 24");
-      textWrap.lastChild.innerHTML = '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>';
-      card.appendChild(textWrap);
+      const editIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      editIcon.setAttribute("class", "icon today-edit-icon");
+      editIcon.setAttribute("viewBox", "0 0 24 24");
+      editIcon.innerHTML = '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>';
+      textWrap.appendChild(editIcon);
+      frame.appendChild(textWrap);
 
       const tagline = document.createElement("div");
       tagline.className = "today-tagline";
       tagline.textContent = t("todayTagline");
-      card.appendChild(tagline);
+      frame.appendChild(tagline);
 
       if (task.id === settings.todayIntentionId) {
         const changeBtn = document.createElement("button");
@@ -2843,7 +2907,7 @@
         changeBtn.type = "button";
         changeBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg><span>${t("todayChangeIntention")}</span>`;
         changeBtn.addEventListener("click", openTodayPickSheet);
-        card.appendChild(changeBtn);
+        frame.appendChild(changeBtn);
       }
 
       const actions = document.createElement("div");
@@ -2852,7 +2916,8 @@
       const achieveBtn = document.createElement("button");
       achieveBtn.className = "today-action check" + (task.status === "achieved" ? " active" : "");
       achieveBtn.type = "button";
-      achieveBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6"/></svg><span>${t("achievedAction")}</span>`;
+      achieveBtn.setAttribute("aria-label", t("achievedAction"));
+      achieveBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6"/></svg>';
       achieveBtn.addEventListener("click", () => {
         if (task.status === 'achieved') reactivateTask(task.id);
         else achieveTask(task.id);
@@ -2862,18 +2927,21 @@
       const starBtn = document.createElement("button");
       starBtn.className = "today-action star" + (task.starred ? " active" : "");
       starBtn.type = "button";
-      starBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg><span>${settings.language === "en" ? "Favorite" : "مفضلة"}</span>`;
+      starBtn.setAttribute("aria-label", settings.language === "en" ? "Favorite" : "مفضلة");
+      starBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
       starBtn.addEventListener("click", () => toggleStar(task.id));
       actions.appendChild(starBtn);
 
       const shareBtn = document.createElement("button");
-      shareBtn.className = "today-action";
+      shareBtn.className = "today-action share";
       shareBtn.type = "button";
-      shareBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 12V20H20V12"/><path d="M12 16V4M8 8L12 4L16 8"/></svg><span>${t("share").split(" ")[0]}</span>`;
+      shareBtn.setAttribute("aria-label", t("share"));
+      shareBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 12V20H20V12"/><path d="M12 16V4M8 8L12 4L16 8"/></svg>';
       shareBtn.addEventListener("click", () => shareAsImage(task));
       actions.appendChild(shareBtn);
 
-      card.appendChild(actions);
+      frame.appendChild(actions);
+      card.appendChild(frame);
       return card;
     }
 
@@ -2907,8 +2975,7 @@
     // سحب التابات الذي يعمل على مستوى document (انظر معالج touchstart بالأسفل
     // المستثني لعنصر .today-viewport، ولا يُستثنى إلا لما يكون فيه أكتر من
     // نية واحدة — نية واحدة بترجع كارت عادي من غير .today-viewport أصلاً).
-    function bindTodayCarouselDrag(count) {
-      const viewport = $("#todayViewport");
+    function bindTodayCarouselDrag(viewport, count) {
       if (!viewport) return;
       let startX = 0;
       let startY = 0;
@@ -2923,7 +2990,7 @@
         startX = e.clientX;
         startY = e.clientY;
         currentDx = 0;
-        const track = $("#todayTrack");
+        const track = viewport.querySelector(".today-track");
         track.classList.add("dragging");
         track.style.transition = "none";
         viewport.setPointerCapture?.(e.pointerId);
@@ -2941,7 +3008,7 @@
         if (mode !== "horizontal") return; // سيب السحب العمودي يعدي عادي كسكرول
 
         currentDx = dx;
-        const track = $("#todayTrack");
+        const track = viewport.querySelector(".today-track");
         const cardWidth = viewport.offsetWidth;
         track.style.transform = `translateX(${(todayIndex * cardWidth) + currentDx}px)`;
 
@@ -2956,7 +3023,7 @@
 
         if (mode !== "horizontal") {
           mode = "none";
-          const track = $("#todayTrack");
+          const track = viewport.querySelector(".today-track");
           track.classList.remove("dragging");
           track.style.transition = "";
           const cardWidth = viewport.offsetWidth;
@@ -3013,6 +3080,7 @@
         row.append(radio, textEl);
         row.addEventListener("click", () => {
           settings.todayIntentionId = task.id;
+          settings.todayIntentionDate = getDateKey();
           saveSettings();
           todayIndex = 0;
           closeOverlay($("#todayPickOverlay"));
@@ -5092,6 +5160,7 @@
 
     function init() {
       loadData();
+      checkTodayIntentionRollover();
       applySettings();
       render();
 
