@@ -716,11 +716,6 @@
     }
     .backup-status-actions button:active { background: var(--surface-3); }
     .backup-status-actions .icon { width: 15px; height: 15px; }
-    .backup-auto-row {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
-    }
-    .backup-auto-row .setting-name { font-size: var(--fs-sm); }
     .backup-local-item .menu-item-icon-box {
       width: 30px; height: 30px; border-radius: var(--radius-sm);
       background: var(--surface-2); display: grid; place-items: center; flex-shrink: 0;
@@ -818,7 +813,6 @@
     .setting-info { flex: 1; min-width: 0; }
     .setting-name { font-size: var(--fs-base); font-weight: 500; }
     .setting-desc { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; opacity: 0.7; }
-    .setting-desc.ok { color: #10b981; opacity: 1; }
     .tone-controls { display: flex; align-items: center; gap: 8px; }
     .tone-select {
       min-height: 38px;
@@ -1414,22 +1408,12 @@
             <div class="backup-status-actions">
               <button id="syncBtn" type="button">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg>
-                <span data-i18n="syncNow">مزامنة الآن</span>
+                <span data-i18n="syncNow">احفظ نسخة الآن</span>
               </button>
               <button id="restoreBtn" type="button">
                 <svg class="icon" viewBox="0 0 24 24"><path d="M4 9.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 7a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 5v11"/><path d="m8.5 13.5 3.5 3.5 3.5-3.5"/></svg>
                 <span data-i18n="restoreFromDrive2">استعادة نسخة</span>
               </button>
-            </div>
-            <div class="backup-auto-row">
-              <div class="setting-info">
-                <span class="setting-name" data-i18n="autoBackup">مزامنة تلقائية</span>
-                <div class="setting-desc" id="autoBackupLiveStatus"></div>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="autoBackupToggle" checked>
-                <span class="toggle-slider"></span>
-              </label>
             </div>
           </div>
         </div>
@@ -1753,7 +1737,6 @@
       notificationTime: "08:00",
       feedbackEnabled: true,
       achievementTone: "soft",
-      autoBackupEnabled: true,
       todayIntentionId: null,
       todayIntentionDate: null,
       sectionsCollapsed: {
@@ -1771,16 +1754,13 @@
         backupMenuSub: "Google Drive، محلي",
         backupNotConnected: "غير متصل",
         backupConnectedAs: "متصل · {email}",
-        syncNow: "مزامنة الآن",
+        syncNow: "احفظ نسخة الآن",
         restoreFromDrive2: "استعادة نسخة",
-        autoBackup: "مزامنة تلقائية",
-        autoBackupLiveOn: "شغالة دلوقتي — أي تعديل بيتخزن من غير ما تضغط حاجة",
-        autoBackupLiveOff: "متوقفة مؤقتًا — دوس \"مزامنة الآن\" عشان تشغّلها تاني",
         exportDataSub: "احفظ ملف JSON على جهازك",
         importDataSub: "دمج بيانات من نسخة محفوظة",
         backupNoteText: "النسخة الاحتياطية بتشمل نواياك، الأرشيف، والإعدادات.",
         lastSyncNever: "لسه مفيش نسخة محفوظة",
-        lastSyncAt: "آخر مزامنة: {time}",
+        lastSyncAt: "آخر حفظ: {time}",
         soundAndNotifications: "الصوت والتنبيهات",
         languageAndAccount: "اللغة والحساب",
         stats: "إحصائياتي",
@@ -1900,16 +1880,13 @@
         backupMenuSub: "Google Drive, local",
         backupNotConnected: "Not connected",
         backupConnectedAs: "Connected · {email}",
-        syncNow: "Sync now",
+        syncNow: "Save a backup now",
         restoreFromDrive2: "Restore backup",
-        autoBackup: "Auto backup",
-        autoBackupLiveOn: "Live — changes save automatically, no action needed",
-        autoBackupLiveOff: "Paused — tap \"Sync now\" to turn it back on",
         exportDataSub: "Save a JSON file on your device",
         importDataSub: "Merge data from a saved backup",
         backupNoteText: "Your backup includes your intentions, archive, and settings.",
         lastSyncNever: "No backup saved yet",
-        lastSyncAt: "Last synced: {time}",
+        lastSyncAt: "Last saved: {time}",
         soundAndNotifications: "Sound & notifications",
         languageAndAccount: "Language & account",
         stats: "My Stats",
@@ -2155,25 +2132,21 @@
 
     function saveTasks() {
       localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
-      queueGoogleBackup();
     }
 
     function saveArchive() {
       localStorage.setItem(STORAGE_KEYS.archive, JSON.stringify(archive));
-      queueGoogleBackup();
       updateMenuStatusLine();
     }
 
     function saveDeletedIds() {
       localStorage.setItem(STORAGE_KEYS.deletedIds, JSON.stringify(deletedIds));
-      queueGoogleBackup();
     }
 
     function saveSettings() {
       settingsUpdatedAt = Date.now();
       localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
       localStorage.setItem(STORAGE_KEYS.settingsUpdatedAt, String(settingsUpdatedAt));
-      queueGoogleBackup();
     }
 
     function showToast(message, canUndo = false, undoCallback = null, subtitle = "") {
@@ -3732,27 +3705,6 @@
       timeEl.textContent = lastBackupTimestamp > 0
         ? tf("lastSyncAt", { time: new Date(lastBackupTimestamp).toLocaleString(settings.language === "en" ? "en-US" : "ar-EG", { hour: "numeric", minute: "2-digit", day: "numeric", month: "short" }) })
         : t("lastSyncNever");
-
-      updateAutoBackupLiveStatus();
-    }
-
-    // بيعكس الحالة الحقيقية للمزامنة التلقائية دلوقتي، مش بس هل المفتاح
-    // مفعّل. Google بيعطي access token عمره حوالي ساعة ومن غير refresh
-    // token (تسجيل من المتصفح مباشرة من غير سيرفر)، فالمزامنة التلقائية
-    // فعليًا بتشتغل بس طول ما فيه token صالح في الذاكرة لنفس الجلسة —
-    // وبتتوقف بصمت بعد إغلاق التطبيق أو انتهاء صلاحية التوكين، لحد ما
-    // المستخدم يضغط "مزامنة الآن" تاني.
-    function updateAutoBackupLiveStatus() {
-      const statusEl = $("#autoBackupLiveStatus");
-      if (!statusEl) return;
-      if (settings.autoBackupEnabled === false || !googleDriveBackupEnabled) {
-        statusEl.textContent = "";
-        statusEl.classList.remove("ok");
-        return;
-      }
-      const isLive = !!googleAccessToken;
-      statusEl.textContent = isLive ? t("autoBackupLiveOn") : t("autoBackupLiveOff");
-      statusEl.classList.toggle("ok", isLive);
     }
 
     function markBackupSuccessful(email) {
@@ -3890,9 +3842,6 @@
       const tonePreview = $("#tonePreviewBtn");
       if (tonePreview) tonePreview.setAttribute("aria-label", t("previewTone"));
 
-      const autoBackupToggle = $("#autoBackupToggle");
-      if (autoBackupToggle) autoBackupToggle.checked = settings.autoBackupEnabled !== false;
-      
       updateNotifUI();
       updateMenuStatusLine();
     }
@@ -4016,11 +3965,6 @@
     let googleAccessToken = null;
     let googleTokenClient = null;
     let googleBackupInProgress = false;
-    let googleBackupTimer = null;
-    let googleBackupQueued = false;
-    let googleBackupPending = false;
-    let googleBackupRetryCount = 0;
-    let googleDriveBackupEnabled = localStorage.getItem("nawy_google_drive_backup_enabled") === "1";
 
     const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
     const GOOGLE_BACKUP_FILE_NAME = "nawy-data.json";
@@ -4285,25 +4229,6 @@
       }
     }
 
-    function setGoogleBackupEnabled(enabled) {
-      googleDriveBackupEnabled = enabled;
-      localStorage.setItem("nawy_google_drive_backup_enabled", enabled ? "1" : "0");
-    }
-
-    function queueGoogleBackup() {
-      if (!googleDriveBackupEnabled) return;
-      if (settings.autoBackupEnabled === false) return;
-
-      if (googleBackupTimer) {
-        clearTimeout(googleBackupTimer);
-      }
-
-      googleBackupTimer = setTimeout(() => {
-        googleBackupTimer = null;
-        backupDataToGoogleDrive({ automatic: true });
-      }, 3000);
-    }
-
     async function findGoogleDriveBackup(accessToken) {
       const headers = {
         Authorization: `Bearer ${accessToken}`
@@ -4431,38 +4356,25 @@
       }
     }
 
-    async function backupDataToGoogleDrive({ automatic = false } = {}) {
+    async function backupDataToGoogleDrive() {
       if (googleBackupInProgress) {
-        googleBackupQueued = true;
-        if (!automatic) showToast(t("backupProgress"));
+        showToast(t("backupProgress"));
         return;
       }
 
       const clientId = getGoogleClientId();
 
       if (!clientId) {
-        if (!automatic) showToast(t("backupConfig"));
-        return;
-      }
-
-      /*
-       * Auto Backup لا يبدأ OAuth تفاعلي من نفسه.
-       * ينتظر Sync يدوي ناجح أو وجود token صالح بالفعل.
-       */
-      if (automatic && !googleAccessToken) {
-        googleBackupPending = true;
+        showToast(t("backupConfig"));
         return;
       }
 
       googleBackupInProgress = true;
-
-      if (!automatic) {
-        showToast(t("backupProgress"));
-      }
+      showToast(t("backupProgress"));
 
       try {
         const accessToken = await requestGoogleAccessToken({
-          interactive: !automatic
+          interactive: true
         });
 
         /*
@@ -4510,17 +4422,10 @@
           existingFile?.id || null
         );
 
-        googleBackupPending = false;
-        googleBackupRetryCount = 0;
-        setGoogleBackupEnabled(true);
-
         const email = await fetchGoogleUserEmail(accessToken);
         markBackupSuccessful(email);
-        updateAutoBackupLiveStatus();
 
-        if (!automatic) {
-          showToast(t("backupSuccess"));
-        }
+        showToast(t("backupSuccess"));
 
       } catch (error) {
         console.error("Google Drive backup failed", error);
@@ -4528,31 +4433,10 @@
         /*
          * لو حصلت مشكلة، لا نمسح local data ولا نعتبر النسخة المحلية ضاعت.
          */
-        googleBackupPending = true;
-        if (googleDriveBackupEnabled) setMenuBadge(true);
-        updateAutoBackupLiveStatus();
-
-        if (!automatic) {
-          showToast(t("backupError"));
-        } else if (googleAccessToken && googleBackupRetryCount < 3) {
-          // إعادة محاولة بتأخير متزايد (5s, 15s, 45s) — بدل ما تفضل
-          // معلّقة صامتة لحد ما المستخدم يتذكر يضغط "مزامنة الآن" بنفسه.
-          const delay = 5000 * Math.pow(3, googleBackupRetryCount);
-          googleBackupRetryCount += 1;
-          setTimeout(() => backupDataToGoogleDrive({ automatic: true }), delay);
-        }
+        showToast(t("backupError"));
 
       } finally {
         googleBackupInProgress = false;
-
-        /*
-         * لو تعديل جديد حصل أثناء العملية، نعمل Backup جديد
-         * للنسخة الحالية بعد انتهاء العملية الأولى.
-         */
-        if (googleBackupQueued) {
-          googleBackupQueued = false;
-          queueGoogleBackup();
-        }
       }
     }
 
@@ -4583,7 +4467,7 @@
 
           if (window.confirm(t("enableBackupConfirm"))) {
             googleBackupInProgress = false;
-            await backupDataToGoogleDrive({ automatic: false });
+            await backupDataToGoogleDrive();
           }
 
           return;
@@ -4614,7 +4498,6 @@
          * نستعمل persist مباشر حتى لا نولد 4 Backups متتالية.
          */
         persistMergedDataLocally(mergedData);
-        setGoogleBackupEnabled(true);
 
         applySettings();
         render();
@@ -4625,9 +4508,7 @@
          */
         googleBackupInProgress = false;
 
-        await backupDataToGoogleDrive({
-          automatic: false
-        });
+        await backupDataToGoogleDrive();
 
         showToast(t("restoreSuccess"));
 
@@ -4789,37 +4670,13 @@
     });
 
     $("#syncBtn").addEventListener("click", () => {
-      backupDataToGoogleDrive({ automatic: false });
+      backupDataToGoogleDrive();
     });
 
     $("#restoreBtn").addEventListener("click", () => {
       closeOverlay($("#menuOverlay"));
       $("#menuBtn").setAttribute("aria-expanded", "false");
       restoreDataFromGoogleDrive();
-    });
-
-    $("#autoBackupToggle").addEventListener("change", function () {
-      settings.autoBackupEnabled = this.checked;
-      saveSettings();
-      if (this.checked) queueGoogleBackup();
-      updateAutoBackupLiveStatus();
-    });
-
-    // محاولات مزامنة انتهازية: لو فيه مزامنة معلّقة من قبل وحصل واحد من
-    // الحدثين دول، نجرب تاني من غير ما المستخدم يحتاج يفتح المنيو
-    // ويضغط "مزامنة الآن" بنفسه — نفس نمط retry-on-reconnect المعروف.
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState !== "visible") return;
-      if (googleBackupPending && googleAccessToken && settings.autoBackupEnabled !== false) {
-        backupDataToGoogleDrive({ automatic: true });
-      }
-      updateAutoBackupLiveStatus();
-    });
-
-    window.addEventListener("online", () => {
-      if (googleBackupPending && googleAccessToken && settings.autoBackupEnabled !== false) {
-        backupDataToGoogleDrive({ automatic: true });
-      }
     });
 
     $("#importFileInput").addEventListener("change", e => {
