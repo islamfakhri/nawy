@@ -1483,6 +1483,7 @@
           <div class="setting-row">
             <div class="setting-name" data-i18n="mode">الوضع</div>
             <div class="segmented">
+              <button class="segment" data-theme="system" type="button" data-i18n="systemTheme">تلقائي</button>
               <button class="segment" data-theme="dark" type="button" data-i18n="dark">داكن</button>
               <button class="segment" data-theme="light" type="button" data-i18n="light">نهاري</button>
             </div>
@@ -1732,7 +1733,7 @@
     };
 
     const DEFAULT_SETTINGS = {
-      theme: "dark",
+      theme: "system",
       accent: "blue",
       language: "ar",
       fontSize: "medium",
@@ -1823,7 +1824,7 @@
         copy: "نسخ النص", share: "مشاركة كصورة",
         settings: "الإعدادات", archive: "أرشيف ناوي", exportData: "صدّر نواياك", importData: "استورد نواياك",
         language: "اللغة", languageName: "لغة ناوي", appearance: "المظهر", mode: "الوضع",
-        dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
+        systemTheme: "تلقائي", dark: "داكن", light: "نهاري", fontSize: "حجم الخط", small: "صغير", medium: "متوسط", large: "كبير",
         color: "اللون", nawyColor: "لون ناوي", notification: "إشعار الصباح",
         time: "الوقت",
         noIntentions: "مفيش نوايا لسه", firstIntent: "اكتب أول نية ناوي تعملها.",
@@ -1949,7 +1950,7 @@
         copy: "Copy Text", share: "Share as Image",
         settings: "Settings", archive: "NAWY Archive", exportData: "Export intentions", importData: "Import intentions",
         language: "Language", languageName: "NAWY Language", appearance: "Appearance", mode: "Mode",
-        dark: "Dark", light: "Light", fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large",
+        systemTheme: "System", dark: "Dark", light: "Light", fontSize: "Font Size", small: "Small", medium: "Medium", large: "Large",
         color: "Color", nawyColor: "NAWY Color", notification: "Morning Reminder",
         time: "Time",
         noIntentions: "No intentions yet", firstIntent: "Write your first intention.",
@@ -2490,7 +2491,7 @@
       canvas.height = 1350;
       const ctx = canvas.getContext("2d");
       
-      const isDark = settings.theme === "dark";
+      const isDark = resolveTheme() === "dark";
       const bg = isDark ? "#0F1115" : "#FAF9F7";
       const textColor = isDark ? "#E5E7EB" : "#1A1A1A";
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#3b82f6";
@@ -2508,7 +2509,7 @@
       const { canvas } = ctx;
       const w = canvas.width;
       const h = canvas.height;
-      const isDark = settings.theme === "dark";
+      const isDark = resolveTheme() === "dark";
       const surface = isDark ? "#181B20" : "#FFFFFF";
       const muted = isDark ? "#9CA3AF" : "#6B7280";
       const soft = isDark ? "rgba(255,255,255,0.06)" : "rgba(59,130,246,0.06)";
@@ -3770,6 +3771,20 @@
       window.visualViewport.addEventListener("scroll", syncComposerToViewport);
     }
 
+    if (window.matchMedia) {
+      const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const onSystemThemeChange = () => {
+        if (settings.theme === "system") {
+          document.documentElement.setAttribute("data-theme", resolveTheme());
+        }
+      };
+      if (systemThemeQuery.addEventListener) {
+        systemThemeQuery.addEventListener("change", onSystemThemeChange);
+      } else if (systemThemeQuery.addListener) {
+        systemThemeQuery.addListener(onSystemThemeChange); // متصفحات أقدم
+      }
+    }
+
     function openComposer() {
       $("#fabBtn").classList.add("hidden");
       $("#composerPanel").classList.add("open");
@@ -3817,8 +3832,18 @@
       }
     }
 
+    // لو الإعداد "تلقائي"، نتبع تفضيل الجهاز الحالي، وإلا نستخدم القيمة
+    // المحفوظة (داكن/نهاري) زي ما هي.
+    function resolveTheme() {
+      if (settings.theme === "system") {
+        return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ? "dark" : "light";
+      }
+      return settings.theme;
+    }
+
     function applySettings() {
-      document.documentElement.setAttribute("data-theme", settings.theme);
+      document.documentElement.setAttribute("data-theme", resolveTheme());
       document.documentElement.setAttribute("data-accent", settings.accent);
       document.documentElement.setAttribute("data-font", settings.fontSize);
       document.documentElement.lang = settings.language;
