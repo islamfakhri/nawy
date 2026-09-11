@@ -818,6 +818,7 @@
     .setting-info { flex: 1; min-width: 0; }
     .setting-name { font-size: var(--fs-base); font-weight: 500; }
     .setting-desc { font-size: var(--fs-xs); color: var(--muted); margin-top: 2px; opacity: 0.7; }
+    .setting-desc.ok { color: #10b981; opacity: 1; }
     .tone-controls { display: flex; align-items: center; gap: 8px; }
     .tone-select {
       min-height: 38px;
@@ -1421,7 +1422,10 @@
               </button>
             </div>
             <div class="backup-auto-row">
-              <span class="setting-name" data-i18n="autoBackup">مزامنة تلقائية</span>
+              <div class="setting-info">
+                <span class="setting-name" data-i18n="autoBackup">مزامنة تلقائية</span>
+                <div class="setting-desc" id="autoBackupLiveStatus"></div>
+              </div>
               <label class="toggle-switch">
                 <input type="checkbox" id="autoBackupToggle" checked>
                 <span class="toggle-slider"></span>
@@ -1770,6 +1774,8 @@
         syncNow: "مزامنة الآن",
         restoreFromDrive2: "استعادة نسخة",
         autoBackup: "مزامنة تلقائية",
+        autoBackupLiveOn: "شغالة دلوقتي — أي تعديل بيتخزن من غير ما تضغط حاجة",
+        autoBackupLiveOff: "متوقفة مؤقتًا — دوس \"مزامنة الآن\" عشان تشغّلها تاني",
         exportDataSub: "احفظ ملف JSON على جهازك",
         importDataSub: "دمج بيانات من نسخة محفوظة",
         backupNoteText: "النسخة الاحتياطية بتشمل نواياك، الأرشيف، والإعدادات.",
@@ -1897,6 +1903,8 @@
         syncNow: "Sync now",
         restoreFromDrive2: "Restore backup",
         autoBackup: "Auto backup",
+        autoBackupLiveOn: "Live — changes save automatically, no action needed",
+        autoBackupLiveOff: "Paused — tap \"Sync now\" to turn it back on",
         exportDataSub: "Save a JSON file on your device",
         importDataSub: "Merge data from a saved backup",
         backupNoteText: "Your backup includes your intentions, archive, and settings.",
@@ -3724,6 +3732,27 @@
       timeEl.textContent = lastBackupTimestamp > 0
         ? tf("lastSyncAt", { time: new Date(lastBackupTimestamp).toLocaleString(settings.language === "en" ? "en-US" : "ar-EG", { hour: "numeric", minute: "2-digit", day: "numeric", month: "short" }) })
         : t("lastSyncNever");
+
+      updateAutoBackupLiveStatus();
+    }
+
+    // بيعكس الحالة الحقيقية للمزامنة التلقائية دلوقتي، مش بس هل المفتاح
+    // مفعّل. Google بيعطي access token عمره حوالي ساعة ومن غير refresh
+    // token (تسجيل من المتصفح مباشرة من غير سيرفر)، فالمزامنة التلقائية
+    // فعليًا بتشتغل بس طول ما فيه token صالح في الذاكرة لنفس الجلسة —
+    // وبتتوقف بصمت بعد إغلاق التطبيق أو انتهاء صلاحية التوكين، لحد ما
+    // المستخدم يضغط "مزامنة الآن" تاني.
+    function updateAutoBackupLiveStatus() {
+      const statusEl = $("#autoBackupLiveStatus");
+      if (!statusEl) return;
+      if (settings.autoBackupEnabled === false || !googleDriveBackupEnabled) {
+        statusEl.textContent = "";
+        statusEl.classList.remove("ok");
+        return;
+      }
+      const isLive = !!googleAccessToken;
+      statusEl.textContent = isLive ? t("autoBackupLiveOn") : t("autoBackupLiveOff");
+      statusEl.classList.toggle("ok", isLive);
     }
 
     function markBackupSuccessful(email) {
@@ -3990,6 +4019,7 @@
     let googleBackupTimer = null;
     let googleBackupQueued = false;
     let googleBackupPending = false;
+    let googleBackupRetryCount = 0;
     let googleDriveBackupEnabled = localStorage.getItem("nawy_google_drive_backup_enabled") === "1";
 
     const GOOGLE_DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
@@ -4481,10 +4511,12 @@
         );
 
         googleBackupPending = false;
+        googleBackupRetryCount = 0;
         setGoogleBackupEnabled(true);
 
         const email = await fetchGoogleUserEmail(accessToken);
         markBackupSuccessful(email);
+        updateAutoBackupLiveStatus();
 
         if (!automatic) {
           showToast(t("backupSuccess"));
@@ -4498,9 +4530,16 @@
          */
         googleBackupPending = true;
         if (googleDriveBackupEnabled) setMenuBadge(true);
+        updateAutoBackupLiveStatus();
 
         if (!automatic) {
           showToast(t("backupError"));
+        } else if (googleAccessToken && googleBackupRetryCount < 3) {
+          // إعادة محاولة بتأخير متزايد (5s, 15s, 45s) — بدل ما تفضل
+          // معلّقة صامتة لحد ما المستخدم يتذكر يضغط "مزامنة الآن" بنفسه.
+          const delay = 5000 * Math.pow(3, googleBackupRetryCount);
+          googleBackupRetryCount += 1;
+          setTimeout(() => backupDataToGoogleDrive({ automatic: true }), delay);
         }
 
       } finally {
@@ -4763,6 +4802,24 @@
       settings.autoBackupEnabled = this.checked;
       saveSettings();
       if (this.checked) queueGoogleBackup();
+      updateAutoBackupLiveStatus();
+    });
+
+    // محاولات مزامنة انتهازية: لو فيه مزامنة معلّقة من قبل وحصل واحد من
+    // الحدثين دول، نجرب تاني من غير ما المستخدم يحتاج يفتح المنيو
+    // ويضغط "مزامنة الآن" بنفسه — نفس نمط retry-on-reconnect المعروف.
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible") return;
+      if (googleBackupPending && googleAccessToken && settings.autoBackupEnabled !== false) {
+        backupDataToGoogleDrive({ automatic: true });
+      }
+      updateAutoBackupLiveStatus();
+    });
+
+    window.addEventListener("online", () => {
+      if (googleBackupPending && googleAccessToken && settings.autoBackupEnabled !== false) {
+        backupDataToGoogleDrive({ automatic: true });
+      }
     });
 
     $("#importFileInput").addEventListener("change", e => {
