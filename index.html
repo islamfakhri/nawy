@@ -1165,6 +1165,7 @@
     .confirm-cancel { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong); }
     .confirm-approve { background: #e11d48; color: #fff; }
     .confirm-approve:disabled { opacity: .45; }
+    .confirm-approve.neutral { background: var(--accent); }
 
     /* ===================== نية اليوم ===================== */
     .today-empty { padding: 40px 20px 24px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
@@ -1678,6 +1679,20 @@
     </div>
   </div>
 
+  <div class="confirm-overlay" id="genericConfirmOverlay">
+    <div class="confirm-card">
+      <div class="confirm-icon" id="genericConfirmIcon">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+      </div>
+      <div class="confirm-title" id="genericConfirmTitle"></div>
+      <div class="confirm-text" id="genericConfirmText"></div>
+      <div class="confirm-actions" style="margin-top:14px;">
+        <button class="confirm-cancel" id="genericConfirmCancelBtn" type="button"></button>
+        <button class="confirm-approve neutral" id="genericConfirmApproveBtn" type="button"></button>
+      </div>
+    </div>
+  </div>
+
   <div class="overlay" id="todayPickOverlay">
     <div class="sheet">
       <button class="sheet-close-small" type="button" data-close="todayPickOverlay" aria-label="إغلاق">×</button>
@@ -1802,6 +1817,12 @@
         pickTodayTitle: "اختار نية اليوم",
         pickTodaySearchPlaceholder: "ابحث في نواياك",
         pickTodayHint: "الضغط على أي نية يختارها على طول",
+        pinTodayConfirmTitle: "تثبيتها نية اليوم؟",
+        pinTodayConfirmText: "هتفضل هي اللي تفتح عليها الشاشة، لحد ما تحققها أو تختار نية غيرها.",
+        pinTodayApprove: "أثبّتها",
+        pinTodayCancel: "لسه",
+        archiveDeleteOneConfirmTitle: "حذف النية نهائي؟",
+        archiveDeleteOneConfirmText: "مش هينفع ترجعها تاني بعد الحذف.",
         composerEmptyPlaceholder: "ناوي على إيه النهارده؟",
         composerPlaceholderMorning: "ناوي تعمل إيه الصبح ده؟",
         composerPlaceholderEvening: "قبل ما الليل يخلص، أنت ناوي على إيه؟",
@@ -1923,6 +1944,12 @@
         pickTodayTitle: "Pick today's intention",
         pickTodaySearchPlaceholder: "Search your intentions",
         pickTodayHint: "Tap any intention to select it right away",
+        pinTodayConfirmTitle: "Set as today's intention?",
+        pinTodayConfirmText: "This will be the one the screen opens to, until you achieve it or pick another.",
+        pinTodayApprove: "Set it",
+        pinTodayCancel: "Not yet",
+        archiveDeleteOneConfirmTitle: "Delete this intention forever?",
+        archiveDeleteOneConfirmText: "This can't be undone once deleted.",
         composerEmptyPlaceholder: "What are you up to today?",
         composerPlaceholderMorning: "What are you up to this morning?",
         composerPlaceholderEvening: "Before the day ends, what do you intend?",
@@ -2188,6 +2215,36 @@
         toast.classList.add("toast-exit");
         setTimeout(() => toast.remove(), 240);
       }, canUndo ? 6000 : 3200);
+    }
+
+    function showConfirmDialog({ title, text, approveLabel, cancelLabel, danger = false } = {}) {
+      return new Promise(resolve => {
+        const overlay = $("#genericConfirmOverlay");
+        $("#genericConfirmTitle").textContent = title || "";
+        $("#genericConfirmText").textContent = text || "";
+
+        const approveBtn = $("#genericConfirmApproveBtn");
+        const cancelBtn = $("#genericConfirmCancelBtn");
+        approveBtn.textContent = approveLabel || t("confirmDelete");
+        cancelBtn.textContent = cancelLabel || t("cancel");
+        approveBtn.classList.toggle("neutral", !danger);
+
+        const cleanup = result => {
+          overlay.classList.remove("show");
+          approveBtn.removeEventListener("click", onApprove);
+          cancelBtn.removeEventListener("click", onCancel);
+          overlay.removeEventListener("click", onOverlayClick);
+          resolve(result);
+        };
+        const onApprove = () => cleanup(true);
+        const onCancel = () => cleanup(false);
+        const onOverlayClick = e => { if (e.target === overlay) cleanup(false); };
+
+        approveBtn.addEventListener("click", onApprove);
+        cancelBtn.addEventListener("click", onCancel);
+        overlay.addEventListener("click", onOverlayClick);
+        overlay.classList.add("show");
+      });
     }
 
     function playAchievedSound() {
@@ -2894,8 +2951,15 @@
         moreBtn.addEventListener("click", () => openTaskSheet(task.id));
       } else {
         moreBtn.setAttribute("aria-label", t("todayChangeIntention"));
-        moreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg>';
-        moreBtn.addEventListener("click", () => {
+        moreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c1.5 1.5 2 3.5 2 5a6 6 0 0 1-12 0c0-4 2-6 4-12Z"/></svg>';
+        moreBtn.addEventListener("click", async () => {
+          const confirmed = await showConfirmDialog({
+            title: t("pinTodayConfirmTitle"),
+            text: t("pinTodayConfirmText"),
+            approveLabel: t("pinTodayApprove"),
+            cancelLabel: t("pinTodayCancel")
+          });
+          if (!confirmed) return;
           settings.todayIntentionId = task.id;
           settings.todayIntentionDate = getDateKey();
           saveSettings();
@@ -2938,7 +3002,7 @@
         const changeBtn = document.createElement("button");
         changeBtn.className = "today-change-btn";
         changeBtn.type = "button";
-        changeBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg><span>${t("todayChangeIntention")}</span>`;
+        changeBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c1.5 1.5 2 3.5 2 5a6 6 0 0 1-12 0c0-4 2-6 4-12Z"/></svg><span>${t("todayChangeIntention")}</span>`;
         changeBtn.addEventListener("click", openTodayPickSheet);
         frame.appendChild(changeBtn);
       }
@@ -2996,7 +3060,7 @@
       if (!track || !viewport) return;
       const cardWidth = viewport.offsetWidth;
       track.classList.remove("dragging");
-      track.style.transition = "transform .32s cubic-bezier(.22,.61,.36,1)";
+      track.style.transition = "transform .24s cubic-bezier(.25,.8,.4,1)";
       track.style.transform = `translateX(${index * cardWidth}px)`;
       todayIndex = index;
       $$(".today-dot").forEach((dot, i) => dot.classList.toggle("active", i === index));
@@ -3012,6 +3076,9 @@
     // نية واحدة — نية واحدة بترجع كارت عادي من غير .today-viewport أصلاً).
     function bindTodayCarouselDrag(viewport, count) {
       if (!viewport) return;
+      const track = viewport.querySelector(".today-track");
+      if (!track) return;
+
       let startX = 0;
       let startY = 0;
       let startTime = 0;
@@ -3021,11 +3088,12 @@
 
       const isRTL = () => document.documentElement.dir === "rtl";
       // مقاومة خفيفة (rubber-band) عند طرفي الكاروسيل عشان يحس المستخدم
-      // إنه وصل للنهاية بدل ما يسحب في الفضا بحرية زي النص.
+      // إنه وصل للنهاية بدل ما يسحب في الفضا بحرية زي النص — خفيفة بما
+      // يكفي إنها ملموسة بس من غير ما تحس السحب "تقيل" في باقي الكاروسيل.
       const applyResistance = (dx, atStart, atEnd) => {
         const pullingBackwardAtStart = atStart && (isRTL() ? dx < 0 : dx > 0);
         const pullingForwardAtEnd = atEnd && (isRTL() ? dx > 0 : dx < 0);
-        if (pullingBackwardAtStart || pullingForwardAtEnd) return dx * 0.35;
+        if (pullingBackwardAtStart || pullingForwardAtEnd) return dx * 0.42;
         return dx;
       };
 
@@ -3037,7 +3105,6 @@
         startY = e.clientY;
         startTime = Date.now();
         currentDx = 0;
-        const track = viewport.querySelector(".today-track");
         track.classList.add("dragging");
         track.style.transition = "none";
         viewport.setPointerCapture?.(e.pointerId);
@@ -3048,14 +3115,13 @@
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
-        if (mode === "none" && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+        if (mode === "none" && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
           mode = Math.abs(dx) >= Math.abs(dy) ? "horizontal" : "vertical";
         }
 
         if (mode !== "horizontal") return; // سيب السحب العمودي يعدي عادي كسكرول
 
         currentDx = dx;
-        const track = viewport.querySelector(".today-track");
         const cardWidth = viewport.offsetWidth;
         const resisted = applyResistance(dx, todayIndex === 0, todayIndex === count - 1);
         track.style.transform = `translateX(${(todayIndex * cardWidth) + resisted}px)`;
@@ -3071,7 +3137,6 @@
 
         if (mode !== "horizontal") {
           mode = "none";
-          const track = viewport.querySelector(".today-track");
           track.classList.remove("dragging");
           track.style.transition = "";
           const cardWidth = viewport.offsetWidth;
@@ -3087,7 +3152,7 @@
         // سحب سريع (فليك) حتى لو المسافة قصيرة يبقى كفاية، زي أي كاروسيل
         // بريميم — بدل ما نعتمد على مسافة السحب لوحدها.
         const distanceThreshold = viewport.offsetWidth * 0.18;
-        const velocityThreshold = 0.45;
+        const velocityThreshold = 0.4;
 
         const movedForward = rtl ? currentDx > 0 : currentDx < 0;
         const movedBackward = rtl ? currentDx < 0 : currentDx > 0;
@@ -3416,7 +3481,7 @@
           restoreBtn.className = "archive-icon-btn";
           restoreBtn.type = "button";
           restoreBtn.setAttribute("aria-label", t("restore"));
-          restoreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M4 14.5a4.5 4.5 0 0 1 3.8-4.45A5.5 5.5 0 0 1 18.5 12a3.5 3.5 0 0 1 .5 6.96"/><path d="M12 19V8"/><path d="m8.5 11.5 3.5-3.5 3.5 3.5"/></svg>';
+          restoreBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M3 4v5h5"/></svg>';
           restoreBtn.addEventListener("click", () => restoreFromArchive(task.id));
 
           const deleteBtn = document.createElement("button");
@@ -3424,7 +3489,16 @@
           deleteBtn.type = "button";
           deleteBtn.setAttribute("aria-label", t("delete"));
           deleteBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M3 6H21"/><path d="M19 6V22H5V6"/><path d="M8 6V4H16V6"/></svg>';
-          deleteBtn.addEventListener("click", () => deleteForever(task.id));
+          deleteBtn.addEventListener("click", async () => {
+            const confirmed = await showConfirmDialog({
+              title: t("archiveDeleteOneConfirmTitle"),
+              text: t("archiveDeleteOneConfirmText"),
+              approveLabel: t("deleteAllApprove"),
+              cancelLabel: t("cancel"),
+              danger: true
+            });
+            if (confirmed) deleteForever(task.id);
+          });
 
           actions.append(restoreBtn, deleteBtn);
           item.append(copy, actions);
