@@ -673,7 +673,10 @@
     .account-menu-back { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: var(--muted); }
     .account-menu-back:active { background: var(--surface-2); }
     .account-menu-back .icon { width: 19px; height: 19px; }
+    html[dir="rtl"] #statsBtn > .icon:last-child,
+    html[dir="rtl"] #settingsBtn > .icon:last-child,
     html[dir="rtl"] #backupMenuBtn > .icon:last-child,
+    html[dir="rtl"] #archiveBtn > .icon:last-child,
     html[dir="rtl"] .account-menu-back .icon { transform: scaleX(-1); }
     .backup-group { padding: 8px 8px 4px; }
     .backup-group-head { display: flex; align-items: center; gap: 10px; min-height: 38px; color: var(--text); font-weight: 700; }
