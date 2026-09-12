@@ -3071,13 +3071,12 @@
       let dragging = false;
       let mode = "none"; // "horizontal" | "vertical" | "none"
 
-      const isRTL = () => document.documentElement.dir === "rtl";
-      // مقاومة خفيفة (rubber-band) عند طرفي الكاروسيل عشان يحس المستخدم
-      // إنه وصل للنهاية بدل ما يسحب في الفضا بحرية زي النص — خفيفة بما
-      // يكفي إنها ملموسة بس من غير ما تحس السحب "تقيل" في باقي الكاروسيل.
+      // الكاروسيل داخليًا دايمًا LTR فعليًا (.today-track { direction: ltr })
+      // بغض النظر عن لغة الصفحة، فاتجاه السحب هنا ثابت ومش مرتبط بـ RTL/LTR:
+      // سحب لليسار = التالي، سحب لليمين = السابق — في الحالتين.
       const applyResistance = (dx, atStart, atEnd) => {
-        const pullingBackwardAtStart = atStart && (isRTL() ? dx < 0 : dx > 0);
-        const pullingForwardAtEnd = atEnd && (isRTL() ? dx > 0 : dx < 0);
+        const pullingBackwardAtStart = atStart && dx > 0;
+        const pullingForwardAtEnd = atEnd && dx < 0;
         if (pullingBackwardAtStart || pullingForwardAtEnd) return dx * 0.42;
         return dx;
       };
@@ -3137,15 +3136,14 @@
         mode = "none";
         const elapsed = Math.max(1, Date.now() - startTime);
         const velocity = currentDx / elapsed; // px per ms
-        const rtl = isRTL();
 
         // سحب سريع (فليك) حتى لو المسافة قصيرة يبقى كفاية، زي أي كاروسيل
         // بريميم — بدل ما نعتمد على مسافة السحب لوحدها.
         const distanceThreshold = viewport.offsetWidth * 0.18;
         const velocityThreshold = 0.4;
 
-        const movedForward = rtl ? currentDx > 0 : currentDx < 0;
-        const movedBackward = rtl ? currentDx < 0 : currentDx > 0;
+        const movedForward = currentDx < 0;
+        const movedBackward = currentDx > 0;
         const passedDistance = Math.abs(currentDx) > distanceThreshold;
         const passedVelocity = Math.abs(velocity) > velocityThreshold;
 
@@ -4759,9 +4757,8 @@
       const count = ordered.length;
       if (count <= 1) return;
 
-      const rtl = document.documentElement.dir === "rtl";
-      const forward = (rtl && e.key === "ArrowRight") || (!rtl && e.key === "ArrowLeft");
-      const backward = (rtl && e.key === "ArrowLeft") || (!rtl && e.key === "ArrowRight");
+      const forward = e.key === "ArrowLeft";
+      const backward = e.key === "ArrowRight";
 
       let next = todayIndex;
       if (forward && todayIndex < count - 1) next = todayIndex + 1;
