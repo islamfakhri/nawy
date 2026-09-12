@@ -3035,7 +3035,7 @@
       track.style.width = `${cardWidth * count}px`;
       track.querySelectorAll(".today-card").forEach(card => { card.style.width = `${cardWidth}px`; });
       track.style.transition = "none";
-      track.style.transform = `translateX(${todayIndex * cardWidth}px)`;
+      track.style.transform = `translateX(${-todayIndex * cardWidth}px)`;
       requestAnimationFrame(() => { track.style.transition = ""; });
     }
 
@@ -3046,7 +3046,7 @@
       const cardWidth = viewport.offsetWidth;
       track.classList.remove("dragging");
       track.style.transition = "transform .24s cubic-bezier(.25,.8,.4,1)";
-      track.style.transform = `translateX(${index * cardWidth}px)`;
+      track.style.transform = `translateX(${-index * cardWidth}px)`;
       todayIndex = index;
       $$(".today-dot").forEach((dot, i) => dot.classList.toggle("active", i === index));
       const counter = $("#todayCounter");
@@ -3118,7 +3118,7 @@
         currentDx = dx;
         const cardWidth = viewport.offsetWidth;
         const resisted = applyResistance(dx, todayIndex === 0, todayIndex === count - 1);
-        track.style.transform = `translateX(${(todayIndex * cardWidth) + resisted}px)`;
+        track.style.transform = `translateX(${-(todayIndex * cardWidth) + resisted}px)`;
 
         // لازم نمنع السلوك الافتراضي عشان المتصفح ميلغيش السحب معتبره
         // محاولة سكرول عمودي غامضة (بنفس الأسلوب المستخدم في سحب الشيتات).
