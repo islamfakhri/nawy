@@ -1177,7 +1177,7 @@
     .today-btn-primary .icon, .today-btn-secondary .icon { width: 17px; height: 17px; }
 
     .today-viewport { position: relative; overflow: hidden; touch-action: pan-y; min-height: 300px; }
-    .today-track { display: flex; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
+    .today-track { display: flex; direction: ltr; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
     .today-track.dragging { transition: none; }
 
     .today-card {
@@ -3082,17 +3082,19 @@
         return dx;
       };
 
+      // مهم: نبدأ نتابع أي ضغطة في أي مكان في الكارت — حتى فوق الأزرار
+      // أو نص النية نفسه — من غير ما نستولي على الـ pointer أو نمنع أي
+      // حاجة لسه. لو الحركة فضلت صغيرة (يعني ضغطة عادية)، الزرار أو
+      // النص هياخد الحدث طبيعي زي ما المتصفح متعوّد. بس لو الحركة بانت
+      // سحب أفقي واضح، هنا بس نستولي على الـ pointer ونفعّل الكاروسيل —
+      // بالظبط زي أي كاروسيل بريميم بيسمح بالسحب من أي حتة في الكارت.
       viewport.addEventListener("pointerdown", e => {
-        if (e.target.closest("button, .today-text")) return;
         dragging = true;
         mode = "none";
         startX = e.clientX;
         startY = e.clientY;
         startTime = Date.now();
         currentDx = 0;
-        track.classList.add("dragging");
-        track.style.transition = "none";
-        viewport.setPointerCapture?.(e.pointerId);
       });
 
       viewport.addEventListener("pointermove", e => {
@@ -3102,6 +3104,13 @@
 
         if (mode === "none" && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
           mode = Math.abs(dx) >= Math.abs(dy) ? "horizontal" : "vertical";
+          if (mode === "horizontal") {
+            // اتأكدنا دلوقتي إنه سحب أفقي فعلي — نستولي على الـ pointer
+            // ونلغي أي تحديد نص أو ضغطة كانت شغالة تحت الإصبع.
+            viewport.setPointerCapture?.(e.pointerId);
+            track.classList.add("dragging");
+            track.style.transition = "none";
+          }
         }
 
         if (mode !== "horizontal") return; // سيب السحب العمودي يعدي عادي كسكرول
@@ -3122,11 +3131,7 @@
 
         if (mode !== "horizontal") {
           mode = "none";
-          track.classList.remove("dragging");
-          track.style.transition = "";
-          const cardWidth = viewport.offsetWidth;
-          track.style.transform = `translateX(${todayIndex * cardWidth}px)`;
-          return;
+          return; // ضغطة عادية — الزرار/النص خدوا الحدث طبيعي، مفيش حاجة نصلحها
         }
 
         mode = "none";
