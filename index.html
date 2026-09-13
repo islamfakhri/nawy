@@ -1177,11 +1177,11 @@
     .today-btn-primary .icon, .today-btn-secondary .icon { width: 17px; height: 17px; }
 
     .today-viewport { position: relative; overflow: hidden; touch-action: pan-y; min-height: 300px; }
-    .today-track { display: flex; direction: ltr; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
+    .today-track { position: relative; transition: transform .32s cubic-bezier(.22,.61,.36,1); }
     .today-track.dragging { transition: none; }
 
     .today-card {
-      flex-shrink: 0; padding: 6px 4px 14px; min-height: 300px;
+      position: absolute; top: 0; left: 0; padding: 6px 4px 14px; min-height: 300px;
       display: flex; align-items: center; justify-content: center;
       user-select: none; -webkit-user-select: none;
     }
@@ -3033,7 +3033,11 @@
       if (!viewport || !track) return;
       const cardWidth = viewport.offsetWidth;
       track.style.width = `${cardWidth * count}px`;
-      track.querySelectorAll(".today-card").forEach(card => { card.style.width = `${cardWidth}px`; });
+      track.style.height = `${viewport.offsetHeight || track.scrollHeight}px`;
+      track.querySelectorAll(".today-card").forEach((card, i) => {
+        card.style.width = `${cardWidth}px`;
+        card.style.left = `${i * cardWidth}px`;
+      });
       track.style.transition = "none";
       track.style.transform = `translateX(${-todayIndex * cardWidth}px)`;
       requestAnimationFrame(() => { track.style.transition = ""; });
